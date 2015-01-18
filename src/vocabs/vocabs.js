@@ -6,3 +6,4 @@ exports.rdf = require('./rdf');
 exports.rdfs = require('./rdfs');
 exports.xsd = require('./xsd');
 exports.interval = require('./interval');
+exports.social = require('./social');

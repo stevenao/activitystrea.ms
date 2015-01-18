@@ -1,31 +1,21 @@
 var a = require('./src/activitystreams.js')
 
-var collect = a.collection().
+a.collection().
   startTimeRange(
-    a.closedInterval().
+    a.interval.closed().
       lower(new Date()).
       upper(new Date())
     ).
-  get();
+  get().
+  prettyWrite(function(err,doc) {
+    console.log(doc);
+  });
 
-collect.prettyWrite(function(err,doc) {
-  console.log(doc);
-});
-
-// a.import(
-//   {
-//     '@type': 'Reservation',
-//     displayNameMap: 'J"o"e'
-//   }, 
-//   function(err, doc) {
-    
-//     doc.export(
-//       function(e,d) {
-//         console.log(JSON.stringify(d));
-//       }
-//     );
-
-//   }
-// );
-
-
+a.post().
+  to(a.social.everyone().havingRole('http://example.org').distance(1)).
+  cc(a.vocabs.social.Public).
+  bto(a.vocabs.social.Direct).
+  get().
+  prettyWrite(function(err,doc) {
+    console.log(doc);
+  });

@@ -3,6 +3,7 @@ var url = require('url'),
     vocabs = require('./vocabs'),
     N3 = require('n3'),
     as_context = require('./data/activitystreams2.json'),
+    asx_context = require('./data/extended-context.json'),
     jsonld = require('jsonld');
 
 (function(exports) {
@@ -217,7 +218,10 @@ exports.jsonld = Object.create({
   compact: function(ret, callback) {
     exports.throwif(typeof callback !== 'function', 'A callback function must be specified');
     jsonld.compact(
-      ret, {'@context': vocabs.as.ns}, 
+      ret, {'@context': [
+        vocabs.as.ns ,
+        asx_context
+      ]}, 
       {documentLoader: exports.jsonld.custom_doc_loader}, 
       function(err, doc) {
         if (err) {

@@ -168,7 +168,19 @@ function _init(reasoner) {
     [vocabs.interval.LeftOpenInterval, vocabs.interval.Interval],
     [vocabs.interval.RightOpenInterval, vocabs.interval.Interval],
     [vocabs.interval.LeftClosedInterval, vocabs.interval.Interval],
-    [vocabs.interval.RightClosedInterval, vocabs.interval.Interval]
+    [vocabs.interval.RightClosedInterval, vocabs.interval.Interval],
+    [vocabs.social.Population, vocabs.as.Object],
+    [vocabs.social.Everyone, vocabs.social.Population],
+    [vocabs.social.Public, vocabs.social.Population],
+    [vocabs.social.Private, vocabs.social.Population],
+    [vocabs.social.Direct, vocabs.social.Population],
+    [vocabs.social.Common, vocabs.social.Population],
+    [vocabs.social.Interested, vocabs.social.Population],
+    [vocabs.social.Self, vocabs.social.Population],
+    [vocabs.social.All, vocabs.social.CompoundPopulation],
+    [vocabs.social.Any, vocabs.social.CompoundPopulation],
+    [vocabs.social.None, vocabs.social.CompoundPopulation],
+    [vocabs.social.CompoundPopulation, vocabs.social.Population]
   ].forEach(function (pair) {
     reasoner.add(pair[0], vocabs.rdfs.subClassOf, pair[1]);
   });
@@ -291,7 +303,13 @@ function _init(reasoner) {
     [vocabs.asx.startTimeRange, functionalObject],
     [vocabs.interval.lower, functionalDatatype],
     [vocabs.interval.upper, functionalDatatype],
-    [vocabs.interval.step, functionalDatatype]
+    [vocabs.interval.step, functionalDatatype],
+    [vocabs.social.member, vocabs.owl.ObjectProperty],
+    [vocabs.social.confidence, functionalDatatype],
+    [vocabs.social.havingDimension, vocabs.owl.ObjectProperty],
+    [vocabs.social.havingRole, vocabs.owl.ObjectProperty],
+    [vocabs.social.havingRelationship, vocabs.owl.ObjectProperty],
+    [vocabs.social.distance, functionalDatatype]
   ].forEach(function(pair) {
     reasoner.add(pair[0], vocabs.rdf.type, pair[1]);
   });

@@ -28,6 +28,8 @@ var models = require('./models'),
 var merge_types = utils.merge_types;
 var reasoner = new Reasoner();
  
+exports.vocabs = vocabs;
+
 exports.import = function(input, callback) {
   utils.throwif(typeof callback !== 'function', 'A callback function must be given');
   process.nextTick(function() {
@@ -267,27 +269,67 @@ exports.mention = function(types) {
 exports.interval = function(types) {
   return models.Interval.Builder(reasoner, types);
 };
-exports.openInterval = function(types) {
+exports.interval.open = function(types) {
   return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.OpenInterval, types));
 };
-exports.closedInterval = function(types) {
+exports.interval.closed = function(types) {
   return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.ClosedInterval, types));
 };
-exports.openClosedInterval = function(types) {
+exports.interval.openClosed = function(types) {
   return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.OpenClosedInterval, types));
 };
-exports.closedOpenInterval = function(types) {
+exports.interval.closedOpen = function(types) {
   return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.ClosedOpenInterval, types));
 };
-exports.leftOpenInterval = function(types) {
+exports.interval.leftOpen = function(types) {
   return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.LeftOpenInterval, types));
 };
-exports.rightOpenInterval = function(types) {
+exports.interval.rightOpen = function(types) {
   return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.RightOpenInterval, types));
 };
-exports.leftClosedInterval = function(types) {
+exports.interval.leftClosed = function(types) {
   return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.LeftClosedInterval, types));
 };
-exports.rightClosedInterval = function(types) {
+exports.interval.rightClosed = function(types) {
   return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.RightClosedInterval, types));
+};
+
+
+exports.social = {
+  population : function(types) {
+    return models.Population.Builder(reasoner, types);
+  },
+  everyone : function(types) {
+    return models.Everyone.Builder(reasoner, types);
+  },
+  public : function(types) {
+    return models.Population.Builder(reasoner, merge_types(reasoner, vocabs.social.Public, types));
+  },
+  private : function(types) {
+    return models.Population.Builder(reasoner, merge_types(reasoner, vocabs.social.Private, types));
+  },
+  direct : function(types) {
+    return models.Population.Builder(reasoner, merge_types(reasoner, vocabs.social.Direct, types));
+  },
+  common : function(types) {
+    return models.Common.Builder(reasoner, types);
+  },
+  interested : function(types) {
+    return models.Interested.Builder(reasoner, types);
+  },
+  self : function(types) {
+    return models.Population.Builder(reasoner, merge_types(reasoner, vocabs.social.Self, types));
+  },
+  all : function(types) {
+    return models.CompoundPopulation.Builder(reasoner, merge_types(reasoner, vocabs.social.All, types));
+  },
+  any : function(types) {
+    return models.CompoundPopulation.Builder(reasoner, merge_types(reasoner, vocabs.social.Any, types));
+  },
+  none : function(types) {
+    return models.CompoundPopulation.Builder(reasoner, merge_types(reasoner, vocabs.social.None, types));
+  },
+  compoundPopulation : function(types) {
+    return models.CompoundPopulation.Builder(reasoner, types);
+  }
 };

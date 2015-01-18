@@ -13,6 +13,11 @@ exports.Place = require('./asplace');
 exports.PossibleAnswer = require('./aspossibleanswer');
 exports.Question = require('./asquestion');
 exports.Interval = require('./interval');
+exports.Population = require('./population');
+exports.CompoundPopulation = require('./compoundpopulation');
+exports.Everyone = require('./everyone');
+exports.Interested = require('./interested');
+exports.Common = require('./common');
 
 exports.wrap_object = function (store, reasoner, subject, id) {
   if (subject === undefined) throw new Error();
@@ -40,6 +45,16 @@ exports.wrap_object = function (store, reasoner, subject, id) {
       thing = exports.Place;
     } else if (reasoner.isSubClassOf(type,vocabs.interval.Interval)) {
       thing = exports.Interval;
+    } else if (reasoner.isSubClassOf(type,vocabs.social.Common)) {
+      thing = exports.Common;
+    } else if (reasoner.isSubClassOf(type,vocabs.social.Interested)) {
+      thing = exports.Interested;
+    } else if (reasoner.isSubClassOf(type,vocabs.social.CompoundPopulation)) {
+      thing = exports.CompoundPopulation;
+    } else if (reasoner.isSubClassOf(type,vocabs.social.Everyone)) {
+      thing = exports.Everyone;
+    } else if (reasoner.isSubClassOf(type,vocabs.social.Population)) {
+      thing = exports.Population;
     }
   }
   return thing(store, reasoner, id, subject);

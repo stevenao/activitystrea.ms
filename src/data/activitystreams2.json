@@ -13,7 +13,8 @@
     "ical": "http://www.w3.org/2002/12/cal/ical#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "i": "http://ns.jasnell.me/interval#",
-    "asx": "http://ns.jasnell.me/activitystreams-ex#"
+    "asx": "http://ns.jasnell.me/activitystreams-ex#",
+    "soc": "http://ns.jasnell.me/social#"
   },
   {
     "@vocab": "_:",
@@ -775,7 +776,12 @@
     "ical:tzurl": { "@type": "@id" },
     "ical:attach": { "@type": "@id" },
     "ical:class": { "@type": "@id" },
-    "ical:geo": { "@container": "@list", "@type": "xsd:float"}
+    "ical:geo": { "@container": "@list", "@type": "xsd:float"},
+    "soc:havingDimension": { "@type": "@id" },
+    "soc:havingRole": {"@type": "@id"},
+    "soc:havingRelationship": {"@type": "@id"},
+    "soc:distance": {"@type": "xsd:nonNegativeInteger"},
+    "soc:confidence": {"@type": "xsd:nonNegativeInteger"}
   }
   ]
 }
