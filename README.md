@@ -1,4 +1,10 @@
-# Activity Streams 2.0 JavaScript Reference Implementation
+# Activity Streams 2.0
+
+Based on: 
+
+* http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams2.html
+* http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams2-vocabulary.html
+* http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams2-actions.html
 
 ## Getting Started
 
