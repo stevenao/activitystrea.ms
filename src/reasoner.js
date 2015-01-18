@@ -159,7 +159,16 @@ function _init(reasoner) {
     [vocabs.as.TentativeAccept, vocabs.as.Accept],
     [vocabs.as.TentativeReject, vocabs.as.Reject],
     [vocabs.as.Undo, vocabs.as.Activity],
-    [vocabs.as.Video, vocabs.as.Document]
+    [vocabs.as.Video, vocabs.as.Document],
+    [vocabs.interval.Interval, vocabs.as.Object],
+    [vocabs.interval.OpenInterval, vocabs.interval.Interval],
+    [vocabs.interval.ClosedInterval, vocabs.interval.Interval],
+    [vocabs.interval.OpenClosedInterval, vocabs.interval.Interval],
+    [vocabs.interval.ClosedOpenInterval, vocabs.interval.Interval],
+    [vocabs.interval.LeftOpenInterval, vocabs.interval.Interval],
+    [vocabs.interval.RightOpenInterval, vocabs.interval.Interval],
+    [vocabs.interval.LeftClosedInterval, vocabs.interval.Interval],
+    [vocabs.interval.RightClosedInterval, vocabs.interval.Interval]
   ].forEach(function (pair) {
     reasoner.add(pair[0], vocabs.rdfs.subClassOf, pair[1]);
   });
@@ -276,7 +285,13 @@ function _init(reasoner) {
     [vocabs.as.upstreamDuplicates, deprecatedDatatype],
     [vocabs.as.verb, deprecatedFunctionalDatatype],
     [vocabs.as.width, functionalDatatype],
-    [vocabs.as.HttpHeader, vocabs.owl.Class]
+    [vocabs.as.HttpHeader, vocabs.owl.Class],
+    [vocabs.asx.indexRange, functionalObject],
+    [vocabs.asx.publishedRange, functionalObject],
+    [vocabs.asx.startTimeRange, functionalObject],
+    [vocabs.interval.lower, functionalDatatype],
+    [vocabs.interval.upper, functionalDatatype],
+    [vocabs.interval.step, functionalDatatype]
   ].forEach(function(pair) {
     reasoner.add(pair[0], vocabs.rdf.type, pair[1]);
   });

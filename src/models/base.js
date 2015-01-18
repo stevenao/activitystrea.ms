@@ -189,7 +189,10 @@ Base.Builder.prototype = {
       // if it's a functional property, delete any existing value that may exist
       if (_reasoner.is_functional(key)) {
         utils.throwif(is_array, 'Functional Properties cannot have Array values');
-        _store.findByIRI(_subject, key, null).forEach(_store.removeTriple);
+        //_store.findByIRI(_subject, key, null).forEach(_store.removeTriple);
+        _store.findByIRI(_subject, key, null).forEach(function (triple) {
+          _store.removeTriple(triple);
+        });
       }
       if (is_array) {
         // split it up and set each value separately...
@@ -200,7 +203,7 @@ Base.Builder.prototype = {
         if (_reasoner.is_object_property(key) || 
             val instanceof Base || 
             val instanceof Base.Builder || 
-            !utils.is_primitive(val)) {
+            (!utils.is_primitive(val) && !utils.is_date(val))) {
 
           if (val instanceof Base.Builder)  // unwrap the builder if necessary
             val = val.get();

@@ -12,6 +12,7 @@ exports.Link = require('./aslink');
 exports.Place = require('./asplace');
 exports.PossibleAnswer = require('./aspossibleanswer');
 exports.Question = require('./asquestion');
+exports.Interval = require('./interval');
 
 exports.wrap_object = function (store, reasoner, subject, id) {
   if (subject === undefined) throw new Error();
@@ -37,6 +38,8 @@ exports.wrap_object = function (store, reasoner, subject, id) {
       thing = exports.Content;
     } else if (reasoner.isSubClassOf(type,vocabs.as.Place)) {
       thing = exports.Place;
+    } else if (reasoner.isSubClassOf(type,vocabs.interval.Interval)) {
+      thing = exports.Interval;
     }
   }
   return thing(store, reasoner, id, subject);

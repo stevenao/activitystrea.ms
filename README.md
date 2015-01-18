@@ -4,7 +4,11 @@ Based on:
 
 * http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams2.html
 * http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams2-vocabulary.html
+
+Includes experimental support for: 
+
 * http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams2-actions.html
+* http://ns.jasnell.me/interval
 
 ## Getting Started
 

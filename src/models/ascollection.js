@@ -28,6 +28,12 @@ util.inherits(AsCollection, AsObject);
     return this.get(vocabs.as[key]);
   });
 });
+['indexRange', 'publishedRange', 'startTimeRange'].forEach(function(key) {
+  utils.defineProperty(AsCollection.prototype, key, function() {
+    return this.get(vocabs.asx[key]);
+    // will this return as an Interval object? we'll see
+  });
+});
 utils.defineProperty(AsCollection.prototype, 'items', function() {
   var i = this.get(vocabs.as.items);
   if (this.ordered) {
@@ -85,6 +91,12 @@ util.inherits(AsCollection.Builder, AsObject.Builder);
     this.set(vocabs.as[key], val);
     return this;
   };
+});
+['indexRange', 'publishedRange', 'startTimeRange'].forEach(function(key) {
+  AsCollection.Builder.prototype[key] = function(val) {
+    this.set(vocabs.asx[key], val);
+    return this;
+  }
 });
 
 AsCollection.Builder.prototype.items = function(val) {

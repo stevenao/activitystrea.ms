@@ -264,3 +264,30 @@ exports.mention = function(types) {
   return models.Link.Builder(reasoner, merge_types(reasoner, vocabs.as.Mention, types));
 };
 
+exports.interval = function(types) {
+  return models.Interval.Builder(reasoner, types);
+};
+exports.openInterval = function(types) {
+  return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.OpenInterval, types));
+};
+exports.closedInterval = function(types) {
+  return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.ClosedInterval, types));
+};
+exports.openClosedInterval = function(types) {
+  return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.OpenClosedInterval, types));
+};
+exports.closedOpenInterval = function(types) {
+  return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.ClosedOpenInterval, types));
+};
+exports.leftOpenInterval = function(types) {
+  return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.LeftOpenInterval, types));
+};
+exports.rightOpenInterval = function(types) {
+  return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.RightOpenInterval, types));
+};
+exports.leftClosedInterval = function(types) {
+  return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.LeftClosedInterval, types));
+};
+exports.rightClosedInterval = function(types) {
+  return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.RightClosedInterval, types));
+};
