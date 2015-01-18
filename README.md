@@ -8,13 +8,9 @@ Use "grunt" to build.
 
 ### Installation
 
-#### Using Bower
-
-TODO
-
 #### Using NPM
 
-TODO 
+`npm install activitystrea.ms`
 
 ### Usage
 
@@ -23,7 +19,7 @@ These wrappers understand the Activity Streams 2.0 model and make it possible to
 Activity Streams objects in a consistent way with integrated type checking.
 
 ```javascript
-var as = require('activitystreams');
+var as = require('activitystrea.ms');
 
 // Create a simple object
 as.object().
@@ -133,7 +129,7 @@ method to return the generated object.
 The object returned by `get` is a read-only view of the Activity Stream object. It will have property methods that are specific to the object's type. You can export the built object as an ordinary Javascript object using the `export` method. This will generate a JSON-LD compliant Javascript object.
 
 ```javascript
-var as = require('activitystreams');
+var as = require('activitystrea.ms');
 
 as.note().
    displayName('foo').
@@ -150,7 +146,7 @@ as.note().
 To serialize the Activity Streams object out as JSON, use the `write` or `prettyWrite` methods.
 
 ```javascript
-var as = require('activitystreams');
+var as = require('activitystrea.ms');
 
 as.note().
    displayName('foo').
@@ -163,7 +159,7 @@ as.note().
 ```
 
 ```javascript
-var as = require('activitystreams');
+var as = require('activitystrea.ms');
 
 as.note().
    displayName('foo').
