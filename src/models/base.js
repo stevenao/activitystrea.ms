@@ -87,6 +87,7 @@ Base.prototype = {
         write_out(
           self._reasoner, 
           self._subject, 
+          self.id,
           self._store), 
         function(err, doc) {
           if (err) {
@@ -117,11 +118,14 @@ Base.prototype = {
   }
 };
 
-function write_out(reasoner, subject, store) {
+function write_out(reasoner, subject, id, store) {
   var triples = store.findByIRI(subject, null, null);
   var ret = {};
-  if (!N3.Util.isBlank(subject) && !subject.match(/^urn:id/))
+  if (id) {
+    ret['@id'] = id;
+  } else if (!N3.Util.isBlank(subject) && !subject.match(/^urn:id/)) {
     ret['@id'] = subject;
+  }
   for (var n = 0, l = triples.length; n < l; n++) {
     var predicate = triples[n].predicate;
     var object = triples[n].object;
@@ -146,7 +150,7 @@ function write_out(reasoner, subject, store) {
       else if (type && type !== vocabs.xsd.string)
         val['@type'] = type;
     } else {
-      val = write_out(reasoner, object, store);
+      val = write_out(reasoner, object, undefined, store);
     }
     ret[predicate].push(val);
   }
