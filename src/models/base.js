@@ -57,7 +57,7 @@ Base.prototype = {
   },
   get : function(key) {
     key = utils.parsed_url(vocabs.as[key]||key);
-    var res = this._store.findByIRI(this._subject, key, null);
+    var res = this._store.findByIRI(this.id||this._subject, key, null);
     var ret, n, val;
     if (this._reasoner.is_language_property(key)) {
       ret = new LanguageValue();
@@ -82,9 +82,12 @@ Base.prototype = {
     if (typeof callback !== 'function')
       throw new Error('callback must be specified');
     var self = this;
+    var cache = {};
+    cache[self.id||self._subject] = true;
     process.nextTick(function() {
       utils.jsonld.compact(
         write_out(
+          cache,
           self._reasoner, 
           self._subject, 
           self.id,
@@ -118,9 +121,10 @@ Base.prototype = {
   }
 };
 
-function write_out(reasoner, subject, id, store) {
-  var triples = store.findByIRI(subject, null, null);
+function write_out(cache, reasoner, subject, id, store) {
+  var triples = store.findByIRI(id||subject, null, null);
   var ret = {};
+  cache[subject] = true;
   if (id) {
     ret['@id'] = id;
   } else if (!N3.Util.isBlank(subject) && !subject.match(/^urn:id/)) {
@@ -150,7 +154,10 @@ function write_out(reasoner, subject, id, store) {
       else if (type && type !== vocabs.xsd.string)
         val['@type'] = type;
     } else {
-      val = write_out(reasoner, object, undefined, store);
+      if (cache[object])
+        val = {'@id':object};
+      else
+        val = write_out(cache, reasoner, object, undefined, store);
     }
     ret[predicate].push(val);
   }

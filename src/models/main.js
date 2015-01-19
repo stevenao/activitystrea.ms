@@ -21,7 +21,7 @@ exports.Common = require('./common');
 
 exports.wrap_object = function (store, reasoner, subject, id) {
   if (subject === undefined) throw new Error();
-  var types = store.findByIRI(subject, vocabs.rdf.type, null);
+  var types = store.findByIRI(id||subject, vocabs.rdf.type, null);
   var thing = exports.Object;
   for (var n = 0, l = types.length; n < l; n++) {
     var type = types[n].object;

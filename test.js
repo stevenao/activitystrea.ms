@@ -1,13 +1,15 @@
 var a = require('./src/activitystreams.js')
 
-a.collection().
-  id('urn:foo:test').
-  startTimeRange(
-    a.interval.closed().
-      lower(new Date()).
-      upper(new Date())
-    ).
-  get().
-  prettyWrite(function(err,doc) {
-    console.log(doc);
+var obj = {
+  '@context': 'http://www.w3.org/ns/activitystreams#',
+  '@type': 'Post',
+  '@id': 'http://example.org/foo',
+  'rating': 1.2,
+  'target': 'http://example.org/foo'
+};
+
+a.import(obj, function(err,doc) {
+  doc.export(function(err,exp) {
+    console.log(exp);
   });
+});

@@ -28,6 +28,8 @@ var models = require('./models'),
 var merge_types = utils.merge_types;
 var reasoner = new Reasoner();
  
+exports.models = models;
+
 exports.vocabs = vocabs;
 
 exports.createStore = utils.store;

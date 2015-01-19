@@ -271,7 +271,7 @@ exports.jsonld = Object.create({
             builder._store.addTriple(subject, predicate, object);
           }
           object = builder.get();
-          object = models.wrap_object(object._store, object._reasoner, object._subject, object._id);
+          object = models.wrap_object(object._store, object._reasoner, object._subject, object.id);
           callback(null,object);
         });
       });
