@@ -30,6 +30,12 @@ var reasoner = new Reasoner();
  
 exports.vocabs = vocabs;
 
+exports.createStore = utils.store;
+
+exports.importBase = function(store, id) {
+  return new models.Base(store, reasoner, id, id);
+};
+
 exports.import = function(input, callback) {
   utils.throwif(typeof callback !== 'function', 'A callback function must be given');
   process.nextTick(function() {
