@@ -67,6 +67,7 @@ function count_type(subject, type) {
 function _init(reasoner) {
 
   [
+    [vocabs.as.items, vocabs.asx.PossiblyOrdered],
     [vocabs.xsd.float, vocabs.asx.Number],
     [vocabs.xsd.decimal, vocabs.asx.Number],
     [vocabs.xsd.double, vocabs.asx.Number],
@@ -473,6 +474,11 @@ Reasoner.prototype.is_language_property =
 Reasoner.prototype.is_intransitive = 
   function(subject) {
     return this.isSubClassOf(subject, vocabs.as.IntransitiveActivity);
+  };
+
+Reasoner.prototype.is_possibly_ordered =
+  function(subject) {
+    return this.isSubClassOf(subject, vocabs.asx.PossiblyOrdered);
   };
 
 Reasoner.prototype.is_number = 

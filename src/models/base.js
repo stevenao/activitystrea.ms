@@ -154,10 +154,27 @@ function write_out(cache, reasoner, subject, id, store) {
       else if (type && type !== vocabs.xsd.string)
         val['@type'] = type;
     } else {
-      if (cache[object])
+      if (reasoner.is_possibly_ordered(predicate) && 
+          store.countByIRI(object, vocabs.rdf.first)) {
+        var list = [];
+        var current = object;
+        while(current !== vocabs.rdf.nil) {
+          var first = store.findByIRI(current, vocabs.rdf.first)[0].object;
+          var rest = store.findByIRI(current, vocabs.rdf.rest)[0].object;
+          if (cache[first]) {
+            list.push({'@id':first});
+          } else {
+            list.push(write_out(cache, reasoner, first, undefined, store));
+          }
+          current = rest;
+        }
+        val = {'@list': list};
+
+      } else if (cache[object]) {
         val = {'@id':object};
-      else
+      } else {
         val = write_out(cache, reasoner, object, undefined, store);
+      }
     }
     ret[predicate].push(val);
   }
