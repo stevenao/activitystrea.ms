@@ -215,13 +215,12 @@ exports.jsonld = Object.create({
     }
     exports.jsonld.default_doc_loader(url, callback);
   },
-  compact: function(ret, callback) {
+  compact: function(ret, callback, additional_context) {
     exports.throwif(typeof callback !== 'function', 'A callback function must be specified');
+    var _context = {'@context': [vocabs.as.ns, asx_context]};
+    if (additional_context) _context['@context'].push(additional_context);
     jsonld.compact(
-      ret, {'@context': [
-        vocabs.as.ns ,
-        asx_context
-      ]}, 
+      ret, _context, 
       {documentLoader: exports.jsonld.custom_doc_loader}, 
       function(err, doc) {
         if (err) {

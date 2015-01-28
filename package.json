@@ -1,6 +1,6 @@
 {
   "name": "activitystrea.ms",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Activity Streams 2.0 JavaScript Implementation",
   "author": {
     "name": "James M Snell",

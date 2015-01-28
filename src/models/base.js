@@ -78,7 +78,7 @@ Base.prototype = {
     }
 
   },
-  export : function(callback) {
+  export : function(callback, additional_context) {
     if (typeof callback !== 'function')
       throw new Error('callback must be specified');
     var self = this;
@@ -98,7 +98,8 @@ Base.prototype = {
             return;
           }
           callback(null, doc);
-        });
+        },
+        additional_context);
     });
   },
   write : function(callback) {

@@ -3,13 +3,13 @@
 -----BEGIN PGP SIGNATURE-----
 Comment: GPGTools - https://gpgtools.org
 
-iQEcBAABCgAGBQJUw9Y8AAoJEHNBsVwHCHesuswIAI3sAy4vuJgOFEre0SPWL1qT
-0Bk+w3w4KCloZ0gTJjeGh3bf8/X/ZxAAsgeW4ntiWyBPazf7FQdXwsoA9BAYmpoT
-Lwt6NMYKgUJnXUDJVvDNOvkBInTO9CG7skzwqBkepbNrhrRpIca1UyUI+Dmp0Edd
-myUQSeCy6v8ktI9KpUQj/1yhXIaDTSHy2pFt7zMqFVu86wF1dUEwzBupyp33cXBw
-JF6AmJ+8nENCLQ25fSBf7scTUONgb1vOItK7O3GrP44vErXM+mtijgyevyxgOmZb
-3b97jrws0/1gYdg0NlpNFsyfWpwqedgWq3tHTTxXFmPjUj5k/EaLYHKkpm0SGgA=
-=qpM3
+iQEcBAABCgAGBQJUySCzAAoJEHNBsVwHCHesH3YH/RJlbJhtJTalm0t6KKIB2WA+
+DC6rCvDm/yIiYLgtrx147hgedelWnyjmUEPFXIgVslMbyMEjDSqrBNf5FH5iisKm
+dCpYZ7N8MSSvYQi0k7Tr0fWhstusHXKaJsjkL9E3+Sh9Va67vg+8DY4Qbk8sgIvY
+VBd4SWtGshAQDZYtaBDbzI7xB/kBhQiK+xpGNlVglyVdJqYLuMLuWKgNdIHYiv8w
+tdV3S8FqtGvh7Kn5jg5hDVaNWJxJ546M1BWrGkqyt3uSnqxs1ziSGsLLxSUps06y
+nqhp7sBX25PDHmMgiCqei6QA/y5wHyComBqrOs2tHgXH5ogx6zilOHZU3g0WbcY=
+=qb/M
 -----END PGP SIGNATURE-----
 
 ```
@@ -30,7 +30,7 @@ size   exec  file                          contents
 5003           README.md                   96773174e1e3def2c12531492d89d1132895f191048e17e85f3fcc381dc0615d
 273            bower.json                  6dd1cd03fb33a6a3d37c81543ebae9c7b36d2faedf686230998633784a2d3eca
 1620           npm-debug.log               ae09d5067d0c0fa4eb816cd2e4a0ba03c83dd0da45a0b54418adfce0e3b9f86f
-848            package.json                b7e6323ef4231ed626fc09e14c121297d052823a0cb478921d99270ff9a83707
+849            package.json                a47bffac502bc7ffd68d51da06c4a7b355bc3cfd40bff2286081d793f7591c17
                src/                                                                                        
 13546            activitystreams.js        15c0dcca87463e294e573fb64f42f788de21661153fb6ab61117ccb9a1025ac9
                  data/                                                                                     
@@ -47,7 +47,7 @@ size   exec  file                          contents
 2102               asplace.js              d337e4b52f6ff5c8376e32f45336a530ea646bf2b4b5b8e500011b355e11349b
 1107               aspossibleanswer.js     f3db0dff62b4ff55c2e9194fdfe5ab79d25a9b81e12b249a0a30e643d79edee4
 1491               asquestion.js           dbcbc0224309faf6bd22a5c743e59af5c034d3cdd4bd8953db87d88815c999cf
-9608               base.js                 3c9a69262aced4a4f1ff91a2db1bffa539c3b4d1d34d6437fdfef15e37ebd127
+9656               base.js                 b7bff55ecc5818d944d9c84ccd8054fe722d3a7a3e9281f0f3f0a4a71ca9d8f8
 1297               common.js               c76543b092f941b670f89cc8739ced86970b8e2b3b38feeca12f91fdd2c17668
 1154               compoundpopulation.js   18e5785a0321949fbbe83d967aef84dc41c8a0f85dc74ae509deac74f8e3f534
 1119               everyone.js             1859def9b78971814fba92ae17ef508d6f72f9f9336afbf060379c2fa69331bc
@@ -58,7 +58,7 @@ size   exec  file                          contents
 46                 package.json            9c4ad25b3e85a3ffa7f4eb39a20c330406400512d08d2621feef57f20e7148e5
 1241               population.js           4130399b10d17e6a852293be4e3db8f4108e68ab7f5f46e0439be01a7ea8f4c9
 18688            reasoner.js               291ada8d1ebc235d0ea18cc1fc2939af575d71ca89411218e645196c85892f2f
-7739             utils.js                  4decb75b03ac0effbdc9ac0b4bebf927403dfff8902487f60cbf413f2f6d3acb
+7838             utils.js                  762c6b29da3299ec5293c84405970c4b0a2f138dbb6f91eba10eb4260852b1a1
                  vocabs/                                                                                   
 2359               as.js                   4b3567a9728a5c53ef93ca1fcfa6f41ee678e73c21262a112bdf0a2ec77e87f0
 221                asx.js                  3e601fd48b2304e5b6cf62cfe3239ac0388a383cc8de78ad140601fb0a4e644d
