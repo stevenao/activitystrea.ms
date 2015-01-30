@@ -1,51 +1,94 @@
-var AsObject = require('./asobject'),
-    Base = require('./base'),
-    util = require('util'),
-    utils = require('../utils'),
-    vocabs = require('../vocabs'),
-    models = require('../models');
+/**
+ * Copyright 2013 International Business Machines Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Utility library for working with Activity Streams Actions
+ * Requires underscorejs.
+ *
+ * @author James M Snell (jasnell@us.ibm.com)
+ */
+var AsObject = require('./asobject');
+var Base     = require('./base');
+var util     = require('util');
+var utils    = require('../utils');
+var vocabs   = require('../vocabs');
+var models   = require('../models');
 
 function is_ordered(base) {
   var i = base.get(vocabs.as.items);
-  if (i.length === 0)
-    return false;
-  if (i[0].get(vocabs.rdf.first) !== undefined)
-    return true;
-  else 
-    return false;
+  return i.length && i[0].get(vocabs.rdf.first);
 }
 
 function AsCollection(store, reasoner, id, subject) {
   if (!(this instanceof AsCollection))
     return new AsCollection(store, reasoner, id, subject);
   AsObject.call(this, store, reasoner, id, subject);
-  utils.defineHidden(this, 'ordered', is_ordered(this));
+  utils.hidden(this, 'ordered', is_ordered(this));
 }
 util.inherits(AsCollection, AsObject);
-['totalItems','itemsPerPage','current','next','prev',
- 'last','first','self'].forEach(function(key) {
-  utils.defineProperty(AsCollection.prototype, key, function() {
-    return this.get(vocabs.as[key]);
-  });
+
+utils.define(AsCollection.prototype, 'totalItems', function() {
+  var ret = Math.max(0,this.get(vocabs.as.totalItems));
+  return isNaN(ret) ? 0 : ret ;
 });
-['indexRange', 'publishedRange', 'startTimeRange'].forEach(function(key) {
-  utils.defineProperty(AsCollection.prototype, key, function() {
-    return this.get(vocabs.asx[key]);
-    // will this return as an Interval object? we'll see
-  });
+utils.define(AsCollection.prototype, 'itemsPerPage', function() {
+  var ret = Math.max(0,this.get(vocabs.as.itemsPerPage));
+  return isNaN(ret) ? 0 : ret ;
 });
-utils.defineProperty(AsCollection.prototype, 'items', function() {
-  var i = this.get(vocabs.as.items);
-  if (this.ordered) {
-    var current = i[0];
+utils.define(AsCollection.prototype, 'current', function() {
+  return this.get(vocabs.as.current);
+});
+utils.define(AsCollection.prototype, 'next', function() {
+  return this.get(vocabs.as.next);
+});
+utils.define(AsCollection.prototype, 'prev', function() {
+  return this.get(vocabs.as.prev);
+});
+utils.define(AsCollection.prototype, 'last', function() {
+  return this.get(vocabs.as.last);
+});
+utils.define(AsCollection.prototype, 'first', function() {
+  return this.get(vocabs.as.first);
+});
+utils.define(AsCollection.prototype, 'self', function() {
+  return this.get(vocabs.as.self);
+});
+
+utils.define(AsCollection.prototype, 'indexRange', function() {
+  return this.get(vocabs.asx.indexRange);
+});
+utils.define(AsCollection.prototype, 'publishedRange', function() {
+  return this.get(vocabs.asx.publishedRange);
+});
+utils.define(AsCollection.prototype, 'startTimeRange', function() {
+  return this.get(vocabs.asx.startTimeRange);
+});
+
+utils.define(AsCollection.prototype, 'items', function() {
+  var val = this.get(vocabs.as.items);
+  if (this.ordered && !this._cache[vocabs.as.items]._unwound) {
+    var current = val[0];
     var ret = [];
     while(true) {
       ret.push(current.get(vocabs.rdf.first));
       current = current.get(vocabs.rdf.rest);
       if (current.id == vocabs.rdf.nil) break;
     }
-    return ret;
-  } else return i;
+    val = ret;
+    this._cache[vocabs.as.items]._unwound = true;
+  }
+  return val;
 });
 
 function set_current_item(current, val) {
@@ -74,36 +117,65 @@ AsCollection.Builder = function(reasoner, types, base) {
     reasoner, 
     utils.merge_types(reasoner, vocabs.as.Collection, types), 
     base || new AsCollection(undefined, reasoner));
-  utils.defineHidden(this, '_current', null, true);
-  utils.defineHidden(this, '_ordered', 0, true);
+  utils.hidden(this, '_current', null, true);
+  utils.hidden(this, '_ordered', 0, true);
 };
 util.inherits(AsCollection.Builder, AsObject.Builder);
 
-['totalItems', 'itemsPerPage'].forEach(function(key) {
-  AsCollection.Builder.prototype[key] = function(val) {
-    utils.set_non_negative_int.call(this, vocabs.as[key], val);
-    return this;
-  };
-});
+AsCollection.Builder.prototype.totalItems = function(val) {
+  utils.set_non_negative_int.call(this, vocabs.as.totalItems, val);
+  return this;
+};
+AsCollection.Builder.prototype.itemsPerPage = function(val) {
+  utils.set_non_negative_int.call(this, vocabs.as.itemsPerPage, val);
+  return this;
+};
+AsCollection.Builder.prototype.current = function(val) {
+  this.set(vocabs.as.current, val);
+  return this;
+};
+AsCollection.Builder.prototype.next = function(val) {
+  this.set(vocabs.as.next, val);
+  return this;
+};
+AsCollection.Builder.prototype.prev = function(val) {
+  this.set(vocabs.as.prev, val);
+  return this;
+};
+AsCollection.Builder.prototype.first = function(val) {
+  this.set(vocabs.as.first, val);
+  return this;
+};
+AsCollection.Builder.prototype.last = function(val) {
+  this.set(vocabs.as.last, val);
+  return this;
+};
+AsCollection.Builder.prototype.self = function(val) {
+  this.set(vocabs.as.self, val);
+  return this;
+};
 
-['current', 'next', 'prev', 'first', 'last', 'self'].forEach(function(key) {
-  AsCollection.Builder.prototype[key] = function(val) {
-    this.set(vocabs.as[key], val);
-    return this;
-  };
-});
-['indexRange', 'publishedRange', 'startTimeRange'].forEach(function(key) {
-  AsCollection.Builder.prototype[key] = function(val) {
-    this.set(vocabs.asx[key], val);
-    return this;
-  }
-});
+AsCollection.Builder.prototype.indexRange = function(val) {
+  this.set(vocabs.asx.indexRange, val);
+  return this;
+};
+AsCollection.Builder.prototype.publishedRange = function(val) {
+  this.set(vocabs.asx.publishedRange, val);
+  return this;
+};
+AsCollection.Builder.prototype.startTimeRange = function(val) {
+  this.set(vocabs.asx.startTimeRange, val);
+  return this;
+}
+
+var slice = Array.prototype.slice;
 
 AsCollection.Builder.prototype.items = function(val) {
   utils.throwif(this._ordered > 0, 'Unordered items cannot be added when the collection already contains ordered items');
   this._ordered = -1;
+  if (!val) return this;
   if (!Array.isArray(val) && arguments.length > 1)
-    val = Array.prototype.slice.call(arguments);
+    val = slice.call(arguments);
   this.set(vocabs.as.items, val);
   return this;
 };
@@ -112,11 +184,9 @@ AsCollection.Builder.prototype.orderedItems = function(val) {
   this._ordered = 1;
   if (!val) return this;
   if (!Array.isArray(val)) {
-    if (arguments.length > 1) {
-      val = Array.prototype.slice.call(arguments);
-    } else {
-      val = [val];
-    }
+    val = arguments.length > 1 ?
+      slice.call(arguments) :
+      [val] ;
   }
   for (var n = 0, l = val.length; n < l; n++) {
     this._current = set_current_item.call(this, this._current, val[n]);

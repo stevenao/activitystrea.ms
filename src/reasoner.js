@@ -1,7 +1,27 @@
-var vocabs = require('./vocabs'),
-    utils = require('./utils'),
-    util = require('util'),
-    N3 = require('n3');
+/**
+ * Copyright 2013 International Business Machines Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Utility library for working with Activity Streams Actions
+ * Requires underscorejs.
+ *
+ * @author James M Snell (jasnell@us.ibm.com)
+ */
+var vocabs = require('./vocabs');
+var utils  = require('./utils');
+var util   = require('util');
+var N3     = require('n3');
 
 function subClassHierarchy(store, subject) {
   var types = [subject];
@@ -332,14 +352,16 @@ function _init(reasoner) {
 function Reasoner() {
   if (!(this instanceof Reasoner))
     return new Reasoner();
-  utils.defineHidden(this, '_store', new N3.Store());
+  utils.hidden(this, '_store', new N3.Store());
+  utils.hidden(this, '_cache', {_sc:{},_sp:{},_tp:{}});
   _init(this);
 }
-Reasoner.prototype.use_stream = 
-  function(stream, callback) {
+Reasoner.prototype = {
+  use_stream : function(stream, callback) {
+    utils.throwif(!stream, 'A valid stream must be provided');
+    utils.throwif(typeof callback !== 'function', 'A callback must be provided');
     var self = this;
-    var parser = N3.Parser();
-    parser.parse(stream, function(err, triple) {
+    N3.Parser().parse(stream, function(err, triple) {
       if (err) {
         callback(err);
         return;
@@ -350,150 +372,119 @@ Reasoner.prototype.use_stream =
         callback();
       }
     });
-  };
+  },
 
-Reasoner.prototype.add =
-  function(subject, predicate, object) {
+  add : function(subject, predicate, object) {
+    var _cache;
+    switch(predicate) {
+      case vocabs.rdfs.subClassOf:
+        _cache = this._cache._sc[subject] = this._cache._sc[subject] || {};
+        break;
+      case vocabs.rdfs.subPropertyOf:
+        _cache = this._cache._sp[subject] = this._cache._sp[subject] || {};
+        break;
+      case vocabs.rdf.type:
+        _cache = this._cache._tp[subject] = this._cache._tp[subject] || {};
+        break;
+    }
     if (Array.isArray(object)) {
       for (var n = 0, l = object.length; n < l; n++) {
         this._store.addTriple(subject, predicate, object[n]);
+        if (_cache) _cache[object[n]] = true;
       }
     } else {
       this._store.addTriple(subject, predicate, object);
+      if (_cache) _cache[object] = true;
     }
     return this;
-  };
+  },
 
-Reasoner.prototype.addMany = 
-  function(triples) {
-    this._store.addTriples(triples);
-    return this;
-  };
-
-Reasoner.prototype.declare =
-  function(prefix, uri) {
+  declare : function(prefix, uri) {
     this._store.addPrefix(prefix, uri);
     return this;
-  };
+  },
 
-Reasoner.prototype.declareMany =
-  function(prefixes) {
-    this._store.addPrefixes(prefixes);
-    return this;
-  };
-
-Reasoner.prototype.classHierarchy = 
-  function(subject) {
+  classHierarchy : function(subject) {
     return subClassHierarchy(this._store, subject);
-  };
+  },
 
-Reasoner.prototype.propertyHierarchy = 
-  function(subject) {
+  propertyHierarchy : function(subject) {
     return subPropertyHierarchy(this._store, subject);
-  };
+  },
 
-Reasoner.prototype.isSubClassOf = 
-  function(subject, object) {
-    if (Array.isArray(subject)) {
-      for (var n = 0, l = subject.length; n < l; n++) {
-        if (isSubClassOf(this._store, subject[n], object))
-          return true;
-      }
-      return false;
-    } else {
-      return isSubClassOf(this._store, subject, object);
-    }
-  };
+  isSubClassOf : function(subject, object) {
+    var _sc = this._cache._sc;
+    var _subject = _sc[subject] = _sc[subject] || {};
+    return _subject[object] = _subject[object] || 
+           isSubClassOf(this._store, subject, object);
+  },
 
-Reasoner.prototype.isSubPropertyOf = 
-  function(subject, object) {
-    if (Array.isArray(subject)) {
-      for (var n = 0, l = subject.length; n < l; n++) {
-        if (isSubPropertyOf(this._store, subject[n], object))
-          return true;
-      }
-      return false;
-    } else {
-      return isSubPropertyOf(this._store, subject, object);
-    }
-  };
+  isSubPropertyOf : function(subject, object) {
+    var _sp = this._cache._sp;
+    var _subject = _sp[subject] = _sp[subject] || {};
+    return _subject[object] = _subject[object] ||
+          isSubPropertyOf(this._store, subject, object);
+  },
 
-Reasoner.prototype.descendantClassesOf = 
-  function(subject) {
+  isTypeOf : function(subject, type) {
+    var _tp = this._cache._tp;
+    var _subject = _tp[subject] = _tp[subject] || {};
+    return _subject[type] = _subject[type] || 
+           count_type.call(this, subject, type) > 0
+  },
+
+  descendantClassesOf : function(subject) {
     return descendantClassesOf(this._store, subject);
-  };
+  },
 
-Reasoner.prototype.descendantPropertiesOf = 
-  function(subject) {
+  descendantPropertiesOf : function(subject) {
     return descendantPropertiesOf(this._store, subject);
-  };
+  },
 
-Reasoner.prototype.is_an_object = 
-  function(subject) {
+  is_an_object : function(subject) {
     return !this.isSubClassOf(subject, as.Link);
-  };
+  },
 
-Reasoner.prototype.is_a_link = 
-  function(subject) {
+  is_a_link : function(subject) {
     return this.isSubClassOf(subject, as.Link);
-  };
+  },
 
-Reasoner.prototype.is_known = 
-  function(subject) {
-    if (Array.isArray(subject)) {
-      for (var n = 0, l = subject.length; n < l; n++) {
-        if (this.is_known(subject[n]))
-          return true;
-      }
-      return false;
-    } else {
-      return  this._store.countByIRI(subject) > 0;
-    }
-  };
+  is_object_property : function(subject) {
+    return this.isTypeOf(subject, vocabs.owl.ObjectProperty);
+  },
 
-Reasoner.prototype.is_object_property = 
-  function(subject) {
-    return count_type.call(this, subject, vocabs.owl.ObjectProperty) > 0;
-  };
+  is_functional : function(subject) {
+    return this.isTypeOf(subject, vocabs.owl.FunctionalProperty);
+  },
 
-Reasoner.prototype.is_functional = 
-  function(subject) {
-    return count_type.call(this, subject, vocabs.owl.FunctionalProperty) > 0;
-  };
+  is_deprecated : function(subject) {
+    return this.isTypeOf(subject, vocabs.owl.DeprecatedProperty);
+  },
 
-Reasoner.prototype.is_deprecated = 
-  function(subject) {
-    return count_type.call(this, subject, vocabs.owl.DeprecatedProperty) > 0;
-  };
+  is_language_property : function(subject) {
+    return this.isTypeOf(subject, vocabs.asx.LanguageProperty);
+  },
 
-Reasoner.prototype.is_language_property = 
-  function(subject) {
-    return count_type.call(this, subject, vocabs.asx.LanguageProperty) > 0;
-  };
-
-Reasoner.prototype.is_intransitive = 
-  function(subject) {
+  is_intransitive : function(subject) {
     return this.isSubClassOf(subject, vocabs.as.IntransitiveActivity);
-  };
+  },
 
-Reasoner.prototype.is_possibly_ordered =
-  function(subject) {
+  is_possibly_ordered : function(subject) {
     return this.isSubClassOf(subject, vocabs.asx.PossiblyOrdered);
-  };
+  },
 
-Reasoner.prototype.is_number = 
-  function(subject) {
+  is_number : function(subject) {
     return this.isSubClassOf(subject, vocabs.asx.Number);
-  };
+  },
 
-Reasoner.prototype.is_date = 
-  function(subject) {
+  is_date : function(subject) {
     return this.isSubClassOf(subject, vocabs.asx.Date);
-  };
+  },
 
-Reasoner.prototype.is_boolean = 
-  function(subject) {
+  is_boolean : function(subject) {
     return this.isSubClassOf(subject, vocabs.asx.Boolean);
-  };
+  }
+
+};
 
 module.exports = Reasoner;

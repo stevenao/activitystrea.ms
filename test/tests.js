@@ -26,8 +26,8 @@ var assert = require('assert'),
 
   function testFunctionalProperties(object) {
     assert.equal(object.alias, 'http://example.org/foo');
-    assert.equal(object.content['*'], 'bar');
-    assert.equal(object.content.fr, 'foo');
+    assert.equal(object.content, 'bar');
+    assert.equal(object.content.valueOf('fr'), 'foo');
     assert.equal(object.displayName.de, 'baz');
     assert.equal(object.summary.sp, 'bar');
     assert.equal(object.title.it, 'foo');
@@ -102,7 +102,7 @@ var assert = require('assert'),
   assert.equal(1, obj.object.length);
   var note = obj.object[0];
   assert.equal(vocabs.as.Note, note.type);
-  assert.equal(note.content['*'], 'this is a note');
+  assert.equal(note.content, 'this is a note');
 
   // Test importing from JSON
   as.import({
@@ -121,7 +121,7 @@ var assert = require('assert'),
   }, function(err, doc) {
     assert.equal(null, err);
     assert.equal(vocabs.as.Reservation, doc.type);
-    assert.equal(doc.displayName.en, 'foo');
+    assert.equal(doc.displayName, 'foo');
     assert.equal(vocabs.as.Person, doc.actor[0].type);
-    assert.equal(doc.actor[0].displayName['*'], 'Joe');
+    assert.equal(doc.actor[0].displayName, 'Joe');
   });

@@ -1,14 +1,31 @@
-var url = require('url'), 
-    uuid = require('uuid'),
-    vocabs = require('./vocabs'),
-    N3 = require('n3'),
-    as_context = require('./data/activitystreams2.json'),
-    asx_context = require('./data/extended-context.json'),
-    jsonld = require('jsonld');
-
-(function(exports) {
-
-var _toString = {}.toString;
+/**
+ * Copyright 2013 International Business Machines Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Utility library for working with Activity Streams Actions
+ * Requires underscorejs.
+ *
+ * @author James M Snell (jasnell@us.ibm.com)
+ */
+var url         = require('url');
+var uuid        = require('uuid');
+var vocabs      = require('./vocabs');
+var N3          = require('n3');
+var as_context  = require('./data/activitystreams2.json');
+var asx_context = require('./data/extended-context.json');
+var jsonld      = require('jsonld');
+var _toString   = {}.toString;
 
 exports.throwif = function(condition, message) {
   if (condition) throw new Error(message);
@@ -17,7 +34,7 @@ exports.throwif = function(condition, message) {
 exports.store = function(store) {
   if (store) return store;
   store = new N3.Store();
-  exports.defineHidden(store, '_counter', 0, true);
+  exports.hidden(store, '_counter', 0, true);
   return store;
 };
 
@@ -25,7 +42,7 @@ exports.uuid = function() {
   return 'urn:id:' + uuid.v4();
 };
 
-exports.defineProperty = function(target, key, accessor, writable) {
+exports.define = function(target, key, accessor, writable) {
   var def = {
     configurable: false,
     enumerable: true
@@ -39,7 +56,7 @@ exports.defineProperty = function(target, key, accessor, writable) {
   Object.defineProperty(target, key, def);
 };
 
-exports.defineHidden = function(target, key, accessor, writable) {
+exports.hidden = function(target, key, accessor, writable) {
   var def = {
     configurable: false,
     enumerable: false,
@@ -91,11 +108,10 @@ exports.is_date = function(val) {
 exports.is_plain_object = function(val) {
   if (typeof val !== 'object' || Array.isArray(val)) return false;
   return val === val.valueOf() && _toString.apply(val) === '[object Object]';
-  // todo: how to deal with node's custom built in object types
 };
 
 exports.is_integer = function(val) {
-  return typeof val === 'number' && 
+  return exports.is_number(val) && 
     isFinite(val) && 
     val > -9007199254740992 && 
     val < 9007199254740992 && 
@@ -202,7 +218,7 @@ var custom_doc_loader = function(url, callback) {
 };
 
 exports.jsonld = Object.create({
-  default_doc_loader: jsonld.documentLoaders.node(), // TODO: get proper document loader...,
+  default_doc_loader: jsonld.documentLoaders.node(),
   custom_doc_loader: function(url, callback) {
     var u = url;
     if (u[u.length-1] !== '#') u += '#';
@@ -276,6 +292,3 @@ exports.jsonld = Object.create({
       });
   }
 });
-
-
-})(exports);

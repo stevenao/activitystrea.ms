@@ -1,7 +1,27 @@
-var AsObject = require('./asobject'),
-    util = require('util'),
-    utils = require('../utils'),
-    vocabs = require('../vocabs');
+/**
+ * Copyright 2013 International Business Machines Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Utility library for working with Activity Streams Actions
+ * Requires underscorejs.
+ *
+ * @author James M Snell (jasnell@us.ibm.com)
+ */
+var AsObject = require('./asobject');
+var util = require('util');
+var utils = require('../utils');
+var vocabs = require('../vocabs');
 
 function AsPlace(store, reasoner, id, subject) {
   if (!(this instanceof AsPlace))
@@ -9,11 +29,28 @@ function AsPlace(store, reasoner, id, subject) {
   AsObject.call(this, store, reasoner, id, subject);
 }
 util.inherits(AsPlace, AsObject);
-['accuracy', 'altitude', 'latitude', 'longitude',
- 'radius', 'units'].forEach(function(key) {
-  utils.defineProperty(AsPlace.prototype, key, function() {
-    return this.get(vocabs.as[key]);
-  });
+utils.define(AsPlace.prototype, 'accuracy', function() {
+  var ret = Math.min(100, Math.max(0, this.get(vocabs.as.accuracy)));
+  return isNaN(ret) ? undefined : ret ;
+});
+utils.define(AsPlace.prototype, 'altitude', function() {
+  var ret = this.get(vocabs.as.altitude);
+  return isNaN(ret) ? undefined : ret ;
+});
+utils.define(AsPlace.prototype, 'latitude', function() {
+  var ret = Math.min(90.0, Math.max(-90.0, this.get(vocabs.as.latitude)));
+  return isNaN(ret) ? undefined : ret ;
+});
+utils.define(AsPlace.prototype, 'longitude', function() {
+  var ret = Math.min(180.0, Math.max(-180.0, this.get(vocabs.as.longitude)));
+  return isNaN(ret) ? undefined : ret ;
+});
+utils.define(AsPlace.prototype, 'radius', function() {
+  var ret = Math.max(0, this.get(vocabs.as.radius));
+  return isNaN(ret) ? undefined : ret ;
+});
+utils.define(AsPlace.prototype, 'units', function() {
+  return this.get(vocabs.as.units);
 });
 
 AsPlace.Builder = function(reasoner,types,base) {

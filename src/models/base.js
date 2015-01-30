@@ -1,16 +1,36 @@
-var utils = require('../utils'),
-    vocabs = require('../vocabs'),
-    models = require('../models/main'),
-    N3 = require('n3'),
-    LanguageValue = require('./languagevalue'),
-    LanguageTag = require('rfc5646');
+/**
+ * Copyright 2013 International Business Machines Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Utility library for working with Activity Streams Actions
+ * Requires underscorejs.
+ *
+ * @author James M Snell (jasnell@us.ibm.com)
+ */
+var utils         = require('../utils');
+var vocabs        = require('../vocabs');
+var models        = require('../models/main');
+var N3            = require('n3');
+var LanguageValue = require('./languagevalue');
+var LanguageTag   = require('rfc5646');
 
 function set_language_value(ret, val) {
   if (N3.Util.isLiteral(val)) {
     var lang = N3.Util.getLiteralLanguage(val);
     val = N3.Util.getLiteralValue(val);
-    if (lang) utils.defineProperty(ret, lang, val);
-    else ret._def = val;
+    if (lang) ret.set(lang, val);
+    else ret.setDefault(val);
   }
 }
 function set_typed_value(ret, val, is_object_property) {
@@ -37,11 +57,12 @@ function set_typed_value(ret, val, is_object_property) {
 function Base(store, reasoner, id, subject) {
   if (!(this instanceof Base))
     return new Base(store, reasoner, id, subject);
-  utils.defineHidden(this, '_reasoner', reasoner);
-  utils.defineHidden(this, '_store', utils.store(store));
-  utils.defineHidden(this, '_id', id, true);
-  utils.defineHidden(this, '_subject', subject || utils.uuid());
-  utils.defineHidden(this, '_nextBlank', function() {
+  utils.hidden(this, '_reasoner', reasoner);
+  utils.hidden(this, '_store', utils.store(store));
+  utils.hidden(this, '_id', id, true);
+  utils.hidden(this, '_subject', subject || utils.uuid());
+  utils.hidden(this, '_cache', {});
+  utils.hidden(this, '_nextBlank', function() {
     return '_:b' + this._store._counter++;
   });
 }
@@ -56,27 +77,28 @@ Base.prototype = {
            types;
   },
   get : function(key) {
-    key = utils.parsed_url(vocabs.as[key]||key);
-    var res = this._store.findByIRI(this.id||this._subject, key, null);
-    var ret, n, val;
-    if (this._reasoner.is_language_property(key)) {
-      ret = new LanguageValue();
-      for (n = 0, l = res.length; n < l; n++) {
-        val = res[n].object;
-        set_language_value(ret, val);
+    if (!this.hasOwnProperty(key)) {
+      key = utils.parsed_url(vocabs.as[key]||key);
+      var res = this._store.findByIRI(this.id||this._subject, key, null);
+      var ret, n, l;
+      if (this._reasoner.is_language_property(key)) {
+        ret = LanguageValue.Builder();
+        for (n = 0, l = res.length; n < l; n++) {
+          set_language_value(ret, res[n].object);
+        }
+        this._cache[key] = ret.get();
+      } else {
+        ret = [];
+        var is_object_property = this._reasoner.is_object_property(key);
+        for (n = 0, l = res.length; n < l; n++) {
+          set_typed_value.call(this, ret, res[n].object, is_object_property);
+        }
+        this._cache[key] = 
+          this._reasoner.is_functional(key) ? 
+            (ret.length ? ret[0] : undefined) : ret;
       }
-      return ret;
-    } else {
-      ret = [];
-      var is_object_property = this._reasoner.is_object_property(key);
-      for (n = 0, l = res.length; n < l; n++) {
-        val = res[n].object;
-        set_typed_value.call(this, ret, val, is_object_property);
-      }
-      return this._reasoner.is_functional(key) ? 
-        (ret.length > 0 ? ret[0] : undefined) : ret;
     }
-
+    return this._cache[key];
   },
   export : function(callback, additional_context) {
     if (typeof callback !== 'function')
@@ -187,10 +209,10 @@ function write_out(cache, reasoner, subject, id, store) {
 Base.Builder = function(reasoner, types, base) {
   if (!(this instanceof Base.Builder))
     return new Base.Builder(reasoner, types);
-  utils.defineHidden(this, '_base', base || new Base(undefined, reasoner));
-  utils.defineHidden(this, '_reasoner', reasoner);
-  utils.defineHidden(this, '_store', this._base._store);
-  utils.defineHidden(this, '_subject', this._base._subject);
+  utils.hidden(this, '_base', base || new Base(undefined, reasoner));
+  utils.hidden(this, '_reasoner', reasoner);
+  utils.hidden(this, '_store', this._base._store);
+  utils.hidden(this, '_subject', this._base._subject);
   if (types) this.type(types);
 };
 Base.Builder.prototype = {
