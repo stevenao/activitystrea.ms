@@ -3,13 +3,13 @@
 -----BEGIN PGP SIGNATURE-----
 Comment: GPGTools - https://gpgtools.org
 
-iQEcBAABCgAGBQJUyvpqAAoJEHNBsVwHCHesvuAH+QGwjZshS93y47Z6lv/aEQjr
-X/bheFz78Y9Tv7S/nA7RIvYPtmjEJlpVgbq+XrBZDP8nowbR8ALgJn3V04DlskpY
-omyj5UoE42b9C9AUneRlO+hZcSAG9jgCiZi6nYSSM0A2Lkcb84gWC7ZGhKZ4Ejyx
-wiAxyor6ANFO6OtqCWrbPj8IjEZVtV8/xV7RBamlmppX7jSGMTAZOaqBKdu4/Ccf
-+NoOwZRRr9yVXkG3BPVF7QO8dNQwkBtbvp/prIJVviye6eBEpgr65PSfQXBlSMqg
-5dLao70HtzOCYL92Cy/BUAJST3kcrigvQB54iPN19t/UTihxN1ADjzfnnD8VXjI=
-=pZlt
+iQEcBAABCgAGBQJUy/KjAAoJEHNBsVwHCHesy9kIAJiakrCTXw7NMAWR69V6iPms
+CJXseCQFoTxzGia3lWsWiJIgom4MmMhzJ6BQ4Xb76CgNVDVYhhPI965JrLj8WU6k
+yiKExjtxf9wW6Axfyf2WuxHrO3kK/oGfTSDwyFo5dF5jAdpfGBUpPii2W931c0cs
+xdQtdlT7KSE4ATEgqlrkBE9Ugg7GWhnSqnlx7+LRHEhf/qoFohm2r5Saxc/f08p3
+OkyCs9ncwlrmjg0HQoc5ZCfwuPyScr7Vdhgi7qGlPn6bqihKKHNEYB9UhF/KhDBe
+qfDeniovbUClUPlqop8ZL16mFSqRsyOblAxSAJ/frJ8cjMJwiTIqsbjrd1E0hk0=
+=k78Z
 -----END PGP SIGNATURE-----
 
 ```
@@ -27,37 +27,46 @@ size   exec  file                          contents
 1210           CONTRIBUTING.md             b4e424ef0dd861df4aa22923a1431065d032661887560dce34182f948f51adde
 480            Gruntfile.js                bf26bc099c688b967c35edcae37453ef9cbf5cad23d27208b3d83a4933b1ca94
 11381          LICENSE                     2bcf83b42c65720625611f1fb2922bc9e3face6a22117331a13c9ed9f3af2903
-5003           README.md                   96773174e1e3def2c12531492d89d1132895f191048e17e85f3fcc381dc0615d
+6163           README.md                   bd8dc55eefff9866fa3344b4dcdd364011cf2800039d7e93577b64a5fb655747
 273            bower.json                  6dd1cd03fb33a6a3d37c81543ebae9c7b36d2faedf686230998633784a2d3eca
-849            package.json                e98e140df65c8755def99a7331ab419a57901e92ad62998ab34a4d156d786bc9
+849            package.json                3574e2ddec93a0c6776e2452ad4811f8a6ce749f8044ef5f92d1d33f49aef63f
                src/                                                                                        
-13546            activitystreams.js        0ab62138a449eb39a746af8fafa551d990f9ce196ed3387eb38486fee3b8729a
+14309            activitystreams.js        b7a81b5052894e243d8f76f72db496a0969fb2643108fa5f0e2161b1dc2a785f
                  data/                                                                                     
 23474              activitystreams2.json   4f4642c7c6b9c264fe9cb7e3edbebd63c961ddea75a5e90552309f15d05c74be
 414                extended-context.json   9a71dbc0f90a2224a72968a5898e44a57beb26d90183859db06f302f65e8eef8
                  models/                                                                                   
-3632               asactivity.js           be74606eafa49ba8672af32a4372856ddeffeddcc1c5737d9340ff0fc425b8d7
-1720               asactor.js              22cf4f3e6e993aa96738e06538590bf3b0f47135a0f24a35573342cadf4a61ab
-6383               ascollection.js         57b7cbe7fb32b0ed5b60b462e7b49692a74cc615e4d1f62039f28a8f93207d14
+3131               activityhandler.js      b6a75055722409670286efdd02bab2701969282bb8974f3a570073b85fc92f9d
+3834               asactivity.js           825b85e3e8566de537165d49626fbb426e63c1a875ff6c5d702feb2a7091b168
+1721               asactor.js              9a6575d56e236fa16a5d6d107b7cdd477497ff0785ba3bf0cbb0a971c4f08cef
+6384               ascollection.js         ce39f324f3a483f2227f7a7cc3454d70d31caf6e797a2f0e585d1e0217418d2a
 2308               ascontent.js            5709fcc1c8ca80a7ec347ea58c7fa2ce95b06409cd02b38f177089b1e2992b06
-7061               aslink.js               0bbc3f762529ee71b1a1b1798d941eb5d4b038b89de6dce79a84ff49025259a7
-9890               asobject.js             cb6de208444fc361863e4c8120cdd39279cb6d1335b631b728d4a55792e10cf3
+7059               aslink.js               e10b85a38e17f7f989a82ff182c0f6214b6842b019ce48a282fb630257ef9824
+10092              asobject.js             8cb4b46fcfd443540cbeadb1553e9f6de672190cd4c0cb50650c9bcb4a719a5f
 2118               asorderedcollection.js  99796e5d5af1a675b89b0e3f8ad9963bef673b6ff193aaf7c696b245ba5d8b89
 3580               asplace.js              1bc0a0598f5f463ff11f62225ca81509ec5c91788e0393205008682ec86fb24f
 1823               aspossibleanswer.js     763eac9b618e081180dee460fcea65765b6954373ff8876c222761cc95375583
 2769               asquestion.js           c7d4c22492b59fe310287ec57a0f55ee1486342ee7c55d822d715492319aa9de
 10533              base.js                 f5dd78feb2912dbfeeb5cefa57526a952aa79ff018b9f1bdb9a164c9362d7bc1
-2184               common.js               29f2bfaaa2d57d4585bee3547b7b85f2bffaba238d3f153f56bf6efdfbbb135f
-1871               compoundpopulation.js   162998256baf7b83e5a3dfa74ccb1c57d2204f52191cd1370935b6b2fcea2c8c
+2794               browserview.js          848e7bdd716fc30e3fd33442f79b1dfa390bef5478c61c0d6ea2c99a624a08ec
+2186               common.js               5a5974781a7fc3345f90f0c95e350f77c8908562186aa8dac793e2d11612eace
+1872               compoundpopulation.js   fcdd7ce854d2b09506cb7e7a9c984d75ddc43a14be8683aa7ec011f35c06434a
+2299               embeddedview.js         b141d3da439bd24217a6ea4ff5fe91cd85f61ebb20c2b873d0789e5c8d672621
 2032               everyone.js             bd318227610ceb5eb1aa2a4ee428ab33a3cd6015b3a8def4bc1fbb984443f969
-2010               interested.js           c5c4d16115dc0c6bfb768985dec41fa04bea5e82ce38203fb5b3ac2ccef1ce25
-2700               interval.js             6f22a261f9eeb3d3374e843daaba3f79e0af8471fc952ce3871bfd85d9efab0e
-2221               languagevalue.js        592ceec8a3831560cd6b1841e3e5db7496b2086db71ce0aff3c051d5962c853c
-3455               main.js                 21351800e22894b7edb574bbdabf8f6a12f91743199f6b5af26bec61d2eec91b
+1712               htmlform.js             d22cf537a32fd202cbd6689a12eb74e20a1ff2ab12e3c74925aa5dee7687c55c
+1920               httpheader.js           6ad5c0ba009ee55b8878330ee373f2d386949ae9be0da23aa8e41d500a46d36e
+2386               httprequest.js          9ad691e57ea059cfaea2c07d1d057ab50d2a48e1aff65504c6f6a1b1a95b9358
+2011               interested.js           f77661a49735eb7a4a39eb220b474f5a51f362266d821dfc0dc378710385906c
+2701               interval.js             f0e23e82ce874bd24e132a1bededc7e052c9c0e23dc0263272cab04fd4c5999c
+2222               languagevalue.js        65377c98aa423cfbb87518a6bd1ec8a4f890655472d742c7b05a454361ec5a10
+4683               main.js                 3e1d1b0e480d31496554b9a97ebe4a45da73a17a8f6e15af98c42d8d84e1774b
 46                 package.json            9c4ad25b3e85a3ffa7f4eb39a20c330406400512d08d2621feef57f20e7148e5
+2405               parameter.js            43135c46155d076c67170d14d4aa7df5b2fa9551eabdf7c6cfec241b364868f6
+1890               payload.js              ec6efe8ba1883513f4a183482fa22df1b1473f95e3d9c29d16269ad14c9da79d
 1862               population.js           11641e454ab2851709021a152846e3cba76619a5ec640ec500b10ca869f11250
-19231            reasoner.js               3c46307b422264d4bd2590b58e48eaa0e67a44cca11650c45860874519c899fa
-8475             utils.js                  ca407e1ef7f7c4b4cc7ced0494ec0c3058014a87b4ead2c9e7264006bcf25159
+1956               urltemplate.js          8a51c02fdcf654b158049bb7341e9c68816ef6ffaa3c21bef159d447e2754676
+19284            reasoner.js               a23f03b080b875e4f4b03b4b8bfb21d9ede83fc510fdc8bb0b9b2aa28c69e757
+8837             utils.js                  58dc6142b8ee5e1b135b4f2c101bc47f6f7be83995fe3a457b99e83a34f8e672
                  vocabs/                                                                                   
 3122               as.js                   4f1c42fe4105a44bc0fecd02f1a8039017e2c95ae9398aa30a1f39f3d127feca
 984                asx.js                  2d8d655cc49bbc69bad2cb9e657a28573b32d7459d1ac4e2aecd62b661ddc117
