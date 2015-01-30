@@ -52,6 +52,6 @@ Interested.Builder.prototype.confidence = function(val) {
   val = Math.max(0, Math.min(100, val));
   this.set(vocabs.social.confidence, val);
   return this;
-}
+};
 
 module.exports = Interested;

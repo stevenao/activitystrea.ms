@@ -60,6 +60,9 @@ utils.define(AsActivity.prototype, 'cc', function() {
 utils.define(AsActivity.prototype, 'bcc', function() {
   return this.get(vocabs.as.bcc);
 });
+utils.define(AsActivity.prototype, 'using', function() {
+  return this.get(vocabs.as.using);
+});
 
 AsActivity.Builder = function(reasoner, types, base) {
   if (!(this instanceof AsActivity.Builder))
@@ -114,6 +117,10 @@ AsActivity.Builder.prototype.priority = function(val) {
     vocabs.as.priority, 
     val, 0.0, 1.0, 
     vocabs.xsd.float);
+  return this;
+};
+AsActivity.Builder.prototype.using = function(val) {
+  this.set(vocabs.as.using, val);
   return this;
 };
 

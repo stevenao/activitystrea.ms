@@ -48,6 +48,6 @@ util.inherits(AsActor.Builder, AsObject.Builder);
 AsActor.Builder.prototype.actorOf = function(val) {
   this.set(vocabs.as.actorOf, val);
   return this;
-}
+};
 
 module.exports = AsActor;

@@ -166,7 +166,7 @@ AsCollection.Builder.prototype.publishedRange = function(val) {
 AsCollection.Builder.prototype.startTimeRange = function(val) {
   this.set(vocabs.asx.startTimeRange, val);
   return this;
-}
+};
 
 var slice = Array.prototype.slice;
 

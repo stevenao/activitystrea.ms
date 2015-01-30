@@ -47,6 +47,6 @@ util.inherits(CompoundPopulation.Builder,Population.Builder);
 CompoundPopulation.Builder.prototype.member = function(val) {
   this.set(vocabs.social.member, val);
   return this;
-}
+};
 
 module.exports = CompoundPopulation;

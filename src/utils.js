@@ -292,3 +292,14 @@ exports.jsonld = Object.create({
       });
   }
 });
+
+exports.mixin = function(ctor, superCtor) {
+  var names = Object.getOwnPropertyNames(superCtor.prototype);
+  for (var n = 0, l = names.length; n < l; n++) {
+    var prop = names[n];
+    if (prop !== 'constructor') {
+      var desc = Object.getOwnPropertyDescriptor(superCtor.prototype,prop);
+      Object.defineProperty(ctor.prototype, prop, desc);
+    }
+  }
+};

@@ -302,6 +302,32 @@ exports.interval.rightClosed = function(types) {
   return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.RightClosedInterval, types));
 };
 
+exports.actions = {
+  browserView : function(types) {
+    return models.BrowserView.Builder(reasoner, types);
+  },
+  httpRequest : function(type) {
+    return models.HttpRequest.Builder(reasoner, types);
+  },
+  embeddedView : function(types) {
+    return models.EmbeddedView.Builder(reasoner, types);
+  },
+  htmlForm : function(types) {
+    return models.HtmlForm.Builder(reasoner, types);
+  },
+  httpHeader : function(types) {
+    return models.HttpHeader.Builder(reasoner, types);
+  },
+  parameter : function(types) {
+    return models.Parameter.Builder(reasoner, types);
+  },
+  payload : function(types) {
+    return models.Payload.Builder(reasoner, types);
+  },
+  urlTemplate : function(types) {
+    return models.UrlTemplate.Builder(reasoner, types);
+  }
+};
 
 exports.social = {
   population : function(types) {

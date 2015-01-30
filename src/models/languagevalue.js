@@ -56,7 +56,7 @@ LanguageValue.Builder = function() {
   if (!(this instanceof LanguageValue.Builder))
     return new LanguageValue.Builder();
   utils.hidden(this,'_def',undefined,true);
-}
+};
 LanguageValue.Builder.prototype = {
   setDefault : function(val) {
     this._def = val;

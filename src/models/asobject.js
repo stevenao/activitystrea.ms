@@ -138,6 +138,9 @@ utils.define(AsObject.prototype, 'updated', function() {
 utils.define(AsObject.prototype, 'url', function() {
   return this.get(vocabs.as.url);
 });
+utils.define(AsObject.prototype, 'action', function() {
+  return this.get(vocabs.as.action);
+});
 
 AsObject.Builder = function(reasoner, types, base) {
   if (!(this instanceof AsObject.Builder))
@@ -264,6 +267,10 @@ AsObject.Builder.prototype.targetOf = function(val) {
 };
 AsObject.Builder.prototype.url = function(val) {
   this.set(vocabs.as.url, val);
+  return this;
+};
+AsObject.Builder.prototype.action = function(val) {
+  this.set(vocabs.as.action, val);
   return this;
 };
 

@@ -38,6 +38,15 @@ exports.CompoundPopulation = require('./compoundpopulation');
 exports.Everyone = require('./everyone');
 exports.Interested = require('./interested');
 exports.Common = require('./common');
+exports.ActivityHandler = require('./activityhandler');
+exports.BrowserView = require('./browserview');
+exports.HttpRequest = require('./httprequest');
+exports.EmbeddedView = require('./embeddedview');
+exports.HtmlForm = require('./htmlform');
+exports.HttpHeader = require('./httpheader');
+exports.Parameter = require('./parameter');
+exports.Payload = require('./payload');
+exports.UrlTemplate = require('./urltemplate');
 
 exports.wrap_object = function (store, reasoner, subject, id) {
   if (subject === undefined) throw new Error();
@@ -48,6 +57,22 @@ exports.wrap_object = function (store, reasoner, subject, id) {
     var type = types[n].object;
     if (reasoner.isSubClassOf(type,vocabs.as.Link)) {
       thing = exports.Link;
+    } else if (reasoner.isSubClassOf(type,vocabs.as.UrlTemplate)) {
+      thing = exports.UrlTemplate;
+    } else if (reasoner.isSubClassOf(type,vocabs.as.Payload)) {
+      thing = exports.Payload;
+    } else if (reasoner.isSubClassOf(type,vocabs.as.Parameter)) {
+      thing = exports.Parameter;
+    } else if (reasoner.isSubClassOf(type,vocabs.as.HttpHeader)) {
+      thing = exports.HttpHeader;
+    } else if (reasoner.isSubClassOf(type,vocabs.as.HtmlForm)) {
+      thing = exports.HtmlForm;
+    } else if (reasoner.isSubClassOf(type,vocabs.as.BrowserView)) {
+      thing = exports.BrowserView;
+    } else if (reasoner.isSubClassOf(type,vocabs.as.EmbeddedView)) {
+      thing = exports.EmbeddedView;
+    } else if (reasoner.isSubClassOf(type,vocabs.as.HttpRequest)) {
+      thing = exports.HttpRequest;
     } else if (reasoner.isSubClassOf(type,vocabs.as.OrderedCollection)) {
       thing = exports.OrderedCollection;
     } else if (reasoner.isSubClassOf(type,vocabs.as.Collection)) {

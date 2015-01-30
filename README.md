@@ -9,6 +9,7 @@ Includes experimental support for:
 
 * http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams2-actions.html
 * http://ns.jasnell.me/interval
+* http://ns.jasnell.me/social
 
 ## Getting Started
 
@@ -62,7 +63,7 @@ the kind of object being generated. Once the object has been built, call the `ge
 method to return the generated object.
 
 * `as.object([types])`
-* `as.actor([types])` 
+* `as.actor([types])`
 * `as.activity([types])`  
 * `as.collection([types])`  
 * `as.orderedCollection([types])`  
@@ -135,8 +136,49 @@ method to return the generated object.
 * `as.place([types])`  
 * `as.reservation([types])`  
 * `as.mention([types])`  
+* `as.actions.browserView([types])`
+* `as.actions.httpRequest([types])`
+* `as.actions.embeddedView([types])`
+* `as.actions.htmlForm([types])`
+* `as.actions.httpHeader([types])`
+* `as.actions.parameter([types])`
+* `as.actions.payload([types])`
+* `as.actions.urlTemplate([types])`
+* `as.interval([types])`
+* `as.interval.open([types])`
+* `as.interval.closed([types])`
+* `as.interval.openClosed([types])`
+* `as.interval.closedOpen([types])`
+* `as.interval.rightOpen([types])`
+* `as.interval.leftClosed([types])`
+* `as.interval.rightClosed([types])`
+* `as.social.population([types])`
+* `as.social.everyone([types])`
+* `as.social.public([types])`
+* `as.social.private([types])`
+* `as.social.direct([types])`
+* `as.social.common([types])`
+* `as.social.interested([types])`
+* `as.social.self([types])`
+* `as.social.all([types])`
+* `as.social.any([types])`
+* `as.social.none([types])`
+
 
 The object returned by `get` is a read-only view of the Activity Stream object. It will have property methods that are specific to the object's type. You can export the built object as an ordinary Javascript object using the `export` method. This will generate a JSON-LD compliant Javascript object.
+
+```javascript
+var as = require('activitystrea.ms');
+
+var note = as.note().
+   displayName('foo').
+   content('this is a simple note').
+   get();
+
+console.log(note.displayName.valueOf());
+console.log(note.content.valueOf());
+console.log(note.type);
+```
 
 ```javascript
 var as = require('activitystrea.ms');

@@ -415,22 +415,25 @@ Reasoner.prototype = {
   isSubClassOf : function(subject, object) {
     var _sc = this._cache._sc;
     var _subject = _sc[subject] = _sc[subject] || {};
-    return _subject[object] = _subject[object] || 
-           isSubClassOf(this._store, subject, object);
+    _subject[object] = _subject[object] || 
+      isSubClassOf(this._store, subject, object);
+    return _subject[object];
   },
 
   isSubPropertyOf : function(subject, object) {
     var _sp = this._cache._sp;
     var _subject = _sp[subject] = _sp[subject] || {};
-    return _subject[object] = _subject[object] ||
-          isSubPropertyOf(this._store, subject, object);
+    _subject[object] = _subject[object] ||
+      isSubPropertyOf(this._store, subject, object);
+    return _subject[object];
   },
 
   isTypeOf : function(subject, type) {
     var _tp = this._cache._tp;
     var _subject = _tp[subject] = _tp[subject] || {};
-    return _subject[type] = _subject[type] || 
-           count_type.call(this, subject, type) > 0
+    _subject[type] = _subject[type] || 
+      count_type.call(this, subject, type) > 0;
+    return _subject[object];
   },
 
   descendantClassesOf : function(subject) {

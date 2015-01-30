@@ -68,7 +68,7 @@ function _set(key, val) {
     options.type = vocabs.xsd.dateTime;
   }
   this.set(key, val, options);
-};
+}
 
 Interval.Builder.prototype.upper = function(val) {
   _set.call(this, vocabs.interval.upper, val);
@@ -77,10 +77,10 @@ Interval.Builder.prototype.upper = function(val) {
 Interval.Builder.prototype.lower = function(val) {
   _set.call(this, vocabs.interval.lower, val);
   return this;
-}
+};
 Interval.Builder.prototype.step = function(val) {
   _set.call(this, vocabs.interval.step, val);
   return this;
-}
+};
 
 module.exports = Interval;

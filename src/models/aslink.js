@@ -125,11 +125,11 @@ AsLink.Builder.prototype.href = function(val) {
   this.set(vocabs.as.href, val);
   return this;
 };
-AsLink.Builder.prototype.href = function(rel) {
+AsLink.Builder.prototype.rel = function(val) {
   this.set(vocabs.as.rel, val);
   return this;
 };
-AsLink.Builder.prototype.href = function(hreflang) {
+AsLink.Builder.prototype.hreflang = function(val) {
   this.set(vocabs.as.hreflang, val);
   return this;
 };
