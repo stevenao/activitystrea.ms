@@ -194,12 +194,11 @@ exports.set_non_negative_int = function(key, val) {
 };
 
 exports.set_duration_val = function(key, val) {
-  throwif(!is_number(val) && !is_string(val), 'Duration must be a string or a number');
-  if (is_number(val)) {
-    set_non_negative_int.call(this, key, val);
+  if (exports.is_number(val)) {
+    exports.set_non_negative_int.call(this, key, val);
   }
-  else if (is_string(val)) {
-    this.set(key, val);
+  else {
+    this.set(key, val.toString());
   }
   return this;
 };

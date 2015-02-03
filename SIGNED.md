@@ -3,13 +3,13 @@
 -----BEGIN PGP SIGNATURE-----
 Comment: GPGTools - https://gpgtools.org
 
-iQEcBAABCgAGBQJU0DmmAAoJEHNBsVwHCHesJwEH/2X6Ginqw8FBK7FpSH2KNYul
-yKZz9lVynx7i9sjwvdnGYKj9WYgdUwDZ4+8/4z+IDz3IA26zJmwzVz7+vjJAC42U
-MPdMaQ5e+jB43JOahI0FcLacEt/4LvZaGq0iCRbAOZ7Kjg2TAu5qX9lA1VwVt11S
-Mn0CxpqX+AY1zbiE8e3tc3JX0/GpSZWSdvmpltPfH30t54aJ0HIJGrAYKYU1DBT0
-egd0SAaT6pT6U1Rrv77dtR+LDVkvQVex1QQz4EsASgJCRZ8APdACG6qVe2Vzra3M
-hNNV9mnm0nsFg41+aqqFiVhQkFcsh+1CUs4/KTYLGEaSGNMmHIyaSS7k8Oy2JaE=
-=jBX+
+iQEcBAABCgAGBQJU0EhoAAoJEHNBsVwHCHesAh0H/08+fONqbqBR8jvwbLoaV38T
+pe1WeCU5YzByAMDSqTC+7H5/Timdwyt7/uiAt4QtWDGb8ghhFEOQatQ5TEjAtksi
+rPUeM3CrK2OOvGP3/++8km8h4Fj4ielQo2tJcnJt9cSXg2gGTksME8yTYig5g38x
+zBy0Enfg4Y+O0oTYcMRbY6/MPjxVHtfdExKb7wI0zACiu6PpChWzP2VepFFQ7wkj
+2jLGefqZMfDRtE/or5X2fSlsMaoOPdD/ITDqG0DZRRit2gFLipEWEH2DOe0sM9Bt
+sXob9xcBzYfU6zlae0LExjSrnodQ0OkC5cLD6ilQDdSfowVQV2wEEVO1m91wtxg=
+=afdf
 -----END PGP SIGNATURE-----
 
 ```
@@ -29,7 +29,7 @@ size   exec  file                          contents
 11381          LICENSE                     2bcf83b42c65720625611f1fb2922bc9e3face6a22117331a13c9ed9f3af2903
 6163           README.md                   bd8dc55eefff9866fa3344b4dcdd364011cf2800039d7e93577b64a5fb655747
 273            bower.json                  6dd1cd03fb33a6a3d37c81543ebae9c7b36d2faedf686230998633784a2d3eca
-925            package.json                2e3e62449ac257883482ab47bd83843a038102c15d7aaf51e39b30206aba6c68
+925            package.json                2d0a0efcb7d9b3ee70e1e50edd11451c8be3fcad1e056ef3d8d638bcca79f20d
                src/                                                                                        
 14328            activitystreams.js        b90d9d4da812aa8cc1d2d2ae3dcf3fa9bc5cd1dadc0d1bf73db293550273f35a
                  data/                                                                                     
@@ -65,7 +65,7 @@ size   exec  file                          contents
 1870               population.js           3eb98361faa0b80b467b0c084cf4bc0198c4406629da78ce95bacd7cdcf94c65
 1964               urltemplate.js          ba1dd58a8c7b6e9f7b58bdbd922d2a9bea4fe825394c8b2a4696315b123b91c7
 19291            reasoner.js               09fbb2dfbf8d9f29195bce38c87bfae9da987204b3745b6cde7ac211d483fa05
-9023             utils.js                  ac4207b5b1a2a309326e5a7fa37465de9ea75bb3c3da861dc944957a9a67ba28
+8942             utils.js                  2b9e7d22c415d5228b6173ed1fb7e34c56b26abcd2a8d6eca7b0093b018ebe9c
                test/                                                                                       
 4121             tests.js                  bbd2181472cd86190035d7bd0e525814bb1674e26c61cd8d7abb9d0f13ab2a62
 322            test.js                     07de4328f12aac1e4b19027c952923aa4eb5251aa98fce8d5088d1b47965c1f2
