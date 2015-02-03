@@ -3,13 +3,13 @@
 -----BEGIN PGP SIGNATURE-----
 Comment: GPGTools - https://gpgtools.org
 
-iQEcBAABCgAGBQJUy/KjAAoJEHNBsVwHCHesy9kIAJiakrCTXw7NMAWR69V6iPms
-CJXseCQFoTxzGia3lWsWiJIgom4MmMhzJ6BQ4Xb76CgNVDVYhhPI965JrLj8WU6k
-yiKExjtxf9wW6Axfyf2WuxHrO3kK/oGfTSDwyFo5dF5jAdpfGBUpPii2W931c0cs
-xdQtdlT7KSE4ATEgqlrkBE9Ugg7GWhnSqnlx7+LRHEhf/qoFohm2r5Saxc/f08p3
-OkyCs9ncwlrmjg0HQoc5ZCfwuPyScr7Vdhgi7qGlPn6bqihKKHNEYB9UhF/KhDBe
-qfDeniovbUClUPlqop8ZL16mFSqRsyOblAxSAJ/frJ8cjMJwiTIqsbjrd1E0hk0=
-=k78Z
+iQEcBAABCgAGBQJU0DSuAAoJEHNBsVwHCHessoYH/2xsQAOQQv10/cIaonoDPxSd
+VXwAEngwuf8UICplQiWTZngw6hG7LhgcnsZ9P6M1Cz2waDA5XZgXdpbi2xTRK3Xc
+A2AlsKWfBFmh7oGVhU5Gg6EPKV/fZXjj7Y1QBkVadzRxtauc8ajXDGgI22ulDR7Z
+gvDZq2SBmVPzOqvvCzFuoj3WgqiwQZ6k2lgmlUkOidMzME84n+FnX+obXr/5DuiG
+PvxbEWJTQxuNdTSxG5f2NUZ2aZF4fUVIB9fglXJGr5YHIzR1oqKColeEYjAOtr5Z
+bY/TrVIWqnnfVruMR00+gC6S4f1WT7I5BEdfxUSmHAFBXPgTmY+grPg0ldDz+yI=
+=8Z9G
 -----END PGP SIGNATURE-----
 
 ```
@@ -29,11 +29,10 @@ size   exec  file                          contents
 11381          LICENSE                     2bcf83b42c65720625611f1fb2922bc9e3face6a22117331a13c9ed9f3af2903
 6163           README.md                   bd8dc55eefff9866fa3344b4dcdd364011cf2800039d7e93577b64a5fb655747
 273            bower.json                  6dd1cd03fb33a6a3d37c81543ebae9c7b36d2faedf686230998633784a2d3eca
-849            package.json                3574e2ddec93a0c6776e2452ad4811f8a6ce749f8044ef5f92d1d33f49aef63f
+890            package.json                11189cf74ba3c66a87ac25cc1d729660ae1fdac05191caf8f20d8656f0330206
                src/                                                                                        
-14309            activitystreams.js        b7a81b5052894e243d8f76f72db496a0969fb2643108fa5f0e2161b1dc2a785f
+14312            activitystreams.js        84d53b20821f0c0a4616f5e374e1ac57927cc958699cafa4813f9f59d493f115
                  data/                                                                                     
-23474              activitystreams2.json   4f4642c7c6b9c264fe9cb7e3edbebd63c961ddea75a5e90552309f15d05c74be
 414                extended-context.json   9a71dbc0f90a2224a72968a5898e44a57beb26d90183859db06f302f65e8eef8
                  models/                                                                                   
 3131               activityhandler.js      b6a75055722409670286efdd02bab2701969282bb8974f3a570073b85fc92f9d
@@ -47,7 +46,7 @@ size   exec  file                          contents
 3580               asplace.js              1bc0a0598f5f463ff11f62225ca81509ec5c91788e0393205008682ec86fb24f
 1823               aspossibleanswer.js     763eac9b618e081180dee460fcea65765b6954373ff8876c222761cc95375583
 2769               asquestion.js           c7d4c22492b59fe310287ec57a0f55ee1486342ee7c55d822d715492319aa9de
-10533              base.js                 f5dd78feb2912dbfeeb5cefa57526a952aa79ff018b9f1bdb9a164c9362d7bc1
+10522              base.js                 4ede893dcbb5c76edc59c4fb100416fa2e0af75c2a27984c69835baec1ef08a1
 2794               browserview.js          848e7bdd716fc30e3fd33442f79b1dfa390bef5478c61c0d6ea2c99a624a08ec
 2186               common.js               5a5974781a7fc3345f90f0c95e350f77c8908562186aa8dac793e2d11612eace
 1872               compoundpopulation.js   fcdd7ce854d2b09506cb7e7a9c984d75ddc43a14be8683aa7ec011f35c06434a
@@ -65,8 +64,8 @@ size   exec  file                          contents
 1890               payload.js              ec6efe8ba1883513f4a183482fa22df1b1473f95e3d9c29d16269ad14c9da79d
 1862               population.js           11641e454ab2851709021a152846e3cba76619a5ec640ec500b10ca869f11250
 1956               urltemplate.js          8a51c02fdcf654b158049bb7341e9c68816ef6ffaa3c21bef159d447e2754676
-19284            reasoner.js               a23f03b080b875e4f4b03b4b8bfb21d9ede83fc510fdc8bb0b9b2aa28c69e757
-8837             utils.js                  58dc6142b8ee5e1b135b4f2c101bc47f6f7be83995fe3a457b99e83a34f8e672
+19282            reasoner.js               db0788aa2008af0e85a5e0b7b5f0cba8ee0d167b2a95dc159b24be9c20963ace
+9014             utils.js                  f5c2de8af442f2164e61d6d428f9862cd2ead470757ba587f464590c39d39eea
                  vocabs/                                                                                   
 3122               as.js                   4f1c42fe4105a44bc0fecd02f1a8039017e2c95ae9398aa30a1f39f3d127feca
 984                asx.js                  2d8d655cc49bbc69bad2cb9e657a28573b32d7459d1ac4e2aecd62b661ddc117
