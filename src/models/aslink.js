@@ -21,7 +21,7 @@
 var Base = require('./base');
 var util = require('util');
 var utils = require('../utils');
-var vocabs = require('../vocabs');
+var vocabs = require('linkeddata-vocabs');
 
 function AsLink(store, reasoner, id, subject) {
   if (!(this instanceof AsLink))

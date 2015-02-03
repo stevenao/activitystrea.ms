@@ -20,7 +20,7 @@
  */
 var url         = require('url');
 var uuid        = require('uuid');
-var vocabs      = require('./vocabs');
+var vocabs      = require('linkeddata-vocabs');
 var N3          = require('n3');
 var as_context  = require('activitystreams-context');
 var asx_context = require('./data/extended-context.json');

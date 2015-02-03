@@ -22,7 +22,7 @@ var AsObject = require('./asobject');
 var Base     = require('./base');
 var util     = require('util');
 var utils    = require('../utils');
-var vocabs   = require('../vocabs');
+var vocabs   = require('linkeddata-vocabs');
 var models   = require('../models');
 
 function is_ordered(base) {

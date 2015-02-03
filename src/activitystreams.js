@@ -20,10 +20,10 @@
  * @author James M Snell (jasnell@us.ibm.com)
  */
 
-var models = require('./models');
+var models   = require('./models');
 var Reasoner = require('./reasoner');
-var vocabs = require('./vocabs');
-var utils = require('./utils');
+var vocabs   = require('linkeddata-vocabs');
+var utils    = require('./utils');
 
 var merge_types = utils.merge_types;
 var reasoner = new Reasoner();

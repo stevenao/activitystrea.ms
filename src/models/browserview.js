@@ -22,7 +22,7 @@ var ActivityHandler = require('./activityhandler');
 var Link = require('./aslink');
 var util = require('util');
 var utils = require('../utils');
-var vocabs = require('../vocabs');
+var vocabs = require('linkeddata-vocabs');
 
 function BrowserView(store, reasoner, id, subject) {
   if (!(this instanceof BrowserView))

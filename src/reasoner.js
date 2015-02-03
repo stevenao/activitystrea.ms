@@ -18,7 +18,7 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var vocabs = require('./vocabs');
+var vocabs = require('linkeddata-vocabs');
 var utils  = require('./utils');
 var util   = require('util');
 var N3     = require('n3');

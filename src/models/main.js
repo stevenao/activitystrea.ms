@@ -19,7 +19,7 @@
  * @author James M Snell (jasnell@us.ibm.com)
  */
 
-var vocabs = require('../vocabs');
+var vocabs = require('linkeddata-vocabs');
 
 exports.Base = require('./base');
 exports.Object = require('./asobject');

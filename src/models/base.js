@@ -19,7 +19,7 @@
  * @author James M Snell (jasnell@us.ibm.com)
  */
 var utils         = require('../utils');
-var vocabs        = require('../vocabs');
+var vocabs        = require('linkeddata-vocabs');
 var models        = require('../models/main');
 var N3            = require('n3');
 var LanguageValue = require('./languagevalue');

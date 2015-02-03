@@ -21,7 +21,7 @@
 var AsContent = require('./ascontent');
 var util = require('util');
 var utils = require('../utils');
-var vocabs = require('../vocabs');
+var vocabs = require('linkeddata-vocabs');
 
 function AsPossibleAnswer(store, reasoner, id, subject) {
   if (!(this instanceof AsPossibleAnswer))

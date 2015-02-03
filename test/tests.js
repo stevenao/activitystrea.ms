@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    vocabs = require('../src/vocabs'),
+    vocabs = require('linkeddata-vocabs'),
     models = require('../src/models'),
     as = require('../src/activitystreams');
 

@@ -23,7 +23,7 @@ var Content = require('./ascontent');
 var ASObject = require('./asobject');
 var util = require('util');
 var utils = require('../utils');
-var vocabs = require('../vocabs');
+var vocabs = require('linkeddata-vocabs');
 
 function EmbeddedView(store, reasoner, id, subject) {
   if (!(this instanceof EmbeddedView))

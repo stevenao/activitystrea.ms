@@ -23,7 +23,7 @@ var Link = require('./aslink');
 var UrlTemplate = require('./urltemplate');
 var util = require('util');
 var utils = require('../utils');
-var vocabs = require('../vocabs');
+var vocabs = require('linkeddata-vocabs');
 
 function HttpRequest(store, reasoner, id, subject) {
   if (!(this instanceof HttpRequest))

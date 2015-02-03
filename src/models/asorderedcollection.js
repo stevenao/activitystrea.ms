@@ -21,7 +21,7 @@
 var AsCollection = require('./ascollection');
 var util = require('util');
 var utils = require('../utils');
-var vocabs = require('../vocabs');
+var vocabs = require('linkeddata-vocabs');
 var models = require('../models');
 
 function AsOrderedCollection(store, reasoner, id, subject) {

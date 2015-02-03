@@ -21,7 +21,7 @@
 var Population = require('./population');
 var util = require('util');
 var utils = require('../utils');
-var vocabs = require('../vocabs');
+var vocabs = require('linkeddata-vocabs');
 
 function CompoundPopulation(store, reasoner, id, subject) {
   if (!(this instanceof CompoundPopulation))

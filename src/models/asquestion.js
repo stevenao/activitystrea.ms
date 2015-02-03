@@ -21,7 +21,7 @@
 var AsActivity = require('./asactivity');
 var util       = require('util');
 var utils      = require('../utils');
-var vocabs     = require('../vocabs');
+var vocabs     = require('linkeddata-vocabs');
 
 function AsQuestion(store, reasoner, id, subject) {
   if (!(this instanceof AsQuestion))
