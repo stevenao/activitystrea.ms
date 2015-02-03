@@ -39,7 +39,7 @@ exports.importBase = function(store, id) {
 };
 
 exports.import = function(input, callback) {
-  utils.throwif(typeof callback !== 'function', 'A callback function must be given');
+  utils.throwif(typeof callback !== 'function', 'A callback function must be provided');
   process.nextTick(function() {
     utils.jsonld.import(reasoner, input, function(err, doc) {
       if (err) {

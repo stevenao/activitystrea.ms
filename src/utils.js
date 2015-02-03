@@ -22,7 +22,7 @@ var url         = require('url');
 var uuid        = require('uuid');
 var vocabs      = require('./vocabs');
 var N3          = require('n3');
-var as_context  = require('./data/activitystreams2.json');
+var as_context  = require('activitystreams-context');
 var asx_context = require('./data/extended-context.json');
 var jsonld      = require('jsonld');
 var _toString   = {}.toString;
@@ -206,6 +206,7 @@ exports.set_duration_val = function(key, val) {
 
 var default_doc_loader = jsonld.documentLoaders.node();
 var custom_doc_loader = function(url, callback) {
+  exports.throwif(typeof callback !== 'function', 'A callback function must be provided');
   var u = url;
   if (u[u.length-1] !== '#') u += '#';
   if (u === vocabs.as.ns)
@@ -220,6 +221,7 @@ var custom_doc_loader = function(url, callback) {
 exports.jsonld = Object.create({
   default_doc_loader: jsonld.documentLoaders.node(),
   custom_doc_loader: function(url, callback) {
+    exports.throwif(typeof callback !== 'function', 'A callback function must be provided');
     var u = url;
     if (u[u.length-1] !== '#') u += '#';
     if (u === vocabs.as.ns) {
@@ -232,7 +234,7 @@ exports.jsonld = Object.create({
     exports.jsonld.default_doc_loader(url, callback);
   },
   compact: function(ret, callback, additional_context) {
-    exports.throwif(typeof callback !== 'function', 'A callback function must be specified');
+    exports.throwif(typeof callback !== 'function', 'A callback function must be provided');
     var _context = {'@context': [vocabs.as.ns, asx_context]};
     if (additional_context) _context['@context'].push(additional_context);
     jsonld.compact(
@@ -247,7 +249,7 @@ exports.jsonld = Object.create({
       });
   },
   import: function(reasoner, input, callback) {
-    exports.throwif(typeof callback !== 'function', 'A callback function must be specified');
+    exports.throwif(typeof callback !== 'function', 'A callback function must be provided');
     var models = require('./models');
     var builder = models.Base.Builder(reasoner);
     if (input['@id'])

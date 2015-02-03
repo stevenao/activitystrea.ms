@@ -23,6 +23,7 @@
     }
   ],
   "dependencies": {
+    "activitystreams-context": "^0.2.0",
     "jsonld": "^0.3.19",
     "n3": "^0.4.0",
     "rfc5646": "0.0.1",

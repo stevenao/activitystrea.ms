@@ -433,7 +433,7 @@ Reasoner.prototype = {
     var _subject = _tp[subject] = _tp[subject] || {};
     _subject[type] = _subject[type] || 
       count_type.call(this, subject, type) > 0;
-    return _subject[object];
+    return _subject[type];
   },
 
   descendantClassesOf : function(subject) {

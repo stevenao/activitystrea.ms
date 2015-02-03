@@ -101,8 +101,7 @@ Base.prototype = {
     return this._cache[key];
   },
   export : function(callback, additional_context) {
-    if (typeof callback !== 'function')
-      throw new Error('callback must be specified');
+    utils.throwif(typeof callback !== 'function', 'A callback must be provided');
     var self = this;
     var cache = {};
     cache[self.id||self._subject] = true;
