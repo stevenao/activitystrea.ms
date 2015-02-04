@@ -3,13 +3,13 @@
 -----BEGIN PGP SIGNATURE-----
 Comment: GPGTools - https://gpgtools.org
 
-iQEcBAABCgAGBQJU0EhoAAoJEHNBsVwHCHesAh0H/08+fONqbqBR8jvwbLoaV38T
-pe1WeCU5YzByAMDSqTC+7H5/Timdwyt7/uiAt4QtWDGb8ghhFEOQatQ5TEjAtksi
-rPUeM3CrK2OOvGP3/++8km8h4Fj4ielQo2tJcnJt9cSXg2gGTksME8yTYig5g38x
-zBy0Enfg4Y+O0oTYcMRbY6/MPjxVHtfdExKb7wI0zACiu6PpChWzP2VepFFQ7wkj
-2jLGefqZMfDRtE/or5X2fSlsMaoOPdD/ITDqG0DZRRit2gFLipEWEH2DOe0sM9Bt
-sXob9xcBzYfU6zlae0LExjSrnodQ0OkC5cLD6ilQDdSfowVQV2wEEVO1m91wtxg=
-=afdf
+iQEcBAABCgAGBQJU0osBAAoJEHNBsVwHCHes7xgH/A9qiPnWK0MsT5AOAaKnBcc2
+6bVjbTS1GLHZd5GIvZRohUpeooWS2sMOmwECwl/gB+DO07S77lD8RaUyfyGEqdny
+/RbHKNjsxoMREJXTgRpsRFPMytGkaGoDXs4DGLJ5sxdRjIBWHq7oH9n0GynHzfxb
+xeP7EwbNh0kWAM7N3ITSyct9RLZIk5sVNeK+r2dZBM3bAUlxpiDVhcdan6OVGs+9
+0Of9IKAsHPkxW3hEyix2Vubo9EfzDXrODoPW+BQ/rIcga18pL1/qDL8mQC211CwN
+8qChFH8BUHOzkrYai1/aS0pn5rTNRXyZcTAEEEfSRmFCK7Ponr0umyw+21huJ6w=
+=qP2x
 -----END PGP SIGNATURE-----
 
 ```
@@ -29,7 +29,7 @@ size   exec  file                          contents
 11381          LICENSE                     2bcf83b42c65720625611f1fb2922bc9e3face6a22117331a13c9ed9f3af2903
 6163           README.md                   bd8dc55eefff9866fa3344b4dcdd364011cf2800039d7e93577b64a5fb655747
 273            bower.json                  6dd1cd03fb33a6a3d37c81543ebae9c7b36d2faedf686230998633784a2d3eca
-925            package.json                2d0a0efcb7d9b3ee70e1e50edd11451c8be3fcad1e056ef3d8d638bcca79f20d
+925            package.json                652c73fa07bafe0d48a3d1e9d60b471b89c7488bb5e2111c9d5de51dcdc8d081
                src/                                                                                        
 14328            activitystreams.js        b90d9d4da812aa8cc1d2d2ae3dcf3fa9bc5cd1dadc0d1bf73db293550273f35a
                  data/                                                                                     
