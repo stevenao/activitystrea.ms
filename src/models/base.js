@@ -79,7 +79,10 @@ Base.prototype = {
   get : function(key) {
     if (!this.hasOwnProperty(key)) {
       key = utils.parsed_url(vocabs.as[key]||key);
-      var res = this._store.findByIRI(this.id||this._subject, key, null);
+      var res = [];
+      if (this.id)
+        res = this._store.findByIRI(this.id, key, null);
+      if (res.length == 0) res = this._store.findByIRI(this._subject, key, null);
       var ret, n, l;
       if (this._reasoner.is_language_property(key)) {
         ret = LanguageValue.Builder();
@@ -144,7 +147,10 @@ Base.prototype = {
 };
 
 function write_out(cache, reasoner, subject, id, store) {
-  var triples = store.findByIRI(id||subject, null, null);
+  var triples = [];
+  if (id) 
+    triples = store.findByIRI(id, null, null);
+  if (triples.length == 0) triples = store.findByIRI(subject,null,null);
   var ret = {};
   cache[subject] = true;
   if (id) {
