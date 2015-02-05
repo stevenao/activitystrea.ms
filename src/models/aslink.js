@@ -30,7 +30,8 @@ function AsLink(store, reasoner, id, subject) {
 }
 util.inherits(AsLink, Base);
 utils.define(AsLink.prototype, 'href', function() {
-  return this.get(vocabs.as.href);
+  var ret = this.get(vocabs.as.href);
+  return ret ? ret.id : undefined;
 });
 utils.define(AsLink.prototype, 'rel', function() {
   return this.get(vocabs.as.rel);
