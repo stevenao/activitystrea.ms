@@ -175,7 +175,7 @@ function write_out(cache, reasoner, subject, id, store) {
       if (reasoner.is_number(type))
         value = Number(value).valueOf();
       else if (reasoner.is_boolean(type))
-        value = Boolean(value).valueOf();
+        value = value != 'false';
       val = {'@value': value};
       if (utils.is_string(value) && lang)
         val['@language'] = lang;
