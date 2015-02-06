@@ -43,7 +43,7 @@ function set_typed_value(ret, val, is_object_property) {
       else if (this._reasoner.is_date(type))
         val = new Date(val);
       else if (this._reasoner.is_boolean(type))
-        val = Boolean(val).valueOf();
+        val = val != 'false';
     }
   } else if (is_object_property) {
     val = models.wrap_object(
