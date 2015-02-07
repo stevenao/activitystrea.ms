@@ -13,13 +13,7 @@ Includes experimental support for:
 
 ## Getting Started
 
-### Building
-
-Use "grunt" to build.
-
 ### Installation
-
-#### Using NPM
 
 `npm install activitystrea.ms`
 

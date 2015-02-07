@@ -3,13 +3,13 @@
 -----BEGIN PGP SIGNATURE-----
 Comment: GPGTools - https://gpgtools.org
 
-iQEcBAABCgAGBQJU1CKrAAoJEHNBsVwHCHesbcMH/2nQ/rEwNFzsjXwyZ5Ywn7ps
-VYwWLchzr586tuJIAcUNBdXs9NBxudPbFNGJITTybjDFdU98OoHmQJel0iUDrEHO
-o/8KpzJsaCcpMteKqGssPj6WwYW0EEeCdPDg5SpdNxzLiRjLlqFRE0RgC3aKcQxI
-W6rol+VmwtqeM5RfNGijv4KuRYqB9oWT2Sebkrlt/I0wSfosRQxmysp244/Gih8o
-kQp7ThbYdyk+xRcOsoFFaffU4wS9J8Yi1W4eoFf5qaFyoqDEMuv+aSRcIZbuNHsm
-Cg1bkwRsufrLkoR0d9Mwv9hsz5DoexBinXNi4VyGur9QSuovzGec+dsUnTKfUJw=
-=BDoH
+iQEcBAABCgAGBQJU1WqKAAoJEHNBsVwHCHeslV8H/3KLF7kLrKVEJaDiMxUJ4Sx5
+Wytz9yhW9hkNz5FAA6jQH4aT1y4L80ZT/qf6VYX98H9ufQjWmOZuXCMk/RQG2ejf
+VlX9NLoFqly0W1UA/Jmv2o/P9JZROTcpHp6rDMJ3o4HOS4EBRSUtIdZZu7Wali5d
+KqY89nXO7uPm9lXjIkvA7o6vF9MXUvZQsxKirBgVxZ2uZTmGD0I3Cn6zbGFJTnMY
+NdE2n/ooJ4xGig6YhVllfwZMS3wlfpj65cetNwyZMpM6JzgpBl6poQCNQHcddHly
+61CpzVLtnPq5tiAYHy4TCE+JnN3lMnKZsl4EerroDaQJUpRKnoKLqWl/iE4V8LM=
+=0AO2
 -----END PGP SIGNATURE-----
 
 ```
@@ -25,11 +25,9 @@ size   exec  file                          contents
              ./                                                                                            
 34             .gitignore                  2b6be54c417ee3fd5fefcf868d44e7bdf8f81c9aa6ae72433bcbf5ecae323ea2
 1210           CONTRIBUTING.md             b4e424ef0dd861df4aa22923a1431065d032661887560dce34182f948f51adde
-480            Gruntfile.js                bf26bc099c688b967c35edcae37453ef9cbf5cad23d27208b3d83a4933b1ca94
 11381          LICENSE                     2bcf83b42c65720625611f1fb2922bc9e3face6a22117331a13c9ed9f3af2903
-6163           README.md                   bd8dc55eefff9866fa3344b4dcdd364011cf2800039d7e93577b64a5fb655747
-273            bower.json                  6dd1cd03fb33a6a3d37c81543ebae9c7b36d2faedf686230998633784a2d3eca
-925            package.json                1f3ba1cf03f0a4e34a1386827f2d12faff7368752f40408e54eed4bab828bbc6
+797            package.json                49e3b3f75108165ffae766819cc5cb9beef72bdb7247a125e20c0a6b70f99167
+6110           README.md                   5b41017dccaa71c59a26e18ad110d8abe9f016c6b2ba4589d5c06ec02c5dd1f8
                src/                                                                                        
 14328            activitystreams.js        b90d9d4da812aa8cc1d2d2ae3dcf3fa9bc5cd1dadc0d1bf73db293550273f35a
                  data/                                                                                     
