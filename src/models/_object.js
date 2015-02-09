@@ -18,15 +18,15 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var Base = require('./base');
 var util = require('util');
 var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
+var Base = require('./_base');
 
-function AsObject(store, reasoner, id, subject) {
+function AsObject(expanded, reasoner, parent) {
   if (!(this instanceof AsObject))
-    return new AsObject(store, reasoner, id, subject);
-  Base.call(this, store, reasoner, id, subject);
+    return new AsObject(expanded, reasoner, parent);
+  Base.call(this, expanded, reasoner, parent);
 }
 util.inherits(AsObject, Base);
 
@@ -149,7 +149,7 @@ AsObject.Builder = function(reasoner, types, base) {
     this, 
     reasoner, 
     utils.merge_types(reasoner,vocabs.as.Object,types),
-    base || new AsObject(undefined, reasoner));
+    base || new AsObject({}, reasoner));
 };
 util.inherits(AsObject.Builder, Base.Builder);
 

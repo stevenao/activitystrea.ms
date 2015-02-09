@@ -18,15 +18,15 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var Base = require('./base');
-var util = require('util');
-var utils = require('../utils');
+var util   = require('util');
 var vocabs = require('linkeddata-vocabs');
+var utils  = require('../utils');
+var Base   = require('./_base');
 
-function ActivityHandler(store, reasoner, id, subject) {
+function ActivityHandler(expanded, reasoner, parent) {
   if (!(this instanceof ActivityHandler))
-    return new ActivityHandler(store, reasoner, id, subject);
-  Base.call(this, store, reasoner, id, subject);
+    return new ActivityHandler(expanded, reasoner, parent);
+  Base.call(this, expanded, reasoner, parent);
 }
 util.inherits(ActivityHandler, Base);
 
@@ -49,14 +49,14 @@ utils.define(ActivityHandler.prototype, 'hasRequirement', function() {
   return this.get(vocabs.as.hasRequirement);
 });
 
-ActivityHandler.Builder = function(reasoner,types, base) {
+ActivityHandler.Builder = function(reasoner, types, base) {
   if (!(this instanceof ActivityHandler.Builder))
     return new ActivityHandler.Builder(reasoner, types, base);
   Base.Builder.call(
     this, 
     reasoner, 
     utils.merge_types(reasoner,vocabs.as.ActivityHandler, types),
-    base || new ActivityHandler(undefined, reasoner));
+    base || new ActivityHandler({}, reasoner));
 };
 util.inherits(ActivityHandler.Builder, Base.Builder);
 

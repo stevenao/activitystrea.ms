@@ -18,35 +18,42 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var Population = require('./population');
-var util       = require('util');
-var utils      = require('../utils');
-var vocabs     = require('linkeddata-vocabs');
+var util = require('util');
+var utils = require('../utils');
+var vocabs = require('linkeddata-vocabs');
+var Population = require('./_population');
 
-function Interested(store, reasoner, id, subject) {
-  if (!(this instanceof Interested))
-    return new Interested(store, reasoner, id, subject);
-  Population.call(this, store, reasoner, id, subject);
+function Common(expanded, reasoner, parent) {
+  if (!(this instanceof Common))
+    return new Common(expanded, reasoner, parent);
+  Population.call(this, expanded, reasoner, parent);
 }
-util.inherits(Interested, Population);
-
-utils.define(Interested.prototype, 'confidence', function() {
+util.inherits(Common, Population);
+utils.define(Common.prototype, 'havingDimension', function() {
+  return this.get(vocabs.social.havingDimension);
+});
+utils.define(Common.prototype, 'confidence', function() {
   var ret = Math.min(100,Math.max(0,this.get(vocabs.social.confidence)));
   return isNaN(ret) ? undefined : ret;
 });
 
-Interested.Builder = function(reasoner,types,base) {
-  if (!(this instanceof Interested.Builder))
-    return new Interested.Builder(reasoner,types,base);
+Common.Builder = function(reasoner,types,base) {
+  if (!(this instanceof Common.Builder))
+    return new Common.Builder(reasoner,types,base);
   Population.Builder.call(
     this, 
     reasoner, 
-    utils.merge_types(reasoner,vocabs.social.Interested, types),
-    base || new Interested(undefined,reasoner));
+    utils.merge_types(reasoner,vocabs.social.Common, types),
+    base || new Common({},reasoner));
 };
-util.inherits(Interested.Builder,Population.Builder);
+util.inherits(Common.Builder,Population.Builder);
 
-Interested.Builder.prototype.confidence = function(val) {
+Common.Builder.prototype.havingDimension = function(val) {
+  this.set(vocabs.social.havingDimension, val);
+  return this;
+};
+
+Common.Builder.prototype.confidence = function(val) {
   if (!utils.is_integer(val))
     throw new Error('confidence must be an integer between 0 and 100');
   val = Math.max(0, Math.min(100, val));
@@ -54,4 +61,4 @@ Interested.Builder.prototype.confidence = function(val) {
   return this;
 };
 
-module.exports = Interested;
+module.exports = Common;

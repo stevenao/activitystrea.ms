@@ -18,17 +18,17 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var ActivityHandler = require('./activityhandler');
-var Link = require('./aslink');
-var UrlTemplate = require('./urltemplate');
+var ActivityHandler = require('./_activityhandler');
+var Link = require('./_link');
+var UrlTemplate = require('./_urltemplate');
 var util = require('util');
 var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
 
-function HttpRequest(store, reasoner, id, subject) {
+function HttpRequest(expanded, reasoner, parent) {
   if (!(this instanceof HttpRequest))
-    return new HttpRequest(store, reasoner, id, subject);
-  ActivityHandler.call(this, store, reasoner, id, subject);
+    return new HttpRequest(expanded, reasoner, parent);
+  ActivityHandler.call(this, expanded, reasoner, parent);
 }
 util.inherits(HttpRequest, ActivityHandler);
 utils.mixin(HttpRequest, Link);
@@ -47,7 +47,7 @@ HttpRequest.Builder = function(reasoner, types, base) {
     this, 
     reasoner, 
     utils.merge_types(reasoner,vocabs.as.HttpRequest, types),
-    base || new HttpRequest(undefined, reasoner));
+    base || new HttpRequest({}, reasoner));
 };
 util.inherits(HttpRequest.Builder, ActivityHandler.Builder);
 utils.mixin(HttpRequest.Builder, Link.Builder);

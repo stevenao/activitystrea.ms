@@ -18,16 +18,17 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var ActivityHandler = require('./activityhandler');
-var Link = require('./aslink');
 var util = require('util');
 var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
+var ActivityHandler = require('./_activityhandler');
+var Link = require('./_link');
 
-function BrowserView(store, reasoner, id, subject) {
+
+function BrowserView(expanded, reasoner, parent) {
   if (!(this instanceof BrowserView))
-    return new BrowserView(store, reasoner, id, subject);
-  ActivityHandler.call(this, store, reasoner, id, subject);
+    return new BrowserView(expanded, reasoner, parent);
+  ActivityHandler.call(this, expanded, reasoner, parent);
 }
 util.inherits(BrowserView, ActivityHandler);
 utils.mixin(BrowserView, Link);
@@ -52,7 +53,7 @@ BrowserView.Builder = function(reasoner, types, base) {
     this, 
     reasoner, 
     utils.merge_types(reasoner,vocabs.as.BrowserView, types),
-    base || new BrowserView(undefined, reasoner));
+    base || new BrowserView({}, reasoner));
 };
 util.inherits(BrowserView.Builder, ActivityHandler.Builder);
 utils.mixin(BrowserView.Builder, Link.Builder);

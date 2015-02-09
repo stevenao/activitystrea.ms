@@ -18,17 +18,17 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var ActivityHandler = require('./activityhandler');
-var Content = require('./ascontent');
-var ASObject = require('./asobject');
 var util = require('util');
 var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
+var ActivityHandler = require('./_activityhandler');
+var Content = require('./_content');
+var ASObject = require('./_object');
 
-function EmbeddedView(store, reasoner, id, subject) {
+function EmbeddedView(expanded, reasoner, parent) {
   if (!(this instanceof EmbeddedView))
-    return new EmbeddedView(store, reasoner, id, subject);
-  ActivityHandler.call(this, store, reasoner, id, subject);
+    return new EmbeddedView(expanded, reasoner, parent);
+  ActivityHandler.call(this, expanded, reasoner, parent);
 }
 util.inherits(EmbeddedView, ActivityHandler);
 utils.mixin(EmbeddedView, Content);
@@ -48,7 +48,7 @@ EmbeddedView.Builder = function(reasoner, types, base) {
     this, 
     reasoner, 
     utils.merge_types(reasoner,vocabs.as.EmbeddedView, types),
-    base || new EmbeddedView(undefined, reasoner));
+    base || new EmbeddedView({}, reasoner));
 };
 util.inherits(EmbeddedView.Builder, ActivityHandler.Builder);
 utils.mixin(EmbeddedView.Builder, Content.Builder);

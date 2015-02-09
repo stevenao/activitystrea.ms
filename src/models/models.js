@@ -21,40 +21,39 @@
 
 var vocabs = require('linkeddata-vocabs');
 
-exports.Base = require('./base');
-exports.Object = require('./asobject');
-exports.Activity = require('./asactivity');
-exports.Actor = require('./asactor');
-exports.Collection = require('./ascollection');
-exports.OrderedCollection = require('./asorderedcollection');
-exports.Content = require('./ascontent');
-exports.Link = require('./aslink');
-exports.Place = require('./asplace');
-exports.PossibleAnswer = require('./aspossibleanswer');
-exports.Question = require('./asquestion');
-exports.Interval = require('./interval');
-exports.Population = require('./population');
-exports.CompoundPopulation = require('./compoundpopulation');
-exports.Everyone = require('./everyone');
-exports.Interested = require('./interested');
-exports.Common = require('./common');
-exports.ActivityHandler = require('./activityhandler');
-exports.BrowserView = require('./browserview');
-exports.HttpRequest = require('./httprequest');
-exports.EmbeddedView = require('./embeddedview');
-exports.HtmlForm = require('./htmlform');
-exports.HttpHeader = require('./httpheader');
-exports.Parameter = require('./parameter');
-exports.Payload = require('./payload');
-exports.UrlTemplate = require('./urltemplate');
+exports.Base               = require('./_base');
+exports.Object             = require('./_object');
+exports.Activity           = require('./_activity');
+exports.Actor              = require('./_actor');
+exports.Collection         = require('./_collection');
+exports.OrderedCollection  = require('./_orderedcollection');
+exports.Content            = require('./_content');
+exports.Link               = require('./_link');
+exports.Place              = require('./_place');
+exports.PossibleAnswer     = require('./_possibleanswer');
+exports.Question           = require('./_question');
+exports.Interval           = require('./_interval');
+exports.Population         = require('./_population');
+exports.CompoundPopulation = require('./_compoundpopulation');
+exports.Everyone           = require('./_everyone');
+exports.Interested         = require('./_interested');
+exports.Common             = require('./_common');
+exports.ActivityHandler    = require('./_activityhandler');
+exports.BrowserView        = require('./_browserview');
+exports.HttpRequest        = require('./_httprequest');
+exports.EmbeddedView       = require('./_embeddedview');
+exports.HtmlForm           = require('./_htmlform');
+exports.HttpHeader         = require('./_httpheader');
+exports.Parameter          = require('./_parameter');
+exports.Payload            = require('./_payload');
+exports.UrlTemplate        = require('./_urltemplate');
 
-exports.wrap_object = function (store, reasoner, subject, id) {
-  if (subject === undefined) throw new Error();
-  var types = store.findByIRI(id||subject, vocabs.rdf.type, null);
+exports.wrap_object = function (expanded, reasoner, parent) {
+  var types = expanded['@type'] || [];
   var thing = exports.Object;
   // TODO: make this more efficient
   for (var n = 0, l = types.length; n < l; n++) {
-    var type = types[n].object;
+    var type = types[n];
     if (reasoner.isSubClassOf(type,vocabs.as.Link)) {
       thing = exports.Link;
     } else if (reasoner.isSubClassOf(type,vocabs.as.UrlTemplate)) {
@@ -103,5 +102,5 @@ exports.wrap_object = function (store, reasoner, subject, id) {
       thing = exports.Population;
     }
   }
-  return thing(store, reasoner, id, subject);
+  return thing(expanded, reasoner, parent);
 };

@@ -18,15 +18,15 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var Population = require('./population');
+var Population = require('./_population');
 var util       = require('util');
 var utils      = require('../utils');
 var vocabs     = require('linkeddata-vocabs');
 
-function Everyone(store, reasoner, id, subject) {
+function Everyone(expanded, reasoner, parent) {
   if (!(this instanceof Everyone))
-    return new Everyone(store, reasoner, id, subject);
-  Population.call(this, store, reasoner, id, subject);
+    return new Everyone(expanded, reasoner, parent);
+  Population.call(this, expanded, reasoner, parent);
 }
 util.inherits(Everyone, Population);
 
@@ -44,7 +44,7 @@ Everyone.Builder = function(reasoner,types,base) {
     this, 
     reasoner, 
     utils.merge_types(reasoner,vocabs.social.Everyone, types),
-    base || new Everyone(undefined,reasoner));
+    base || new Everyone({},reasoner));
 };
 util.inherits(Everyone.Builder,Population.Builder);
 

@@ -18,50 +18,50 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var AsObject = require('./asobject');
+var vocabs = require('linkeddata-vocabs');
 var util = require('util');
 var utils = require('../utils');
-var vocabs = require('linkeddata-vocabs');
+var AsObject = require('./_object');
 
-function AsContent(store, reasoner, id, subject) {
-  if (!(this instanceof AsContent))
-    return new AsContent(store, reasoner, id, subject);
-  AsObject.call(this, store, reasoner, id, subject);
+function Content(expanded, reasoner, parent) {
+  if (!(this instanceof Content))
+    return new Content(expanded, reasoner, parent);
+  AsObject.call(this, expanded, reasoner, parent);
 }
-util.inherits(AsContent, AsObject);
-utils.define(AsContent.prototype, 'height', function() {
+util.inherits(Content, AsObject);
+utils.define(Content.prototype, 'height', function() {
   var ret = Math.max(0, this.get(vocabs.as.height));
   return isNaN(ret) ? 0 : ret;
 });
-utils.define(AsContent.prototype, 'width', function() {
+utils.define(Content.prototype, 'width', function() {
   var ret = Math.max(0, this.get(vocabs.as.width));
   return isNaN(ret) ? 0 : ret;
 });
-utils.define(AsContent.prototype, 'duration', function() {
+utils.define(Content.prototype, 'duration', function() {
   return this.get(vocabs.as.duration);
 });
 
-AsContent.Builder = function(reasoner,types, base) {
-  if (!(this instanceof AsContent.Builder))
-    return new AsContent.Builder(reasoner, types, base);
+Content.Builder = function(reasoner, types, base) {
+  if (!(this instanceof Content.Builder))
+    return new Content.Builder(reasoner, types, base);
   AsObject.Builder.call(
     this, 
     reasoner, 
-    utils.merge_types(reasoner,vocabs.as.Content, types),
-    base || new AsContent(undefined, reasoner));
+    utils.merge_types(reasoner, vocabs.as.Content, types),
+    base || new Content({}, reasoner));
 };
-util.inherits(AsContent.Builder, AsObject.Builder);
+util.inherits(Content.Builder, AsObject.Builder);
 
-AsContent.Builder.prototype.height = function(val) {
+Content.Builder.prototype.height = function(val) {
   utils.set_non_negative_int.call(this, vocabs.as.height, val);
   return this;
 };
-AsContent.Builder.prototype.width = function(val) {
+Content.Builder.prototype.width = function(val) {
   utils.set_non_negative_int.call(this, vocabs.as.width, val);
 };
-AsContent.Builder.prototype.duration = function(val) {
+Content.Builder.prototype.duration = function(val) {
   utils.set_duration_val.call(this, vocabs.as.duration, val);
   return this;
 };
 
-module.exports = AsContent;
+module.exports = Content;

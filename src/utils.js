@@ -21,22 +21,15 @@
 var url         = require('url');
 var uuid        = require('uuid');
 var vocabs      = require('linkeddata-vocabs');
-var N3          = require('n3');
-var as_context  = require('activitystreams-context');
-var asx_context = require('./data/extended-context.json');
-var jsonld      = require('jsonld');
 var _toString   = {}.toString;
 
 exports.throwif = function(condition, message) {
   if (condition) throw new Error(message);
 };
 
-exports.store = function(store) {
-  if (store) return store;
-  store = new N3.Store();
-  exports.hidden(store, '_counter', 0, true);
-  return store;
-};
+exports.checkCallback = function(callback) {
+  exports.throwif(typeof callback !== 'function', 'A callback function must be provided');
+}
 
 exports.uuid = function() {
   return 'urn:id:' + uuid.v4();
@@ -202,97 +195,6 @@ exports.set_duration_val = function(key, val) {
   }
   return this;
 };
-
-var default_doc_loader = jsonld.documentLoaders.node();
-var custom_doc_loader = function(url, callback) {
-  exports.throwif(typeof callback !== 'function', 'A callback function must be provided');
-  var u = url;
-  if (u[u.length-1] !== '#') u += '#';
-  if (u === vocabs.as.ns)
-    return callback(null, {
-      contextUrl: null,
-      document: as_context, 
-      documentUrl: url
-    });
-  default_doc_loader(url, callback);
-};
-
-exports.jsonld = Object.create({
-  default_doc_loader: jsonld.documentLoaders.node(),
-  custom_doc_loader: function(url, callback) {
-    exports.throwif(typeof callback !== 'function', 'A callback function must be provided');
-    var u = url;
-    if (u[u.length-1] !== '#') u += '#';
-    if (u === vocabs.as.ns) {
-      return callback(null, {
-        contextUrl: null,
-        document: as_context, 
-        documentUrl: url
-      });
-    }
-    exports.jsonld.default_doc_loader(url, callback);
-  },
-  compact: function(ret, callback, additional_context) {
-    exports.throwif(typeof callback !== 'function', 'A callback function must be provided');
-    var _context = {'@context': [vocabs.as.ns, asx_context]};
-    if (additional_context) _context['@context'].push(additional_context);
-    jsonld.compact(
-      ret, _context, 
-      {documentLoader: exports.jsonld.custom_doc_loader}, 
-      function(err, doc) {
-        if (err) {
-          callback(err);
-          return;
-        }
-        callback(null, doc);
-      });
-  },
-  import: function(reasoner, input, callback) {
-    exports.throwif(typeof callback !== 'function', 'A callback function must be provided');
-    var models = require('./models');
-    var builder = models.Base.Builder(reasoner);
-    if (input['@id'])
-      builder.id(input['@id']);
-    input['@id'] = input['@id'] || builder._subject;
-    jsonld.expand(input, 
-      {expandContext: as_context, 
-       documentLoader: exports.jsonld.custom_doc_loader}, 
-      function(err,doc) {
-        if (err) {
-          callback(err);
-          return;
-        }
-        jsonld.normalize(doc, function(err,doc) {
-          if (err) {
-            callback(err);
-            return;
-          }
-          doc = doc['@default'];
-          var object;
-          for (var n = 0, l = doc.length; n < l; n++) {
-            var triple = doc[n];
-            var subject = triple.subject.value;
-            var predicate = triple.predicate.value;
-            object = triple.object;
-            if (object.type === 'IRI' || object.type === 'blank node') {
-              object = object.value;
-            } else if (object.type === 'literal') {
-              var val = '"' + object.value + '"';
-              if (object.language)
-                val += '@' + object.language;
-              else if (object.datatype)
-                val += '^^' + object.datatype;
-              object = val;
-            }
-            builder._store.addTriple(subject, predicate, object);
-          }
-          object = builder.get();
-          object = models.wrap_object(object._store, object._reasoner, object._subject, object.id);
-          callback(null,object);
-        });
-      });
-  }
-});
 
 exports.mixin = function(ctor, superCtor) {
   var names = Object.getOwnPropertyNames(superCtor.prototype);

@@ -18,15 +18,15 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var Base = require('./base');
+var Base = require('./_base');
 var util = require('util');
 var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
 
-function HttpHeader(store, reasoner, id, subject) {
+function HttpHeader(expanded, reasoner, parent) {
   if (!(this instanceof HttpHeader))
-    return new HttpHeader(store, reasoner, id, subject);
-  Base.call(this, store, reasoner, id, subject);
+    return new HttpHeader(expanded, reasoner, parent);
+  Base.call(this, expanded, reasoner, parent);
 }
 util.inherits(HttpHeader, Base);
 
@@ -44,7 +44,7 @@ HttpHeader.Builder = function(reasoner,types, base) {
     this, 
     reasoner, 
     utils.merge_types(reasoner,vocabs.as.HttpHeader, types),
-    base || new HttpHeader(undefined, reasoner));
+    base || new HttpHeader({}, reasoner));
 };
 util.inherits(HttpHeader.Builder, Base.Builder);
 

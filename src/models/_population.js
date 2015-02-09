@@ -18,36 +18,37 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var AsObject = require('./asobject');
+var AsObject = require('./_object');
 var util     = require('util');
 var utils    = require('../utils');
 var vocabs   = require('linkeddata-vocabs');
 
-function AsActor(store, reasoner, id, subject) {
-  if (!(this instanceof AsActor))
-    return new AsActor(store, reasoner, id, subject);
-  AsObject.call(this, store, reasoner, id, subject);
+function Population(expanded, reasoner, parent) {
+  if (!(this instanceof Population))
+    return new Population(expanded, reasoner, parent);
+  AsObject.call(this, expanded, reasoner, parent);
 }
-util.inherits(AsActor, AsObject);
+util.inherits(Population, AsObject);
 
-utils.define(AsActor.prototype, 'actorOf', function() {
-  return this.get(vocabs.as.actorOf);
+utils.define(Population.prototype, 'distance', function() {
+  var ret = Math.max(0,this.get(vocabs.social.distance));
+  return isNaN(ret) ? undefined : ret;
 });
 
-AsActor.Builder = function(reasoner, types, base) {
-  if (!(this instanceof AsActor.Builder))
-    return new AsActor.Builder(reasoner, types, base);
+Population.Builder = function(reasoner,types, base) {
+  if (!(this instanceof Population.Builder))
+    return new Population.Builder(reasoner, types, base);
   AsObject.Builder.call(
     this, 
     reasoner, 
-    utils.merge_types(reasoner,vocabs.as.Actor,types), 
-    base || new AsActor(undefined,reasoner));
+    utils.merge_types(reasoner,vocabs.social.Population, types),
+    base || new Population({}, reasoner));
 };
-util.inherits(AsActor.Builder, AsObject.Builder);
+util.inherits(Population.Builder, AsObject.Builder);
 
-AsActor.Builder.prototype.actorOf = function(val) {
-  this.set(vocabs.as.actorOf, val);
+Population.Builder.prototype.distance = function(val) {
+  utils.set_non_negative_int.call(this, vocabs.social.distance, val);
   return this;
 };
 
-module.exports = AsActor;
+module.exports = Population;

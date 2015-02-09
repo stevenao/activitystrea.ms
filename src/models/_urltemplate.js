@@ -18,43 +18,43 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var Base = require('./base');
+var Base = require('./_base');
 var util = require('util');
 var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
 
-function Payload(store, reasoner, id, subject) {
-  if (!(this instanceof Payload))
-    return new Payload(store, reasoner, id, subject);
-  Base.call(this, store, reasoner, id, subject);
+function UrlTemplate(expanded, reasoner, parent) {
+  if (!(this instanceof UrlTemplate))
+    return new UrlTemplate(expanded, reasoner, parent);
+  Base.call(this, expanded, reasoner, parent);
 }
-util.inherits(Payload, Base);
+util.inherits(UrlTemplate, Base);
 
-utils.define(Payload.prototype, 'mediaType', function() {
-  return this.get(vocabs.as.mediaType);
+utils.define(UrlTemplate.prototype, 'parameter', function() {
+  return this.get(vocabs.as.parameter);
 });
-utils.define(Payload.prototype, 'shape', function() {
+utils.define(UrlTemplate.prototype, 'template', function() {
   return this.get(vocabs.as.shape);
 });
 
-Payload.Builder = function(reasoner,types, base) {
-  if (!(this instanceof Payload.Builder))
-    return new Payload.Builder(reasoner, types, base);
+UrlTemplate.Builder = function(reasoner,types, base) {
+  if (!(this instanceof UrlTemplate.Builder))
+    return new UrlTemplate.Builder(reasoner, types, base);
   Base.Builder.call(
     this, 
     reasoner, 
-    utils.merge_types(reasoner,vocabs.as.Payload, types),
-    base || new Payload(undefined, reasoner));
+    utils.merge_types(reasoner,vocabs.as.UrlTemplate, types),
+    base || new UrlTemplate({}, reasoner));
 };
-util.inherits(Payload.Builder, Base.Builder);
+util.inherits(UrlTemplate.Builder, Base.Builder);
 
-Payload.Builder.prototype.mediaType = function(val) {
+UrlTemplate.Builder.prototype.parameter = function(val) {
   this.set(vocabs.as.name, val);
   return this;
 };
-Payload.Builder.prototype.shape = function(val) {
+UrlTemplate.Builder.prototype.template = function(val) {
   this.set(vocabs.as.shape, val);
   return this;
 };
 
-module.exports = Payload;
+module.exports = UrlTemplate;

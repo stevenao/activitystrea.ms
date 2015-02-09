@@ -18,8 +18,8 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var utils = require('../utils');
 var LanguageTag = require('rfc5646');
+var utils = require('../utils');
 
 function LanguageValue(builder) {
   if (!(this instanceof LanguageValue))

@@ -18,79 +18,79 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var AsObject = require('./asobject');
 var util = require('util');
 var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
+var AsObject = require('./_object');
 
-function AsPlace(store, reasoner, id, subject) {
-  if (!(this instanceof AsPlace))
-    return new AsPlace(store, reasoner, id, subject);
-  AsObject.call(this, store, reasoner, id, subject);
+function Place(expanded, reasoner, parent) {
+  if (!(this instanceof Place))
+    return new Place(expanded, reasoner, parent);
+  AsObject.call(this, expanded, reasoner, parent);
 }
-util.inherits(AsPlace, AsObject);
-utils.define(AsPlace.prototype, 'accuracy', function() {
+util.inherits(Place, AsObject);
+utils.define(Place.prototype, 'accuracy', function() {
   var ret = Math.min(100, Math.max(0, this.get(vocabs.as.accuracy)));
   return isNaN(ret) ? undefined : ret ;
 });
-utils.define(AsPlace.prototype, 'altitude', function() {
+utils.define(Place.prototype, 'altitude', function() {
   var ret = this.get(vocabs.as.altitude);
   return isNaN(ret) ? undefined : ret ;
 });
-utils.define(AsPlace.prototype, 'latitude', function() {
+utils.define(Place.prototype, 'latitude', function() {
   var ret = Math.min(90.0, Math.max(-90.0, this.get(vocabs.as.latitude)));
   return isNaN(ret) ? undefined : ret ;
 });
-utils.define(AsPlace.prototype, 'longitude', function() {
+utils.define(Place.prototype, 'longitude', function() {
   var ret = Math.min(180.0, Math.max(-180.0, this.get(vocabs.as.longitude)));
   return isNaN(ret) ? undefined : ret ;
 });
-utils.define(AsPlace.prototype, 'radius', function() {
+utils.define(Place.prototype, 'radius', function() {
   var ret = Math.max(0, this.get(vocabs.as.radius));
   return isNaN(ret) ? undefined : ret ;
 });
-utils.define(AsPlace.prototype, 'units', function() {
+utils.define(Place.prototype, 'units', function() {
   return this.get(vocabs.as.units);
 });
 
-AsPlace.Builder = function(reasoner,types,base) {
-  if (!(this instanceof AsPlace.Builder))
-    return new AsPlace.Builder(reasoner,types,base);
+Place.Builder = function(reasoner,types,base) {
+  if (!(this instanceof Place.Builder))
+    return new Place.Builder(reasoner,types,base);
   AsObject.Builder.call(
     this, 
     reasoner, 
     utils.merge_types(reasoner,vocabs.as.Place, types),
-    base || new AsPlace(undefined,reasoner));
+    base || new Place({},reasoner));
 };
-util.inherits(AsPlace.Builder,AsObject.Builder);
+util.inherits(Place.Builder,AsObject.Builder);
 
-AsPlace.Builder.prototype.accuracy = function(val) {
+Place.Builder.prototype.accuracy = function(val) {
   utils.set_ranged_val.call(this, vocabs.as.accuracy, val, 0.00, 100.0, vocabs.xsd.float);
   return this;
 };
-AsPlace.Builder.prototype.altitude = function(val) {
+Place.Builder.prototype.altitude = function(val) {
   utils.throwif(!utils.is_number(val), 'altitude must be a number');
   this.set(vocabs.as.altitude, val, {type: vocabs.xsd.float});
   return this;
 };
-AsPlace.Builder.prototype.latitude = function(val) {
+Place.Builder.prototype.latitude = function(val) {
   utils.throwif(!utils.is_number(val), 'latitude must be a number');
   utils.set_ranged_val.call(this, vocabs.as.latitude, val, -90.0, 90.0, vocabs.xsd.float);
   return this;
 };
-AsPlace.Builder.prototype.longitude = function(val) {
+Place.Builder.prototype.longitude = function(val) {
   utils.throwif(!utils.is_number(val), 'longitude must be a number');
   utils.set_ranged_val.call(this, vocabs.as.longitude, val, -180.0, 180.0, vocabs.xsd.float);
   return this;
 };
-AsPlace.Builder.prototype.radius = function(val) {
+Place.Builder.prototype.radius = function(val) {
   utils.throwif(!utils.is_number(val), 'radius must be a number');
   utils.set_ranged_val.call(this, vocabs.as.radius, val, 0.00, Infinity, vocabs.xsd.float);
   return this;
 };
-AsPlace.Builder.prototype.units = function(val) {
+Place.Builder.prototype.units = function(val) {
   this.set(vocabs.as.units, val);
   return this;
 };
 
-module.exports = AsPlace;
+module.exports = Place;

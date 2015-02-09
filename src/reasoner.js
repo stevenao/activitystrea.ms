@@ -157,6 +157,7 @@ function _init(reasoner) {
     [vocabs.as.Respond, vocabs.as.Activity],
     [vocabs.as.Move, vocabs.as.Activity],
     [vocabs.as.Travel, vocabs.as.IntransitiveActivity],
+    [vocabs.as.Update, vocabs.as.Activity],
     [vocabs.as.Mention, vocabs.as.Link],
     [vocabs.as.Note, vocabs.as.Content],
     [vocabs.as.Offer, vocabs.as.Activity],

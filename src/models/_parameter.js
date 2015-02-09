@@ -18,15 +18,15 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var Base = require('./base');
+var Base = require('./_base');
 var util = require('util');
 var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
 
-function Parameter(store, reasoner, id, subject) {
+function Parameter(expanded, reasoner, parent) {
   if (!(this instanceof Parameter))
-    return new Parameter(store, reasoner, id, subject);
-  Base.call(this, store, reasoner, id, subject);
+    return new Parameter(expanded, reasoner, parent);
+  Base.call(this, expanded, reasoner, parent);
 }
 util.inherits(Parameter, Base);
 
@@ -50,7 +50,7 @@ Parameter.Builder = function(reasoner,types, base) {
     this, 
     reasoner, 
     utils.merge_types(reasoner,vocabs.as.Parameter, types),
-    base || new Parameter(undefined, reasoner));
+    base || new Parameter({}, reasoner));
 };
 util.inherits(Parameter.Builder, Base.Builder);
 

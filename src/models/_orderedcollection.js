@@ -18,39 +18,39 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var AsCollection = require('./ascollection');
+var Collection = require('./_collection');
 var util = require('util');
 var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
 var models = require('../models');
 
-function AsOrderedCollection(store, reasoner, id, subject) {
-  if (!(this instanceof AsOrderedCollection))
-    return new AsOrderedCollection(store, reasoner, id, subject);
-  AsCollection.call(this,store,reasoner,subject,id);
+function OrderedCollection(expanded, reasoner, parent) {
+  if (!(this instanceof OrderedCollection))
+    return new OrderedCollection(expanded, reasoner, parent);
+  Collection.call(this,expanded, reasoner, parent);
 }
-util.inherits(AsOrderedCollection, AsCollection);
-utils.define(AsOrderedCollection.prototype, 'startIndex', function() {
+util.inherits(OrderedCollection, Collection);
+utils.define(OrderedCollection.prototype, 'startIndex', function() {
   var ret = Math.max(0,this.get(vocabs.as.startIndex));
   return isNaN(ret) ? 0 : ret;
 });
 
-AsOrderedCollection.Builder = function(reasoner, types, base) {
-  if (!(this instanceof AsOrderedCollection.Builder))
-    return new AsOrderedCollection.Builder(reasoner, types, base);
-  AsCollection.Builder.call(
+OrderedCollection.Builder = function(reasoner, types, base) {
+  if (!(this instanceof OrderedCollection.Builder))
+    return new OrderedCollection.Builder(reasoner, types, base);
+  Collection.Builder.call(
     this, 
     reasoner, 
     utils.merge_types(reasoner, vocabs.as.OrderedCollection, types),
-    base || new AsOrderedCollection(undefined, reasoner));
+    base || new OrderedCollection({}, reasoner));
 };
-util.inherits(AsOrderedCollection.Builder, AsCollection.Builder);
-AsOrderedCollection.Builder.prototype.items = function(val) {
+util.inherits(OrderedCollection.Builder, Collection.Builder);
+OrderedCollection.Builder.prototype.items = function(val) {
   return this.orderedItems.apply(this,arguments);
 };
-AsOrderedCollection.Builder.prototype.startIndex = function(val) {
+OrderedCollection.Builder.prototype.startIndex = function(val) {
   utils.set_non_negative_int.call(this, as.startIndex, val);
   return this;
 };
 
-module.exports = AsOrderedCollection;
+module.exports = OrderedCollection;

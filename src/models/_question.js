@@ -18,66 +18,66 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var AsActivity = require('./asactivity');
 var util       = require('util');
 var utils      = require('../utils');
 var vocabs     = require('linkeddata-vocabs');
+var Activity = require('./_activity');
 
-function AsQuestion(store, reasoner, id, subject) {
-  if (!(this instanceof AsQuestion))
-    return new AsQuestion(store, reasoner, id, subject);
-  AsActivity.call(this, store, reasoner, id, subject);
+function Question(expanded, reasoner, parent) {
+  if (!(this instanceof Question))
+    return new Question(expanded, reasoner, parent);
+  Activity.call(this, expanded, reasoner, parent);
 }
-util.inherits(AsQuestion, AsActivity);
-utils.define(AsQuestion.prototype, 'height', function() {
+util.inherits(Question, Activity);
+utils.define(Question.prototype, 'height', function() {
   var ret = Math.max(0,this.get(vocabs.as.height));
   return isNaN(ret) ? 0 : ret;
 });
-utils.define(AsQuestion.prototype, 'width', function() {
+utils.define(Question.prototype, 'width', function() {
   var ret = Math.max(0,this.get(vocabs.as.width));
   return isNaN(ret) ? 0 : ret;
 });
-utils.define(AsQuestion.prototype, 'duration', function() {
+utils.define(Question.prototype, 'duration', function() {
   return this.get(vocabs.as.duration);
 });
-utils.define(AsQuestion.prototype, 'anyOf', function() {
+utils.define(Question.prototype, 'anyOf', function() {
   return this.get(vocabs.as.anyOf);
 });
-utils.define(AsQuestion.prototype, 'oneOf', function() {
+utils.define(Question.prototype, 'oneOf', function() {
   return this.get(vocabs.as.oneOf);
 });
 
-AsQuestion.Builder = function(reasoner,types,base) {
-  if (!(this instanceof AsQuestion.Builder))
-    return new AsQuestion.Builder(reasoner, types, base);
-  AsActivity.Builder.call(
+Question.Builder = function(reasoner,types,base) {
+  if (!(this instanceof Question.Builder))
+    return new Question.Builder(reasoner, types, base);
+  Activity.Builder.call(
     this, 
     reasoner, 
     utils.merge_types(reasoner,vocabs.as.Question, types),
-    base || new AsQuestion(undefined,reasoner));
+    base || new Question({},reasoner));
 };
-util.inherits(AsQuestion.Builder, AsActivity.Builder);
+util.inherits(Question.Builder, Activity.Builder);
 
-AsQuestion.Builder.prototype.height = function(val) {
+Question.Builder.prototype.height = function(val) {
   utils.set_non_negative_int.call(this, vocabs.as.height, val);
   return this;
 };
-AsQuestion.Builder.prototype.width = function(val) {
+Question.Builder.prototype.width = function(val) {
   utils.set_non_negative_int.call(this, vocabs.as.width, val);
   return this;
 };
-AsQuestion.Builder.prototype.duration = function(val) {
+Question.Builder.prototype.duration = function(val) {
   utils.set_duration_vall.call(this, vocabs.as.duration, val);
   return this;
 };
-AsQuestion.Builder.prototype.oneOf = function(val) {
+Question.Builder.prototype.oneOf = function(val) {
   this.set(vocabs.as.oneOf, val);
   return this;
 };
-AsQuestion.Builder.prototype.anyOf = function(val) {
+Question.Builder.prototype.anyOf = function(val) {
   this.set(vocabs.as.anyOf, val);
   return this;
 };
 
-module.exports = AsQuestion;
+module.exports = Question;
 

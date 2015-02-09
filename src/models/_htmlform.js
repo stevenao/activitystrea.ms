@@ -18,34 +18,36 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var AsContent = require('./ascontent');
 var util = require('util');
 var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
+var Base = require('./_base');
 
-function AsPossibleAnswer(store, reasoner, id, subject) {
-  if (!(this instanceof AsPossibleAnswer))
-    return new AsPossibleAnswer(store, reasoner, id, subject);
-  AsContent.call(this, store, reasoner, id, subject);
+function HtmlForm(expanded, reasoner, parent) {
+  if (!(this instanceof HtmlForm))
+    return new HtmlForm(expanded, reasoner, parent);
+  Base.call(this, expanded, reasoner, parent);
 }
-util.inherits(AsPossibleAnswer, AsContent);
-utils.define(AsPossibleAnswer.prototype, 'shape', function() {
-  return this.get(vocabs.as.shape);
+util.inherits(HtmlForm, Base);
+
+utils.define(HtmlForm.prototype, 'parameter', function() {
+  return this.get(vocabs.as.parameter);
 });
 
-AsPossibleAnswer.Builder = function(reasoner, types, base) {
-  if (!(this instanceof AsPossibleAnswer.Builder))
-    return new AsPossibleAnswer.Builder(reasoner,types,base);
-  AsContent.Builder.call(
+HtmlForm.Builder = function(reasoner,types, base) {
+  if (!(this instanceof HtmlForm.Builder))
+    return new HtmlForm.Builder(reasoner, types, base);
+  Base.Builder.call(
     this, 
     reasoner, 
-    utils.merge_types(reasoner,vocabs.as.PossibleAnswer,types),
-    base || new AsPossibleAnswer(undefined,reasoner));
+    utils.merge_types(reasoner,vocabs.as.HtmlForm, types),
+    base || new HtmlForm({}, reasoner));
 };
-util.inherits(AsPossibleAnswer.Builder, AsContent.Builder);
-AsPossibleAnswer.Builder.prototype.shape = function(val) {
-  this.set(vocabs.as.shape, val);
+util.inherits(HtmlForm.Builder, Base.Builder);
+
+HtmlForm.Builder.prototype.parameter = function(val) {
+  this.set(vocabs.as.parameter, val);
   return this;
 };
 
-module.exports = AsPossibleAnswer;
+module.exports = HtmlForm;

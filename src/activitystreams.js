@@ -20,34 +20,23 @@
  * @author James M Snell (jasnell@us.ibm.com)
  */
 
-var models   = require('./models');
-var Reasoner = require('./reasoner');
-var vocabs   = require('linkeddata-vocabs');
-var utils    = require('./utils');
-
-var merge_types = utils.merge_types;
-var reasoner = new Reasoner();
+var models        = require('./models');
+var Reasoner      = require('./reasoner');
+var vocabs        = require('linkeddata-vocabs');
+var utils         = require('./utils');
+var jsonld        = require('./_jsonld');
+var checkCallback = utils.checkCallback;
+var merge_types   = utils.merge_types;
+var reasoner      = Reasoner();
  
 exports.models = models;
 
 exports.vocabs = vocabs;
 
-exports.createStore = utils.store;
-
-exports.importBase = function(store, id) {
-  return new models.Base(store, reasoner, id, id);
-};
-
 exports.import = function(input, callback) {
-  utils.throwif(typeof callback !== 'function', 'A callback function must be provided');
+  checkCallback(callback);
   process.nextTick(function() {
-    utils.jsonld.import(reasoner, input, function(err, doc) {
-      if (err) {
-        callback(err);
-        return;
-      }
-      callback(null,doc);
-    });
+    jsonld.import(reasoner, input, callback);
   });
 };
 
@@ -200,9 +189,6 @@ exports.achieve = function(types) {
 };
 exports.application = function(types) {
   return models.Actor.Builder(reasoner, merge_types(reasoner, vocabs.as.Application, types));
-};
-exports.content = function(types) {
-  return models.Content.Builder(reasoner, types, types);
 };
 exports.device = function(types) {
   return models.Actor.Builder(reasoner, merge_types(reasoner, vocabs.as.Device, types));

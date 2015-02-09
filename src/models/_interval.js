@@ -18,15 +18,15 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var AsObject = require('./asobject');
+var AsObject = require('./_object');
 var util     = require('util');
 var utils    = require('../utils');
 var vocabs   = require('linkeddata-vocabs');
 
-function Interval(store, reasoner, id, subject) {
+function Interval(expanded, reasoner, parent) {
   if (!(this instanceof Interval))
-    return new Interval(store, reasoner, id, subject);
-  AsObject.call(this, store, reasoner, id, subject);
+    return new Interval(expanded, reasoner, parent);
+  AsObject.call(this, expanded, reasoner, parent);
 }
 util.inherits(Interval, AsObject);
 
@@ -47,7 +47,7 @@ Interval.Builder = function(reasoner,types, base) {
     this, 
     reasoner, 
     utils.merge_types(reasoner,vocabs.interval.Interval, types),
-    base || new Interval(undefined, reasoner));
+    base || new Interval({}, reasoner));
 };
 util.inherits(Interval.Builder, AsObject.Builder);
 
