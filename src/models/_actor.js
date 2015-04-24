@@ -30,24 +30,15 @@ function Actor(expanded, reasoner, parent) {
 }
 util.inherits(Actor, AsObject);
 
-utils.define(Actor.prototype, 'actorOf', function() {
-  return this.get(vocabs.as.actorOf);
-});
-
 Actor.Builder = function(reasoner, types, base) {
   if (!(this instanceof Actor.Builder))
     return new Actor.Builder(reasoner, types, base);
   AsObject.Builder.call(
-    this, 
-    reasoner, 
-    utils.merge_types(reasoner,vocabs.as.Actor,types), 
+    this,
+    reasoner,
+    utils.merge_types(reasoner,vocabs.as.Actor,types),
     base || new Actor({},reasoner));
 };
 util.inherits(Actor.Builder, AsObject.Builder);
-
-Actor.Builder.prototype.actorOf = function(val) {
-  this.set(vocabs.as.actorOf, val);
-  return this;
-};
 
 module.exports = Actor;

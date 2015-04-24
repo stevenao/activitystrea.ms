@@ -59,65 +59,13 @@ utils.define(Link.prototype, 'width', function() {
 utils.define(Link.prototype, 'duration', function() {
   return this.get(vocabs.as.duration);
 });
-utils.define(Link.prototype, 'actorOf', function() {
-  return this.get(vocabs.as.actorOf);
-});
-utils.define(Link.prototype, 'attachedTo', function() {
-  return this.get(vocabs.as.attachedTo);
-});
-utils.define(Link.prototype, 'attributedWith', function() {
-  return this.get(vocabs.as.attributedWith);
-});
-utils.define(Link.prototype, 'contextOf', function() {
-  return this.get(vocabs.as.contextOf);
-});
-utils.define(Link.prototype, 'generatorOf', function() {
-  return this.get(vocabs.as.generatorOf);
-});
-utils.define(Link.prototype, 'iconFor', function() {
-  return this.get(vocabs.as.iconFor);
-});
-utils.define(Link.prototype, 'imageOf', function() {
-  return this.get(vocabs.as.imageOf);
-});
-utils.define(Link.prototype, 'locationOf', function() {
-  return this.get(vocabs.as.locationOf);
-});
-utils.define(Link.prototype, 'memberOf', function() {
-  return this.get(vocabs.as.memberOf);
-});
-utils.define(Link.prototype, 'objectOf', function() {
-  return this.get(vocabs.as.objectOf);
-});
-utils.define(Link.prototype, 'originOf', function() {
-  return this.get(vocabs.as.originOf);
-});
-utils.define(Link.prototype, 'previewOf', function() {
-  return this.get(vocabs.as.previewOf);
-});
-utils.define(Link.prototype, 'providerOf', function() {
-  return this.get(vocabs.as.providerOf);
-});
-utils.define(Link.prototype, 'resultOf', function() {
-  return this.get(vocabs.as.resultOf);
-});
-utils.define(Link.prototype, 'scopeOf', function() {
-  return this.get(vocabs.as.scopeOf);
-});
-utils.define(Link.prototype, 'tagOf', function() {
-  return this.get(vocabs.as.tagOf);
-});
-utils.define(Link.prototype, 'targetOf', function() {
-  return this.get(vocabs.as.targetOf);
-});
-
 
 Link.Builder = function(reasoner, types, base) {
   if (!(this instanceof Link.Builder))
     return new Link.Builder(reasoner, types, base);
   Base.Builder.call(
-    this, 
-    reasoner, 
+    this,
+    reasoner,
     utils.merge_types(reasoner,vocabs.as.Link,types),
     base || new Link({}, reasoner));
 };
@@ -136,74 +84,6 @@ Link.Builder.prototype.hreflang = function(val) {
 };
 Link.Builder.prototype.mediaType = function(val) {
   this.set(vocabs.as.mediaType, val);
-  return this;
-};
-Link.Builder.prototype.actorOf = function(val) {
-  this.set(vocabs.as.actorOf, val);
-  return this;
-};
-Link.Builder.prototype.attachedto = function(val) {
-  this.set(vocabs.as.attachedTo, val);
-  return this;
-};
-Link.Builder.prototype.attributedWith = function(val) {
-  this.set(vocabs.as.attributedWith, val);
-  return this;
-};
-Link.Builder.prototype.contextOf = function(val) {
-  this.set(vocabs.as.contextOf, val);
-  return this;
-};
-Link.Builder.prototype.generatorOf = function(val) {
-  this.set(vocabs.as.generatorOf, val);
-  return this;
-};
-Link.Builder.prototype.iconFor = function(val) {
-  this.set(vocabs.as.iconFor, val);
-  return this;
-};
-Link.Builder.prototype.imageOf = function(val) {
-  this.set(vocabs.as.imageOf, val);
-  return this;
-};
-Link.Builder.prototype.locationOf = function(val) {
-  this.set(vocabs.as.locationOf, val);
-  return this;
-};
-Link.Builder.prototype.memberOf = function(val) {
-  this.set(vocabs.as.memberOf, val);
-  return this;
-};
-Link.Builder.prototype.objectOf = function(val) {
-  this.set(vocabs.as.objectOf, val);
-  return this;
-};
-Link.Builder.prototype.originOf = function(val) {
-  this.set(vocabs.as.originOf, val);
-  return this;
-};
-Link.Builder.prototype.previewOf = function(val) {
-  this.set(vocabs.as.previewOf, val);
-  return this;
-};
-Link.Builder.prototype.providerOf = function(val) {
-  this.set(vocabs.as.providerOf, val);
-  return this;
-};
-Link.Builder.prototype.resultOf = function(val) {
-  this.set(vocabs.as.resultOf, val);
-  return this;
-};
-Link.Builder.prototype.scopeOf = function(val) {
-  this.set(vocabs.as.scopeOf, val);
-  return this;
-};
-Link.Builder.prototype.tagOf = function(val) {
-  this.set(vocabs.as.tagOf, val);
-  return this;
-};
-Link.Builder.prototype.targetOf = function(val) {
-  this.set(vocabs.as.targetOf, val);
   return this;
 };
 Link.Builder.prototype.displayName = function(val, lang) {

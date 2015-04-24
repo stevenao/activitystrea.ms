@@ -56,23 +56,68 @@ var assert = require('assert'),
   assert(as.link().get() instanceof models.Link);
 
   // Quick test on the various constructor methods
-  ['accept', 'tentativeAccept', 'add', 'arrive',
-   'create', 'delete', 'favorite', 'follow', 'ignore',
-   'join', 'leave', 'like', 'offer', 'connect', 'friendRequest',
-   'give', 'invite', 'post', 'reject', 'tentativeReject',
-   'remove', 'review', 'save', 'share', 'undo', 'update',
-   'experience', 'view', 'watch', 'listen', 'read', 'respond',
-   'move', 'travel', 'announce', 'block', 'flag', 'dislike',
-   'confirm', 'assign', 'complete', 'achieve', 'reservation'].forEach(function(key) {
+  ['accept',
+   'tentativeAccept',
+   'add',
+   'arrive',
+   'create',
+   'delete',
+   'favorite',
+   'follow',
+   'ignore',
+   'join',
+   'leave',
+   'like',
+   'offer',
+   'give',
+   'invite',
+   'post',
+   'reject',
+   'tentativeReject',
+   'remove',
+   'review',
+   'save',
+   'share',
+   'undo',
+   'update',
+   'experience',
+   'view',
+   'watch',
+   'listen',
+   'read',
+   'respond',
+   'move',
+   'travel',
+   'announce',
+   'block',
+   'flag',
+   'dislike',
+   'confirm',
+   'assign',
+   'complete'
+  ].forEach(function(key) {
     var obj = as[key]().get();
     assert(obj instanceof models.Activity);
   });
 
-  ['application', 'content', 'device', 'group',
-   'organization', 'person', 'process', 'role',
-   'service', 'article', 'document', 'audio',
-   'image', 'video', 'note', 'page', 'possibleAnswer',
-   'question', 'event', 'place'].forEach(function(key) {
+  [
+   'application',
+   'content',
+   'group',
+   'person',
+   'process',
+   'service',
+   'article',
+   'document',
+   'connection',
+   'audio',
+   'image',
+   'video',
+   'note',
+   'page',
+   'question',
+   'event',
+   'place'].forEach(function(key) {
     var obj = as[key]().get();
     assert(obj instanceof models.Object);
   });
@@ -86,7 +131,7 @@ var assert = require('assert'),
     var obj = as[key]().get();
     assert(obj instanceof models.Link);
   });
-  
+
   // Test complex creation
   obj =
     as.post()
@@ -106,7 +151,7 @@ var assert = require('assert'),
 
   // Test importing from JSON
   as.import({
-    '@type': 'Reservation',
+    '@type': 'Like',
     displayNameMap: {
       en: 'foo'
     },
@@ -120,7 +165,7 @@ var assert = require('assert'),
     }
   }, function(err, doc) {
     assert.equal(null, err);
-    assert.equal(vocabs.as.Reservation, doc.type);
+    assert.equal(vocabs.as.Like, doc.type);
     assert.equal(doc.displayName, 'foo');
     assert.equal(vocabs.as.Person, doc.actor[0].type);
     assert.equal(doc.actor[0].displayName, 'Joe');

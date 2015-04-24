@@ -28,7 +28,7 @@ var jsonld        = require('./_jsonld');
 var checkCallback = utils.checkCallback;
 var merge_types   = utils.merge_types;
 var reasoner      = Reasoner();
- 
+
 exports.models = models;
 
 exports.vocabs = vocabs;
@@ -40,316 +40,125 @@ exports.import = function(input, callback) {
   });
 };
 
-exports.object = function(types) {
-  return models.Object.Builder(reasoner, types);
-};
-exports.actor = function(types) {
-  return models.Actor.Builder(reasoner, types);
-};
-exports.activity = function(types) {
-  return models.Activity.Builder(reasoner, types);
-};
-exports.collection = function(types) {
-  return models.Collection.Builder(reasoner, types);
-};
-exports.orderedCollection = function(types) {
-  return models.OrderedCollection.Builder(reasoner, types);
-};
-exports.content = function(types) {
-  return models.Content.Builder(reasoner, types);
-};
-exports.link = function(types) {
-  return models.Link.Builder(reasoner, types);
-};
-exports.accept = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Accept, types));
-};
-exports.tentativeAccept = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.TentativeAccept, types));
-};
-exports.add = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Add, types));
-};
-exports.arrive = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Arrive, types));
-};
-exports.create = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Create, types));
-};
-exports.delete = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Delete, types));
-};
-exports.favorite = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Favorite, types));
-};
-exports.follow = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Follow, types));
-};
-exports.ignore = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Ignore, types));
-};
-exports.join = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Join, types));
-};
-exports.leave = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Leave, types));
-};
-exports.like = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Like, types));
-};
-exports.offer = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Offer, types));
-};
-exports.connect = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Connect, types));
-};
-exports.friendRequest = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.FriendRequest, types));
-};
-exports.give = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Give, types));
-};
-exports.invite = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Invite, types));
-};
-exports.post = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Post, types));
-};
-exports.reject = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Reject, types));
-};
-exports.tentativeReject = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.TentativeReject, types));
-};
-exports.remove = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Remove, types));
-};
-exports.review = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Review, types));
-};
-exports.save = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Save, types));
-};
-exports.share = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Share, types));
-};
-exports.undo = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Undo, types));
-};
-exports.update = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Update, types));
-};
-exports.experience = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Experience, types));
-};
-exports.view = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.View, types));
-};
-exports.watch = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Watch, types));
-};
-exports.listen = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Listen, types));
-};
-exports.read = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Read, types));
-};
-exports.respond = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Respond, types));
-};
-exports.move = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Move, types));
-};
-exports.travel = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Travel, types));
-};
-exports.announce = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Announce, types));
-};
-exports.block = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Block, types));
-};
-exports.flag = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Flag, types));
-};
-exports.dislike = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Dislike, types));
-};
-exports.confirm = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Confirm, types));
-};
-exports.assign = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Assign, types));
-};
-exports.complete = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Complete, types));
-};
-exports.achieve = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Achieve, types));
-};
-exports.application = function(types) {
-  return models.Actor.Builder(reasoner, merge_types(reasoner, vocabs.as.Application, types));
-};
-exports.device = function(types) {
-  return models.Actor.Builder(reasoner, merge_types(reasoner, vocabs.as.Device, types));
-};
-exports.group = function(types) {
-  return models.Actor.Builder(reasoner, merge_types(reasoner, vocabs.as.Group, types));
-};
-exports.organization = function(types) {
-  return models.Actor.Builder(reasoner, merge_types(reasoner, vocabs.as.Organization, types));
-};
-exports.person = function(types) {
-  return models.Actor.Builder(reasoner, merge_types(reasoner, vocabs.as.Person, types));
-};
-exports.process = function(types) {
-  return models.Actor.Builder(reasoner, merge_types(reasoner, vocabs.as.Process, types));
-};
-exports.role = function(types) {
-  return models.Actor.Builder(reasoner, merge_types(reasoner, vocabs.as.Role, types));
-};
-exports.service = function(types) {
-  return models.Actor.Builder(reasoner, merge_types(reasoner, vocabs.as.Service, types));
-};
-exports.article = function(types) {
-  return models.Content.Builder(reasoner, merge_types(reasoner, vocabs.as.Article, types));
-};
-exports.album = function(types) {
-  return models.Collection.Builder(reasoner, merge_types(reasoner, vocabs.as.Album, types));
-};
-exports.folder = function(types) {
-  return models.Collection.Builder(reasoner, merge_types(reasoner, vocabs.as.Folder, types));
-};
-exports.story = function(types) {
-  return models.OrderedCollection.Builder(reasoner, merge_types(reasoner, vocabs.as.Story, types));
-};
-exports.document = function(types) {
-  return models.Content.Builder(reasoner, merge_types(reasoner, vocabs.as.Document, types));
-};
-exports.audio = function(types) {
-  return models.Content.Builder(reasoner, merge_types(reasoner, vocabs.as.Audio, types));
-};
-exports.image = function(types) {
-  return models.Content.Builder(reasoner, merge_types(reasoner, vocabs.as.Image, types));
-};
-exports.video = function(types) {
-  return models.Content.Builder(reasoner, merge_types(reasoner, vocabs.as.Video, types));
-};
-exports.note = function(types) {
-  return models.Content.Builder(reasoner, merge_types(reasoner, vocabs.as.Note, types));
-};
-exports.page = function(types) {
-  return models.Content.Builder(reasoner, merge_types(reasoner, vocabs.as.Page, types));
-};
-exports.possibleAnswer = function(types) {
-  return models.PossibleAnswer.Builder(reasoner, types);
-};
-exports.question = function(types) {
-  return models.Question.Builder(reasoner, types);
-};
-exports.event = function(types) {
-  return models.Object.Builder(reasoner, merge_types(reasoner, vocabs.as.Event, types));
-};
-exports.place = function(types) {
-  return models.Place.Builder(reasoner, types);
-};
-exports.reservation = function(types) {
-  return models.Activity.Builder(reasoner, merge_types(reasoner, vocabs.as.Reservation, types));
-};
-exports.mention = function(types) {
-  return models.Link.Builder(reasoner, merge_types(reasoner, vocabs.as.Mention, types));
-};
+function define(def) {
+  this[def[0]] = function(types) {
+    if (def[2]) {
+      return models[def[1]].Builder(
+        reasoner,
+        merge_types(reasoner, def[2], types));
+    } else {
+      return models[def[1]].Builder(reasoner, types);
+    }
+  };
+}
+
+[
+  ['object', 'Object'],
+  ['actor', 'Actor'],
+  ['activity', 'Activity'],
+  ['collection', 'Collection'],
+  ['orderedCollection', 'OrderedCollection'],
+  ['content', 'Content'],
+  ['link', 'Link'],
+  ['accept', 'Activity', vocabs.as.Accept],
+  ['tentativeAccept', 'Activity', vocabs.as.TentativeAccept],
+  ['add', 'Activity', vocabs.as.Add],
+  ['arrive', 'Activity', vocabs.as.Arrive],
+  ['create', 'Activity', vocabs.as.Create],
+  ['delete', 'Activity', vocabs.as.Delete],
+  ['favorite', 'Activity', vocabs.as.Favorite],
+  ['follow', 'Activity', vocabs.as.Follow],
+  ['ignore', 'Activity', vocabs.as.Ignore],
+  ['join', 'Activity', vocabs.as.Join],
+  ['leave', 'Activity', vocabs.as.Leave],
+  ['like', 'Activity', vocabs.as.Like],
+  ['offer', 'Activity', vocabs.as.Offer],
+  ['give', 'Activity', vocabs.as.Give],
+  ['invite', 'Activity', vocabs.as.Invite],
+  ['post', 'Activity', vocabs.as.Post],
+  ['reject', 'Activity', vocabs.as.Reject],
+  ['tentativeReject', 'Activity', vocabs.as.TentativeReject],
+  ['remove', 'Activity', vocabs.as.Remove],
+  ['review', 'Activity', vocabs.as.Review],
+  ['save', 'Activity', vocabs.as.Save],
+  ['share', 'Activity', vocabs.as.Share],
+  ['undo', 'Activity', vocabs.as.Undo],
+  ['update', 'Activity', vocabs.as.Update],
+  ['experience', 'Activity', vocabs.as.Experience],
+  ['view', 'Activity', vocabs.as.View],
+  ['watch', 'Activity', vocabs.as.Watch],
+  ['listen', 'Activity', vocabs.as.Listen],
+  ['read', 'Activity', vocabs.as.Read],
+  ['respond', 'Activity', vocabs.as.Respond],
+  ['move', 'Activity', vocabs.as.Move],
+  ['travel', 'Activity', vocabs.as.Travel],
+  ['announce', 'Activity', vocabs.as.Annouce],
+  ['block', 'Activity', vocabs.as.Block],
+  ['flag', 'Activity', vocabs.as.Flag],
+  ['dislike', 'Activity', vocabs.as.Dislike],
+  ['confirm', 'Activity', vocabs.as.Confirm],
+  ['assign', 'Activity', vocabs.as.Assign],
+  ['complete', 'Activity', vocabs.as.Complete],
+  ['application', 'Actor', vocabs.as.Application],
+  ['group', 'Actor', vocabs.as.Group],
+  ['person', 'Actor', vocabs.as.Person],
+  ['process', 'Actor', vocabs.as.Process],
+  ['service', 'Actor', vocabs.as.Service],
+  ['article', 'Content', vocabs.as.Article],
+  ['album', 'Collection', vocabs.as.Album],
+  ['folder', 'Collection', vocabs.as.Folder],
+  ['story', 'OrderedCollection', vocabs.as.Story],
+  ['document', 'Content', vocabs.as.Document],
+  ['audio', 'Content', vocabs.as.Audio],
+  ['image', 'Content', vocabs.as.Image],
+  ['video', 'Content', vocabs.as.Video],
+  ['note', 'Content', vocabs.as.Note],
+  ['page', 'Content', vocabs.as.Page],
+  ['question', 'Question'],
+  ['event', 'Object', vocabs.as.Event],
+  ['connection', 'Connection'],
+  ['place', 'Place'],
+  ['mention', 'Link', vocabs.as.Mention],
+].forEach(define.bind(exports));
 
 exports.interval = function(types) {
   return models.Interval.Builder(reasoner, types);
 };
-exports.interval.open = function(types) {
-  return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.OpenInterval, types));
-};
-exports.interval.closed = function(types) {
-  return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.ClosedInterval, types));
-};
-exports.interval.openClosed = function(types) {
-  return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.OpenClosedInterval, types));
-};
-exports.interval.closedOpen = function(types) {
-  return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.ClosedOpenInterval, types));
-};
-exports.interval.leftOpen = function(types) {
-  return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.LeftOpenInterval, types));
-};
-exports.interval.rightOpen = function(types) {
-  return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.RightOpenInterval, types));
-};
-exports.interval.leftClosed = function(types) {
-  return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.LeftClosedInterval, types));
-};
-exports.interval.rightClosed = function(types) {
-  return models.Interval.Builder(reasoner, merge_types(reasoner, vocabs.interval.RightClosedInterval, types));
-};
+[
+  ['open', 'Interval', vocabs.interval.OpenInterval],
+  ['closed', 'Interval', vocabs.interval.ClosedInterval],
+  ['openClosed', 'Interval', vocabs.interval.OpenClosedInterval],
+  ['closedOpen', 'Interval', vocabs.interval.ClosedOpenInterval],
+  ['leftOpen', 'Interval', vocabs.interval.LeftOpenInterval],
+  ['rightOpen', 'Interval', vocabs.interval.RightOpenInterval],
+  ['leftClosed', 'Interval', vocabs.interval.LeftClosedInterval],
+  ['rightClosed', 'Interval', vocabs.interval.RightClosedInterval]
+].forEach(define.bind(exports.interval));
 
-exports.actions = {
-  browserView : function(types) {
-    return models.BrowserView.Builder(reasoner, types);
-  },
-  httpRequest : function(type) {
-    return models.HttpRequest.Builder(reasoner, types);
-  },
-  embeddedView : function(types) {
-    return models.EmbeddedView.Builder(reasoner, types);
-  },
-  htmlForm : function(types) {
-    return models.HtmlForm.Builder(reasoner, types);
-  },
-  httpHeader : function(types) {
-    return models.HttpHeader.Builder(reasoner, types);
-  },
-  parameter : function(types) {
-    return models.Parameter.Builder(reasoner, types);
-  },
-  payload : function(types) {
-    return models.Payload.Builder(reasoner, types);
-  },
-  urlTemplate : function(types) {
-    return models.UrlTemplate.Builder(reasoner, types);
-  }
-};
+exports.actions = {};
+[
+  ['browserView', 'BrowserView'],
+  ['httpRequest', 'HttpRequest'],
+  ['embeddedView', 'EmbeddedView'],
+  ['htmlForm', 'HtmlForm'],
+  ['httpHeader', 'HttpHeader'],
+  ['parameter', 'Parameter'],
+  ['payload', 'Payload'],
+  ['urlTemplate', 'UrlTemplate']
+].forEach(define.bind(exports.actions));
 
-exports.social = {
-  population : function(types) {
-    return models.Population.Builder(reasoner, types);
-  },
-  everyone : function(types) {
-    return models.Everyone.Builder(reasoner, types);
-  },
-  public : function(types) {
-    return models.Population.Builder(reasoner, merge_types(reasoner, vocabs.social.Public, types));
-  },
-  private : function(types) {
-    return models.Population.Builder(reasoner, merge_types(reasoner, vocabs.social.Private, types));
-  },
-  direct : function(types) {
-    return models.Population.Builder(reasoner, merge_types(reasoner, vocabs.social.Direct, types));
-  },
-  common : function(types) {
-    return models.Common.Builder(reasoner, types);
-  },
-  interested : function(types) {
-    return models.Interested.Builder(reasoner, types);
-  },
-  self : function(types) {
-    return models.Population.Builder(reasoner, merge_types(reasoner, vocabs.social.Self, types));
-  },
-  all : function(types) {
-    return models.CompoundPopulation.Builder(reasoner, merge_types(reasoner, vocabs.social.All, types));
-  },
-  any : function(types) {
-    return models.CompoundPopulation.Builder(reasoner, merge_types(reasoner, vocabs.social.Any, types));
-  },
-  none : function(types) {
-    return models.CompoundPopulation.Builder(reasoner, merge_types(reasoner, vocabs.social.None, types));
-  },
-  compoundPopulation : function(types) {
-    return models.CompoundPopulation.Builder(reasoner, types);
-  }
-};
+exports.social = {};
+[
+  ['population', 'Population'],
+  ['everyone', 'Everyone'],
+  ['public', 'Population', vocabs.social.Public],
+  ['private', 'Population', vocabs.social.Private],
+  ['direct', 'Population', vocabs.social.Direct],
+  ['common', 'Common'],
+  ['interested', 'Interested'],
+  ['self', 'Population', vocabs.social.Self],
+  ['all', 'CompoundPopulation', vocabs.social.All],
+  ['any', 'CompoundPopulation', vocabs.social.Any],
+  ['none', 'CompoundPopulation', vocabs.social.None],
+  ['compoundPopulation', 'CompoundPopulation']
+].forEach(define.bind(exports.social));

@@ -1,11 +1,11 @@
 # Activity Streams 2.0
 
-Based on: 
+Based on:
 
 * http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams2.html
 * http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams2-vocabulary.html
 
-Includes experimental support for: 
+Includes experimental support for:
 
 * http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams2-actions.html
 * http://ns.jasnell.me/interval
@@ -51,85 +51,78 @@ as.post().
 The API uses a fluent factory pattern for creating AS objects. There are factory
 methods for each of the main types of objects defined by the Activity Streams 2.0
 vocabulary. Each takes an optional array of types that will be set on the object.
-If the `[types]` is unspecified, a default will be assigned depending on the 
-object being created. Each of the factory methods returns a builder specific to 
+If the `[types]` is unspecified, a default will be assigned depending on the
+object being created. Each of the factory methods returns a builder specific to
 the kind of object being generated. Once the object has been built, call the `get`
 method to return the generated object.
 
 * `as.object([types])`
 * `as.actor([types])`
-* `as.activity([types])`  
-* `as.collection([types])`  
-* `as.orderedCollection([types])`  
-* `as.content([types])`  
-* `as.link([types])`  
-* `as.accept([types])`  
-* `as.tentativeAccept([types])`  
-* `as.add([types])`  
-* `as.arrive([types])`  
-* `as.create([types])`  
-* `as.delete([types])`  
-* `as.favorite([types])`  
-* `as.follow([types])`  
-* `as.ignore([types])`  
-* `as.join([types])`  
-* `as.leave([types])`  
-* `as.like([types])`  
-* `as.offer([types])`  
-* `as.connect([types])`  
-* `as.friendRequest([types])`  
-* `as.give([types])`  
-* `as.invite([types])`  
-* `as.post([types])`  
-* `as.reject([types])`  
-* `as.tentativeReject([types])`  
-* `as.remove([types])`  
-* `as.review([types])`  
-* `as.save([types])`  
-* `as.share([types])`  
-* `as.undo([types])`  
-* `as.update([types])`  
-* `as.experience([types])`  
-* `as.view([types])`  
-* `as.watch([types])`  
-* `as.listen([types])`  
-* `as.read([types])`  
-* `as.respond([types])`  
-* `as.move([types])`  
-* `as.travel([types])`  
-* `as.announce([types])`  
-* `as.block([types])`  
-* `as.flag([types])`  
-* `as.dislike([types])`  
-* `as.confirm([types])`  
-* `as.assign([types])`  
-* `as.complete([types])`  
-* `as.achieve([types])`  
-* `as.application([types])`  
-* `as.content([types])`  
-* `as.device([types])`  
-* `as.group([types])`  
-* `as.organization([types])`  
-* `as.person([types])`  
-* `as.process([types])`  
-* `as.role([types])`  
-* `as.service([types])`  
-* `as.article([types])`  
-* `as.album([types])`  
-* `as.folder([types])`  
-* `as.story([types])`  
-* `as.document([types])`  
-* `as.audio([types])`  
-* `as.image([types])`  
-* `as.video([types])`  
-* `as.note([types])`  
-* `as.page([types])`  
-* `as.possibleAnswer([types])`  
-* `as.question([types])`  
-* `as.event([types])`  
-* `as.place([types])`  
-* `as.reservation([types])`  
-* `as.mention([types])`  
+* `as.activity([types])`
+* `as.collection([types])`
+* `as.orderedCollection([types])`
+* `as.content([types])`
+* `as.link([types])`
+* `as.accept([types])`
+* `as.tentativeAccept([types])`
+* `as.add([types])`
+* `as.arrive([types])`
+* `as.create([types])`
+* `as.delete([types])`
+* `as.favorite([types])`
+* `as.follow([types])`
+* `as.ignore([types])`
+* `as.join([types])`
+* `as.leave([types])`
+* `as.like([types])`
+* `as.offer([types])`
+* `as.give([types])`
+* `as.invite([types])`
+* `as.post([types])`
+* `as.reject([types])`
+* `as.tentativeReject([types])`
+* `as.remove([types])`
+* `as.review([types])`
+* `as.save([types])`
+* `as.share([types])`
+* `as.undo([types])`
+* `as.update([types])`
+* `as.experience([types])`
+* `as.view([types])`
+* `as.watch([types])`
+* `as.listen([types])`
+* `as.read([types])`
+* `as.respond([types])`
+* `as.move([types])`
+* `as.travel([types])`
+* `as.announce([types])`
+* `as.block([types])`
+* `as.flag([types])`
+* `as.dislike([types])`
+* `as.confirm([types])`
+* `as.assign([types])`
+* `as.complete([types])`
+* `as.application([types])`
+* `as.content([types])`
+* `as.group([types])`
+* `as.person([types])`
+* `as.process([types])`
+* `as.service([types])`
+* `as.article([types])`
+* `as.album([types])`
+* `as.folder([types])`
+* `as.story([types])`
+* `as.document([types])`
+* `as.audio([types])`
+* `as.image([types])`
+* `as.video([types])`
+* `as.note([types])`
+* `as.page([types])`
+* `as.question([types])`
+* `as.event([types])`
+* `as.place([types])`
+* `as.connection([types])`
+* `as.mention([types])`
 * `as.actions.browserView([types])`
 * `as.actions.httpRequest([types])`
 * `as.actions.embeddedView([types])`
@@ -218,4 +211,3 @@ as.note().
 ```
 
 Note that The `export`, `write`, and `prettyWrite` methods are all async. You MUST pass in a callback function. This is largely because of the JSON-LD processing that's happening under the covers.
-
