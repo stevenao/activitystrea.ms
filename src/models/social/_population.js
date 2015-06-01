@@ -18,9 +18,9 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var AsObject = require('./_object');
+var AsObject = require('../_object');
 var util     = require('util');
-var utils    = require('../utils');
+var utils    = require('../../utils');
 var vocabs   = require('linkeddata-vocabs');
 
 function Population(expanded, reasoner, parent) {
@@ -39,8 +39,8 @@ Population.Builder = function(reasoner,types, base) {
   if (!(this instanceof Population.Builder))
     return new Population.Builder(reasoner, types, base);
   AsObject.Builder.call(
-    this, 
-    reasoner, 
+    this,
+    reasoner,
     utils.merge_types(reasoner,vocabs.social.Population, types),
     base || new Population({}, reasoner));
 };

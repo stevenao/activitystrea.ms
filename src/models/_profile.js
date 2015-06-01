@@ -21,33 +21,33 @@
 var util = require('util');
 var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
-var Base = require('./_base');
+var Content = require('./_content');
 
-function HtmlForm(expanded, reasoner, parent) {
-  if (!(this instanceof HtmlForm))
-    return new HtmlForm(expanded, reasoner, parent);
-  Base.call(this, expanded, reasoner, parent);
+function Profile(expanded, reasoner, parent) {
+  if (!(this instanceof Profile))
+    return new Profile(expanded, reasoner, parent);
+  Content.call(this, expanded, reasoner, parent);
 }
-util.inherits(HtmlForm, Base);
+util.inherits(Profile, Content);
 
-utils.define(HtmlForm.prototype, 'parameter', function() {
-  return this.get(vocabs.as.parameter);
+utils.define(Profile.prototype, 'describes', function() {
+  return this.get(vocabs.as.describes);
 });
 
-HtmlForm.Builder = function(reasoner,types, base) {
-  if (!(this instanceof HtmlForm.Builder))
-    return new HtmlForm.Builder(reasoner, types, base);
-  Base.Builder.call(
-    this, 
-    reasoner, 
-    utils.merge_types(reasoner,vocabs.as.HtmlForm, types),
-    base || new HtmlForm({}, reasoner));
+Profile.Builder = function(reasoner,types,base) {
+  if (!(this instanceof Profile.Builder))
+    return new Profile.Builder(reasoner,types,base);
+  Content.Builder.call(
+    this,
+    reasoner,
+    utils.merge_types(reasoner,vocabs.as.Profile, types),
+    base || new Profile({},reasoner));
 };
-util.inherits(HtmlForm.Builder, Base.Builder);
+util.inherits(Profile.Builder,Content.Builder);
 
-HtmlForm.Builder.prototype.parameter = function(val) {
-  this.set(vocabs.as.parameter, val);
+Profile.Builder.prototype.describes = function(val) {
+  this.set(vocabs.as.describes, val);
   return this;
 };
 
-module.exports = HtmlForm;
+module.exports = Profile;

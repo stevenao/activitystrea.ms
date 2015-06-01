@@ -72,9 +72,6 @@ utils.define(AsObject.prototype, 'preview', function() {
 utils.define(AsObject.prototype, 'published', function() {
   return this.get(vocabs.as.published);
 });
-utils.define(AsObject.prototype, 'rating', function() {
-  return this.get(vocabs.as.rating);
-});
 utils.define(AsObject.prototype, 'replies', function() {
   return this.get(vocabs.as.replies);
 });
@@ -225,15 +222,6 @@ AsObject.Builder.prototype.updated = function(val) {
 };
 AsObject.Builder.prototype.updatedNow = function() {
   return this.updated(new Date());
-};
-
-AsObject.Builder.prototype.rating = function(val) {
-  utils.set_ranged_val.call(
-    this,
-    vocabs.as.rating,
-    val, 0.0, 5.0,
-    vocabs.xsd.float);
-  return this;
 };
 
 module.exports = AsObject;

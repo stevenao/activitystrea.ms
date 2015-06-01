@@ -28,7 +28,9 @@ exports.throwif = function(condition, message) {
 };
 
 exports.checkCallback = function(callback) {
-  exports.throwif(typeof callback !== 'function', 'A callback function must be provided');
+  exports.throwif(
+    typeof callback !== 'function',
+    'A callback function must be provided');
 }
 
 exports.uuid = function() {
@@ -42,7 +44,7 @@ exports.define = function(target, key, accessor, writable) {
   };
   if (typeof accessor === 'function')
     def.get = accessor;
-  else 
+  else
     def.value = accessor;
   if (writable)
     def.writable = true;
@@ -58,26 +60,26 @@ exports.hidden = function(target, key, accessor, writable) {
     def.writable = true;
   if (typeof accessor === 'function')
     def.get = accessor;
-  else 
+  else
     def.value = accessor;
   Object.defineProperty(target, key, def);
 };
 
 exports.is_undefined = function(val) {
-  return val === null || 
+  return val === null ||
          val === undefined;
 };
 
 exports.is_primitive = function(val) {
   return exports.is_undefined(val) ||
-         exports.is_string(val) || 
+         exports.is_string(val) ||
          exports.is_number(val) ||
          exports.is_boolean(val);
 };
 
 exports.is_string = function(val) {
-  return typeof val === 'string' || 
-         val instanceof String || 
+  return typeof val === 'string' ||
+         val instanceof String ||
          _toString.apply(val) === '[object String]';
 };
 
@@ -94,7 +96,7 @@ exports.is_number = function(val) {
 };
 
 exports.is_date = function(val) {
-  return val instanceof Date || 
+  return val instanceof Date ||
          _toString.apply(val) === '[object Date]';
 };
 
@@ -104,10 +106,10 @@ exports.is_plain_object = function(val) {
 };
 
 exports.is_integer = function(val) {
-  return exports.is_number(val) && 
-    isFinite(val) && 
-    val > -9007199254740992 && 
-    val < 9007199254740992 && 
+  return exports.is_number(val) &&
+    isFinite(val) &&
+    val > -9007199254740992 &&
+    val < 9007199254740992 &&
     Math.floor(val) === val;
 };
 
@@ -151,7 +153,7 @@ if (typeof type !== 'string') throw new Error();
         ok = false;
         break;
       }
-    } 
+    }
     if (ok) types.push(type);
   }
   return types;

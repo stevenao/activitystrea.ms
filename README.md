@@ -7,7 +7,6 @@ Based on:
 
 Includes experimental support for:
 
-* http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams2-actions.html
 * http://ns.jasnell.me/interval
 * http://ns.jasnell.me/social
 
@@ -19,10 +18,6 @@ Includes experimental support for:
 
 ### Usage
 
-The Activity Streams Objects are generated as wrappers around an n3 in-memory store.
-These wrappers understand the Activity Streams 2.0 model and make it possible to work with
-Activity Streams objects in a consistent way with integrated type checking.
-
 ```javascript
 var as = require('activitystrea.ms');
 
@@ -32,14 +27,13 @@ as.object().
   content('bar', 'en').
   content('foo', 'fr').
   publishedNow().
-  rating(2.5).
   get().
   prettyWrite(function(err,doc) {
     console.log(doc);
   });
 
 // Create a simple activity
-as.post().
+as.create().
   actor('acct:sally@example.org').
   object('http://www.example.org/post').
   get().
@@ -48,13 +42,13 @@ as.post().
   });
 ```
 
-The API uses a fluent factory pattern for creating AS objects. There are factory
-methods for each of the main types of objects defined by the Activity Streams 2.0
-vocabulary. Each takes an optional array of types that will be set on the object.
-If the `[types]` is unspecified, a default will be assigned depending on the
-object being created. Each of the factory methods returns a builder specific to
-the kind of object being generated. Once the object has been built, call the `get`
-method to return the generated object.
+The API uses a fluent factory pattern for creating AS objects. There are
+factory methods for each of the main types of objects defined by the Activity
+Streams 2.0 vocabulary. Each takes an optional array of types that will be set
+on the object. If the `[types]` is unspecified, a default will be assigned
+depending on the object being created. Each of the factory methods returns a
+builder specific to the kind of object being generated. Once the object has
+been built, call the `get` method to return the generated object.
 
 * `as.object([types])`
 * `as.actor([types])`
@@ -76,20 +70,14 @@ method to return the generated object.
 * `as.leave([types])`
 * `as.like([types])`
 * `as.offer([types])`
-* `as.give([types])`
 * `as.invite([types])`
-* `as.post([types])`
 * `as.reject([types])`
 * `as.tentativeReject([types])`
 * `as.remove([types])`
-* `as.review([types])`
-* `as.save([types])`
-* `as.share([types])`
 * `as.undo([types])`
 * `as.update([types])`
 * `as.experience([types])`
 * `as.view([types])`
-* `as.watch([types])`
 * `as.listen([types])`
 * `as.read([types])`
 * `as.respond([types])`
@@ -99,9 +87,6 @@ method to return the generated object.
 * `as.block([types])`
 * `as.flag([types])`
 * `as.dislike([types])`
-* `as.confirm([types])`
-* `as.assign([types])`
-* `as.complete([types])`
 * `as.application([types])`
 * `as.content([types])`
 * `as.group([types])`
@@ -113,6 +98,7 @@ method to return the generated object.
 * `as.folder([types])`
 * `as.story([types])`
 * `as.document([types])`
+* `as.profile([types])`
 * `as.audio([types])`
 * `as.image([types])`
 * `as.video([types])`
@@ -123,14 +109,6 @@ method to return the generated object.
 * `as.place([types])`
 * `as.connection([types])`
 * `as.mention([types])`
-* `as.actions.browserView([types])`
-* `as.actions.httpRequest([types])`
-* `as.actions.embeddedView([types])`
-* `as.actions.htmlForm([types])`
-* `as.actions.httpHeader([types])`
-* `as.actions.parameter([types])`
-* `as.actions.payload([types])`
-* `as.actions.urlTemplate([types])`
 * `as.interval([types])`
 * `as.interval.open([types])`
 * `as.interval.closed([types])`
@@ -152,7 +130,10 @@ method to return the generated object.
 * `as.social.none([types])`
 
 
-The object returned by `get` is a read-only view of the Activity Stream object. It will have property methods that are specific to the object's type. You can export the built object as an ordinary Javascript object using the `export` method. This will generate a JSON-LD compliant Javascript object.
+The object returned by `get` is a read-only view of the Activity Stream object.
+It will have property methods that are specific to the object's type. You can
+export the built object as an ordinary Javascript object using the `export`
+method. This will generate a JSON-LD compliant Javascript object.
 
 ```javascript
 var as = require('activitystrea.ms');
@@ -182,7 +163,8 @@ as.note().
    });
 ```
 
-To serialize the Activity Streams object out as JSON, use the `write` or `prettyWrite` methods.
+To serialize the Activity Streams object out as JSON, use the `write` or
+`prettyWrite` methods.
 
 ```javascript
 var as = require('activitystrea.ms');
@@ -210,4 +192,6 @@ as.note().
    });
 ```
 
-Note that The `export`, `write`, and `prettyWrite` methods are all async. You MUST pass in a callback function. This is largely because of the JSON-LD processing that's happening under the covers.
+Note that The `export`, `write`, and `prettyWrite` methods are all async. You
+MUST pass in a callback function. This is largely because of the JSON-LD
+processing that's happening under the covers.

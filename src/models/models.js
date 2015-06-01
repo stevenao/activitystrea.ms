@@ -31,22 +31,15 @@ exports.Content            = require('./_content');
 exports.Link               = require('./_link');
 exports.Place              = require('./_place');
 exports.Connection         = require('./_connection');
+exports.Profile            = require('./_profile');
 exports.Question           = require('./_question');
-exports.Interval           = require('./_interval');
-exports.Population         = require('./_population');
-exports.CompoundPopulation = require('./_compoundpopulation');
-exports.Everyone           = require('./_everyone');
-exports.Interested         = require('./_interested');
-exports.Common             = require('./_common');
-exports.ActivityHandler    = require('./_activityhandler');
-exports.BrowserView        = require('./_browserview');
-exports.HttpRequest        = require('./_httprequest');
-exports.EmbeddedView       = require('./_embeddedview');
-exports.HtmlForm           = require('./_htmlform');
-exports.HttpHeader         = require('./_httpheader');
-exports.Parameter          = require('./_parameter');
-exports.Payload            = require('./_payload');
-exports.UrlTemplate        = require('./_urltemplate');
+
+exports.Interval           = require('./interval/_interval');
+exports.Population         = require('./social/_population');
+exports.CompoundPopulation = require('./social/_compoundpopulation');
+exports.Everyone           = require('./social/_everyone');
+exports.Interested         = require('./social/_interested');
+exports.Common             = require('./social/_common');
 
 exports.wrap_object = function (expanded, reasoner, parent) {
   var types = expanded['@type'] || [];
@@ -56,22 +49,6 @@ exports.wrap_object = function (expanded, reasoner, parent) {
     var type = types[n];
     if (reasoner.isSubClassOf(type,vocabs.as.Link)) {
       thing = exports.Link;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.UrlTemplate)) {
-      thing = exports.UrlTemplate;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.Payload)) {
-      thing = exports.Payload;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.Parameter)) {
-      thing = exports.Parameter;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.HttpHeader)) {
-      thing = exports.HttpHeader;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.HtmlForm)) {
-      thing = exports.HtmlForm;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.BrowserView)) {
-      thing = exports.BrowserView;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.EmbeddedView)) {
-      thing = exports.EmbeddedView;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.HttpRequest)) {
-      thing = exports.HttpRequest;
     } else if (reasoner.isSubClassOf(type,vocabs.as.OrderedCollection)) {
       thing = exports.OrderedCollection;
     } else if (reasoner.isSubClassOf(type,vocabs.as.Collection)) {
@@ -82,6 +59,8 @@ exports.wrap_object = function (expanded, reasoner, parent) {
       thing = exports.Question;
     } else if (reasoner.isSubClassOf(type,vocabs.as.Activity)) {
       thing = exports.Activity;
+    } else if (reasoner.isSubClassOf(type,vocabs.as.Profile)) {
+      thing = exports.Profile;
     } else if (reasoner.isSubClassOf(type,vocabs.as.Content)) {
       thing = exports.Content;
     } else if (reasoner.isSubClassOf(type,vocabs.as.Place)) {

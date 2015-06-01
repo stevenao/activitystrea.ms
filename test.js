@@ -2,9 +2,8 @@ var a = require('./src/activitystreams.js')
 
 var obj = {
   '@context': 'http://www.w3.org/ns/activitystreams#',
-  '@type': 'Post',
+  '@type': 'Add',
   '@id': 'http://example.org/foo',
-  'rating': 1.2,
   'target': 'http://example.org/foo'
 };
 

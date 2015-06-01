@@ -73,32 +73,22 @@ function define(def) {
   ['leave', 'Activity', vocabs.as.Leave],
   ['like', 'Activity', vocabs.as.Like],
   ['offer', 'Activity', vocabs.as.Offer],
-  ['give', 'Activity', vocabs.as.Give],
   ['invite', 'Activity', vocabs.as.Invite],
-  ['post', 'Activity', vocabs.as.Post],
   ['reject', 'Activity', vocabs.as.Reject],
   ['tentativeReject', 'Activity', vocabs.as.TentativeReject],
   ['remove', 'Activity', vocabs.as.Remove],
-  ['review', 'Activity', vocabs.as.Review],
-  ['save', 'Activity', vocabs.as.Save],
-  ['share', 'Activity', vocabs.as.Share],
   ['undo', 'Activity', vocabs.as.Undo],
   ['update', 'Activity', vocabs.as.Update],
   ['experience', 'Activity', vocabs.as.Experience],
   ['view', 'Activity', vocabs.as.View],
-  ['watch', 'Activity', vocabs.as.Watch],
   ['listen', 'Activity', vocabs.as.Listen],
   ['read', 'Activity', vocabs.as.Read],
-  ['respond', 'Activity', vocabs.as.Respond],
   ['move', 'Activity', vocabs.as.Move],
   ['travel', 'Activity', vocabs.as.Travel],
   ['announce', 'Activity', vocabs.as.Annouce],
   ['block', 'Activity', vocabs.as.Block],
   ['flag', 'Activity', vocabs.as.Flag],
   ['dislike', 'Activity', vocabs.as.Dislike],
-  ['confirm', 'Activity', vocabs.as.Confirm],
-  ['assign', 'Activity', vocabs.as.Assign],
-  ['complete', 'Activity', vocabs.as.Complete],
   ['application', 'Actor', vocabs.as.Application],
   ['group', 'Actor', vocabs.as.Group],
   ['person', 'Actor', vocabs.as.Person],
@@ -117,6 +107,7 @@ function define(def) {
   ['question', 'Question'],
   ['event', 'Object', vocabs.as.Event],
   ['connection', 'Connection'],
+  ['profile', 'Profile'],
   ['place', 'Place'],
   ['mention', 'Link', vocabs.as.Mention],
 ].forEach(define.bind(exports));
@@ -134,18 +125,6 @@ exports.interval = function(types) {
   ['leftClosed', 'Interval', vocabs.interval.LeftClosedInterval],
   ['rightClosed', 'Interval', vocabs.interval.RightClosedInterval]
 ].forEach(define.bind(exports.interval));
-
-exports.actions = {};
-[
-  ['browserView', 'BrowserView'],
-  ['httpRequest', 'HttpRequest'],
-  ['embeddedView', 'EmbeddedView'],
-  ['htmlForm', 'HtmlForm'],
-  ['httpHeader', 'HttpHeader'],
-  ['parameter', 'Parameter'],
-  ['payload', 'Payload'],
-  ['urlTemplate', 'UrlTemplate']
-].forEach(define.bind(exports.actions));
 
 exports.social = {};
 [

@@ -20,7 +20,7 @@
  */
 var Population = require('./_population');
 var util       = require('util');
-var utils      = require('../utils');
+var utils      = require('../../utils');
 var vocabs     = require('linkeddata-vocabs');
 
 function Everyone(expanded, reasoner, parent) {
@@ -41,8 +41,8 @@ Everyone.Builder = function(reasoner,types,base) {
   if (!(this instanceof Everyone.Builder))
     return new Everyone.Builder(reasoner,types,base);
   Population.Builder.call(
-    this, 
-    reasoner, 
+    this,
+    reasoner,
     utils.merge_types(reasoner,vocabs.social.Everyone, types),
     base || new Everyone({},reasoner));
 };

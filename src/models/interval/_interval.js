@@ -18,9 +18,9 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var AsObject = require('./_object');
+var AsObject = require('../_object');
 var util     = require('util');
-var utils    = require('../utils');
+var utils    = require('../../utils');
 var vocabs   = require('linkeddata-vocabs');
 
 function Interval(expanded, reasoner, parent) {
@@ -44,8 +44,8 @@ Interval.Builder = function(reasoner,types, base) {
   if (!(this instanceof Interval.Builder))
     return new Interval.Builder(reasoner, types, base);
   AsObject.Builder.call(
-    this, 
-    reasoner, 
+    this,
+    reasoner,
     utils.merge_types(reasoner,vocabs.interval.Interval, types),
     base || new Interval({}, reasoner));
 };
@@ -59,7 +59,7 @@ function _set(key, val) {
     else if (utils.is_number(val)) {
       if (utils.is_integer(val))
         options.type = vocabs.xsd.integer;
-      else 
+      else
         options.type = vocabs.xsd.decimal;
     } else if (utils.is_boolean(val)) {
       options.type = vocabs.xsd.boolean;

@@ -21,7 +21,6 @@ var assert = require('assert'),
     .startTime(now)
     .published(now)
     .updated(now)
-    .rating(2.5)
     .get();
 
   function testFunctionalProperties(object) {
@@ -35,7 +34,6 @@ var assert = require('assert'),
     assert.equal(object.startTime.toISOString(), now.toISOString());
     assert.equal(object.published.toISOString(), now.toISOString());
     assert.equal(object.updated.toISOString(), now.toISOString());
-    assert.equal(object.rating, 2.5);
   }
   testFunctionalProperties(object);
 
@@ -69,32 +67,22 @@ var assert = require('assert'),
    'leave',
    'like',
    'offer',
-   'give',
    'invite',
-   'post',
    'reject',
    'tentativeReject',
    'remove',
-   'review',
-   'save',
-   'share',
    'undo',
    'update',
    'experience',
    'view',
-   'watch',
    'listen',
    'read',
-   'respond',
    'move',
    'travel',
    'announce',
    'block',
    'flag',
-   'dislike',
-   'confirm',
-   'assign',
-   'complete'
+   'dislike'
   ].forEach(function(key) {
     var obj = as[key]().get();
     assert(obj instanceof models.Activity);
@@ -110,6 +98,7 @@ var assert = require('assert'),
    'article',
    'document',
    'connection',
+   'profile',
    'audio',
    'image',
    'video',
@@ -134,7 +123,7 @@ var assert = require('assert'),
 
   // Test complex creation
   obj =
-    as.post()
+    as.create()
       .actor('acct:joe@example.org')
       .object(as.note().content('this is a note'))
       .get();

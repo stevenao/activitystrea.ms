@@ -19,7 +19,7 @@
  * @author James M Snell (jasnell@us.ibm.com)
  */
 var util = require('util');
-var utils = require('../utils');
+var utils = require('../../utils');
 var vocabs = require('linkeddata-vocabs');
 var Population = require('./_population');
 
@@ -41,8 +41,8 @@ Common.Builder = function(reasoner,types,base) {
   if (!(this instanceof Common.Builder))
     return new Common.Builder(reasoner,types,base);
   Population.Builder.call(
-    this, 
-    reasoner, 
+    this,
+    reasoner,
     utils.merge_types(reasoner,vocabs.social.Common, types),
     base || new Common({},reasoner));
 };
