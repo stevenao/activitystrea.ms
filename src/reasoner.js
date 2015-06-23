@@ -81,7 +81,7 @@ function isSubPropertyOf(store, subject, object) {
 }
 
 function count_type(subject, type) {
-  return this._store.countByIRI(subject, vocabs.rdf.type, type) > 0;
+  return this[_store].countByIRI(subject, vocabs.rdf.type, type) > 0;
 }
 
 function _init(reasoner) {
@@ -303,11 +303,14 @@ function _init(reasoner) {
 
 }
 
+var _store = Symbol('store');
+var _cache = Symbol('cache');
+
 function Reasoner() {
   if (!(this instanceof Reasoner))
     return new Reasoner();
-  utils.hidden(this, '_store', new N3.Store());
-  utils.hidden(this, '_cache', {_sc:{},_sp:{},_tp:{}});
+  this[_store] = new N3.Store();
+  this[_cache] = {_sc:{},_sp:{},_tp:{}};
   _init(this);
 }
 Reasoner.prototype = {
@@ -329,61 +332,61 @@ Reasoner.prototype = {
   },
 
   add : function(subject, predicate, object) {
-    var _cache;
+    var cache;
     switch(predicate) {
       case vocabs.rdfs.subClassOf:
-        _cache = this._cache._sc[subject] = this._cache._sc[subject] || {};
+        cache = this[_cache]._sc[subject] = this[_cache]._sc[subject] || {};
         break;
       case vocabs.rdfs.subPropertyOf:
-        _cache = this._cache._sp[subject] = this._cache._sp[subject] || {};
+        cache = this[_cache]._sp[subject] = this[_cache]._sp[subject] || {};
         break;
       case vocabs.rdf.type:
-        _cache = this._cache._tp[subject] = this._cache._tp[subject] || {};
+        cache = this[_cache]._tp[subject] = this[_cache]._tp[subject] || {};
         break;
     }
     if (Array.isArray(object)) {
       for (var n = 0, l = object.length; n < l; n++) {
-        this._store.addTriple(subject, predicate, object[n]);
-        if (_cache) _cache[object[n]] = true;
+        this[_store].addTriple(subject, predicate, object[n]);
+        if (cache) cache[object[n]] = true;
       }
     } else {
-      this._store.addTriple(subject, predicate, object);
-      if (_cache) _cache[object] = true;
+      this[_store].addTriple(subject, predicate, object);
+      if (cache) cache[object] = true;
     }
     return this;
   },
 
   declare : function(prefix, uri) {
-    this._store.addPrefix(prefix, uri);
+    this[_store].addPrefix(prefix, uri);
     return this;
   },
 
   classHierarchy : function(subject) {
-    return subClassHierarchy(this._store, subject);
+    return subClassHierarchy(this[_store], subject);
   },
 
   propertyHierarchy : function(subject) {
-    return subPropertyHierarchy(this._store, subject);
+    return subPropertyHierarchy(this[_store], subject);
   },
 
   isSubClassOf : function(subject, object) {
-    var _sc = this._cache._sc;
+    var _sc = this[_cache]._sc;
     var _subject = _sc[subject] = _sc[subject] || {};
     _subject[object] = _subject[object] ||
-      isSubClassOf(this._store, subject, object);
+      isSubClassOf(this[_store], subject, object);
     return _subject[object];
   },
 
   isSubPropertyOf : function(subject, object) {
-    var _sp = this._cache._sp;
+    var _sp = this[_cache]._sp;
     var _subject = _sp[subject] = _sp[subject] || {};
     _subject[object] = _subject[object] ||
-      isSubPropertyOf(this._store, subject, object);
+      isSubPropertyOf(this[_store], subject, object);
     return _subject[object];
   },
 
   isTypeOf : function(subject, type) {
-    var _tp = this._cache._tp;
+    var _tp = this[_cache]._tp;
     var _subject = _tp[subject] = _tp[subject] || {};
     _subject[type] = _subject[type] ||
       count_type.call(this, subject, type) > 0;
@@ -391,11 +394,11 @@ Reasoner.prototype = {
   },
 
   descendantClassesOf : function(subject) {
-    return descendantClassesOf(this._store, subject);
+    return descendantClassesOf(this[_store], subject);
   },
 
   descendantPropertiesOf : function(subject) {
-    return descendantPropertiesOf(this._store, subject);
+    return descendantPropertiesOf(this[_store], subject);
   },
 
   is_an_object : function(subject) {

@@ -25,6 +25,8 @@ var models   = require('../models');
 var AsObject = require('./_object');
 var Base     = require('./_base');
 
+var _ordered = Symbol('ordered');
+
 function is_ordered(base) {
   var i = base.get(vocabs.as.items);
   return i && i.length && i[0].get(vocabs.rdf.first);
@@ -34,7 +36,7 @@ function Collection(expanded, reasoner, parent) {
   if (!(this instanceof Collection))
     return new Collection(expanded, reasoner, parent);
   AsObject.call(this, expanded, reasoner, parent);
-  utils.hidden(this, 'ordered', is_ordered(this));
+  this[_ordered] = is_ordered(this);
 }
 util.inherits(Collection, AsObject);
 
@@ -64,6 +66,9 @@ utils.define(Collection.prototype, 'first', function() {
 utils.define(Collection.prototype, 'self', function() {
   return this.get(vocabs.as.self);
 });
+utils.define(Collection.prototype, 'ordered', function() {
+  return this[_ordered];
+});
 
 utils.define(Collection.prototype, 'indexRange', function() {
   return this.get(vocabs.asx.indexRange);
@@ -85,12 +90,11 @@ Collection.Builder = function(reasoner, types, base) {
   if (!(this instanceof Collection.Builder))
     return new Collection.Builder(reasoner, types, base);
   AsObject.Builder.call(
-    this, 
-    reasoner, 
-    utils.merge_types(reasoner, vocabs.as.Collection, types), 
+    this,
+    reasoner,
+    utils.merge_types(reasoner, vocabs.as.Collection, types),
     base || new Collection({}, reasoner));
-  utils.hidden(this, '_current', null, true);
-  utils.hidden(this, '_ordered', 0, true);
+  this[_ordered] = 0;
 };
 util.inherits(Collection.Builder, AsObject.Builder);
 
@@ -143,8 +147,8 @@ Collection.Builder.prototype.startTimeRange = function(val) {
 var slice = Array.prototype.slice;
 
 Collection.Builder.prototype.items = function(val) {
-  utils.throwif(this._ordered > 0, 'Unordered items cannot be added when the collection already contains ordered items');
-  this._ordered = -1;
+  utils.throwif(this[_ordered] > 0, 'Unordered items cannot be added when the collection already contains ordered items');
+  this[_ordered] = -1;
   if (!val) return this;
   if (!Array.isArray(val) && arguments.length > 1)
     val = slice.call(arguments);
@@ -152,8 +156,8 @@ Collection.Builder.prototype.items = function(val) {
   return this;
 };
 Collection.Builder.prototype.orderedItems = function(val) {
-  utils.throwif(this._ordered < 0, 'Ordered items cannot be added when the collection already contains unordered items');
-  this._ordered = 1;
+  utils.throwif(this[_ordered] < 0, 'Ordered items cannot be added when the collection already contains unordered items');
+  this[_ordered] = 1;
   if (!val) return this;
   if (!Array.isArray(val) && arguments.length > 1)
     val = slice.call(arguments);
@@ -164,5 +168,3 @@ Collection.Builder.prototype.orderedItems = function(val) {
 };
 
 module.exports = Collection;
-
-

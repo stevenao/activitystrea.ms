@@ -19,7 +19,6 @@
  * @author James M Snell (jasnell@us.ibm.com)
  */
 var url         = require('url');
-var uuid        = require('uuid');
 var vocabs      = require('linkeddata-vocabs');
 var _toString   = {}.toString;
 
@@ -31,10 +30,6 @@ exports.checkCallback = function(callback) {
   exports.throwif(
     typeof callback !== 'function',
     'A callback function must be provided');
-}
-
-exports.uuid = function() {
-  return 'urn:id:' + uuid.v4();
 };
 
 exports.define = function(target, key, accessor, writable) {
@@ -65,13 +60,9 @@ exports.hidden = function(target, key, accessor, writable) {
   Object.defineProperty(target, key, def);
 };
 
-exports.is_undefined = function(val) {
-  return val === null ||
-         val === undefined;
-};
-
 exports.is_primitive = function(val) {
-  return exports.is_undefined(val) ||
+  return val === null ||
+         val === undefined ||
          exports.is_string(val) ||
          exports.is_number(val) ||
          exports.is_boolean(val);
@@ -145,7 +136,7 @@ exports.merge_types = function(reasoner, type, types) {
   if (!Array.isArray(types)) {
     types = [types];
   }
-if (typeof type !== 'string') throw new Error();
+  exports.throwif(typeof type !== 'string', 'type is not a string');
   if (types.indexOf(type) === -1) {
     var ok = true;
     for (var n = 0, l = types.length; n < l; n++) {
@@ -160,8 +151,7 @@ if (typeof type !== 'string') throw new Error();
 };
 
 exports.set_date_val = function(key, val) {
-  if (!(val instanceof Date)) // support moment.js too
-    throw new Error(key+' must be a date');
+  exports.throwif(!(val instanceof Date), key+' must be a date');
   this.set(key, val.toISOString(),{type:vocabs.xsd.dateTime});
 };
 
