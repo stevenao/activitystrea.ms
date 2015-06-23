@@ -15,11 +15,11 @@ function custom_doc_loader(url, callback) {
   if (u === vocabs.as.ns)
     return callback(null, {
       contextUrl: null,
-      document: as_context, 
+      document: as_context,
       documentUrl: url
     });
   default_doc_loader(url, callback);
-};
+}
 
 exports.compact = function(expanded, options, callback) {
   if (typeof options === 'function') {
@@ -30,12 +30,12 @@ exports.compact = function(expanded, options, callback) {
   checkCallback(callback);
   var _context = {'@context': [vocabs.as.ns, asx_context]};
   options = options || {};
-  if (options.additional_context) 
+  if (options.additional_context)
     _context['@context'].push(
       options.additional_context);
   jsonld.compact(
-    expanded, _context, 
-    {documentLoader: custom_doc_loader}, 
+    expanded, _context,
+    {documentLoader: custom_doc_loader},
     function(err, doc) {
       if (err) {
         callback(err);
@@ -47,10 +47,9 @@ exports.compact = function(expanded, options, callback) {
 
 exports.import = function(reasoner, input, callback) {
   checkCallback(callback);
-
   jsonld.expand(
     input, {
-      expandContext: as_context, 
+      expandContext: as_context,
       documentLoader: custom_doc_loader
     },
     function(err,expanded) {
