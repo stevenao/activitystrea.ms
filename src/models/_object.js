@@ -96,8 +96,17 @@ utils.define(AsObject.prototype, 'updated', function() {
 utils.define(AsObject.prototype, 'url', function() {
   return this.get(vocabs.as.url);
 });
-utils.define(AsObject.prototype, 'action', function() {
-  return this.get(vocabs.as.action);
+utils.define(AsObject.prototype, 'to', function() {
+  return this.get(vocabs.as.to);
+});
+utils.define(AsObject.prototype, 'bto', function() {
+  return this.get(vocabs.as.bto);
+});
+utils.define(AsObject.prototype, 'cc', function() {
+  return this.get(vocabs.as.cc);
+});
+utils.define(AsObject.prototype, 'bcc', function() {
+  return this.get(vocabs.as.bcc);
 });
 
 AsObject.Builder = function(reasoner, types, base) {
@@ -222,6 +231,22 @@ AsObject.Builder.prototype.updated = function(val) {
 };
 AsObject.Builder.prototype.updatedNow = function() {
   return this.updated(new Date());
+};
+AsObject.Builder.prototype.to = function(val) {
+  this.set(vocabs.as.to, val);
+  return this;
+};
+AsObject.Builder.prototype.bto = function(val) {
+  this.set(vocabs.as.bto, val);
+  return this;
+};
+AsObject.Builder.prototype.cc = function(val) {
+  this.set(vocabs.as.cc, val);
+  return this;
+};
+AsObject.Builder.prototype.bcc = function(val) {
+  this.set(vocabs.as.bcc, val);
+  return this;
 };
 
 module.exports = AsObject;

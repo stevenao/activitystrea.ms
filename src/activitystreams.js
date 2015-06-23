@@ -106,7 +106,7 @@ function define(def) {
   ['page', 'Content', vocabs.as.Page],
   ['question', 'Question'],
   ['event', 'Object', vocabs.as.Event],
-  ['connection', 'Connection'],
+  ['relationship', 'Relationship'],
   ['profile', 'Profile'],
   ['place', 'Place'],
   ['mention', 'Link', vocabs.as.Mention],

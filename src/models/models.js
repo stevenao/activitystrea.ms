@@ -30,7 +30,7 @@ exports.OrderedCollection  = require('./_orderedcollection');
 exports.Content            = require('./_content');
 exports.Link               = require('./_link');
 exports.Place              = require('./_place');
-exports.Connection         = require('./_connection');
+exports.Relationship       = require('./_relationship');
 exports.Profile            = require('./_profile');
 exports.Question           = require('./_question');
 
@@ -65,8 +65,8 @@ exports.wrap_object = function (expanded, reasoner, parent) {
       thing = exports.Content;
     } else if (reasoner.isSubClassOf(type,vocabs.as.Place)) {
       thing = exports.Place;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.Connection)) {
-      thing = exports.Connection;
+    } else if (reasoner.isSubClassOf(type,vocabs.as.Relationship)) {
+      thing = exports.Relationship;
     } else if (reasoner.isSubClassOf(type,vocabs.interval.Interval)) {
       thing = exports.Interval;
     } else if (reasoner.isSubClassOf(type,vocabs.social.Common)) {

@@ -23,49 +23,49 @@ var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
 var AsObject = require('./_object');
 
-function Connection(expanded, reasoner, parent) {
-  if (!(this instanceof Connection))
-    return new Connection(expanded, reasoner, parent);
+function Relationship(expanded, reasoner, parent) {
+  if (!(this instanceof Relationship))
+    return new Relationship(expanded, reasoner, parent);
   AsObject.call(this, expanded, reasoner, parent);
 }
-util.inherits(Connection, AsObject);
+util.inherits(Relationship, AsObject);
 
-utils.define(Connection.prototype, 'a', function() {
-  return this.get(vocabs.as.a);
+utils.define(Relationship.prototype, 'subject', function() {
+  return this.get(vocabs.as.subject);
 });
 
-utils.define(Connection.prototype, 'b', function() {
-  return this.get(vocabs.as.b);
+utils.define(Relationship.prototype, 'object', function() {
+  return this.get(vocabs.as.object);
 });
 
-utils.define(Connection.prototype, 'relationship', function() {
+utils.define(Relationship.prototype, 'relationship', function() {
   return this.get(vocabs.as.relationship);
 });
 
-Connection.Builder = function(reasoner,types,base) {
-  if (!(this instanceof Connection.Builder))
-    return new Connection.Builder(reasoner,types,base);
+Relationship.Builder = function(reasoner,types,base) {
+  if (!(this instanceof Relationship.Builder))
+    return new Relationship.Builder(reasoner,types,base);
   AsObject.Builder.call(
     this,
     reasoner,
-    utils.merge_types(reasoner,vocabs.as.Connection, types),
-    base || new Connection({},reasoner));
+    utils.merge_types(reasoner,vocabs.as.Relationship, types),
+    base || new Relationship({},reasoner));
 };
-util.inherits(Connection.Builder,AsObject.Builder);
+util.inherits(Relationship.Builder,AsObject.Builder);
 
-Connection.Builder.prototype.a = function(val) {
-  this.set(vocabs.as.a, val);
+Relationship.Builder.prototype.subject = function(val) {
+  this.set(vocabs.as.subject, val);
   return this;
 };
 
-Connection.Builder.prototype.b = function(val) {
-  this.set(vocabs.as.b, val);
+Relationship.Builder.prototype.object = function(val) {
+  this.set(vocabs.as.object, val);
   return this;
 };
 
-Connection.Builder.prototype.relationship = function(val) {
+Relationship.Builder.prototype.relationship = function(val) {
   this.set(vocabs.as.relationship, val);
   return this;
 };
 
-module.exports = Connection;
+module.exports = Relationship;

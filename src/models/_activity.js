@@ -48,29 +48,17 @@ utils.define(Activity.prototype, 'origin', function() {
 utils.define(Activity.prototype, 'priority', function() {
   return this.get(vocabs.as.priority);
 });
-utils.define(Activity.prototype, 'to', function() {
-  return this.get(vocabs.as.to);
-});
-utils.define(Activity.prototype, 'bto', function() {
-  return this.get(vocabs.as.bto);
-});
-utils.define(Activity.prototype, 'cc', function() {
-  return this.get(vocabs.as.cc);
-});
-utils.define(Activity.prototype, 'bcc', function() {
-  return this.get(vocabs.as.bcc);
-});
-utils.define(Activity.prototype, 'using', function() {
-  return this.get(vocabs.as.using);
+utils.define(Activity.prototype, 'instrument', function() {
+  return this.get(vocabs.as.instrument);
 });
 
 Activity.Builder = function(reasoner, types, base) {
   if (!(this instanceof Activity.Builder))
     return new Activity.Builder(reasoner, types, base);
   AsObject.Builder.call(
-    this, 
-    reasoner, 
-    utils.merge_types(reasoner, vocabs.as.Activity, types), 
+    this,
+    reasoner,
+    utils.merge_types(reasoner, vocabs.as.Activity, types),
     base || new Activity({}, reasoner));
 };
 util.inherits(Activity.Builder, AsObject.Builder);
@@ -95,33 +83,16 @@ Activity.Builder.prototype.origin = function(val) {
   this.set(vocabs.as.origin, val);
   return this;
 };
-Activity.Builder.prototype.to = function(val) {
-  this.set(vocabs.as.to, val);
-  return this;
-};
-Activity.Builder.prototype.bto = function(val) {
-  this.set(vocabs.as.bto, val);
-  return this;
-};
-Activity.Builder.prototype.cc = function(val) {
-  this.set(vocabs.as.cc, val);
-  return this;
-};
-Activity.Builder.prototype.bcc = function(val) {
-  this.set(vocabs.as.bcc, val);
+Activity.Builder.prototype.instrument = function(val) {
+  this.set(vocabs.as.instrument, val);
   return this;
 };
 Activity.Builder.prototype.priority = function(val) {
   utils.set_ranged_val.call(
-    this, 
-    vocabs.as.priority, 
-    val, 0.0, 1.0, 
+    this,
+    vocabs.as.priority,
+    val, 0.0, 1.0,
     vocabs.xsd.float);
   return this;
 };
-Activity.Builder.prototype.using = function(val) {
-  this.set(vocabs.as.using, val);
-  return this;
-};
-
 module.exports = Activity;
