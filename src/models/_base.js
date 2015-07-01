@@ -60,7 +60,7 @@ Base.prototype = {
   has : function(key) {
     key = utils.parsed_url(vocabs.as[key]||key);
     var ret = this[_expanded][key];
-    return ret && ret.length;
+    return ret && (ret.length > 0 || utils.is_boolean(ret));
   },
   get : function(key) {
     var self = this;
@@ -212,7 +212,7 @@ Base.Builder.prototype = {
             }
             expanded[key].push(builder.get()[_expanded]);
           } else {
-            throw new Error('Invalid object property type');
+            throw Error('Invalid object property type');
           }
         } else {
           var lang = options.lang;

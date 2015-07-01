@@ -23,7 +23,7 @@ var vocabs      = require('linkeddata-vocabs');
 var _toString   = {}.toString;
 
 exports.throwif = function(condition, message) {
-  if (condition) throw new Error(message);
+  if (condition) throw Error(message);
 };
 
 exports.checkCallback = function(callback) {
@@ -108,7 +108,7 @@ exports.parsed_url = function(val) {
   try {
     return url.parse(val).href;
   } catch(err) {
-    throw new Error('Value must be a valid URL');
+    throw Error('Value must be a valid URL');
   }
 };
 
