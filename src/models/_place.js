@@ -19,14 +19,15 @@
  * @author James M Snell (jasnell@us.ibm.com)
  */
 var util = require('util');
+var reasoner = require('../reasoner');
 var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
 var AsObject = require('./_object');
 
-function Place(expanded, reasoner, parent) {
+function Place(expanded) {
   if (!(this instanceof Place))
-    return new Place(expanded, reasoner, parent);
-  AsObject.call(this, expanded, reasoner, parent);
+    return new Place(expanded);
+  AsObject.call(this, expanded);
 }
 util.inherits(Place, AsObject);
 utils.define(Place.prototype, 'accuracy', function() {
@@ -53,14 +54,13 @@ utils.define(Place.prototype, 'units', function() {
   return this.get(vocabs.as.units);
 });
 
-Place.Builder = function(reasoner,types,base) {
+Place.Builder = function(types,base) {
   if (!(this instanceof Place.Builder))
-    return new Place.Builder(reasoner,types,base);
+    return new Place.Builder(types,base);
   AsObject.Builder.call(
-    this, 
-    reasoner, 
-    utils.merge_types(reasoner,vocabs.as.Place, types),
-    base || new Place({},reasoner));
+    this,
+    utils.merge_types(reasoner, vocabs.as.Place, types),
+    base || new Place({}));
 };
 util.inherits(Place.Builder,AsObject.Builder);
 

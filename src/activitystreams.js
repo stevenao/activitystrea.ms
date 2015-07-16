@@ -21,33 +21,33 @@
  */
 
 var models        = require('./models');
-var Reasoner      = require('./reasoner');
 var vocabs        = require('linkeddata-vocabs');
+var reasoner      = require('./reasoner');
 var utils         = require('./utils');
-var jsonld        = require('./_jsonld');
-var checkCallback = utils.checkCallback;
+var jsonld        = require('./jsonld');
 var merge_types   = utils.merge_types;
-var reasoner      = Reasoner();
+var ext_context   = require('./extcontext');
 
 exports.models = models;
 
 exports.vocabs = vocabs;
 
+exports.use = function(extension) {
+  if (extension && typeof extension.init === 'function')
+    extension.init(models,reasoner,ext_context);
+};
+
 exports.import = function(input, callback) {
-  checkCallback(callback);
-  process.nextTick(function() {
-    jsonld.import(reasoner, input, callback);
-  });
+  jsonld.import(input, callback);
 };
 
 function define(def) {
   this[def[0]] = function(types) {
     if (def[2]) {
       return models[def[1]].Builder(
-        reasoner,
         merge_types(reasoner, def[2], types));
     } else {
-      return models[def[1]].Builder(reasoner, types);
+      return models[def[1]].Builder(types);
     }
   };
 }
@@ -85,7 +85,7 @@ function define(def) {
   ['read', 'Activity', vocabs.as.Read],
   ['move', 'Activity', vocabs.as.Move],
   ['travel', 'Activity', vocabs.as.Travel],
-  ['announce', 'Activity', vocabs.as.Annouce],
+  ['announce', 'Activity', vocabs.as.Announce],
   ['block', 'Activity', vocabs.as.Block],
   ['flag', 'Activity', vocabs.as.Flag],
   ['dislike', 'Activity', vocabs.as.Dislike],
@@ -112,32 +112,5 @@ function define(def) {
   ['mention', 'Link', vocabs.as.Mention],
 ].forEach(define.bind(exports));
 
-exports.interval = function(types) {
-  return models.Interval.Builder(reasoner, types);
-};
-[
-  ['open', 'Interval', vocabs.interval.OpenInterval],
-  ['closed', 'Interval', vocabs.interval.ClosedInterval],
-  ['openClosed', 'Interval', vocabs.interval.OpenClosedInterval],
-  ['closedOpen', 'Interval', vocabs.interval.ClosedOpenInterval],
-  ['leftOpen', 'Interval', vocabs.interval.LeftOpenInterval],
-  ['rightOpen', 'Interval', vocabs.interval.RightOpenInterval],
-  ['leftClosed', 'Interval', vocabs.interval.LeftClosedInterval],
-  ['rightClosed', 'Interval', vocabs.interval.RightClosedInterval]
-].forEach(define.bind(exports.interval));
-
-exports.social = {};
-[
-  ['population', 'Population'],
-  ['everyone', 'Everyone'],
-  ['public', 'Population', vocabs.social.Public],
-  ['private', 'Population', vocabs.social.Private],
-  ['direct', 'Population', vocabs.social.Direct],
-  ['common', 'Common'],
-  ['interested', 'Interested'],
-  ['self', 'Population', vocabs.social.Self],
-  ['all', 'CompoundPopulation', vocabs.social.All],
-  ['any', 'CompoundPopulation', vocabs.social.Any],
-  ['none', 'CompoundPopulation', vocabs.social.None],
-  ['compoundPopulation', 'CompoundPopulation']
-].forEach(define.bind(exports.social));
+exports.interval = require('./interval');
+exports.social = require('./social');

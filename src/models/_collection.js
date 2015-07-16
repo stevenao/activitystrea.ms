@@ -20,6 +20,7 @@
  */
 var vocabs   = require('linkeddata-vocabs');
 var util     = require('util');
+var reasoner = require('../reasoner');
 var utils    = require('../utils');
 var models   = require('../models');
 var AsObject = require('./_object');
@@ -32,10 +33,10 @@ function is_ordered(base) {
   return i && i.length && i[0].get(vocabs.rdf.first);
 }
 
-function Collection(expanded, reasoner, parent) {
+function Collection(expanded) {
   if (!(this instanceof Collection))
-    return new Collection(expanded, reasoner, parent);
-  AsObject.call(this, expanded, reasoner, parent);
+    return new Collection(expanded);
+  AsObject.call(this, expanded);
   this[_ordered] = is_ordered(this);
 }
 util.inherits(Collection, AsObject);
@@ -70,30 +71,19 @@ utils.define(Collection.prototype, 'ordered', function() {
   return this[_ordered];
 });
 
-utils.define(Collection.prototype, 'indexRange', function() {
-  return this.get(vocabs.asx.indexRange);
-});
-utils.define(Collection.prototype, 'publishedRange', function() {
-  return this.get(vocabs.asx.publishedRange);
-});
-utils.define(Collection.prototype, 'startTimeRange', function() {
-  return this.get(vocabs.asx.startTimeRange);
-});
-
 utils.define(Collection.prototype, 'items', function() {
   var val = this.get(vocabs.as.items);
   if (!val) return undefined;
   return val['@list'] || val;
 });
 
-Collection.Builder = function(reasoner, types, base) {
+Collection.Builder = function(types, base) {
   if (!(this instanceof Collection.Builder))
-    return new Collection.Builder(reasoner, types, base);
+    return new Collection.Builder(types, base);
   AsObject.Builder.call(
     this,
-    reasoner,
     utils.merge_types(reasoner, vocabs.as.Collection, types),
-    base || new Collection({}, reasoner));
+    base || new Collection({}));
   this[_ordered] = 0;
 };
 util.inherits(Collection.Builder, AsObject.Builder);
@@ -128,19 +118,6 @@ Collection.Builder.prototype.last = function(val) {
 };
 Collection.Builder.prototype.self = function(val) {
   this.set(vocabs.as.self, val);
-  return this;
-};
-
-Collection.Builder.prototype.indexRange = function(val) {
-  this.set(vocabs.asx.indexRange, val);
-  return this;
-};
-Collection.Builder.prototype.publishedRange = function(val) {
-  this.set(vocabs.asx.publishedRange, val);
-  return this;
-};
-Collection.Builder.prototype.startTimeRange = function(val) {
-  this.set(vocabs.asx.startTimeRange, val);
   return this;
 };
 

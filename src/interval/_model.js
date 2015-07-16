@@ -18,36 +18,37 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var AsObject = require('../_object');
 var util     = require('util');
-var utils    = require('../../utils');
-var vocabs   = require('linkeddata-vocabs');
+var interval = require('linkeddata-vocabs').interval;
+var xsd      = require('linkeddata-vocabs').xsd;
+var AsObject = require('../models').Object;
+var utils    = require('../utils');
+var reasoner = require('../reasoner');
 
-function Interval(expanded, reasoner, parent) {
+function Interval(expanded) {
   if (!(this instanceof Interval))
-    return new Interval(expanded, reasoner, parent);
-  AsObject.call(this, expanded, reasoner, parent);
+    return new Interval(expanded);
+  AsObject.call(this, expanded);
 }
 util.inherits(Interval, AsObject);
 
 utils.define(Interval.prototype, 'upper', function() {
-  return this.get(vocabs.interval.upper);
+  return this.get(interval.upper);
 });
 utils.define(Interval.prototype, 'lower', function() {
-  return this.get(vocabs.interval.lower);
+  return this.get(interval.lower);
 });
 utils.define(Interval.prototype, 'step', function() {
-  return this.get(vocabs.interval.step);
+  return this.get(interval.step);
 });
 
-Interval.Builder = function(reasoner,types, base) {
+Interval.Builder = function(types, base) {
   if (!(this instanceof Interval.Builder))
-    return new Interval.Builder(reasoner, types, base);
+    return new Interval.Builder(types, base);
   AsObject.Builder.call(
     this,
-    reasoner,
-    utils.merge_types(reasoner,vocabs.interval.Interval, types),
-    base || new Interval({}, reasoner));
+    utils.merge_types(reasoner, interval.Interval, types),
+    base || new Interval({}));
 };
 util.inherits(Interval.Builder, AsObject.Builder);
 
@@ -55,31 +56,31 @@ function _set(key, val) {
   var options = {};
   if (utils.is_primitive(val)) {
     if (utils.is_string(val))
-      options.type = vocabs.xsd.string;
+      options.type = xsd.string;
     else if (utils.is_number(val)) {
       if (utils.is_integer(val))
-        options.type = vocabs.xsd.integer;
+        options.type = xsd.integer;
       else
-        options.type = vocabs.xsd.decimal;
+        options.type = xsd.decimal;
     } else if (utils.is_boolean(val)) {
-      options.type = vocabs.xsd.boolean;
+      options.type = xsd.boolean;
     }
   } else if (utils.is_date(val)) {
-    options.type = vocabs.xsd.dateTime;
+    options.type = xsd.dateTime;
   }
   this.set(key, val, options);
 }
 
 Interval.Builder.prototype.upper = function(val) {
-  _set.call(this, vocabs.interval.upper, val);
+  _set.call(this, interval.upper, val);
   return this;
 };
 Interval.Builder.prototype.lower = function(val) {
-  _set.call(this, vocabs.interval.lower, val);
+  _set.call(this, interval.lower, val);
   return this;
 };
 Interval.Builder.prototype.step = function(val) {
-  _set.call(this, vocabs.interval.step, val);
+  _set.call(this, interval.step, val);
   return this;
 };
 

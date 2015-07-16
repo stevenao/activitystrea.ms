@@ -19,14 +19,15 @@
  * @author James M Snell (jasnell@us.ibm.com)
  */
 var util       = require('util');
+var reasoner   = require('../reasoner');
 var utils      = require('../utils');
 var vocabs     = require('linkeddata-vocabs');
 var Activity = require('./_activity');
 
-function Question(expanded, reasoner, parent) {
+function Question(expanded) {
   if (!(this instanceof Question))
-    return new Question(expanded, reasoner, parent);
-  Activity.call(this, expanded, reasoner, parent);
+    return new Question(expanded);
+  Activity.call(this, expanded);
 }
 util.inherits(Question, Activity);
 utils.define(Question.prototype, 'height', function() {
@@ -47,14 +48,13 @@ utils.define(Question.prototype, 'oneOf', function() {
   return this.get(vocabs.as.oneOf);
 });
 
-Question.Builder = function(reasoner,types,base) {
+Question.Builder = function(types,base) {
   if (!(this instanceof Question.Builder))
-    return new Question.Builder(reasoner, types, base);
+    return new Question.Builder(types, base);
   Activity.Builder.call(
-    this, 
-    reasoner, 
-    utils.merge_types(reasoner,vocabs.as.Question, types),
-    base || new Question({},reasoner));
+    this,
+    utils.merge_types(reasoner, vocabs.as.Question, types),
+    base || new Question({}));
 };
 util.inherits(Question.Builder, Activity.Builder);
 
@@ -80,4 +80,3 @@ Question.Builder.prototype.anyOf = function(val) {
 };
 
 module.exports = Question;
-
