@@ -20,27 +20,27 @@
  */
 var Population = require('./_population');
 var util = require('util');
-var utils = require('../../utils');
+var reasoner = require('../reasoner');
+var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
 
-function CompoundPopulation(expanded, reasoner, parent) {
+function CompoundPopulation(expanded) {
   if (!(this instanceof CompoundPopulation))
-    return new CompoundPopulation(expanded, reasoner, parent);
-  Population.call(this, expanded, reasoner, parent);
+    return new CompoundPopulation(expanded);
+  Population.call(this, expanded);
 }
 util.inherits(CompoundPopulation, Population);
 utils.define(CompoundPopulation.prototype, 'member', function() {
   return this.get(vocabs.social.member);
 });
 
-CompoundPopulation.Builder = function(reasoner,types,base) {
+CompoundPopulation.Builder = function(types,base) {
   if (!(this instanceof CompoundPopulation.Builder))
-    return new CompoundPopulation.Builder(reasoner,types,base);
+    return new CompoundPopulation.Builder(types,base);
   Population.Builder.call(
     this,
-    reasoner,
-    utils.merge_types(reasoner,vocabs.social.CompoundPopulation, types),
-    base || new CompoundPopulation({},reasoner));
+    utils.merge_types(reasoner, vocabs.social.CompoundPopulation, types),
+    base || new CompoundPopulation({}));
 };
 util.inherits(CompoundPopulation.Builder,Population.Builder);
 

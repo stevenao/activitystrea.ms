@@ -22,28 +22,24 @@ var vocabs        = require('linkeddata-vocabs');
 var LanguageTag   = require('rfc5646');
 var utils         = require('../utils');
 var models        = require('../models');
-var jsonld        = require('../_jsonld');
+var jsonld        = require('../jsonld');
 var LanguageValue = require('./_languagevalue');
+var reasoner      = require('../reasoner');
 var checkCallback = utils.checkCallback;
 var throwif       = utils.throwif;
 
 var _expanded = Symbol('expanded');
-var _reasoner = Symbol('reasoner');
-var _parent = Symbol('parent');
 var _cache = Symbol('cache');
 var _base = Symbol('base');
 
 function is_literal(item) {
-  return item && item['@value'];
+  return item && item.hasOwnProperty('@value');
 }
 
-function Base(expanded, reasoner, parent) {
+function Base(expanded) {
   if (!(this instanceof Base))
-    return new Base(expanded, reasoner);
+    return new Base(expanded);
   this[_expanded] = expanded;
-  this[_reasoner] = reasoner;
-  if (parent)
-    this[_parent] = parent;
   this[_cache] = {};
 }
 Base.prototype = {
@@ -69,7 +65,7 @@ Base.prototype = {
     if (!this[_cache].hasOwnProperty(key)) {
       var res = this[_expanded][key] || [];
       if (!res.length) return undefined;
-      if (this[_reasoner].is_language_property(key)) {
+      if (reasoner.is_language_property(key)) {
         ret = LanguageValue.Builder();
         for (n = 0, l = res.length; n < l; n++) {
           var value = res[n]['@value'];
@@ -84,19 +80,19 @@ Base.prototype = {
             var type = item['@type'];
             var value = item['@value'];
             if (type) {
-              if (self[_reasoner].is_number(type))
+              if (reasoner.is_number(type))
                 value = Number(value).valueOf();
-              else if (self[_reasoner].is_date(type))
+              else if (reasoner.is_date(type))
                 value = new Date(value);
-              else if (self[_reasoner].is_boolean(type))
+              else if (reasoner.is_boolean(type))
                 value = value != 'false';
             }
             return value;
           }
-          return models.wrap_object(item, self[_reasoner], self);
+          return models.wrap_object(item);
         });
         this[_cache][key] =
-          this[_reasoner].is_functional(key) ?
+          reasoner.is_functional(key) ?
             ret[0] : ret;
       }
     }
@@ -108,14 +104,10 @@ Base.prototype = {
       options = {};
     }
     options = options || {};
-    checkCallback(callback);
-    var self = this;
-    process.nextTick(function() {
-      jsonld.compact(
-        self[_expanded],
-        callback,
-        options.additional_context);
-    });
+    jsonld.compact(
+      this[_expanded],
+      options,
+      callback);
   },
   write : function(options, callback) {
     if (typeof options === 'function') {
@@ -144,12 +136,11 @@ Base.prototype = {
 
 // ******** BUILDER ********* //
 
-Base.Builder = function(reasoner, types, base) {
+Base.Builder = function(types, base) {
   if (!(this instanceof Base.Builder))
-    return new Base.Builder(reasoner, types, base);
-  base = base || new Base({}, reasoner);
+    return new Base.Builder(types, base);
+  base = base || new Base({});
   this[_base] = base;
-  this[_reasoner] = reasoner;
   this[_expanded] = base[_expanded];
   this.type(types);
 };
@@ -176,7 +167,6 @@ Base.Builder.prototype = {
     return this;
   },
   set : function(key, val, options) {
-    var reasoner = this[_reasoner];
     var expanded = this[_expanded];
     options = options || {};
     if (val instanceof Base.Builder) {
@@ -201,7 +191,7 @@ Base.Builder.prototype = {
           } else if (utils.is_string(val[n])) {
             expanded[key].push({'@id': val[n]});
           } else if (typeof val[n] === 'object') {
-            var builder = Base.Builder(reasoner);
+            var builder = Base.Builder();
             var keys = Object.keys(val[n]);
             for (n = 0, l = keys.length; n < l; n++) {
               var k = keys[n];

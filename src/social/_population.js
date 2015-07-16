@@ -18,15 +18,16 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var AsObject = require('../_object');
 var util     = require('util');
-var utils    = require('../../utils');
+var AsObject = require('../models').Object;
+var reasoner = require('../reasoner');
+var utils    = require('../utils');
 var vocabs   = require('linkeddata-vocabs');
 
-function Population(expanded, reasoner, parent) {
+function Population(expanded) {
   if (!(this instanceof Population))
-    return new Population(expanded, reasoner, parent);
-  AsObject.call(this, expanded, reasoner, parent);
+    return new Population(expanded);
+  AsObject.call(this, expanded);
 }
 util.inherits(Population, AsObject);
 
@@ -35,14 +36,13 @@ utils.define(Population.prototype, 'distance', function() {
   return isNaN(ret) ? undefined : ret;
 });
 
-Population.Builder = function(reasoner,types, base) {
+Population.Builder = function(types, base) {
   if (!(this instanceof Population.Builder))
-    return new Population.Builder(reasoner, types, base);
+    return new Population.Builder(types, base);
   AsObject.Builder.call(
     this,
-    reasoner,
-    utils.merge_types(reasoner,vocabs.social.Population, types),
-    base || new Population({}, reasoner));
+    utils.merge_types(reasoner, vocabs.social.Population, types),
+    base || new Population({}));
 };
 util.inherits(Population.Builder, AsObject.Builder);
 

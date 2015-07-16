@@ -151,6 +151,7 @@ function _init(reasoner) {
     [vocabs.as.Offer, vocabs.as.Activity],
     [vocabs.as.OrderedCollection, vocabs.as.Collection],
     [vocabs.as.Page, vocabs.as.Content],
+    [vocabs.as.Profile, vocabs.as.Content],
     [vocabs.as.Person, vocabs.as.Actor],
     [vocabs.as.Place, vocabs.as.Object],
     [vocabs.as.Process, vocabs.as.Actor],
@@ -163,30 +164,7 @@ function _init(reasoner) {
     [vocabs.as.TentativeAccept, vocabs.as.Accept],
     [vocabs.as.TentativeReject, vocabs.as.Reject],
     [vocabs.as.Undo, vocabs.as.Activity],
-    [vocabs.as.Video, vocabs.as.Document],
-    [vocabs.interval.Interval, vocabs.as.Object],
-
-    [vocabs.interval.OpenInterval, vocabs.interval.Interval],
-    [vocabs.interval.ClosedInterval, vocabs.interval.Interval],
-    [vocabs.interval.OpenClosedInterval, vocabs.interval.Interval],
-    [vocabs.interval.ClosedOpenInterval, vocabs.interval.Interval],
-    [vocabs.interval.LeftOpenInterval, vocabs.interval.Interval],
-    [vocabs.interval.RightOpenInterval, vocabs.interval.Interval],
-    [vocabs.interval.LeftClosedInterval, vocabs.interval.Interval],
-    [vocabs.interval.RightClosedInterval, vocabs.interval.Interval],
-
-    [vocabs.social.Population, vocabs.as.Object],
-    [vocabs.social.Everyone, vocabs.social.Population],
-    [vocabs.social.Public, vocabs.social.Population],
-    [vocabs.social.Private, vocabs.social.Population],
-    [vocabs.social.Direct, vocabs.social.Population],
-    [vocabs.social.Common, vocabs.social.Population],
-    [vocabs.social.Interested, vocabs.social.Population],
-    [vocabs.social.Self, vocabs.social.Population],
-    [vocabs.social.All, vocabs.social.CompoundPopulation],
-    [vocabs.social.Any, vocabs.social.CompoundPopulation],
-    [vocabs.social.None, vocabs.social.CompoundPopulation],
-    [vocabs.social.CompoundPopulation, vocabs.social.Population]
+    [vocabs.as.Video, vocabs.as.Document]
   ].forEach(function (pair) {
     reasoner.add(pair[0], vocabs.rdfs.subClassOf, pair[1]);
   });
@@ -274,20 +252,7 @@ function _init(reasoner) {
     [vocabs.as.updated, functionalDatatype],
     [vocabs.as.upstreamDuplicates, deprecatedDatatype],
     [vocabs.as.verb, deprecatedFunctionalDatatype],
-    [vocabs.as.width, functionalDatatype],
-
-    [vocabs.asx.indexRange, functionalObject],
-    [vocabs.asx.publishedRange, functionalObject],
-    [vocabs.asx.startTimeRange, functionalObject],
-    [vocabs.interval.lower, functionalDatatype],
-    [vocabs.interval.upper, functionalDatatype],
-    [vocabs.interval.step, functionalDatatype],
-    [vocabs.social.member, vocabs.owl.ObjectProperty],
-    [vocabs.social.confidence, functionalDatatype],
-    [vocabs.social.havingDimension, vocabs.owl.ObjectProperty],
-    [vocabs.social.havingRole, vocabs.owl.ObjectProperty],
-    [vocabs.social.havingRelationship, vocabs.owl.ObjectProperty],
-    [vocabs.social.distance, functionalDatatype]
+    [vocabs.as.width, functionalDatatype]
   ].forEach(function(pair) {
     reasoner.add(pair[0], vocabs.rdf.type, pair[1]);
   });
@@ -330,7 +295,6 @@ Reasoner.prototype = {
       }
     });
   },
-
   add : function(subject, predicate, object) {
     var cache;
     switch(predicate) {
@@ -355,20 +319,16 @@ Reasoner.prototype = {
     }
     return this;
   },
-
   declare : function(prefix, uri) {
     this[_store].addPrefix(prefix, uri);
     return this;
   },
-
   classHierarchy : function(subject) {
     return subClassHierarchy(this[_store], subject);
   },
-
   propertyHierarchy : function(subject) {
     return subPropertyHierarchy(this[_store], subject);
   },
-
   isSubClassOf : function(subject, object) {
     var _sc = this[_cache]._sc;
     var _subject = _sc[subject] = _sc[subject] || {};
@@ -376,7 +336,6 @@ Reasoner.prototype = {
       isSubClassOf(this[_store], subject, object);
     return _subject[object];
   },
-
   isSubPropertyOf : function(subject, object) {
     var _sp = this[_cache]._sp;
     var _subject = _sp[subject] = _sp[subject] || {};
@@ -384,7 +343,6 @@ Reasoner.prototype = {
       isSubPropertyOf(this[_store], subject, object);
     return _subject[object];
   },
-
   isTypeOf : function(subject, type) {
     var _tp = this[_cache]._tp;
     var _subject = _tp[subject] = _tp[subject] || {};
@@ -392,59 +350,44 @@ Reasoner.prototype = {
       count_type.call(this, subject, type) > 0;
     return _subject[type];
   },
-
   descendantClassesOf : function(subject) {
     return descendantClassesOf(this[_store], subject);
   },
-
   descendantPropertiesOf : function(subject) {
     return descendantPropertiesOf(this[_store], subject);
   },
-
   is_an_object : function(subject) {
     return !this.isSubClassOf(subject, as.Link);
   },
-
   is_a_link : function(subject) {
     return this.isSubClassOf(subject, as.Link);
   },
-
   is_object_property : function(subject) {
     return this.isTypeOf(subject, vocabs.owl.ObjectProperty);
   },
-
   is_functional : function(subject) {
     return this.isTypeOf(subject, vocabs.owl.FunctionalProperty);
   },
-
   is_deprecated : function(subject) {
     return this.isTypeOf(subject, vocabs.owl.DeprecatedProperty);
   },
-
   is_language_property : function(subject) {
     return this.isTypeOf(subject, vocabs.asx.LanguageProperty);
   },
-
   is_intransitive : function(subject) {
     return this.isSubClassOf(subject, vocabs.as.IntransitiveActivity);
   },
-
   is_possibly_ordered : function(subject) {
     return this.isSubClassOf(subject, vocabs.asx.PossiblyOrdered);
   },
-
   is_number : function(subject) {
     return this.isSubClassOf(subject, vocabs.asx.Number);
   },
-
   is_date : function(subject) {
     return this.isSubClassOf(subject, vocabs.asx.Date);
   },
-
   is_boolean : function(subject) {
     return this.isSubClassOf(subject, vocabs.asx.Boolean);
   }
-
 };
-
-module.exports = Reasoner;
+module.exports = new Reasoner();

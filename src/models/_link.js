@@ -19,14 +19,15 @@
  * @author James M Snell (jasnell@us.ibm.com)
  */
 var util = require('util');
+var reasoner = require('../reasoner');
 var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
 var Base = require('./_base');
 
-function Link(expanded, reasoner, parent) {
+function Link(expanded) {
   if (!(this instanceof Link))
-    return new Link(expanded, reasoner, parent);
-  Base.call(this, expanded, reasoner, parent);
+    return new Link(expanded);
+  Base.call(this, expanded);
 }
 util.inherits(Link, Base);
 utils.define(Link.prototype, 'href', function() {
@@ -60,14 +61,13 @@ utils.define(Link.prototype, 'duration', function() {
   return this.get(vocabs.as.duration);
 });
 
-Link.Builder = function(reasoner, types, base) {
+Link.Builder = function(types, base) {
   if (!(this instanceof Link.Builder))
-    return new Link.Builder(reasoner, types, base);
+    return new Link.Builder(types, base);
   Base.Builder.call(
     this,
-    reasoner,
-    utils.merge_types(reasoner,vocabs.as.Link,types),
-    base || new Link({}, reasoner));
+    utils.merge_types(reasoner, vocabs.as.Link,types),
+    base || new Link({}));
 };
 util.inherits(Link.Builder, Base.Builder);
 Link.Builder.prototype.href = function(val) {

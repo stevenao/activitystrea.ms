@@ -19,14 +19,15 @@
  * @author James M Snell (jasnell@us.ibm.com)
  */
 var util = require('util');
+var reasoner = require('../reasoner');
 var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
 var AsObject = require('./_object');
 
-function Relationship(expanded, reasoner, parent) {
+function Relationship(expanded) {
   if (!(this instanceof Relationship))
-    return new Relationship(expanded, reasoner, parent);
-  AsObject.call(this, expanded, reasoner, parent);
+    return new Relationship(expanded);
+  AsObject.call(this, expanded);
 }
 util.inherits(Relationship, AsObject);
 
@@ -42,14 +43,13 @@ utils.define(Relationship.prototype, 'relationship', function() {
   return this.get(vocabs.as.relationship);
 });
 
-Relationship.Builder = function(reasoner,types,base) {
+Relationship.Builder = function(types,base) {
   if (!(this instanceof Relationship.Builder))
-    return new Relationship.Builder(reasoner,types,base);
+    return new Relationship.Builder(types,base);
   AsObject.Builder.call(
     this,
-    reasoner,
-    utils.merge_types(reasoner,vocabs.as.Relationship, types),
-    base || new Relationship({},reasoner));
+    utils.merge_types(reasoner, vocabs.as.Relationship, types),
+    base || new Relationship({}));
 };
 util.inherits(Relationship.Builder,AsObject.Builder);
 

@@ -20,6 +20,7 @@
  */
 
 var vocabs = require('linkeddata-vocabs');
+var reasoner = require('../reasoner');
 
 exports.Base               = require('./_base');
 exports.Object             = require('./_object');
@@ -34,52 +35,61 @@ exports.Relationship       = require('./_relationship');
 exports.Profile            = require('./_profile');
 exports.Question           = require('./_question');
 
-exports.Interval           = require('./interval/_interval');
-exports.Population         = require('./social/_population');
-exports.CompoundPopulation = require('./social/_compoundpopulation');
-exports.Everyone           = require('./social/_everyone');
-exports.Interested         = require('./social/_interested');
-exports.Common             = require('./social/_common');
+function core_recognizer(type) {
+  var thing;
+  if (reasoner.isSubClassOf(type,vocabs.as.Link)) {
+    thing = exports.Link;
+  } else if (reasoner.isSubClassOf(type,vocabs.as.OrderedCollection)) {
+    thing = exports.OrderedCollection;
+  } else if (reasoner.isSubClassOf(type,vocabs.as.Collection)) {
+    thing = exports.Collection;
+  } else if (reasoner.isSubClassOf(type,vocabs.as.Actor)) {
+    thing = exports.Actor;
+  } else if (reasoner.isSubClassOf(type,vocabs.as.Question)) {
+    thing = exports.Question;
+  } else if (reasoner.isSubClassOf(type,vocabs.as.Activity)) {
+    thing = exports.Activity;
+  } else if (reasoner.isSubClassOf(type,vocabs.as.Profile)) {
+    thing = exports.Profile;
+  } else if (reasoner.isSubClassOf(type,vocabs.as.Content)) {
+    thing = exports.Content;
+  } else if (reasoner.isSubClassOf(type,vocabs.as.Place)) {
+    thing = exports.Place;
+  } else if (reasoner.isSubClassOf(type,vocabs.as.Relationship)) {
+    thing = exports.Relationship;
+  }
+  return thing;
+}
 
-exports.wrap_object = function (expanded, reasoner, parent) {
+var recognizers = [
+  core_recognizer
+];
+function recognize(type) {
+  for (var n = 0, l = recognizers.length; n < l; n++) {
+    var thing = recognizers[n](type);
+    if (thing) return thing;
+  }
+  return undefined;
+}
+
+exports.use = function(recognizer) {
+  if (typeof recognizer !== 'function')
+    throw Error('Recognizer must be a function');
+  recognizers.push(recognizer);
+};
+
+exports.wrap_object = function (expanded) {
   var types = expanded['@type'] || [];
-  var thing = exports.Object;
-  // TODO: make this more efficient
+  var thing;
+  // this isn't that great yet because it uses the
+  // first recognized type and does not verify if
+  // the full set of declared types make sense
+  // together. Will need to add that in later
   for (var n = 0, l = types.length; n < l; n++) {
     var type = types[n];
-    if (reasoner.isSubClassOf(type,vocabs.as.Link)) {
-      thing = exports.Link;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.OrderedCollection)) {
-      thing = exports.OrderedCollection;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.Collection)) {
-      thing = exports.Collection;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.Actor)) {
-      thing = exports.Actor;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.Question)) {
-      thing = exports.Question;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.Activity)) {
-      thing = exports.Activity;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.Profile)) {
-      thing = exports.Profile;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.Content)) {
-      thing = exports.Content;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.Place)) {
-      thing = exports.Place;
-    } else if (reasoner.isSubClassOf(type,vocabs.as.Relationship)) {
-      thing = exports.Relationship;
-    } else if (reasoner.isSubClassOf(type,vocabs.interval.Interval)) {
-      thing = exports.Interval;
-    } else if (reasoner.isSubClassOf(type,vocabs.social.Common)) {
-      thing = exports.Common;
-    } else if (reasoner.isSubClassOf(type,vocabs.social.Interested)) {
-      thing = exports.Interested;
-    } else if (reasoner.isSubClassOf(type,vocabs.social.CompoundPopulation)) {
-      thing = exports.CompoundPopulation;
-    } else if (reasoner.isSubClassOf(type,vocabs.social.Everyone)) {
-      thing = exports.Everyone;
-    } else if (reasoner.isSubClassOf(type,vocabs.social.Population)) {
-      thing = exports.Population;
-    }
+    thing = recognize(type);
+    if (thing !== undefined) break; // jump out early if we get a hit
   }
-  return thing(expanded, reasoner, parent);
+  thing = thing || exports.Object;
+  return thing(expanded);
 };

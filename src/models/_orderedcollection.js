@@ -20,14 +20,15 @@
  */
 var Collection = require('./_collection');
 var util = require('util');
+var reasoner = require('../reasoner');
 var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
 var models = require('../models');
 
-function OrderedCollection(expanded, reasoner, parent) {
+function OrderedCollection(expanded) {
   if (!(this instanceof OrderedCollection))
-    return new OrderedCollection(expanded, reasoner, parent);
-  Collection.call(this,expanded, reasoner, parent);
+    return new OrderedCollection(expanded);
+  Collection.call(this,expanded);
 }
 util.inherits(OrderedCollection, Collection);
 utils.define(OrderedCollection.prototype, 'startIndex', function() {
@@ -35,14 +36,13 @@ utils.define(OrderedCollection.prototype, 'startIndex', function() {
   return isNaN(ret) ? 0 : ret;
 });
 
-OrderedCollection.Builder = function(reasoner, types, base) {
+OrderedCollection.Builder = function(types, base) {
   if (!(this instanceof OrderedCollection.Builder))
-    return new OrderedCollection.Builder(reasoner, types, base);
+    return new OrderedCollection.Builder(types, base);
   Collection.Builder.call(
-    this, 
-    reasoner, 
+    this,
     utils.merge_types(reasoner, vocabs.as.OrderedCollection, types),
-    base || new OrderedCollection({}, reasoner));
+    base || new OrderedCollection({}));
 };
 util.inherits(OrderedCollection.Builder, Collection.Builder);
 OrderedCollection.Builder.prototype.items = function(val) {

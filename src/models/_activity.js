@@ -20,13 +20,14 @@
  */
 var util     = require('util');
 var vocabs   = require('linkeddata-vocabs');
+var reasoner = require('../reasoner');
 var utils    = require('../utils');
 var AsObject = require('./_object');
 
-function Activity(expanded, reasoner, parent) {
+function Activity(expanded) {
   if (!(this instanceof Activity))
-    return new Activity(expanded, reasoner, parent);
-  AsObject.call(this, expanded, reasoner, parent);
+    return new Activity(expanded);
+  AsObject.call(this, expanded);
 }
 util.inherits(Activity, AsObject);
 
@@ -52,14 +53,13 @@ utils.define(Activity.prototype, 'instrument', function() {
   return this.get(vocabs.as.instrument);
 });
 
-Activity.Builder = function(reasoner, types, base) {
+Activity.Builder = function(types, base) {
   if (!(this instanceof Activity.Builder))
-    return new Activity.Builder(reasoner, types, base);
+    return new Activity.Builder(types, base);
   AsObject.Builder.call(
     this,
-    reasoner,
-    utils.merge_types(reasoner, vocabs.as.Activity, types),
-    base || new Activity({}, reasoner));
+    utils.merge_types(reasoner,vocabs.as.Activity, types),
+    base || new Activity({}));
 };
 util.inherits(Activity.Builder, AsObject.Builder);
 

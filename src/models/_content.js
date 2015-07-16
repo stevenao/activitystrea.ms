@@ -20,13 +20,14 @@
  */
 var vocabs = require('linkeddata-vocabs');
 var util = require('util');
+var reasoner = require('../reasoner');
 var utils = require('../utils');
 var AsObject = require('./_object');
 
-function Content(expanded, reasoner, parent) {
+function Content(expanded) {
   if (!(this instanceof Content))
-    return new Content(expanded, reasoner, parent);
-  AsObject.call(this, expanded, reasoner, parent);
+    return new Content(expanded);
+  AsObject.call(this, expanded);
 }
 util.inherits(Content, AsObject);
 utils.define(Content.prototype, 'height', function() {
@@ -41,14 +42,13 @@ utils.define(Content.prototype, 'duration', function() {
   return this.get(vocabs.as.duration);
 });
 
-Content.Builder = function(reasoner, types, base) {
+Content.Builder = function(types, base) {
   if (!(this instanceof Content.Builder))
-    return new Content.Builder(reasoner, types, base);
+    return new Content.Builder(types, base);
   AsObject.Builder.call(
-    this, 
-    reasoner, 
+    this,
     utils.merge_types(reasoner, vocabs.as.Content, types),
-    base || new Content({}, reasoner));
+    base || new Content({}));
 };
 util.inherits(Content.Builder, AsObject.Builder);
 

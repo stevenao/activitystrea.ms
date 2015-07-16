@@ -18,27 +18,14 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var vocabs   = require('linkeddata-vocabs');
-var util     = require('util');
-var reasoner = require('../reasoner');
-var utils    = require('../utils');
-var AsObject = require('./_object');
 
-function Actor(expanded) {
-  if (!(this instanceof Actor))
-    return new Actor(expanded);
-  AsObject.call(this, expanded);
-}
-util.inherits(Actor, AsObject);
+var ctx = [];
 
-Actor.Builder = function(types, base) {
-  if (!(this instanceof Actor.Builder))
-    return new Actor.Builder(types, base);
-  AsObject.Builder.call(
-    this,
-    utils.merge_types(reasoner, vocabs.as.Actor,types),
-    base || new Actor({}));
+exports.add = function(context) {
+  // todo add checking...
+  ctx.push(context);
 };
-util.inherits(Actor.Builder, AsObject.Builder);
 
-module.exports = Actor;
+exports.get = function() {
+  return ctx;
+};
