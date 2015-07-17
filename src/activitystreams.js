@@ -29,6 +29,7 @@ var ext_context   = require('./extcontext');
 var merge_types   = utils.merge_types;
 var as = vocabs.as;
 
+exports.verify = jsonld.verify;
 exports.models = models;
 exports.vocabs = vocabs;
 

@@ -19,6 +19,7 @@
  * @author James M Snell (jasnell@us.ibm.com)
  */
 var vocabs        = require('linkeddata-vocabs');
+var uuid          = require('node-uuid');
 var LanguageTag   = require('rfc5646');
 var utils         = require('../utils');
 var models        = require('../models');
@@ -134,7 +135,7 @@ Base.prototype = {
       options = {};
     }
     options = options || {};
-    options.space = 2;
+    options.space = options.space || 2;
     this.write(options, callback);
   },
   modify : function() {
@@ -154,10 +155,14 @@ Base.Builder = function(types, base) {
 };
 Base.Builder.prototype = {
   id : function(id) {
-    if (!id) {
+    if (id === undefined || id === false) {
       delete this[_expanded]['@id'];
     } else {
-      this[_expanded]['@id'] = id;
+      if (id === true) {
+        return this.id('urn:uuid:'+uuid.v4());
+      } else {
+        this[_expanded]['@id'] = String(id);
+      }
     }
     return this;
   },
