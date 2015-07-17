@@ -93,7 +93,6 @@ describe('Basics...', function () {
      ['arrive',vocabs.as.Arrive],
      ['create',vocabs.as.Create],
      ['delete',vocabs.as.Delete],
-     ['favorite',vocabs.as.Favorite],
      ['follow',vocabs.as.Follow],
      ['ignore',vocabs.as.Ignore],
      ['join',vocabs.as.Join],
@@ -129,6 +128,7 @@ describe('Basics...', function () {
      ['content',vocabs.as.Content],
      ['group',vocabs.as.Group],
      ['person',vocabs.as.Person],
+     ['organization',vocabs.as.Organization],
      ['process',vocabs.as.Process],
      ['service',vocabs.as.Service],
      ['article',vocabs.as.Article],
@@ -210,6 +210,25 @@ describe('Basics...', function () {
       assert.equal(doc.actor[0].displayName, 'Joe');
     });
   });
+
+  it('should handle languages properly', function() {
+    var LanguageValue = require('../src/models/_languagevalue');
+    var res = [
+      {'@value':'foo'},
+      {'@value':'bar','@language':'en-US'},
+      {'@value':'baz','@language':'fr-US'},
+      {'@value':'boo','@language':'fr'}
+    ];
+    var lv = LanguageValue(res);
+    assert.equal(lv.toString(), 'foo');
+    assert.equal(lv.valueOf(), 'foo');
+    assert.equal(lv.valueOf('en'), 'bar');
+    assert.equal(lv.valueOf('en-us'), 'bar');
+    assert.equal(lv.valueOf('en-US'), 'bar');
+    assert.equal(lv.valueOf('en-Us-Scrp'), 'bar');
+    assert.equal(lv.valueOf('fr'), 'boo');
+    assert.equal(lv.valueOf('FR-US'), 'baz');
+  });
 });
 
 describe('Extensions...', function() {
@@ -263,4 +282,5 @@ describe('Extensions...', function() {
       assert.equal(obj.type, key[1]);
     });
   });
+
 });

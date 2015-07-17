@@ -21,62 +21,80 @@
 var util       = require('util');
 var reasoner   = require('../reasoner');
 var utils      = require('../utils');
-var vocabs     = require('linkeddata-vocabs');
+var as     = require('linkeddata-vocabs').as;
 var Activity = require('./_activity');
 
-function Question(expanded) {
+function Question(expanded, builder) {
   if (!(this instanceof Question))
-    return new Question(expanded);
-  Activity.call(this, expanded);
+    return new Question(expanded, builder);
+  Activity.call(this, expanded, builder || Question.Builder);
 }
 util.inherits(Question, Activity);
-utils.define(Question.prototype, 'height', function() {
-  var ret = Math.max(0,this.get(vocabs.as.height));
-  return isNaN(ret) ? 0 : ret;
-});
-utils.define(Question.prototype, 'width', function() {
-  var ret = Math.max(0,this.get(vocabs.as.width));
-  return isNaN(ret) ? 0 : ret;
-});
-utils.define(Question.prototype, 'duration', function() {
-  return this.get(vocabs.as.duration);
-});
-utils.define(Question.prototype, 'anyOf', function() {
-  return this.get(vocabs.as.anyOf);
-});
-utils.define(Question.prototype, 'oneOf', function() {
-  return this.get(vocabs.as.oneOf);
-});
 
 Question.Builder = function(types,base) {
   if (!(this instanceof Question.Builder))
     return new Question.Builder(types, base);
   Activity.Builder.call(
     this,
-    utils.merge_types(reasoner, vocabs.as.Question, types),
+    utils.merge_types(reasoner, as.Question, types),
     base || new Question({}));
 };
 util.inherits(Question.Builder, Activity.Builder);
 
-Question.Builder.prototype.height = function(val) {
-  utils.set_non_negative_int.call(this, vocabs.as.height, val);
-  return this;
-};
-Question.Builder.prototype.width = function(val) {
-  utils.set_non_negative_int.call(this, vocabs.as.width, val);
-  return this;
-};
-Question.Builder.prototype.duration = function(val) {
-  utils.set_duration_vall.call(this, vocabs.as.duration, val);
-  return this;
-};
-Question.Builder.prototype.oneOf = function(val) {
-  this.set(vocabs.as.oneOf, val);
-  return this;
-};
-Question.Builder.prototype.anyOf = function(val) {
-  this.set(vocabs.as.anyOf, val);
-  return this;
-};
+utils.defineProperty(
+  'height',Question,
+  function() {
+    var ret = Math.max(0, this.get(as.height));
+    return isNaN(ret) ? 0 : ret;
+  },
+  function(val) {
+    utils.set_non_negative_int.call(this, as.height, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'width',Question,
+  function() {
+    var ret = Math.max(0, this.get(as.width));
+    return isNaN(ret) ? 0 : ret;
+  },
+  function(val) {
+    utils.set_non_negative_int.call(this, as.width, val);
+  }
+);
+
+utils.defineProperty(
+  'duration',Question,
+  function() {
+    return this.get(as.duration);
+  },
+  function(val) {
+    utils.set_duration_val.call(this, as.duration, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'anyOf',Question,
+  function() {
+    return this.get(as.anyOf);
+  },
+  function(val) {
+    this.set(as.anyOf, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'oneOf',Question,
+  function() {
+    return this.get(as.oneOf);
+  },
+  function(val) {
+    this.set(as.oneOf, val);
+    return this;
+  }
+);
 
 module.exports = Question;

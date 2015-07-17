@@ -1,6 +1,6 @@
 
 var jsonld        = require('jsonld');
-var checkCallback = require('./utils').checkCallback;
+var throwif = require('./utils').throwif;
 var vocabs        = require('linkeddata-vocabs');
 var as_context    = require('activitystreams-context');
 var ext_context   = require('./extcontext');
@@ -10,7 +10,9 @@ var reasoner      = require('./reasoner');
 var default_doc_loader = jsonld.documentLoaders.node();
 
 function custom_doc_loader(url, callback) {
-  checkCallback(callback);
+  throwif(
+    typeof callback !== 'function',
+    'A callback function must be provided');
   var u = url;
   if (u[u.length-1] !== '#') u += '#';
   if (u === vocabs.as.ns)
@@ -38,7 +40,9 @@ exports.compact = function(expanded, options, callback) {
     options = {};
   }
   options = options || {};
-  checkCallback(callback);
+  throwif(
+    typeof callback !== 'function',
+    'A callback function must be provided');
   var _context = getContext(options);
   jsonld.compact(
     expanded, _context,
@@ -53,7 +57,9 @@ exports.compact = function(expanded, options, callback) {
 };
 
 exports.import = function(input, callback) {
-  checkCallback(callback);
+  throwif(
+    typeof callback !== 'function',
+    'A callback function must be provided');
   jsonld.expand(
     input, {
       expandContext: as_context,

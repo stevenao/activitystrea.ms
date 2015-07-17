@@ -31,7 +31,24 @@ as.object().
   prettyWrite(function(err,doc) {
     console.log(doc);
   });
+```
 
+Which produces the output:
+
+```json
+{
+  "@context": "http://www.w3.org/ns/activitystreams#",
+  "@type": "Object",
+  "contentMap": {
+    "en": "bar",
+    "fr": "foo"
+  },
+  "displayName": "baz",
+  "published": "2015-07-17T00:50:09.889Z"
+}
+```
+
+```javascript
 // Create a simple activity
 as.create().
   actor('acct:sally@example.org').
@@ -40,6 +57,16 @@ as.create().
   prettyWrite(function(err,doc) {
     console.log(doc);
   });
+```
+
+Which produces the output:
+```json
+{
+  "@context": "http://www.w3.org/ns/activitystreams#",
+  "@type": "Create",
+  "actor": "acct:sally@example.org",
+  "object": "http://www.example.org/post"
+}
 ```
 
 The API uses a fluent factory pattern for creating AS objects. There are

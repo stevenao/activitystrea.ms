@@ -21,232 +21,324 @@
 var util = require('util');
 var reasoner = require('../reasoner');
 var utils = require('../utils');
-var vocabs = require('linkeddata-vocabs');
+var as = require('linkeddata-vocabs').as;
 var Base = require('./_base');
 
-function AsObject(expanded) {
+function AsObject(expanded, builder) {
   if (!(this instanceof AsObject))
-    return new AsObject(expanded);
-  Base.call(this, expanded);
+    return new AsObject(expanded, builder);
+  Base.call(this, expanded, builder || AsObject.Builder);
 }
 util.inherits(AsObject, Base);
-
-utils.define(AsObject.prototype, 'alias', function() {
-  return this.get(vocabs.as.alias);
-});
-utils.define(AsObject.prototype, 'attachment', function() {
-  return this.get(vocabs.as.attachment);
-});
-utils.define(AsObject.prototype, 'attributedTo', function() {
-  return this.get(vocabs.as.attributedTo);
-});
-utils.define(AsObject.prototype, 'content', function() {
-  return this.get(vocabs.as.content);
-});
-utils.define(AsObject.prototype, 'context', function() {
-  return this.get(vocabs.as.context);
-});
-utils.define(AsObject.prototype, 'displayName', function() {
-  return this.get(vocabs.as.displayName);
-});
-utils.define(AsObject.prototype, 'endTime', function() {
-  return this.get(vocabs.as.endTime);
-});
-utils.define(AsObject.prototype, 'generator', function() {
-  return this.get(vocabs.as.generator);
-});
-utils.define(AsObject.prototype, 'icon', function() {
-  return this.get(vocabs.as.icon);
-});
-utils.define(AsObject.prototype, 'image', function() {
-  return this.get(vocabs.as.image);
-});
-utils.define(AsObject.prototype, 'inReplyTo', function() {
-  return this.get(vocabs.as.inReplyTo);
-});
-utils.define(AsObject.prototype, 'location', function() {
-  return this.get(vocabs.as.location);
-});
-utils.define(AsObject.prototype, 'preview', function() {
-  return this.get(vocabs.as.preview);
-});
-utils.define(AsObject.prototype, 'published', function() {
-  return this.get(vocabs.as.published);
-});
-utils.define(AsObject.prototype, 'replies', function() {
-  return this.get(vocabs.as.replies);
-});
-utils.define(AsObject.prototype, 'scope', function() {
-  return this.get(vocabs.as.scope);
-});
-utils.define(AsObject.prototype, 'startTime', function() {
-  return this.get(vocabs.as.startTime);
-});
-utils.define(AsObject.prototype, 'summary', function() {
-  return this.get(vocabs.as.summary);
-});
-utils.define(AsObject.prototype, 'tag', function() {
-  return this.get(vocabs.as.tag);
-});
-utils.define(AsObject.prototype, 'title', function() {
-  return this.get(vocabs.as.title);
-});
-utils.define(AsObject.prototype, 'updated', function() {
-  return this.get(vocabs.as.updated);
-});
-utils.define(AsObject.prototype, 'url', function() {
-  return this.get(vocabs.as.url);
-});
-utils.define(AsObject.prototype, 'to', function() {
-  return this.get(vocabs.as.to);
-});
-utils.define(AsObject.prototype, 'bto', function() {
-  return this.get(vocabs.as.bto);
-});
-utils.define(AsObject.prototype, 'cc', function() {
-  return this.get(vocabs.as.cc);
-});
-utils.define(AsObject.prototype, 'bcc', function() {
-  return this.get(vocabs.as.bcc);
-});
 
 AsObject.Builder = function(types, base) {
   if (!(this instanceof AsObject.Builder))
     return new AsObject.Builder(types, base);
   Base.Builder.call(
     this,
-    utils.merge_types(reasoner, vocabs.as.Object,types),
+    utils.merge_types(reasoner, as.Object,types),
     base || new AsObject({}));
 };
 util.inherits(AsObject.Builder, Base.Builder);
 
-AsObject.Builder.prototype.alias = function(val) {
-  this.set(vocabs.as.alias, val);
-  return this;
-};
-AsObject.Builder.prototype.attachedTo = function(val) {
-  this.set(vocabs.as.attachedTo, val);
-  return this;
-};
-AsObject.Builder.prototype.attachment = function(val) {
-  this.set(vocabs.as.attachment, val);
-  return this;
-};
-AsObject.Builder.prototype.attributedTo = function(val) {
-  this.set(vocabs.as.attributedTo, val);
-  return this;
-};
-AsObject.Builder.prototype.context = function(val) {
-  this.set(vocabs.as.context, val);
-  return this;
-};
-AsObject.Builder.prototype.generator = function(val) {
-  this.set(vocabs.as.generator, val);
-  return this;
-};
-AsObject.Builder.prototype.icon = function(val) {
-  this.set(vocabs.as.icon, val);
-  return this;
-};
-AsObject.Builder.prototype.image = function(val) {
-  this.set(vocabs.as.image, val);
-  return this;
-};
-AsObject.Builder.prototype.inReplyTo = function(val) {
-  this.set(vocabs.as.inReplyTo, val);
-  return this;
-};
-AsObject.Builder.prototype.location = function(val) {
-  this.set(vocabs.as.location, val);
-  return this;
-};
-AsObject.Builder.prototype.preview = function(val) {
-  this.set(vocabs.as.preview, val);
-  return this;
-};
-AsObject.Builder.prototype.replies = function(val) {
-  this.set(vocabs.as.replies, val);
-  return this;
-};
-AsObject.Builder.prototype.scope = function(val) {
-  this.set(vocabs.as.scope, val);
-  return this;
-};
-AsObject.Builder.prototype.tag = function(val) {
-  this.set(vocabs.as.tag, val);
-  return this;
-};
-AsObject.Builder.prototype.url = function(val) {
-  this.set(vocabs.as.url, val);
-  return this;
-};
-AsObject.Builder.prototype.action = function(val) {
-  this.set(vocabs.as.action, val);
-  return this;
-};
-AsObject.Builder.prototype.content = function(val, lang) {
-  utils.set_lang_val.call(this, vocabs.as.content, val, lang);
-  return this;
-};
-AsObject.Builder.prototype.displayName = function(val, lang) {
-  utils.set_lang_val.call(this, vocabs.as.displayName, val, lang);
-  return this;
-};
-AsObject.Builder.prototype.title = function(val, lang) {
-  utils.set_lang_val.call(this, vocabs.as.title, val, lang);
-  return this;
-};
-AsObject.Builder.prototype.summary = function(val, lang) {
-  utils.set_lang_val.call(this, vocabs.as.summary, val, lang);
-  return this;
-};
+utils.defineProperty(
+  'alias',AsObject,
+  function() {
+    return this.get(as.alias);
+  },
+  function(val) {
+    this.set(as.alias, val);
+    return this;
+  }
+);
 
-AsObject.Builder.prototype.endTime = function(val) {
-  utils.set_date_val.call(this,vocabs.as.endTime,val);
-  return this;
-};
-AsObject.Builder.prototype.endTimeNow = function() {
+utils.defineProperty(
+  'attachment',AsObject,
+  function() {
+    return this.get(as.attachment);
+  },
+  function(val) {
+    this.set(as.attachment, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'attributedTo',AsObject,
+  function() {
+    return this.get(as.attributedTo);
+  },
+  function(val) {
+    this.set(as.attributedTo, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'content',AsObject,
+  function() {
+    return this.get(as.content);
+  },
+  function(val, lang) {
+    utils.set_lang_val.call(this, as.content, val, lang);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'context',AsObject,
+  function() {
+    return this.get(as.context);
+  },
+  function(val) {
+    this.set(as.context, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'displayName',AsObject,
+  function() {
+    return this.get(as.displayName);
+  },
+  function(val, lang) {
+    utils.set_lang_val.call(this, as.displayName, val, lang);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'summary',AsObject,
+  function() {
+    return this.get(as.summary);
+  },
+  function(val, lang) {
+    utils.set_lang_val.call(this, as.summary, val, lang);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'title',AsObject,
+  function() {
+    return this.get(as.title);
+  },
+  function(val, lang) {
+    utils.set_lang_val.call(this, as.title, val, lang);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'endTime',AsObject,
+  function() {
+    return this.get(as.endTime);
+  },
+  function(val) {
+    utils.set_date_val.call(this,as.endTime,val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'published',AsObject,
+  function() {
+    return this.get(as.published);
+  },
+  function(val) {
+    utils.set_date_val.call(this,as.published,val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'startTime',AsObject,
+  function() {
+    return this.get(as.startTime);
+  },
+  function(val) {
+    utils.set_date_val.call(this,as.startTime,val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'updated',AsObject,
+  function() {
+    return this.get(as.updated);
+  },
+  function(val) {
+    utils.set_date_val.call(this,as.updated,val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'generator',AsObject,
+  function() {
+    return this.get(as.generator);
+  },
+  function(val) {
+    this.set(as.generator, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'icon',AsObject,
+  function() {
+    return this.get(as.icon);
+  },
+  function(val) {
+    this.set(as.icon, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'image',AsObject,
+  function() {
+    return this.get(as.image);
+  },
+  function(val) {
+    this.set(as.image, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'inReplyTo',AsObject,
+  function() {
+    return this.get(as.inReplyTo);
+  },
+  function(val) {
+    this.set(as.inReplyTo, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'location',AsObject,
+  function() {
+    return this.get(as.location);
+  },
+  function(val) {
+    this.set(as.location, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'preview',AsObject,
+  function() {
+    return this.get(as.preview);
+  },
+  function(val) {
+    this.set(as.preview, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'replies',AsObject,
+  function() {
+    return this.get(as.replies);
+  },
+  function(val) {
+    this.set(as.replies, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'scope',AsObject,
+  function() {
+    return this.get(as.scope);
+  },
+  function(val) {
+    this.set(as.scope, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'tag',AsObject,
+  function() {
+    return this.get(as.tag);
+  },
+  function(val) {
+    this.set(as.tag, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'url',AsObject,
+  function() {
+    return this.get(as.url);
+  },
+  function(val) {
+    this.set(as.url, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'to',AsObject,
+  function() {
+    return this.get(as.to);
+  },
+  function(val) {
+    this.set(as.to, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'bto',AsObject,
+  function() {
+    return this.get(as.bto);
+  },
+  function(val) {
+    this.set(as.bto, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'cc',AsObject,
+  function() {
+    return this.get(as.cc);
+  },
+  function(val) {
+    this.set(as.cc, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'bcc',AsObject,
+  function() {
+    return this.get(as.bcc);
+  },
+  function(val) {
+    this.set(as.bcc, val);
+    return this;
+  }
+);
+
+var proto = AsObject.Builder.prototype;
+proto.endTimeNow = function() {
   return this.endTime(new Date());
 };
-
-AsObject.Builder.prototype.published = function(val) {
-  utils.set_date_val.call(this,vocabs.as.published,val);
-  return this;
-};
-AsObject.Builder.prototype.publishedNow = function() {
+proto.publishedNow = function() {
   return this.published(new Date());
 };
-
-AsObject.Builder.prototype.startTime = function(val) {
-  utils.set_date_val.call(this,vocabs.as.startTime,val);
-  return this;
-};
-AsObject.Builder.prototype.startTimeNow = function() {
+proto.startTimeNow = function() {
   return this.startTime(new Date());
 };
-
-AsObject.Builder.prototype.updated = function(val) {
-  utils.set_date_val.call(this,vocabs.as.updated,val);
-  return this;
-};
-AsObject.Builder.prototype.updatedNow = function() {
+proto.updatedNow = function() {
   return this.updated(new Date());
-};
-AsObject.Builder.prototype.to = function(val) {
-  this.set(vocabs.as.to, val);
-  return this;
-};
-AsObject.Builder.prototype.bto = function(val) {
-  this.set(vocabs.as.bto, val);
-  return this;
-};
-AsObject.Builder.prototype.cc = function(val) {
-  this.set(vocabs.as.cc, val);
-  return this;
-};
-AsObject.Builder.prototype.bcc = function(val) {
-  this.set(vocabs.as.bcc, val);
-  return this;
 };
 
 module.exports = AsObject;

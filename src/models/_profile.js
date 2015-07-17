@@ -21,33 +21,35 @@
 var util = require('util');
 var reasoner = require('../reasoner');
 var utils = require('../utils');
-var vocabs = require('linkeddata-vocabs');
+var as = require('linkeddata-vocabs').as;
 var Content = require('./_content');
 
-function Profile(expanded) {
+function Profile(expanded, builder) {
   if (!(this instanceof Profile))
-    return new Profile(expanded);
-  Content.call(this, expanded);
+    return new Profile(expanded, builder);
+  Content.call(this, expanded, builder || Profile.Builder);
 }
 util.inherits(Profile, Content);
-
-utils.define(Profile.prototype, 'describes', function() {
-  return this.get(vocabs.as.describes);
-});
 
 Profile.Builder = function(types,base) {
   if (!(this instanceof Profile.Builder))
     return new Profile.Builder(types,base);
   Content.Builder.call(
     this,
-    utils.merge_types(reasoner, vocabs.as.Profile, types),
+    utils.merge_types(reasoner, as.Profile, types),
     base || new Profile({}));
 };
 util.inherits(Profile.Builder,Content.Builder);
 
-Profile.Builder.prototype.describes = function(val) {
-  this.set(vocabs.as.describes, val);
-  return this;
-};
+utils.defineProperty(
+  'describes',Profile,
+  function() {
+    return this.get(as.describes);
+  },
+  function(val) {
+    this.set(as.describes, val);
+    return this;
+  }
+);
 
 module.exports = Profile;

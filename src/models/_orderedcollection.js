@@ -22,35 +22,40 @@ var Collection = require('./_collection');
 var util = require('util');
 var reasoner = require('../reasoner');
 var utils = require('../utils');
-var vocabs = require('linkeddata-vocabs');
+var as = require('linkeddata-vocabs').as;
 var models = require('../models');
 
-function OrderedCollection(expanded) {
+function OrderedCollection(expanded,builder) {
   if (!(this instanceof OrderedCollection))
-    return new OrderedCollection(expanded);
-  Collection.call(this,expanded);
+    return new OrderedCollection(expanded,builder);
+  Collection.call(this,expanded,builder || OrderedCollection.Builder);
 }
 util.inherits(OrderedCollection, Collection);
-utils.define(OrderedCollection.prototype, 'startIndex', function() {
-  var ret = Math.max(0,this.get(vocabs.as.startIndex));
-  return isNaN(ret) ? 0 : ret;
-});
 
 OrderedCollection.Builder = function(types, base) {
   if (!(this instanceof OrderedCollection.Builder))
     return new OrderedCollection.Builder(types, base);
   Collection.Builder.call(
     this,
-    utils.merge_types(reasoner, vocabs.as.OrderedCollection, types),
+    utils.merge_types(reasoner, as.OrderedCollection, types),
     base || new OrderedCollection({}));
 };
 util.inherits(OrderedCollection.Builder, Collection.Builder);
+
+utils.defineProperty(
+  'startIndex',OrderedCollection,
+  function() {
+    var ret = Math.max(0,this.get(as.startIndex));
+    return isNaN(ret) ? 0 : ret;
+  },
+  function(val) {
+    utils.set_non_negative_int.call(this, as.startIndex, val);
+    return this;
+  }
+);
+
 OrderedCollection.Builder.prototype.items = function(val) {
   return this.orderedItems.apply(this,arguments);
-};
-OrderedCollection.Builder.prototype.startIndex = function(val) {
-  utils.set_non_negative_int.call(this, as.startIndex, val);
-  return this;
 };
 
 module.exports = OrderedCollection;

@@ -25,22 +25,12 @@ var AsObject = require('../models').Object;
 var utils    = require('../utils');
 var reasoner = require('../reasoner');
 
-function Interval(expanded) {
+function Interval(expanded, builder) {
   if (!(this instanceof Interval))
-    return new Interval(expanded);
-  AsObject.call(this, expanded);
+    return new Interval(expanded, builder);
+  AsObject.call(this, expanded, builder || Interval.Builder);
 }
 util.inherits(Interval, AsObject);
-
-utils.define(Interval.prototype, 'upper', function() {
-  return this.get(interval.upper);
-});
-utils.define(Interval.prototype, 'lower', function() {
-  return this.get(interval.lower);
-});
-utils.define(Interval.prototype, 'step', function() {
-  return this.get(interval.step);
-});
 
 Interval.Builder = function(types, base) {
   if (!(this instanceof Interval.Builder))
@@ -71,17 +61,37 @@ function _set(key, val) {
   this.set(key, val, options);
 }
 
-Interval.Builder.prototype.upper = function(val) {
-  _set.call(this, interval.upper, val);
-  return this;
-};
-Interval.Builder.prototype.lower = function(val) {
-  _set.call(this, interval.lower, val);
-  return this;
-};
-Interval.Builder.prototype.step = function(val) {
-  _set.call(this, interval.step, val);
-  return this;
-};
+utils.defineProperty(
+  'upper',Interval,
+  function() {
+    return this.get(interval.upper);
+  },
+  function(val) {
+    _set.call(this, interval.upper, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'lower',Interval,
+  function() {
+    return this.get(interval.lower);
+  },
+  function(val) {
+    _set.call(this, interval.lower, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'step',Interval,
+  function() {
+    return this.get(interval.step);
+  },
+  function(val) {
+    _set.call(this, interval.step, val);
+    return this;
+  }
+);
 
 module.exports = Interval;

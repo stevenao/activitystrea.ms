@@ -21,51 +21,57 @@
 var util = require('util');
 var reasoner = require('../reasoner');
 var utils = require('../utils');
-var vocabs = require('linkeddata-vocabs');
+var as = require('linkeddata-vocabs').as;
 var AsObject = require('./_object');
 
-function Relationship(expanded) {
+function Relationship(expanded, builder) {
   if (!(this instanceof Relationship))
-    return new Relationship(expanded);
-  AsObject.call(this, expanded);
+    return new Relationship(expanded, builder);
+  AsObject.call(this, expanded, builder || Relationship.Builder);
 }
 util.inherits(Relationship, AsObject);
-
-utils.define(Relationship.prototype, 'subject', function() {
-  return this.get(vocabs.as.subject);
-});
-
-utils.define(Relationship.prototype, 'object', function() {
-  return this.get(vocabs.as.object);
-});
-
-utils.define(Relationship.prototype, 'relationship', function() {
-  return this.get(vocabs.as.relationship);
-});
 
 Relationship.Builder = function(types,base) {
   if (!(this instanceof Relationship.Builder))
     return new Relationship.Builder(types,base);
   AsObject.Builder.call(
     this,
-    utils.merge_types(reasoner, vocabs.as.Relationship, types),
+    utils.merge_types(reasoner, as.Relationship, types),
     base || new Relationship({}));
 };
 util.inherits(Relationship.Builder,AsObject.Builder);
 
-Relationship.Builder.prototype.subject = function(val) {
-  this.set(vocabs.as.subject, val);
-  return this;
-};
+utils.defineProperty(
+  'subject',Relationship,
+  function() {
+    return this.get(as.subject);
+  },
+  function(val) {
+    this.set(as.subject, val);
+    return this;
+  }
+);
 
-Relationship.Builder.prototype.object = function(val) {
-  this.set(vocabs.as.object, val);
-  return this;
-};
+utils.defineProperty(
+  'object',Relationship,
+  function() {
+    return this.get(as.object);
+  },
+  function(val) {
+    this.set(as.object, val);
+    return this;
+  }
+);
 
-Relationship.Builder.prototype.relationship = function(val) {
-  this.set(vocabs.as.relationship, val);
-  return this;
-};
+utils.defineProperty(
+  'relationship',Relationship,
+  function() {
+    return this.get(as.relationship);
+  },
+  function(val) {
+    this.set(as.relationship, val);
+    return this;
+  }
+);
 
 module.exports = Relationship;

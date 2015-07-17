@@ -25,113 +25,148 @@ var utils    = require('../utils');
 var models   = require('../models');
 var AsObject = require('./_object');
 var Base     = require('./_base');
+var as = vocabs.as;
+var rdf = vocabs.rdf;
 
 var _ordered = Symbol('ordered');
+var slice = Array.prototype.slice;
 
 function is_ordered(base) {
-  var i = base.get(vocabs.as.items);
-  return i && i.length && i[0].get(vocabs.rdf.first);
+  var i = base.get(as.items);
+  return i && i.length && i[0].get(rdf.first);
 }
 
-function Collection(expanded) {
+function Collection(expanded, builder) {
   if (!(this instanceof Collection))
-    return new Collection(expanded);
-  AsObject.call(this, expanded);
+    return new Collection(expanded, builder);
+  AsObject.call(this, expanded, builder || Collection.Builder);
   this[_ordered] = is_ordered(this);
 }
 util.inherits(Collection, AsObject);
-
-utils.define(Collection.prototype, 'totalItems', function() {
-  var ret = Math.max(0,this.get(vocabs.as.totalItems));
-  return isNaN(ret) ? 0 : ret ;
-});
-utils.define(Collection.prototype, 'itemsPerPage', function() {
-  var ret = Math.max(0,this.get(vocabs.as.itemsPerPage));
-  return isNaN(ret) ? 0 : ret ;
-});
-utils.define(Collection.prototype, 'current', function() {
-  return this.get(vocabs.as.current);
-});
-utils.define(Collection.prototype, 'next', function() {
-  return this.get(vocabs.as.next);
-});
-utils.define(Collection.prototype, 'prev', function() {
-  return this.get(vocabs.as.prev);
-});
-utils.define(Collection.prototype, 'last', function() {
-  return this.get(vocabs.as.last);
-});
-utils.define(Collection.prototype, 'first', function() {
-  return this.get(vocabs.as.first);
-});
-utils.define(Collection.prototype, 'self', function() {
-  return this.get(vocabs.as.self);
-});
-utils.define(Collection.prototype, 'ordered', function() {
-  return this[_ordered];
-});
-
-utils.define(Collection.prototype, 'items', function() {
-  var val = this.get(vocabs.as.items);
-  if (!val) return undefined;
-  return val['@list'] || val;
-});
 
 Collection.Builder = function(types, base) {
   if (!(this instanceof Collection.Builder))
     return new Collection.Builder(types, base);
   AsObject.Builder.call(
     this,
-    utils.merge_types(reasoner, vocabs.as.Collection, types),
+    utils.merge_types(reasoner, as.Collection, types),
     base || new Collection({}));
   this[_ordered] = 0;
 };
 util.inherits(Collection.Builder, AsObject.Builder);
 
-Collection.Builder.prototype.totalItems = function(val) {
-  utils.set_non_negative_int.call(this, vocabs.as.totalItems, val);
-  return this;
-};
-Collection.Builder.prototype.itemsPerPage = function(val) {
-  utils.set_non_negative_int.call(this, vocabs.as.itemsPerPage, val);
-  return this;
-};
-Collection.Builder.prototype.current = function(val) {
-  this.set(vocabs.as.current, val);
-  return this;
-};
-Collection.Builder.prototype.next = function(val) {
-  this.set(vocabs.as.next, val);
-  return this;
-};
-Collection.Builder.prototype.prev = function(val) {
-  this.set(vocabs.as.prev, val);
-  return this;
-};
-Collection.Builder.prototype.first = function(val) {
-  this.set(vocabs.as.first, val);
-  return this;
-};
-Collection.Builder.prototype.last = function(val) {
-  this.set(vocabs.as.last, val);
-  return this;
-};
-Collection.Builder.prototype.self = function(val) {
-  this.set(vocabs.as.self, val);
-  return this;
-};
+utils.defineProperty(
+  'totalItems', Collection,
+  function() {
+    var ret = Math.max(0,this.get(as.totalItems));
+    return isNaN(ret) ? 0 : ret ;
+  },
+  function(val) {
+    utils.set_non_negative_int.call(this, as.totalItems, val);
+    return this;
+  }
+);
 
-var slice = Array.prototype.slice;
+utils.defineProperty(
+  'itemsPerPage', Collection,
+  function() {
+    var ret = Math.max(0,this.get(as.itemsPerPage));
+    return isNaN(ret) ? 0 : ret ;
+  },
+  function(val) {
+    utils.set_non_negative_int.call(this, as.itemsPerPage, val);
+    return this;
+  }
+);
 
-Collection.Builder.prototype.items = function(val) {
-  utils.throwif(this[_ordered] > 0, 'Unordered items cannot be added when the collection already contains ordered items');
-  this[_ordered] = -1;
-  if (!val) return this;
-  if (!Array.isArray(val) && arguments.length > 1)
-    val = slice.call(arguments);
-  this.set(vocabs.as.items, val);
-  return this;
-};
+utils.defineProperty(
+  'current', Collection,
+  function() {
+    return this.get(as.current);
+  },
+  function(val) {
+    this.set(as.current, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'next', Collection,
+  function() {
+    return this.get(as.next);
+  },
+  function(val) {
+    this.set(as.next, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'prev', Collection,
+  function() {
+    return this.get(as.prev);
+  },
+  function(val) {
+    this.set(as.prev, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'last', Collection,
+  function() {
+    return this.get(as.last);
+  },
+  function(val) {
+    this.set(as.last, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'first', Collection,
+  function() {
+    return this.get(as.first);
+  },
+  function(val) {
+    this.set(as.first, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'self', Collection,
+  function() {
+    return this.get(as.self);
+  },
+  function(val) {
+    this.set(as.self, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'items', Collection,
+  function() {
+    var val = this.get(as.items);
+    if (!val) return undefined;
+    return val['@list'] || val;
+  },
+  function(val) {
+    utils.throwif(this[_ordered] > 0, 'Unordered items cannot be added when the collection already contains ordered items');
+    this[_ordered] = -1;
+    if (!val) return this;
+    if (!Array.isArray(val) && arguments.length > 1)
+      val = slice.call(arguments);
+    this.set(as.items, val);
+    return this;
+  }
+);
+
+utils.define(Collection.prototype, 'ordered', function() {
+  return this[_ordered];
+});
+
 Collection.Builder.prototype.orderedItems = function(val) {
   utils.throwif(this[_ordered] < 0, 'Ordered items cannot be added when the collection already contains unordered items');
   this[_ordered] = 1;
@@ -140,7 +175,7 @@ Collection.Builder.prototype.orderedItems = function(val) {
     val = slice.call(arguments);
   var _list = Base.Builder();
   _list.set('@list', val);
-  this.set(vocabs.as.items,_list.get());
+  this.set(as.items,_list.get());
   return this;
 };
 

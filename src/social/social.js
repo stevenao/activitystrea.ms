@@ -24,6 +24,11 @@ var models      = require('../models');
 var reasoner    = require('../reasoner');
 var utils       = require('../utils');
 var merge_types = utils.merge_types;
+var social = vocabs.social;
+var owl = vocabs.owl;
+var rdf = vocabs.rdf;
+var as = vocabs.as;
+var rdfs = vocabs.rdfs;
 
 var Population = require('./_population');
 var Interested = require('./_interested');
@@ -47,15 +52,15 @@ exports.everyone = function(types) {
 };
 exports.public = function(types) {
   return Population.Builder(
-    merge_types(reasoner, vocabs.social.Public,types));
+    merge_types(reasoner, social.Public,types));
 };
 exports.private = function(types) {
   return Population.Builder(
-    merge_types(reasoner, vocabs.social.Private,types));
+    merge_types(reasoner, social.Private,types));
 };
 exports.direct = function(types) {
   return Population.Builder(
-    merge_types(reasoner, vocabs.social.Direct,types));
+    merge_types(reasoner, social.Direct,types));
 };
 exports.common = function(types) {
   return Common.Builder(types);
@@ -65,19 +70,19 @@ exports.interested = function(types) {
 };
 exports.self = function(types) {
   return Population.Builder(
-    merge_types(reasoner, vocabs.social.Self,types));
+    merge_types(reasoner, social.Self,types));
 };
 exports.all = function(types) {
   return CompoundPopulation.Builder(
-    merge_types(reasoner, vocabs.social.All,types));
+    merge_types(reasoner, social.All,types));
 };
 exports.any = function(types) {
   return CompoundPopulation.Builder(
-    merge_types(reasoner, vocabs.social.Any,types));
+    merge_types(reasoner, social.Any,types));
 };
 exports.none = function(types) {
   return CompoundPopulation.Builder(
-    merge_types(reasoner, vocabs.social.None,types));
+    merge_types(reasoner, social.None,types));
 };
 exports.compoundPopulation = function(types) {
   return CompoundPopulation.Builder(types);
@@ -85,15 +90,15 @@ exports.compoundPopulation = function(types) {
 
 function social_recognizer(type) {
   var thing;
-  if (reasoner.isSubClassOf(type,vocabs.social.Common)) {
+  if (reasoner.isSubClassOf(type,social.Common)) {
     thing = Common;
-  } else if (reasoner.isSubClassOf(type,vocabs.social.Interested)) {
+  } else if (reasoner.isSubClassOf(type,social.Interested)) {
     thing = Interested;
-  } else if (reasoner.isSubClassOf(type,vocabs.social.CompoundPopulation)) {
+  } else if (reasoner.isSubClassOf(type,social.CompoundPopulation)) {
     thing = CompoundPopulation;
-  } else if (reasoner.isSubClassOf(type,vocabs.social.Everyone)) {
+  } else if (reasoner.isSubClassOf(type,social.Everyone)) {
     thing = Everyone;
-  } else if (reasoner.isSubClassOf(type,vocabs.social.Population)) {
+  } else if (reasoner.isSubClassOf(type,social.Population)) {
     thing = Population;
   }
   return thing;
@@ -128,34 +133,34 @@ exports.init = function(models, reasoner, context) {
   models.use(social_recognizer);
 
   [
-    [vocabs.social.Population, vocabs.as.Object],
-    [vocabs.social.Everyone, vocabs.social.Population],
-    [vocabs.social.Public, vocabs.social.Population],
-    [vocabs.social.Private, vocabs.social.Population],
-    [vocabs.social.Direct, vocabs.social.Population],
-    [vocabs.social.Common, vocabs.social.Population],
-    [vocabs.social.Interested, vocabs.social.Population],
-    [vocabs.social.Self, vocabs.social.Population],
-    [vocabs.social.All, vocabs.social.CompoundPopulation],
-    [vocabs.social.Any, vocabs.social.CompoundPopulation],
-    [vocabs.social.None, vocabs.social.CompoundPopulation],
-    [vocabs.social.CompoundPopulation, vocabs.social.Population]
+    [social.Population, as.Object],
+    [social.Everyone, social.Population],
+    [social.Public, social.Population],
+    [social.Private, social.Population],
+    [social.Direct, social.Population],
+    [social.Common, social.Population],
+    [social.Interested, social.Population],
+    [social.Self, social.Population],
+    [social.All, social.CompoundPopulation],
+    [social.Any, social.CompoundPopulation],
+    [social.None, social.CompoundPopulation],
+    [social.CompoundPopulation, social.Population]
   ].forEach(function (pair) {
-    reasoner.add(pair[0], vocabs.rdfs.subClassOf, pair[1]);
+    reasoner.add(pair[0], rdfs.subClassOf, pair[1]);
   });
 
   var functionalDatatype = [
-        vocabs.owl.DatatypeProperty,
-        vocabs.owl.FunctionalProperty
+        owl.DatatypeProperty,
+        owl.FunctionalProperty
       ];
   [
-    [vocabs.social.member, vocabs.owl.ObjectProperty],
-    [vocabs.social.confidence, functionalDatatype],
-    [vocabs.social.havingDimension, vocabs.owl.ObjectProperty],
-    [vocabs.social.havingRole, vocabs.owl.ObjectProperty],
-    [vocabs.social.havingRelationship, vocabs.owl.ObjectProperty],
-    [vocabs.social.distance, functionalDatatype]
+    [social.member, owl.ObjectProperty],
+    [social.confidence, functionalDatatype],
+    [social.havingDimension, owl.ObjectProperty],
+    [social.havingRole, owl.ObjectProperty],
+    [social.havingRelationship, owl.ObjectProperty],
+    [social.distance, functionalDatatype]
   ].forEach(function(pair) {
-    reasoner.add(pair[0], vocabs.rdf.type, pair[1]);
+    reasoner.add(pair[0], rdf.type, pair[1]);
   });
 };

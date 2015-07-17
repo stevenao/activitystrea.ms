@@ -21,19 +21,55 @@
 
 var vocabs = require('linkeddata-vocabs');
 var reasoner = require('../reasoner');
+var utils = require('../utils');
 
-exports.Base               = require('./_base');
-exports.Object             = require('./_object');
-exports.Activity           = require('./_activity');
-exports.Actor              = require('./_actor');
-exports.Collection         = require('./_collection');
-exports.OrderedCollection  = require('./_orderedcollection');
-exports.Content            = require('./_content');
-exports.Link               = require('./_link');
-exports.Place              = require('./_place');
-exports.Relationship       = require('./_relationship');
-exports.Profile            = require('./_profile');
-exports.Question           = require('./_question');
+utils.define(exports,'Base',function() {
+  return require('./_base');
+});
+
+utils.define(exports,'Object',function() {
+  return require('./_object');
+});
+
+utils.define(exports,'Activity',function() {
+  return require('./_activity');
+});
+
+utils.define(exports,'Actor',function() {
+  return require('./_actor');
+});
+
+utils.define(exports,'Collection',function() {
+  return require('./_collection');
+});
+
+utils.define(exports,'OrderedCollection',function() {
+  return require('./_orderedcollection');
+});
+
+utils.define(exports,'Content',function() {
+  return require('./_content');
+});
+
+utils.define(exports,'Link',function() {
+  return require('./_link');
+});
+
+utils.define(exports,'Place',function() {
+  return require('./_place');
+});
+
+utils.define(exports,'Relationship',function() {
+  return require('./_relationship');
+});
+
+utils.define(exports,'Profile',function() {
+  return require('./_profile');
+});
+
+utils.define(exports,'Question',function() {
+  return require('./_question');
+});
 
 function core_recognizer(type) {
   var thing;

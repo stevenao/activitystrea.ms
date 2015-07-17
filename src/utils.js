@@ -26,10 +26,9 @@ exports.throwif = function(condition, message) {
   if (condition) throw Error(message);
 };
 
-exports.checkCallback = function(callback) {
-  exports.throwif(
-    typeof callback !== 'function',
-    'A callback function must be provided');
+exports.defineProperty = function(name,type,getter,setter) {
+  exports.define(type.prototype, name, getter);
+  type.Builder.prototype[name] = setter;
 };
 
 exports.define = function(target, key, accessor, writable) {
@@ -41,22 +40,8 @@ exports.define = function(target, key, accessor, writable) {
     def.get = accessor;
   else
     def.value = accessor;
-  if (writable)
+  if (writable === true)
     def.writable = true;
-  Object.defineProperty(target, key, def);
-};
-
-exports.hidden = function(target, key, accessor, writable) {
-  var def = {
-    configurable: false,
-    enumerable: false,
-  };
-  if (writable)
-    def.writable = true;
-  if (typeof accessor === 'function')
-    def.get = accessor;
-  else
-    def.value = accessor;
   Object.defineProperty(target, key, def);
 };
 

@@ -23,76 +23,105 @@ var vocabs   = require('linkeddata-vocabs');
 var reasoner = require('../reasoner');
 var utils    = require('../utils');
 var AsObject = require('./_object');
+var as = vocabs.as;
+var xsd = vocabs.xsd;
 
-function Activity(expanded) {
+function Activity(expanded,builder) {
   if (!(this instanceof Activity))
-    return new Activity(expanded);
-  AsObject.call(this, expanded);
+    return new Activity(expanded,builder);
+  AsObject.call(this, expanded, builder || Activity.Builder);
 }
 util.inherits(Activity, AsObject);
-
-utils.define(Activity.prototype, 'actor', function() {
-  return this.get(vocabs.as.actor);
-});
-utils.define(Activity.prototype, 'object', function() {
-  return this.get(vocabs.as.object);
-});
-utils.define(Activity.prototype, 'target', function() {
-  return this.get(vocabs.as.target);
-});
-utils.define(Activity.prototype, 'result', function() {
-  return this.get(vocabs.as.result);
-});
-utils.define(Activity.prototype, 'origin', function() {
-  return this.get(vocabs.as.origin);
-});
-utils.define(Activity.prototype, 'priority', function() {
-  return this.get(vocabs.as.priority);
-});
-utils.define(Activity.prototype, 'instrument', function() {
-  return this.get(vocabs.as.instrument);
-});
 
 Activity.Builder = function(types, base) {
   if (!(this instanceof Activity.Builder))
     return new Activity.Builder(types, base);
   AsObject.Builder.call(
     this,
-    utils.merge_types(reasoner,vocabs.as.Activity, types),
+    utils.merge_types(reasoner,as.Activity, types),
     base || new Activity({}));
 };
 util.inherits(Activity.Builder, AsObject.Builder);
 
-Activity.Builder.prototype.actor = function(val) {
-  this.set(vocabs.as.actor, val);
-  return this;
-};
-Activity.Builder.prototype.object = function(val) {
-  this.set(vocabs.as.object, val);
-  return this;
-};
-Activity.Builder.prototype.target = function(val) {
-  this.set(vocabs.as.target, val);
-  return this;
-};
-Activity.Builder.prototype.result = function(val) {
-  this.set(vocabs.as.result, val);
-  return this;
-};
-Activity.Builder.prototype.origin = function(val) {
-  this.set(vocabs.as.origin, val);
-  return this;
-};
-Activity.Builder.prototype.instrument = function(val) {
-  this.set(vocabs.as.instrument, val);
-  return this;
-};
-Activity.Builder.prototype.priority = function(val) {
-  utils.set_ranged_val.call(
-    this,
-    vocabs.as.priority,
-    val, 0.0, 1.0,
-    vocabs.xsd.float);
-  return this;
-};
+utils.defineProperty(
+  'actor', Activity,
+  function() {
+    return this.get(as.actor);
+  },
+  function(val) {
+    this.set(as.actor, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'object', Activity,
+  function() {
+    return this.get(as.object);
+  },
+  function(val) {
+    this.set(as.object, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'target', Activity,
+  function() {
+    return this.get(as.target);
+  },
+  function(val) {
+    this.set(as.target, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'result', Activity,
+  function() {
+    return this.get(as.result);
+  },
+  function(val) {
+    this.set(as.result, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'origin', Activity,
+  function() {
+    return this.get(as.origin);
+  },
+  function(val) {
+    this.set(as.origin, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'instrument', Activity,
+  function() {
+    return this.get(as.instrument);
+  },
+  function(val) {
+    this.set(as.instrument, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'priority', Activity,
+  function() {
+    return this.get(as.priority);
+  },
+  function(val) {
+    utils.set_ranged_val.call(
+      this,
+      as.priority,
+      val, 0.0, 1.0,
+      xsd.float);
+    return this;
+  }
+);
+
 module.exports = Activity;

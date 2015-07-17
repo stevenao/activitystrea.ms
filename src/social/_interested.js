@@ -22,36 +22,38 @@ var util       = require('util');
 var Population = require('./_population');
 var reasoner = require('../reasoner');
 var utils      = require('../utils');
-var vocabs     = require('linkeddata-vocabs');
+var social     = require('linkeddata-vocabs').social;
 
-function Interested(expanded) {
+function Interested(expanded, builder) {
   if (!(this instanceof Interested))
-    return new Interested(expanded);
-  Population.call(this, expanded);
+    return new Interested(expanded, builder);
+  Population.call(this, expanded, builder || Interested.Builder);
 }
 util.inherits(Interested, Population);
-
-utils.define(Interested.prototype, 'confidence', function() {
-  var ret = Math.min(100,Math.max(0,this.get(vocabs.social.confidence)));
-  return isNaN(ret) ? undefined : ret;
-});
 
 Interested.Builder = function(types,base) {
   if (!(this instanceof Interested.Builder))
     return new Interested.Builder(types,base);
   Population.Builder.call(
     this,
-    utils.merge_types(reasoner, vocabs.social.Interested, types),
+    utils.merge_types(reasoner, social.Interested, types),
     base || new Interested({}));
 };
 util.inherits(Interested.Builder,Population.Builder);
 
-Interested.Builder.prototype.confidence = function(val) {
-  if (!utils.is_integer(val))
-    throw new Error('confidence must be an integer between 0 and 100');
-  val = Math.max(0, Math.min(100, val));
-  this.set(vocabs.social.confidence, val);
-  return this;
-};
+utils.defineProperty(
+  'confidence',Interested,
+  function() {
+    var ret = Math.min(100,Math.max(0,this.get(social.confidence)));
+    return isNaN(ret) ? undefined : ret;
+  },
+  function(val) {
+    if (!utils.is_integer(val))
+      throw Error('confidence must be an integer between 0 and 100');
+    val = Math.max(0, Math.min(100, val));
+    this.set(social.confidence, val);
+    return this;
+  }
+);
 
 module.exports = Interested;

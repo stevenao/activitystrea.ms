@@ -22,10 +22,16 @@ var vocabs = require('linkeddata-vocabs');
 var utils  = require('./utils');
 var util   = require('util');
 var N3     = require('n3');
+var as = vocabs.as;
+var owl = vocabs.owl;
+var rdf = vocabs.rdf;
+var rdfs = vocabs.rdfs;
+var asx = vocabs.asx;
+var xsd = vocabs.xsd;
 
 function subClassHierarchy(store, subject) {
   var types = [subject];
-  var res = store.findByIRI(subject, vocabs.rdfs.subClassOf, null);
+  var res = store.findByIRI(subject, rdfs.subClassOf, null);
   for (var n = 0, l = res.length; n < l; n++)
     types.push(subClassHierarchy(store, res[n].object));
   return types;
@@ -33,7 +39,7 @@ function subClassHierarchy(store, subject) {
 
 function subPropertyHierarchy(store, subject) {
   var types = [subject];
-  var res = store.findByIRI(subject, vocabs.rdfs.subPropertyOf, null);
+  var res = store.findByIRI(subject, rdfs.subPropertyOf, null);
   for (var n = 0, l = res.length; n < l; n++)
     types.push(subPropertyHierarchy(store, res[n].object));
   return types;
@@ -41,7 +47,7 @@ function subPropertyHierarchy(store, subject) {
 
 function descendantPropertiesOf(store, subject) {
   var types = [subject];
-  var res = store.findByIRI(null, vocabs.rdfs.subPropertyOf, subject);
+  var res = store.findByIRI(null, rdfs.subPropertyOf, subject);
   for (var n = 0, l = res.length; n < l; n++)
     types.push(descendantPropertiesOf(store, res[n].subject));
   return types;
@@ -49,7 +55,7 @@ function descendantPropertiesOf(store, subject) {
 
 function descendantClassesOf(store, subject) {
   var types = [subject];
-  var res = store.findByIRI(null, vocabs.rdfs.subClassOf, subject);
+  var res = store.findByIRI(null, rdfs.subClassOf, subject);
   for (var n = 0, l = res.length; n < l; n++)
     types.push(descendantClassesOf(store, res[n].subject));
   return types;
@@ -81,190 +87,160 @@ function isSubPropertyOf(store, subject, object) {
 }
 
 function count_type(subject, type) {
-  return this[_store].countByIRI(subject, vocabs.rdf.type, type) > 0;
+  return this[_store].countByIRI(subject, rdf.type, type) > 0;
 }
 
 function _init(reasoner) {
 
-  [
-    [vocabs.as.items, vocabs.asx.PossiblyOrdered],
-    [vocabs.xsd.float, vocabs.asx.Number],
-    [vocabs.xsd.decimal, vocabs.asx.Number],
-    [vocabs.xsd.double, vocabs.asx.Number],
-    [vocabs.xsd.integer, vocabs.asx.Number],
-    [vocabs.xsd.nonPositiveInteger, vocabs.asx.Number],
-    [vocabs.xsd.long, vocabs.asx.Number],
-    [vocabs.xsd.nonNegativeInteger, vocabs.asx.Number],
-    [vocabs.xsd.negativeInteger, vocabs.asx.Number],
-    [vocabs.xsd.int, vocabs.asx.Number],
-    [vocabs.xsd.unsignedLong, vocabs.asx.Number],
-    [vocabs.xsd.positiveInteger, vocabs.asx.Number],
-    [vocabs.xsd.short, vocabs.asx.Number],
-    [vocabs.xsd.unsignedInt, vocabs.asx.Number],
-    [vocabs.xsd.byte, vocabs.asx.Number],
-    [vocabs.xsd.unsignedShort, vocabs.asx.Number],
-    [vocabs.xsd.unsignedByte, vocabs.asx.Number],
-    [vocabs.xsd.dateTime, vocabs.asx.Date],
-    [vocabs.xsd.date, vocabs.asx.Date],
-    [vocabs.xsd.boolean, vocabs.asx.Boolean],
+  var functionalObject = [owl.ObjectProperty, owl.FunctionalProperty],
+      functionalDatatype = [owl.DatatypeProperty , owl.FunctionalProperty],
+      languageProperty = [owl.DatatypeProperty , asx.LanguageProperty];
 
-    [vocabs.as.Accept, vocabs.as.Activity],
-    [vocabs.as.Activity, vocabs.as.Object],
-    [vocabs.as.Block, vocabs.as.Ignore],
-    [vocabs.as.IntransitiveActivity, vocabs.as.Activity],
-    [vocabs.as.Actor, vocabs.as.Object],
-    [vocabs.as.Add, vocabs.as.Activity],
-    [vocabs.as.Album, vocabs.as.Collection],
-    [vocabs.as.Announce, vocabs.as.Activity],
-    [vocabs.as.Application, vocabs.as.Actor],
-    [vocabs.as.Arrive, vocabs.as.IntransitiveActivity],
-    [vocabs.as.Article, vocabs.as.Content],
-    [vocabs.as.Audio, vocabs.as.Document],
-    [vocabs.as.Collection, vocabs.as.Object],
-    [vocabs.as.Relationship, vocabs.as.Object],
-    [vocabs.as.Content, vocabs.as.Object],
-    [vocabs.as.Create, vocabs.as.Activity],
-    [vocabs.as.Delete, vocabs.as.Activity],
-    [vocabs.as.Dislike, vocabs.as.Activity],
-    [vocabs.as.Document, vocabs.as.Content],
-    [vocabs.as.Event, vocabs.as.Object],
-    [vocabs.as.Favorite, vocabs.as.Activity],
-    [vocabs.as.Flag, vocabs.as.Activity],
-    [vocabs.as.Folder, vocabs.as.Collection],
-    [vocabs.as.Follow, vocabs.as.Activity],
-    [vocabs.as.Group, vocabs.as.Actor],
-    [vocabs.as.Ignore, vocabs.as.Activity],
-    [vocabs.as.Image, vocabs.as.Document],
-    [vocabs.as.Invite, vocabs.as.Offer],
-    [vocabs.as.Join, vocabs.as.Activity],
-    [vocabs.as.Leave, vocabs.as.Activity],
-    [vocabs.as.Like, vocabs.as.Activity],
-    [vocabs.as.Experience, vocabs.as.Activity],
-    [vocabs.as.View, vocabs.as.Experience],
-    [vocabs.as.Listen, vocabs.as.Experience],
-    [vocabs.as.Read, vocabs.as.View],
-    [vocabs.as.Move, vocabs.as.Activity],
-    [vocabs.as.Travel, vocabs.as.IntransitiveActivity],
-    [vocabs.as.Update, vocabs.as.Activity],
-    [vocabs.as.Mention, vocabs.as.Link],
-    [vocabs.as.Note, vocabs.as.Content],
-    [vocabs.as.Offer, vocabs.as.Activity],
-    [vocabs.as.OrderedCollection, vocabs.as.Collection],
-    [vocabs.as.Page, vocabs.as.Content],
-    [vocabs.as.Profile, vocabs.as.Content],
-    [vocabs.as.Person, vocabs.as.Actor],
-    [vocabs.as.Place, vocabs.as.Object],
-    [vocabs.as.Process, vocabs.as.Actor],
-    [vocabs.as.Question, [vocabs.as.Content, vocabs.as.IntransitiveActivity]],
-    [vocabs.as.Reject, vocabs.as.Activity],
-    [vocabs.as.Remove, vocabs.as.Activity],
-    [vocabs.as.Review, vocabs.as.Activity],
-    [vocabs.as.Service, vocabs.as.Actor],
-    [vocabs.as.Story, vocabs.as.OrderedCollection],
-    [vocabs.as.TentativeAccept, vocabs.as.Accept],
-    [vocabs.as.TentativeReject, vocabs.as.Reject],
-    [vocabs.as.Undo, vocabs.as.Activity],
-    [vocabs.as.Video, vocabs.as.Document]
-  ].forEach(function (pair) {
-    reasoner.add(pair[0], vocabs.rdfs.subClassOf, pair[1]);
-  });
+  reasoner.add(as.items, rdfs.subClassOf, asx.PossiblyOrdered);
+  reasoner.add(xsd.float, rdfs.subClassOf, asx.Number);
+  reasoner.add(xsd.decimal, rdfs.subClassOf, asx.Number);
+  reasoner.add(xsd.double, rdfs.subClassOf, asx.Number);
+  reasoner.add(xsd.integer, rdfs.subClassOf, asx.Number);
+  reasoner.add(xsd.nonPositiveInteger, rdfs.subClassOf, asx.Number);
+  reasoner.add(xsd.long, rdfs.subClassOf, asx.Number);
+  reasoner.add(xsd.nonNegativeInteger, rdfs.subClassOf, asx.Number);
+  reasoner.add(xsd.negativeInteger, rdfs.subClassOf, asx.Number);
+  reasoner.add(xsd.int, rdfs.subClassOf, asx.Number);
+  reasoner.add(xsd.unsignedLong, rdfs.subClassOf, asx.Number);
+  reasoner.add(xsd.positiveInteger, rdfs.subClassOf, asx.Number);
+  reasoner.add(xsd.short, rdfs.subClassOf, asx.Number);
+  reasoner.add(xsd.unsignedInt, rdfs.subClassOf, asx.Number);
+  reasoner.add(xsd.byte, rdfs.subClassOf, asx.Number);
+  reasoner.add(xsd.unsignedShort, rdfs.subClassOf, asx.Number);
+  reasoner.add(xsd.unsignedByte, rdfs.subClassOf, asx.Number);
+  reasoner.add(xsd.dateTime, rdfs.subClassOf, asx.Date);
+  reasoner.add(xsd.date, rdfs.subClassOf, asx.Date);
+  reasoner.add(xsd.boolean, rdfs.subClassOf, asx.Boolean);
+  reasoner.add(as.Accept, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Activity, rdfs.subClassOf, as.Object);
+  reasoner.add(as.Block, rdfs.subClassOf, as.Ignore);
+  reasoner.add(as.IntransitiveActivity, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Actor, rdfs.subClassOf, as.Object);
+  reasoner.add(as.Add, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Album, rdfs.subClassOf, as.Collection);
+  reasoner.add(as.Announce, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Application, rdfs.subClassOf, as.Actor);
+  reasoner.add(as.Arrive, rdfs.subClassOf, as.IntransitiveActivity);
+  reasoner.add(as.Article, rdfs.subClassOf, as.Content);
+  reasoner.add(as.Audio, rdfs.subClassOf, as.Document);
+  reasoner.add(as.Collection, rdfs.subClassOf, as.Object);
+  reasoner.add(as.Relationship, rdfs.subClassOf, as.Object);
+  reasoner.add(as.Content, rdfs.subClassOf, as.Object);
+  reasoner.add(as.Create, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Delete, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Dislike, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Document, rdfs.subClassOf, as.Content);
+  reasoner.add(as.Event, rdfs.subClassOf, as.Object);
+  reasoner.add(as.Flag, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Folder, rdfs.subClassOf, as.Collection);
+  reasoner.add(as.Follow, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Group, rdfs.subClassOf, as.Actor);
+  reasoner.add(as.Ignore, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Image, rdfs.subClassOf, as.Document);
+  reasoner.add(as.Invite, rdfs.subClassOf, as.Offer);
+  reasoner.add(as.Join, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Leave, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Like, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Experience, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.View, rdfs.subClassOf, as.Experience);
+  reasoner.add(as.Listen, rdfs.subClassOf, as.Experience);
+  reasoner.add(as.Read, rdfs.subClassOf, as.Experience);
+  reasoner.add(as.Move, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Travel, rdfs.subClassOf, as.IntransitiveActivity);
+  reasoner.add(as.Update, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Mention, rdfs.subClassOf, as.Link);
+  reasoner.add(as.Note, rdfs.subClassOf, as.Content);
+  reasoner.add(as.Offer, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.OrderedCollection, rdfs.subClassOf, as.Collection);
+  reasoner.add(as.Page, rdfs.subClassOf, as.Content);
+  reasoner.add(as.Profile, rdfs.subClassOf, as.Content);
+  reasoner.add(as.Person, rdfs.subClassOf, as.Actor);
+  reasoner.add(as.Organization, rdfs.subClassOf, as.Actor);
+  reasoner.add(as.Place, rdfs.subClassOf, as.Object);
+  reasoner.add(as.Process, rdfs.subClassOf, as.Actor);
+  reasoner.add(as.Question, rdfs.subClassOf,
+    [as.Content,as.IntransitiveActivity]);
+  reasoner.add(as.Reject, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Remove, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Service, rdfs.subClassOf, as.Actor);
+  reasoner.add(as.Story, rdfs.subClassOf, as.OrderedCollection);
+  reasoner.add(as.TentativeAccept, rdfs.subClassOf, as.Accept);
+  reasoner.add(as.TentativeReject, rdfs.subClassOf, as.Reject);
+  reasoner.add(as.Undo, rdfs.subClassOf, as.Activity);
+  reasoner.add(as.Video, rdfs.subClassOf, as.Document);
 
-  var functionalObject = [vocabs.owl.ObjectProperty, vocabs.owl.FunctionalProperty],
-      functionalDatatype = [vocabs.owl.DatatypeProperty , vocabs.owl.FunctionalProperty],
-      deprecatedObject = [vocabs.owl.ObjectProperty, vocabs.owl.DeprecatedProperty],
-      deprecatedDatatype = [vocabs.owl.DatatypeProperty, vocabs.owl.DeprecatedProperty],
-      deprecatedFunctionalDatatype = [vocabs.owl.DatatypeProperty, vocabs.owl.FunctionalProperty, vocabs.owl.DeprecatedProperty],
-      languageProperty = [vocabs.owl.DatatypeProperty , vocabs.asx.LanguageProperty];
-  [
-    [vocabs.as.describes, functionalObject],
-    [vocabs.as.subject, functionalObject],
-    [vocabs.as.relationship, functionalObject],
-    [vocabs.rdf.first, functionalObject],
-    [vocabs.rdf.rest, functionalObject],
-    [vocabs.as.action, vocabs.owl.ObjectProperty],
-    [vocabs.as.actor, vocabs.owl.ObjectProperty],
-    [vocabs.as.attributedTo, vocabs.owl.ObjectProperty],
-    [vocabs.as.attachment, vocabs.owl.ObjectProperty],
-    [vocabs.as.attachments, deprecatedObject],
-    [vocabs.as.author, deprecatedObject],
-    [vocabs.as.provider, deprecatedObject],
-    [vocabs.as.bcc, vocabs.owl.ObjectProperty],
-    [vocabs.as.bto, vocabs.owl.ObjectProperty],
-    [vocabs.as.cc, vocabs.owl.ObjectProperty],
-    [vocabs.as.context, vocabs.owl.ObjectProperty],
-    [vocabs.as.current, functionalObject],
-    [vocabs.as.first, functionalObject],
-    [vocabs.as.generator, vocabs.owl.ObjectProperty],
-    [vocabs.as.icon, vocabs.owl.ObjectProperty],
-    [vocabs.as.instrument, vocabs.owl.ObjectProperty],
-    [vocabs.as.image, vocabs.owl.ObjectProperty],
-    [vocabs.as.inReplyTo, vocabs.owl.ObjectProperty],
-    [vocabs.as.items, vocabs.owl.ObjectProperty],
-    [vocabs.as.last, functionalObject],
-    [vocabs.as.location, vocabs.owl.ObjectProperty],
-    [vocabs.as.next, functionalObject],
-    [vocabs.as.object, vocabs.owl.ObjectProperty],
-    [vocabs.as.oneOf, vocabs.owl.ObjectProperty],
-    [vocabs.as.anyOf, vocabs.owl.ObjectProperty],
-    [vocabs.as.prev, functionalObject],
-    [vocabs.as.preview, vocabs.owl.ObjectProperty],
-    [vocabs.as.replies, vocabs.owl.ObjectProperty],
-    [vocabs.as.result, vocabs.owl.ObjectProperty],
-    [vocabs.as.role, vocabs.owl.ObjectProperty],
-    [vocabs.as.scope, vocabs.owl.ObjectProperty],
-    [vocabs.as.self, functionalObject],
-    [vocabs.as.tag, vocabs.owl.ObjectProperty],
-    [vocabs.as.tags, deprecatedObject],
-    [vocabs.as.target, vocabs.owl.ObjectProperty],
-    [vocabs.as.origin, vocabs.owl.ObjectProperty],
-    [vocabs.as.to, vocabs.owl.ObjectProperty],
-    [vocabs.as.url, vocabs.owl.ObjectProperty],
-    [vocabs.as.accuracy, functionalDatatype],
-    [vocabs.as.alias, functionalDatatype],
-    [vocabs.as.altitude, functionalDatatype],
-    [vocabs.as.content, languageProperty],
-    [vocabs.as.displayName, languageProperty],
-    [vocabs.as.downstreamDuplicates, deprecatedDatatype],
-    [vocabs.as.duration, functionalDatatype],
-    [vocabs.as.endTime, functionalDatatype],
-    [vocabs.as.height, functionalDatatype],
-    [vocabs.as.href, functionalObject],
-    [vocabs.as.hreflang, functionalDatatype],
-    [vocabs.as.id, deprecatedFunctionalDatatype],
-    [vocabs.as.itemsPerPage, functionalDatatype],
-    [vocabs.as.latitude, functionalDatatype],
-    [vocabs.as.longitude, functionalDatatype],
-    [vocabs.as.mediaType, functionalDatatype],
-    [vocabs.as.method, functionalDatatype],
-    [vocabs.as.name, functionalDatatype],
-    [vocabs.as.objectType, deprecatedFunctionalDatatype],
-    [vocabs.as.priority, functionalDatatype],
-    [vocabs.as.published, functionalDatatype],
-    [vocabs.as.radius, functionalDatatype],
-    [vocabs.as.rating, deprecatedFunctionalDatatype],
-    [vocabs.as.rel, vocabs.owl.DatatypeProperty],
-    [vocabs.as.startIndex, functionalDatatype],
-    [vocabs.as.startTime, functionalDatatype],
-    [vocabs.as.summary, languageProperty],
-    [vocabs.as.title, languageProperty],
-    [vocabs.as.totalItems, functionalDatatype],
-    [vocabs.as.units, functionalDatatype],
-    [vocabs.as.updated, functionalDatatype],
-    [vocabs.as.upstreamDuplicates, deprecatedDatatype],
-    [vocabs.as.verb, deprecatedFunctionalDatatype],
-    [vocabs.as.width, functionalDatatype]
-  ].forEach(function(pair) {
-    reasoner.add(pair[0], vocabs.rdf.type, pair[1]);
-  });
+  reasoner.add(as.describes, rdf.type, functionalObject);
+  reasoner.add(as.subject, rdf.type, functionalObject);
+  reasoner.add(as.relationship, rdf.type, functionalObject);
+  reasoner.add(as.first, rdf.type, functionalObject);
+  reasoner.add(rdf.rest, rdf.type, functionalObject);
+  reasoner.add(as.first, rdf.type, functionalObject);
+  reasoner.add(as.actor, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.attributedTo, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.attachment, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.bcc, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.bto, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.cc, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.context, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.current, rdf.type, functionalObject);
+  reasoner.add(as.first, rdf.type, functionalObject);
+  reasoner.add(as.generator, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.icon, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.instrument, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.image, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.inReplyTo, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.items, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.last, rdf.type, functionalObject);
+  reasoner.add(as.location, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.next, rdf.type, functionalObject);
+  reasoner.add(as.object, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.oneOf, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.anyOf, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.prev, rdf.type, functionalObject);
+  reasoner.add(as.preview, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.replies, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.result, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.scope, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.self, rdf.type, functionalObject);
+  reasoner.add(as.tag, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.target, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.origin, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.to, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.url, rdf.type, owl.ObjectProperty);
+  reasoner.add(as.accuracy, rdf.type, functionalDatatype);
+  reasoner.add(as.alias, rdf.type, functionalDatatype);
+  reasoner.add(as.altitude, rdf.type, functionalDatatype);
+  reasoner.add(as.content, rdf.type, languageProperty);
+  reasoner.add(as.displayName, rdf.type, languageProperty);
+  reasoner.add(as.duration, rdf.type, functionalDatatype);
+  reasoner.add(as.endTime, rdf.type, functionalDatatype);
+  reasoner.add(as.height, rdf.type, functionalDatatype);
+  reasoner.add(as.href, rdf.type, functionalObject);
+  reasoner.add(as.hreflang, rdf.type, functionalDatatype);
+  reasoner.add(as.itemsPerPage, rdf.type, functionalDatatype);
+  reasoner.add(as.latitude, rdf.type, functionalDatatype);
+  reasoner.add(as.longitude, rdf.type, functionalDatatype);
+  reasoner.add(as.mediaType, rdf.type, functionalDatatype);
+  reasoner.add(as.priority, rdf.type, functionalDatatype);
+  reasoner.add(as.published, rdf.type, functionalDatatype);
+  reasoner.add(as.radius, rdf.type, functionalDatatype);
+  reasoner.add(as.rel, rdf.type, owl.DatatypeProperty);
+  reasoner.add(as.startIndex, rdf.type, functionalDatatype);
+  reasoner.add(as.startTime, rdf.type, functionalDatatype);
+  reasoner.add(as.summary, rdf.type, languageProperty);
+  reasoner.add(as.title, rdf.type, languageProperty);
+  reasoner.add(as.totalItems, rdf.type, functionalDatatype);
+  reasoner.add(as.units, rdf.type, functionalDatatype);
+  reasoner.add(as.updated, rdf.type, functionalDatatype);
+  reasoner.add(as.width, rdf.type, functionalDatatype);
 
-  [
-    [vocabs.as.actor, vocabs.as.attributedTo],
-    [vocabs.as.author, vocabs.as.attributedTo],
-    [vocabs.as.result, vocabs.as.attributedWith],
-  ].forEach(function(pair) {
-    reasoner.add(pair[0], vocabs.rdfs.subPropertyOf, pair[1]);
-  });
-
+  reasoner.add(as.actor, rdfs.subPropertyOf, as.attributedTo);
+  reasoner.add(as.author, rdfs.subPropertyOf, as.attributedTo);
 
 }
 
@@ -279,32 +255,16 @@ function Reasoner() {
   _init(this);
 }
 Reasoner.prototype = {
-  use_stream : function(stream, callback) {
-    utils.throwif(!stream, 'A valid stream must be provided');
-    utils.throwif(typeof callback !== 'function', 'A callback must be provided');
-    var self = this;
-    N3.Parser().parse(stream, function(err, triple) {
-      if (err) {
-        callback(err);
-        return;
-      }
-      if (triple) {
-        self.add(triple);
-      } else {
-        callback();
-      }
-    });
-  },
   add : function(subject, predicate, object) {
     var cache;
     switch(predicate) {
-      case vocabs.rdfs.subClassOf:
+      case rdfs.subClassOf:
         cache = this[_cache]._sc[subject] = this[_cache]._sc[subject] || {};
         break;
-      case vocabs.rdfs.subPropertyOf:
+      case rdfs.subPropertyOf:
         cache = this[_cache]._sp[subject] = this[_cache]._sp[subject] || {};
         break;
-      case vocabs.rdf.type:
+      case rdf.type:
         cache = this[_cache]._tp[subject] = this[_cache]._tp[subject] || {};
         break;
     }
@@ -363,31 +323,28 @@ Reasoner.prototype = {
     return this.isSubClassOf(subject, as.Link);
   },
   is_object_property : function(subject) {
-    return this.isTypeOf(subject, vocabs.owl.ObjectProperty);
+    return this.isTypeOf(subject, owl.ObjectProperty);
   },
   is_functional : function(subject) {
-    return this.isTypeOf(subject, vocabs.owl.FunctionalProperty);
-  },
-  is_deprecated : function(subject) {
-    return this.isTypeOf(subject, vocabs.owl.DeprecatedProperty);
+    return this.isTypeOf(subject, owl.FunctionalProperty);
   },
   is_language_property : function(subject) {
-    return this.isTypeOf(subject, vocabs.asx.LanguageProperty);
+    return this.isTypeOf(subject, asx.LanguageProperty);
   },
   is_intransitive : function(subject) {
-    return this.isSubClassOf(subject, vocabs.as.IntransitiveActivity);
+    return this.isSubClassOf(subject, as.IntransitiveActivity);
   },
   is_possibly_ordered : function(subject) {
-    return this.isSubClassOf(subject, vocabs.asx.PossiblyOrdered);
+    return this.isSubClassOf(subject, asx.PossiblyOrdered);
   },
   is_number : function(subject) {
-    return this.isSubClassOf(subject, vocabs.asx.Number);
+    return this.isSubClassOf(subject, asx.Number);
   },
   is_date : function(subject) {
-    return this.isSubClassOf(subject, vocabs.asx.Date);
+    return this.isSubClassOf(subject, asx.Date);
   },
   is_boolean : function(subject) {
-    return this.isSubClassOf(subject, vocabs.asx.Boolean);
+    return this.isSubClassOf(subject, asx.Boolean);
   }
 };
 module.exports = new Reasoner();

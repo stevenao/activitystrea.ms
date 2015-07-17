@@ -25,22 +25,23 @@ var models        = require('../models');
 var jsonld        = require('../jsonld');
 var LanguageValue = require('./_languagevalue');
 var reasoner      = require('../reasoner');
-var checkCallback = utils.checkCallback;
 var throwif       = utils.throwif;
 
 var _expanded = Symbol('expanded');
 var _cache = Symbol('cache');
 var _base = Symbol('base');
+var _builder = Symbol('builder');
 
 function is_literal(item) {
   return item && item.hasOwnProperty('@value');
 }
 
-function Base(expanded) {
+function Base(expanded,builder) {
   if (!(this instanceof Base))
-    return new Base(expanded);
+    return new Base(expanded,builder);
   this[_expanded] = expanded;
   this[_cache] = {};
+  this[_builder] = builder;
 }
 Base.prototype = {
   get id() {
@@ -66,14 +67,7 @@ Base.prototype = {
       var res = this[_expanded][key] || [];
       if (!res.length) return undefined;
       if (reasoner.is_language_property(key)) {
-        ret = LanguageValue.Builder();
-        for (n = 0, l = res.length; n < l; n++) {
-          var value = res[n]['@value'];
-          var lang = res[n]['@language'];
-          if (lang) ret.set(lang, value);
-          else ret.setDefault(value);
-        }
-        this[_cache][key] = ret.get();
+        this[_cache][key] = LanguageValue(res);
       } else {
         ret = res.map(function(item) {
           if (is_literal(item)) {
@@ -131,6 +125,9 @@ Base.prototype = {
     options = options || {};
     options.space = 2;
     this.write(options, callback);
+  },
+  modify : function() {
+    return this[_builder](this.type, this);
   }
 };
 

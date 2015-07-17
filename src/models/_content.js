@@ -18,50 +18,61 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var vocabs = require('linkeddata-vocabs');
+var as = require('linkeddata-vocabs').as;
 var util = require('util');
 var reasoner = require('../reasoner');
 var utils = require('../utils');
 var AsObject = require('./_object');
 
-function Content(expanded) {
+function Content(expanded, builder) {
   if (!(this instanceof Content))
-    return new Content(expanded);
-  AsObject.call(this, expanded);
+    return new Content(expanded, builder);
+  AsObject.call(this, expanded, builder || Content.Builder);
 }
 util.inherits(Content, AsObject);
-utils.define(Content.prototype, 'height', function() {
-  var ret = Math.max(0, this.get(vocabs.as.height));
-  return isNaN(ret) ? 0 : ret;
-});
-utils.define(Content.prototype, 'width', function() {
-  var ret = Math.max(0, this.get(vocabs.as.width));
-  return isNaN(ret) ? 0 : ret;
-});
-utils.define(Content.prototype, 'duration', function() {
-  return this.get(vocabs.as.duration);
-});
 
 Content.Builder = function(types, base) {
   if (!(this instanceof Content.Builder))
     return new Content.Builder(types, base);
   AsObject.Builder.call(
     this,
-    utils.merge_types(reasoner, vocabs.as.Content, types),
+    utils.merge_types(reasoner, as.Content, types),
     base || new Content({}));
 };
 util.inherits(Content.Builder, AsObject.Builder);
 
-Content.Builder.prototype.height = function(val) {
-  utils.set_non_negative_int.call(this, vocabs.as.height, val);
-  return this;
-};
-Content.Builder.prototype.width = function(val) {
-  utils.set_non_negative_int.call(this, vocabs.as.width, val);
-};
-Content.Builder.prototype.duration = function(val) {
-  utils.set_duration_val.call(this, vocabs.as.duration, val);
-  return this;
-};
+utils.defineProperty(
+  'height',Content,
+  function() {
+    var ret = Math.max(0, this.get(as.height));
+    return isNaN(ret) ? 0 : ret;
+  },
+  function(val) {
+    utils.set_non_negative_int.call(this, as.height, val);
+    return this;
+  }
+);
+
+utils.defineProperty(
+  'width',Content,
+  function() {
+    var ret = Math.max(0, this.get(as.width));
+    return isNaN(ret) ? 0 : ret;
+  },
+  function(val) {
+    utils.set_non_negative_int.call(this, as.width, val);
+  }
+);
+
+utils.defineProperty(
+  'duration',Content,
+  function() {
+    return this.get(as.duration);
+  },
+  function(val) {
+    utils.set_duration_val.call(this, as.duration, val);
+    return this;
+  }
+);
 
 module.exports = Content;

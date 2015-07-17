@@ -22,33 +22,35 @@ var util     = require('util');
 var AsObject = require('../models').Object;
 var reasoner = require('../reasoner');
 var utils    = require('../utils');
-var vocabs   = require('linkeddata-vocabs');
+var social   = require('linkeddata-vocabs').social;
 
-function Population(expanded) {
+function Population(expanded, builder) {
   if (!(this instanceof Population))
-    return new Population(expanded);
-  AsObject.call(this, expanded);
+    return new Population(expanded, builder);
+  AsObject.call(this, expanded, builder || Population.Builder);
 }
 util.inherits(Population, AsObject);
-
-utils.define(Population.prototype, 'distance', function() {
-  var ret = Math.max(0,this.get(vocabs.social.distance));
-  return isNaN(ret) ? undefined : ret;
-});
 
 Population.Builder = function(types, base) {
   if (!(this instanceof Population.Builder))
     return new Population.Builder(types, base);
   AsObject.Builder.call(
     this,
-    utils.merge_types(reasoner, vocabs.social.Population, types),
+    utils.merge_types(reasoner, social.Population, types),
     base || new Population({}));
 };
 util.inherits(Population.Builder, AsObject.Builder);
 
-Population.Builder.prototype.distance = function(val) {
-  utils.set_non_negative_int.call(this, vocabs.social.distance, val);
-  return this;
-};
+utils.defineProperty(
+  'distance',Population,
+  function() {
+    var ret = Math.max(0,this.get(social.distance));
+    return isNaN(ret) ? undefined : ret;
+  },
+  function(val) {
+    utils.set_non_negative_int.call(this, social.distance, val);
+    return this;
+  }
+);
 
 module.exports = Population;

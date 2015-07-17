@@ -21,14 +21,22 @@
 var LanguageTag = require('rfc5646');
 var utils = require('../utils');
 
-function LanguageValue(builder) {
+var _def = Symbol('_def');
+
+function LanguageValue(res) {
   if (!(this instanceof LanguageValue))
-    return new LanguageValue(builder);
-  var langs = Object.getOwnPropertyNames(builder);
-  for (var n = 0, l = langs.length; n < l; n++) {
-    utils.hidden(this, langs[n], builder[langs[n]]);
-  }
-  var sys = LanguageValue.system_language;
+    return new LanguageValue(res);
+  utils.throwif(!Array.isArray(res));
+  var self = this;
+  res.forEach(function(item) {
+    var value = item['@value'];
+    var language = item['@language'];
+    if (language !== undefined) {
+      utils.define(self, LanguageTag(language).toString(), value);
+    } else {
+      self[_def] = value;
+    }
+  });
 }
 
 LanguageValue.system_language =
@@ -40,34 +48,19 @@ LanguageValue.prototype = {
     return this.valueOf();
   },
   valueOf : function(tag) {
-    if (!tag) return this._def || this.valueOf(LanguageValue.system_language);
+    if (!tag) return this[_def] || this.valueOf(LanguageValue.system_language);
+    // first check for an exact match
+    var checktag = LanguageTag(tag);
+    if (this.hasOwnProperty(checktag.toString()))
+      return this[checktag.toString()];
+    // otherwise, search for a match
     var keys = Object.getOwnPropertyNames(this);
     for (var n = 0, l = keys.length; n < l; n++) {
       var keytag = new LanguageTag(keys[n]);
-      var checktag = new LanguageTag(tag);
-      if (keytag.suitableFor(checktag) || 
+      if (keytag.suitableFor(checktag) ||
           checktag.suitableFor(keytag))
         return this[keys[n]];
     }
-  }
-};
-
-LanguageValue.Builder = function() {
-  if (!(this instanceof LanguageValue.Builder))
-    return new LanguageValue.Builder();
-  utils.hidden(this,'_def',undefined,true);
-};
-LanguageValue.Builder.prototype = {
-  setDefault : function(val) {
-    this._def = val;
-    return this;
-  },
-  set : function(lang, val) {
-    this[lang] = val;
-    return this;
-  },
-  get : function() {
-    return LanguageValue(this);
   }
 };
 

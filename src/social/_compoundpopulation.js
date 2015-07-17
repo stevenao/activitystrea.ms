@@ -22,31 +22,34 @@ var Population = require('./_population');
 var util = require('util');
 var reasoner = require('../reasoner');
 var utils = require('../utils');
-var vocabs = require('linkeddata-vocabs');
+var social = require('linkeddata-vocabs').social;
 
-function CompoundPopulation(expanded) {
+function CompoundPopulation(expanded,builder) {
   if (!(this instanceof CompoundPopulation))
-    return new CompoundPopulation(expanded);
-  Population.call(this, expanded);
+    return new CompoundPopulation(expanded,builder);
+  Population.call(this, expanded, builder || CompoundPopulation.Builder);
 }
 util.inherits(CompoundPopulation, Population);
-utils.define(CompoundPopulation.prototype, 'member', function() {
-  return this.get(vocabs.social.member);
-});
 
 CompoundPopulation.Builder = function(types,base) {
   if (!(this instanceof CompoundPopulation.Builder))
     return new CompoundPopulation.Builder(types,base);
   Population.Builder.call(
     this,
-    utils.merge_types(reasoner, vocabs.social.CompoundPopulation, types),
+    utils.merge_types(reasoner, social.CompoundPopulation, types),
     base || new CompoundPopulation({}));
 };
 util.inherits(CompoundPopulation.Builder,Population.Builder);
 
-CompoundPopulation.Builder.prototype.member = function(val) {
-  this.set(vocabs.social.member, val);
-  return this;
-};
+utils.defineProperty(
+  'member',CompoundPopulation,
+  function() {
+    return this.get(social.member);
+  },
+  function(val) {
+    this.set(social.member, val);
+    return this;
+  }
+);
 
 module.exports = CompoundPopulation;

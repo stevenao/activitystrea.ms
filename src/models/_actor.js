@@ -24,10 +24,10 @@ var reasoner = require('../reasoner');
 var utils    = require('../utils');
 var AsObject = require('./_object');
 
-function Actor(expanded) {
+function Actor(expanded,builder) {
   if (!(this instanceof Actor))
-    return new Actor(expanded);
-  AsObject.call(this, expanded);
+    return new Actor(expanded, builder);
+  AsObject.call(this, expanded, builder || Actor.Builder);
 }
 util.inherits(Actor, AsObject);
 
