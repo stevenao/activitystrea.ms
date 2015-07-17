@@ -37,9 +37,9 @@ exports.use = function(extension) {
     extension.init(models,reasoner,ext_context);
 };
 
-exports.import = function(input, callback) {
-  jsonld.import(input, callback);
-};
+exports.import = jsonld.import;
+
+exports.importFromRDF = jsonld.importFromRDF;
 
 function define(type,sub,types) {
   if (sub !== undefined) {

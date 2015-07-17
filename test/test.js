@@ -229,6 +229,17 @@ describe('Basics...', function () {
     assert.equal(lv.valueOf('fr'), 'boo');
     assert.equal(lv.valueOf('FR-US'), 'baz');
   });
+
+  it('should roundtrip the RDF properly', function(done) {
+    var obj = as.object().title('test').get();
+    obj.toRDF(function(err,doc) {
+      assert(doc);
+      as.importFromRDF(doc, function(err,doc) {
+        assert.equal(doc.title, 'test');
+        done();
+      });
+    });
+  });
 });
 
 describe('Extensions...', function() {

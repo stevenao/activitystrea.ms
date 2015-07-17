@@ -103,6 +103,17 @@ Base.prototype = {
       options,
       callback);
   },
+  toRDF : function(options, callback) {
+    if (typeof options === 'function') {
+      callback = options;
+      options = {};
+    }
+    options = options || {};
+    jsonld.normalize(
+      this[_expanded],
+      options,
+      callback);
+  },
   write : function(options, callback) {
     if (typeof options === 'function') {
       callback = options;

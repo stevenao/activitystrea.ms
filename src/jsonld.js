@@ -53,6 +53,27 @@ function getContext(options) {
   return {'@context': ctx.length > 1 ? ctx : ctx[0]};
 }
 
+exports.normalize = function(expanded, options, callback) {
+  if (typeof options === 'function') {
+    callback = options;
+    options = {};
+  }
+  options = options || {};
+  throwif(
+    typeof callback !== 'function',
+    'A callback function must be provided');
+  jsonld.normalize(
+    expanded,
+    {format:'application/nquads'},
+    function(err,doc) {
+      if (err) {
+        callback(err);
+        return;
+      }
+      callback(null,doc);
+    });
+};
+
 exports.compact = function(expanded, options, callback) {
   if (typeof options === 'function') {
     callback = options;
@@ -93,4 +114,19 @@ exports.import = function(input, callback) {
       callback(null,base);
     }
   );
+};
+
+exports.importFromRDF = function(input, callback) {
+  throwif(
+    typeof callback !== 'function',
+    'A callback function must be provided');
+  jsonld.fromRDF(input, {format:'application/nquads'},
+  function(err,expanded) {
+    if (err) {
+      callback(err);
+      return;
+    }
+    var base = models.wrap_object(expanded[0]);
+    callback(null,base);
+  });
 };
