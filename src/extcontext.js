@@ -18,6 +18,7 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
+'use strict';
 
 var ctx = [];
 

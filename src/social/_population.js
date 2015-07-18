@@ -18,6 +18,8 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
+'use strict';
+
 var util     = require('util');
 var AsObject = require('../models').Object;
 var reasoner = require('../reasoner');

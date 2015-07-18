@@ -18,9 +18,11 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
-var url         = require('url');
-var vocabs      = require('linkeddata-vocabs');
-var _toString   = {}.toString;
+'use strict';
+
+var url = require('url');
+var vocabs = require('linkeddata-vocabs');
+var _toString = {}.toString;
 
 exports.throwif = function(condition, message) {
   if (condition) throw Error(message);

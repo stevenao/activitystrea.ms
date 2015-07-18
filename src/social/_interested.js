@@ -18,6 +18,8 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
+'use strict';
+
 var util       = require('util');
 var Population = require('./_population');
 var reasoner = require('../reasoner');

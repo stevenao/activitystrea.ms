@@ -2,14 +2,14 @@
  * Copyright 2013 OpenSocial Foundation
  * Copyright 2013 International Business Machines Corporation
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the 'License');
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an 'AS IS' BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -19,8 +19,9 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
+'use strict';
+
 var vocabs      = require('linkeddata-vocabs');
-var models      = require('../models');
 var reasoner    = require('../reasoner');
 var utils       = require('../utils');
 var merge_types = utils.merge_types;
@@ -107,26 +108,26 @@ function social_recognizer(type) {
 exports.init = function(models, reasoner, context) {
 
   context.add({
-    soc: "http://ns.jasnell.me/social#",
+    soc: 'http://ns.jasnell.me/social#',
     havingDimension: {
-      "@id": "soc:havingDimension",
-      "@type": "@id"
+      '@id': 'soc:havingDimension',
+      '@type': '@id'
     },
     havingRole: {
-      "@id": "soc:havingRole",
-      "@type": "@id"
+      '@id': 'soc:havingRole',
+      '@type': '@id'
     },
     havingRelationship: {
-      "@id": "soc:havingRelationship",
-      "@type": "@id"
+      '@id': 'soc:havingRelationship',
+      '@type': '@id'
     },
     distance: {
-      "@id": "soc:distance",
-      "@type": "xsd:nonNegativeInteger"
+      '@id': 'soc:distance',
+      '@type': 'xsd:nonNegativeInteger'
     },
     confidence: {
-      "@id": "soc:confidence",
-      "@type": "xsd:nonNegativeInteger"
+      '@id': 'soc:confidence',
+      '@type': 'xsd:nonNegativeInteger'
     }
   });
 

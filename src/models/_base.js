@@ -18,9 +18,10 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
+'use strict';
+
 var vocabs        = require('linkeddata-vocabs');
 var uuid          = require('node-uuid');
-var LanguageTag   = require('rfc5646');
 var utils         = require('../utils');
 var models        = require('../models');
 var jsonld        = require('../jsonld');

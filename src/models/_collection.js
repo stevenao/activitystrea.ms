@@ -18,11 +18,12 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
+'use strict';
+
 var vocabs   = require('linkeddata-vocabs');
 var util     = require('util');
 var reasoner = require('../reasoner');
 var utils    = require('../utils');
-var models   = require('../models');
 var AsObject = require('./_object');
 var Base     = require('./_base');
 var as = vocabs.as;
@@ -153,7 +154,9 @@ utils.defineProperty(
     return val['@list'] || val;
   },
   function(val) {
-    utils.throwif(this[_ordered] > 0, 'Unordered items cannot be added when the collection already contains ordered items');
+    utils.throwif(this[_ordered] > 0,
+      'Unordered items cannot be added when the collection already ' +
+      'contains ordered items');
     this[_ordered] = -1;
     if (!val) return this;
     if (!Array.isArray(val) && arguments.length > 1)
@@ -168,7 +171,9 @@ utils.define(Collection.prototype, 'ordered', function() {
 });
 
 Collection.Builder.prototype.orderedItems = function(val) {
-  utils.throwif(this[_ordered] < 0, 'Ordered items cannot be added when the collection already contains unordered items');
+  utils.throwif(this[_ordered] < 0,
+    'Ordered items cannot be added when the collection already ' +
+    'contains unordered items');
   this[_ordered] = 1;
   if (!val) return this;
   if (!Array.isArray(val) && arguments.length > 1)

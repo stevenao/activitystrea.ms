@@ -18,6 +18,8 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
+'use strict';
+
 var LanguageTag = require('rfc5646');
 var utils = require('../utils');
 
@@ -32,7 +34,7 @@ function LanguageValue(res) {
     var value = item['@value'];
     var language = item['@language'];
     if (language !== undefined) {
-      utils.define(self, LanguageTag(language).toString(), value);
+      utils.define(self, new LanguageTag(language).toString(), value);
     } else {
       self[_def] = value;
     }
@@ -50,7 +52,7 @@ LanguageValue.prototype = {
   valueOf : function(tag) {
     if (!tag) return this[_def] || this.valueOf(LanguageValue.system_language);
     // first check for an exact match
-    var checktag = LanguageTag(tag);
+    var checktag = new LanguageTag(tag);
     if (this.hasOwnProperty(checktag.toString()))
       return this[checktag.toString()];
     // otherwise, search for a match

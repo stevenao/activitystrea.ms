@@ -18,6 +18,8 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
+'use strict';
+
 var util     = require('util');
 var vocabs   = require('linkeddata-vocabs');
 var reasoner = require('../reasoner');

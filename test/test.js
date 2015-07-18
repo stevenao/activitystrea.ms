@@ -1,3 +1,25 @@
+/**
+ * Copyright 2013 International Business Machines Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Utility library for working with Activity Streams Actions
+ * Requires underscorejs.
+ *
+ * @author James M Snell (jasnell@us.ibm.com)
+ */
+'use strict';
+
 var assert = require('assert');
 var as = require('..');
 var vocabs = require('linkeddata-vocabs');
@@ -57,6 +79,7 @@ describe('Basics...', function () {
     object.export(function(e,d) {
       assert.equal(e, null);
       as.import(d, function(e,d) {
+        assert.equal(e,undefined);
         testFunctionalProperties(d);
       });
     });
@@ -171,7 +194,7 @@ describe('Basics...', function () {
 
   it('should create a complex object', function() {
     // Test complex creation
-    obj =
+    var obj =
       as.create()
         .actor('acct:joe@example.org')
         .object(as.note().content('this is a note'))
@@ -219,7 +242,7 @@ describe('Basics...', function () {
       {'@value':'baz','@language':'fr-US'},
       {'@value':'boo','@language':'fr'}
     ];
-    var lv = LanguageValue(res);
+    var lv = new LanguageValue(res);
     assert.equal(lv.toString(), 'foo');
     assert.equal(lv.valueOf(), 'foo');
     assert.equal(lv.valueOf('en'), 'bar');
@@ -233,8 +256,10 @@ describe('Basics...', function () {
   it('should roundtrip the RDF properly', function(done) {
     var obj = as.object().title('test').get();
     obj.toRDF(function(err,doc) {
+      assert.equal(err, undefined);
       assert(doc);
       as.importFromRDF(doc, function(err,doc) {
+        assert.equal(err, undefined);
         assert.equal(doc.title, 'test');
         done();
       });
@@ -249,7 +274,8 @@ describe('Extensions...', function() {
     assert.equal(require('../src/extcontext.js').get().length, 2);
   });
 
-  it('should create interval objects with appropriate type and values', function() {
+  it('should create interval objects with appropriate type and values',
+  function() {
     [
       ['open', vocabs.interval.OpenInterval],
       ['closed', vocabs.interval.ClosedInterval],
@@ -342,10 +368,12 @@ describe('Extensions...', function() {
     };
 
     obj.prettyWrite(options, function(err,doc) {
+      assert.equal(err, undefined);
       as.verify(doc, {
         publicKey: testPublicKey,
         publicKeyOwner: testPublicKeyOwner,
       }, function(err,verified) {
+        assert.equal(err, undefined);
         assert(verified);
         done();
       });

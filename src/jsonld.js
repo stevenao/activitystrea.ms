@@ -18,6 +18,8 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
+'use strict';
+
 var jsonld        = require('jsonld')();
 var jsig = require('jsonld-signatures')({inject:{jsonld:jsonld}});
 var throwif       = require('./utils').throwif;
@@ -26,14 +28,15 @@ var as_context    = require('activitystreams-context');
 var securityContext = require('./jsig');
 var ext_context   = require('./extcontext');
 var models        = require('./models');
-var reasoner      = require('./reasoner');
 
 var default_doc_loader = jsonld.documentLoaders.node();
 
 var warned = false;
 function warn() {
   if (!warned) {
-    console.warn('Warning: JSON-LD Signatures are still experimental. Use in production environments is not recommended');
+    console.warn(
+      'Warning: JSON-LD Signatures are still experimental. ' +
+      'Use in production environments is not recommended');
     warned = true;
   }
 }

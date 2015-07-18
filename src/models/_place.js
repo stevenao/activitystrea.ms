@@ -18,10 +18,14 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
+'use strict';
+
 var util = require('util');
 var reasoner = require('../reasoner');
 var utils = require('../utils');
-var as = require('linkeddata-vocabs').as;
+var vocabs = require('linkeddata-vocabs');
+var as = vocabs.as;
+var xsd = vocabs.xsd;
 var AsObject = require('./_object');
 
 function Place(expanded, builder) {
@@ -87,7 +91,8 @@ utils.defineProperty(
   },
   function(val) {
     utils.throwif(!utils.is_number(val), 'longitude must be a number');
-    utils.set_ranged_val.call(this, as.longitude, val, -180.0, 180.0, xsd.float);
+    utils.set_ranged_val.call(
+      this, as.longitude, val, -180.0, 180.0, xsd.float);
     return this;
   }
 );

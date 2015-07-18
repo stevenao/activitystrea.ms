@@ -19,8 +19,9 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
+'use strict';
+
 var vocabs      = require('linkeddata-vocabs');
-var models      = require('../models');
 var reasoner    = require('../reasoner');
 var utils       = require('../utils');
 var Interval    = require('./_model');

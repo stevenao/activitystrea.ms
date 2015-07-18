@@ -18,6 +18,8 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
+'use strict';
+
 var util     = require('util');
 var interval = require('linkeddata-vocabs').interval;
 var xsd      = require('linkeddata-vocabs').xsd;

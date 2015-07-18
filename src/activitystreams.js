@@ -19,6 +19,7 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
+'use strict';
 
 var models        = require('./models');
 var vocabs        = require('linkeddata-vocabs');

@@ -18,12 +18,13 @@
  *
  * @author James M Snell (jasnell@us.ibm.com)
  */
+'use strict';
+
 var Collection = require('./_collection');
 var util = require('util');
 var reasoner = require('../reasoner');
 var utils = require('../utils');
 var as = require('linkeddata-vocabs').as;
-var models = require('../models');
 
 function OrderedCollection(expanded,builder) {
   if (!(this instanceof OrderedCollection))
