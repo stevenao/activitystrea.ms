@@ -23,6 +23,7 @@ var jsig = require('jsonld-signatures')({inject:{jsonld:jsonld}});
 var throwif       = require('./utils').throwif;
 var vocabs        = require('linkeddata-vocabs');
 var as_context    = require('activitystreams-context');
+var securityContext = require('./jsig');
 var ext_context   = require('./extcontext');
 var models        = require('./models');
 var reasoner      = require('./reasoner');
@@ -36,49 +37,6 @@ function warn() {
     warned = true;
   }
 }
-
-var securityContext = {
-  "@context": {
-    "id": "@id",
-    "type": "@type",
-
-    "dc": "http://purl.org/dc/terms/",
-    "sec": "https://w3id.org/security#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-
-    "EncryptedMessage": "sec:EncryptedMessage",
-    "GraphSignature2012": "sec:GraphSignature2012",
-    "CryptographicKey": "sec:Key",
-
-    "credential": {"@id": "sec:credential", "@type": "@id"},
-    "cipherAlgorithm": "sec:cipherAlgorithm",
-    "cipherData": "sec:cipherData",
-    "cipherKey": "sec:cipherKey",
-    "claim": {"@id": "sec:claim", "@type": "@id"},
-    "created": {"@id": "dc:created", "@type": "xsd:dateTime"},
-    "creator": {"@id": "dc:creator", "@type": "@id"},
-    "digestAlgorithm": "sec:digestAlgorithm",
-    "digestValue": "sec:digestValue",
-    "domain": "sec:domain",
-    "encryptionKey": "sec:encryptionKey",
-    "expiration": {"@id": "sec:expiration", "@type": "xsd:dateTime"},
-    "expires": {"@id": "sec:expiration", "@type": "xsd:dateTime"},
-    "initializationVector": "sec:initializationVector",
-    "nonce": "sec:nonce",
-    "normalizationAlgorithm": "sec:normalizationAlgorithm",
-    "owner": {"@id": "sec:owner", "@type": "@id"},
-    "password": "sec:password",
-    "privateKey": {"@id": "sec:privateKey", "@type": "@id"},
-    "privateKeyPem": "sec:privateKeyPem",
-    "publicKey": {"@id": "sec:publicKey", "@type": "@id"},
-    "publicKeyPem": "sec:publicKeyPem",
-    "publicKeyService": {"@id": "sec:publicKeyService", "@type": "@id"},
-    "revoked": {"@id": "sec:revoked", "@type": "xsd:dateTime"},
-    "signature": "sec:signature",
-    "signatureAlgorithm": "sec:signingAlgorithm",
-    "signatureValue": "sec:signatureValue"
-  }
-};
 
 function custom_doc_loader(url, callback) {
   throwif(
@@ -184,8 +142,12 @@ exports.import = function(input, callback) {
         callback(err);
         return;
       }
-      var base = models.wrap_object(expanded[0]);
-      callback(null,base);
+      if (expanded && expanded.length > 0) {
+        var base = models.wrap_object(expanded[0]);
+        callback(null,base);
+      } else {
+        callback(null,null);
+      }
     }
   );
 };
