@@ -104,7 +104,8 @@ Base.prototype = {
       options = {};
     }
     options = options || {};
-    jsonld.compact(
+    var handler = options.handler || jsonld.compact;
+    handler(
       this[_expanded],
       options,
       callback);
