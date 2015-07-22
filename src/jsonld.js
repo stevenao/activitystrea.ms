@@ -138,7 +138,8 @@ exports.import = function(input, callback) {
   jsonld.expand(
     input, {
       expandContext: as_context,
-      documentLoader: custom_doc_loader
+      documentLoader: custom_doc_loader,
+      keepFreeFloatingNodes: true
     },
     function(err,expanded) {
       if (err) {

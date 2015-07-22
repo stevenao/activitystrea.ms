@@ -27,7 +27,6 @@ as.object().
   content('bar', 'en').
   content('foo', 'fr').
   publishedNow().
-  get().
   prettyWrite(function(err,doc) {
     console.log(doc);
   });
@@ -53,7 +52,6 @@ Which produces the output:
 as.create().
   actor('acct:sally@example.org').
   object('http://www.example.org/post').
-  get().
   prettyWrite(function(err,doc) {
     console.log(doc);
   });
@@ -199,7 +197,6 @@ var as = require('activitystrea.ms');
 as.note().
    displayName('foo').
    content('this is a simple note').
-   get().
    write(function (err, doc) {
      // doc is a string
      console.log(doc);
@@ -212,7 +209,6 @@ var as = require('activitystrea.ms');
 as.note().
    displayName('foo').
    content('this is a simple note').
-   get().
    prettyWrite(function (err, doc) {
      // doc is a string
      console.log(doc);

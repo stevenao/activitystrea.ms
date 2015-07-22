@@ -232,8 +232,18 @@ Base.Builder.prototype = {
     }
     return this;
   },
-  get : function() {
+  get : function(callback) {
+    if (typeof callback === 'function') {
+      this[_base].export(callback);
+      return;
+    }
     return this[_base];
+  },
+  write : function(options, callback) {
+    return this[_base].write(options,callback);
+  },
+  prettyWrite: function(options, callback) {
+    return this[_base].prettyWrite(options,callback);
   }
 };
 
