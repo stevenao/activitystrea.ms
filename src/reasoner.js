@@ -215,7 +215,7 @@ function _init(reasoner) {
   reasoner.add(as.to, rdf.type, owl.ObjectProperty);
   reasoner.add(as.url, rdf.type, owl.ObjectProperty);
   reasoner.add(as.accuracy, rdf.type, functionalDatatype);
-  reasoner.add(as.alias, rdf.type, functionalDatatype);
+  reasoner.add(as.alias, rdf.type, functionalObject);
   reasoner.add(as.altitude, rdf.type, functionalDatatype);
   reasoner.add(as.content, rdf.type, languageProperty);
   reasoner.add(as.displayName, rdf.type, languageProperty);

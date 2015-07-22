@@ -27,21 +27,16 @@ var utils    = require('../utils');
 var AsObject = require('./_object');
 var Base     = require('./_base');
 var as = vocabs.as;
-var rdf = vocabs.rdf;
 
 var _ordered = Symbol('ordered');
-var slice = Array.prototype.slice;
+var _items = Symbol('items');
 
-function is_ordered(base) {
-  var i = base.get(as.items);
-  return i && i.length && i[0].get(rdf.first);
-}
+var slice = Array.prototype.slice;
 
 function Collection(expanded, builder) {
   if (!(this instanceof Collection))
     return new Collection(expanded, builder);
   AsObject.call(this, expanded, builder || Collection.Builder);
-  this[_ordered] = is_ordered(this);
 }
 util.inherits(Collection, AsObject);
 
@@ -151,7 +146,7 @@ utils.defineProperty(
   function() {
     var val = this.get(as.items);
     if (!val) return undefined;
-    return val['@list'] || val;
+    return Array.isArray(val) && Array.isArray(val[0]) ? val[0] : val;
   },
   function(val) {
     utils.throwif(this[_ordered] > 0,
@@ -178,9 +173,14 @@ Collection.Builder.prototype.orderedItems = function(val) {
   if (!val) return this;
   if (!Array.isArray(val) && arguments.length > 1)
     val = slice.call(arguments);
-  var _list = Base.Builder();
-  _list.set('@list', val);
-  this.set(as.items,_list.get());
+  var set = false;
+  if (!this[_items]) {
+    this[_items] = Base.Builder();
+    set = true;
+  }
+  this[_items].set('@list', val);
+  if (set)
+    this.set(as.items,this[_items].get());
   return this;
 };
 

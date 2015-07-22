@@ -3,13 +3,13 @@
 -----BEGIN PGP SIGNATURE-----
 Comment: GPGTools - https://gpgtools.org
 
-iQEcBAABCgAGBQJVruqWAAoJEHNBsVwHCHeslBoH/Ao9OnzXQuoWqdMiuO27h3Qx
-CgZ9GjssG2gLA6ApOgm9G0N6iePYj6TXgCKerykjSf8LdD6kxVOT7pzEhcuX666h
-/lXpdlXA+bF5IdUpAzeSqo00hXDIQ86cK4W49fztX96aKJGtURaq2q/IkGG3gfpc
-B87ltREV9bOgf8j5n/Q1pKD1ESl+EBQZtMqvF9u5dSOwlvGdDd9EyLRclKFkMV/a
-a7kzoys+Pj4CSPi7xKUtiCy4IYUcr7i/AkSH0zKgi7JD+yVuKJTWrjgGGCUzOSLW
-a61isc+vLbI3iB55a3SJ7hXzqIvtscxIH0e+JQm5So2cLPf3v7/JfBsy5FGFQF8=
-=LT8A
+iQEcBAABCgAGBQJVrzLLAAoJEHNBsVwHCHesnlwIALbMYHrr/Zbsm4SkVjFoKp/X
+10j3tZ/XDEKPRtD2sZf1miVcdJwxn7JHiPkU1AR/Ko9LOr29pSikoe8C8P/iZJoa
+9Dp7EJ3bTrX+0RTQ+nyO4X+llD4uI53tOPU60+p0b9/luhov+PQW8W7MeZfQFj5e
+bKp3Gib0mooWY86p6nmxUynue9mqrAOdeZy3nucQCKoukYjmog7Oi6n+L5YhirYT
+OhFAEoTcTUbu83TYZS10DlMJ37QxWX6Wyqa56E/N8ef8IPju7xM+stEVzosDVZQz
+WrEHTzqzcegUIlg406XSbrQhBRo7SHCPYKqS3U2ts3a82cQiwAPYZqVavlu2vUc=
+=C/+p
 -----END PGP SIGNATURE-----
 
 ```
@@ -27,7 +27,7 @@ size   exec  file                          contents
 469            .jshintrc                   478a7d25d1f8b85e19ce4b14b734f8c1086534a6ce32aaa2d79ed23de185b2e1
 880            CONTRIBUTING.md             8466fd261a695a6e94410759f82a97f7c3bfc78b1bbfb93adc2a9fbdaf9bf848
 11381          LICENSE                     2bcf83b42c65720625611f1fb2922bc9e3face6a22117331a13c9ed9f3af2903
-929            package.json                5cd94d4ccf47f44a96c8720d31f1736c0b3ac8b33a0ccc537283bbc43a3b9159
+929            package.json                0c421dadabbe971eae80d14a98fb855e5b9eb95afa503a86b10371ca8d7f95f0
 5391           README.md                   d75f88621faa653a09bd6daf48123524b1e0d024d25075133faf6522d01abb5f
                src/                                                                                        
 5077             activitystreams.js        bad932d8045597a72d4c39c5464a92bcc18f2ad2e672813d4ef72440ba5ff6fc
@@ -43,11 +43,11 @@ size   exec  file                          contents
                  models/                                                                                   
 2825               _activity.js            054b29dd7c322a14deda77753a6a148317aa43db52508fff7d588c1459b745a9
 1488               _actor.js               f5be7d6af1796b288dad9240713adecc15c986545f31e59fb00b9eb92feddcd2
-7251               _base.js                65af61b965dadc9d4a40053c77a64a271f0f4fc8757e78572d6be0a35f6971f3
-4430               _collection.js          fcf288256b118f7d58c6b981d4d7e28496cdc824c4b167f9d820491e2b2f3486
+7428               _base.js                bcb9fa06b51683272c65cdf7ff4b9e8359edad97555aa500c83351f41c904c0e
+4427               _collection.js          1fa010109b4bd174faddaf9a34d609e80322f1b5d9748681176007baeaa18d89
 2165               _content.js             7e815d53285e0e49981126f83f80b4978d28569d6f491063cb91238487379f03
 2117               _languagevalue.js       3a01e81ace9bed81456294b2b1e200e42b243018990c2ccb9ab572dbaa426a7b
-3199               _link.js                8b5f5a7bf2eeef2b8e5f932a03a1b083abd4b5644afbe607df1e75623028dd61
+3216               _link.js                da1762d370375308ba3579ed6211dc31ea4e16215f607cc967c0a05c8a43c7ba
 6419               _object.js              c09353f22726db6095753f7978b7de78bb3acb63135e2be6941d3c8a188914b1
 2007               _orderedcollection.js   ff83e982f7dabaa7aed55bed1d7dd8a6fb42f8b32737e154fd556ddde6500711
 3363               _place.js               2d5768e46d8659986dcb0e6f79c2133fa9d30349c9264279f9bb28d1e2a86e70
@@ -56,7 +56,7 @@ size   exec  file                          contents
 2091               _relationship.js        ceb9e776289098cc88c8d2f6be2f61fe6c892f618cb3468188156438bf6a2a61
 3795               models.js               e1c9f7131edf4b78cd73f5083c0420346842c9bc2161b0533ba6dafa1413f771
 48                 package.json            d4508cf04e6c506651cabdb46bcf0649948778a3c49da5a0d8f87ff72a9f9dca
-14662            reasoner.js               d78477778ab2ceddb6a865ec59fcdb9fd28da1096546e6ef32364e1a00db77f9
+14660            reasoner.js               333b51151ba8045a5f46ed90f76b2bf2d6f76a0de7aedbf9a7253d1e2070a5dc
                  social/                                                                                   
 2111               _common.js              030c9de96872b6dfd25ad85688f2e0a799d569ff8aa179a4d726859014c8571b
 1836               _compoundpopulation.js  1e11956d4a26e7f7af88ca3e2a9dc326077cc7cfff6ef54ab98ad98ed1526b7e
@@ -67,7 +67,7 @@ size   exec  file                          contents
 4848               social.js               b6c4f0fbe631f230b4e73d3ae7945e5186993221269b90561b9b3ccbff0621f0
 5125             utils.js                  e2b0aba646a8db8bd6af453d16da6feba6f9355cdd926798065226c936d729e1
                test/                                                                                       
-12861            test.js                   46549f1f5389527228ededcb27d0feecccb57c056ad40663265135ddcb2d1b89
+31988            test.js                   66f3e474c05e650a6daa6d516fc78086d26f15a06024b5324b22a1e1362c4902
 ```
 
 #### Ignore

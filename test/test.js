@@ -35,7 +35,7 @@ describe('Basics...', function () {
   });
 
   function testFunctionalProperties(object) {
-    assert.equal(object.alias, 'http://example.org/foo');
+    assert.equal(object.alias.id, 'http://example.org/foo');
     assert.equal(object.content, 'bar');
     assert.equal(object.content.valueOf('fr'), 'foo');
     assert.equal(object.displayName.de, 'baz');
@@ -265,7 +265,522 @@ describe('Basics...', function () {
       });
     });
   });
+
+  it('should import an object with just an @id', function(done) {
+    var test = {'@id': 'http://example.org'};
+    as.import(test, function(err,doc) {
+      assert.equal(err,undefined);
+      assert.equal(doc.id, 'http://example.org');
+      done();
+    });
+  });
+
+  it('should have appropriate values for every orderedcollection property',
+    function(done) {
+
+    var doc = as.orderedCollection()
+      .id('http://example.org')
+      .totalItems(1)
+      .itemsPerPage(1)
+      .startIndex(1)
+      .current('http://example.org/current')
+      .next('http://example.org/next')
+      .prev('http://example.org/prev')
+      .first('http://example.org/first')
+      .last('http://example.org/last')
+      .self('http://example.org/self')
+      .items('http://example.org/item/1')
+      .items('http://example.org/item/2')
+      .get();
+
+    assert(doc instanceof as.models.OrderedCollection);
+    assert.equal(doc.totalItems, 1);
+    assert.equal(doc.itemsPerPage, 1);
+    assert.equal(doc.startIndex, 1);
+    assert.equal(doc.current.id, 'http://example.org/current');
+    assert.equal(doc.next.id, 'http://example.org/next');
+    assert.equal(doc.prev.id, 'http://example.org/prev');
+    assert.equal(doc.first.id, 'http://example.org/first');
+    assert.equal(doc.last.id, 'http://example.org/last');
+    assert.equal(doc.self.id, 'http://example.org/self');
+    assert.equal(doc.items.length, 2);
+    assert.equal(doc.items[0].id, 'http://example.org/item/1');//TODO:this fails
+    assert.equal(doc.items[1].id, 'http://example.org/item/2');//TODO:this fails
+    done();
+  });
+
+  it('should have appropriate values for every orderedcollection property',
+    function(done) {
+
+    var test = {
+      '@context': 'http://www.w3.org/ns/activitystreams#',
+      '@id': 'http://example.org',
+      '@type': 'OrderedCollection',
+      totalItems: 1,
+      itemsPerPage: 1,
+      startIndex: 1,
+      current: 'http://example.org/current',
+      next: 'http://example.org/next',
+      prev: 'http://example.org/prev',
+      first: 'http://example.org/first',
+      last: 'http://example.org/last',
+      self: 'http://example.org/self',
+      items: [
+        'http://example.org/item/1',
+        'http://example.org/item/2'
+      ]
+    };
+
+    as.import(test, function(err, doc) {
+      assert.equal(err, undefined);
+      assert(doc instanceof as.models.OrderedCollection);
+      assert.equal(doc.totalItems, 1);
+      assert.equal(doc.itemsPerPage, 1);
+      assert.equal(doc.startIndex, 1);
+      assert.equal(doc.current.id, 'http://example.org/current');
+      assert.equal(doc.next.id, 'http://example.org/next');
+      assert.equal(doc.prev.id, 'http://example.org/prev');
+      assert.equal(doc.first.id, 'http://example.org/first');
+      assert.equal(doc.last.id, 'http://example.org/last');
+      assert.equal(doc.self.id, 'http://example.org/self');
+      assert.equal(doc.items.length, 2);
+      assert.equal(doc.items[0].id, 'http://example.org/item/1');
+      assert.equal(doc.items[1].id, 'http://example.org/item/2');
+    });
+
+    done();
+  });
+
+  it('should have appropriate values for every collection property',
+    function(done) {
+
+    var doc = as.collection()
+      .id('http://example.org')
+      .totalItems(1)
+      .itemsPerPage(1)
+      .current('http://example.org/current')
+      .next('http://example.org/next')
+      .prev('http://example.org/prev')
+      .first('http://example.org/first')
+      .last('http://example.org/last')
+      .self('http://example.org/self')
+      .items('http://example.org/item/1')
+      .items('http://example.org/item/2')
+      .get();
+
+    assert(doc instanceof as.models.Collection);
+    assert.equal(doc.totalItems, 1);
+    assert.equal(doc.itemsPerPage, 1);
+    assert.equal(doc.current.id, 'http://example.org/current');
+    assert.equal(doc.next.id, 'http://example.org/next');
+    assert.equal(doc.prev.id, 'http://example.org/prev');
+    assert.equal(doc.first.id, 'http://example.org/first');
+    assert.equal(doc.last.id, 'http://example.org/last');
+    assert.equal(doc.self.id, 'http://example.org/self');
+    assert.equal(doc.items.length, 2);
+    assert.equal(doc.items[0].id, 'http://example.org/item/1');
+    assert.equal(doc.items[1].id, 'http://example.org/item/2');
+
+    done();
+  });
+
+  it('should have appropriate values for every collection property',
+    function(done) {
+
+    var test = {
+      '@context': 'http://www.w3.org/ns/activitystreams#',
+      '@id': 'http://example.org',
+      '@type': 'Collection',
+      totalItems: 1,
+      itemsPerPage: 1,
+      current: 'http://example.org/current',
+      next: 'http://example.org/next',
+      prev: 'http://example.org/prev',
+      first: 'http://example.org/first',
+      last: 'http://example.org/last',
+      self: 'http://example.org/self',
+      items: [
+        'http://example.org/item/1',
+        'http://example.org/item/2'
+      ]
+    };
+
+    as.import(test, function(err, doc) {
+      assert.equal(err, undefined);
+      assert(doc instanceof as.models.Collection);
+      assert.equal(doc.totalItems, 1);
+      assert.equal(doc.itemsPerPage, 1);
+      assert.equal(doc.current.id, 'http://example.org/current');
+      assert.equal(doc.next.id, 'http://example.org/next');
+      assert.equal(doc.prev.id, 'http://example.org/prev');
+      assert.equal(doc.first.id, 'http://example.org/first');
+      assert.equal(doc.last.id, 'http://example.org/last');
+      assert.equal(doc.self.id, 'http://example.org/self');
+      assert.equal(doc.items.length, 2);
+      assert.equal(doc.items[0].id, 'http://example.org/item/1');
+      assert.equal(doc.items[1].id, 'http://example.org/item/2');
+    });
+
+    done();
+  });
+
+  it('should have appropriate values for every activity property',
+    function(done) {
+
+    var doc = as.activity()
+      .id('http://example.org')
+      .actor('http://example.org/actor')
+      .object('http://example.org/object')
+      .target('http://example.org/target')
+      .result('http://example.org/result')
+      .origin('http://example.org/origin')
+      .instrument('http://example.org/instrument')
+      .priority(0.50)
+      .get();
+
+    assert(doc instanceof as.models.Activity);
+    assert.equal(doc.id, 'http://example.org');
+    assert.equal(doc.priority, 0.50);
+
+    assert(doc.actor);
+    assert.equal(doc.actor.length,1);
+    assert.equal(doc.actor[0].id, 'http://example.org/actor');
+    assert(doc.object);
+    assert.equal(doc.object.length,1);
+    assert.equal(doc.object[0].id, 'http://example.org/object');
+    assert(doc.target);
+    assert.equal(doc.target.length,1);
+    assert.equal(doc.target[0].id, 'http://example.org/target');
+    assert(doc.result);
+    assert.equal(doc.result.length,1);
+    assert.equal(doc.result[0].id, 'http://example.org/result');
+    assert(doc.origin);
+    assert.equal(doc.origin.length,1);
+    assert.equal(doc.origin[0].id, 'http://example.org/origin');
+    assert(doc.instrument);
+    assert.equal(doc.instrument.length,1);
+    assert.equal(doc.instrument[0].id, 'http://example.org/instrument');
+
+    done();
+  });
+
+  it('should have appropriate values for every activity property',
+    function(done) {
+
+    var test = {
+      '@context': 'http://www.w3.org/ns/activitystreams#',
+      '@id': 'http://example.org',
+      '@type': 'Activity',
+      actor: 'http://example.org/actor',
+      object: 'http://example.org/object',
+      target: 'http://example.org/target',
+      result: 'http://example.org/result',
+      origin: 'http://example.org/origin',
+      instrument: 'http://example.org/instrument',
+      priority: 0.50
+    };
+
+    as.import(test, function(err,doc) {
+      assert.equal(err, undefined);
+      assert(doc instanceof as.models.Activity);
+      assert.equal(doc.id, 'http://example.org');
+      assert.equal(doc.priority, 0.50);
+
+      assert(doc.actor);
+      assert.equal(doc.actor.length,1);
+      assert.equal(doc.actor[0].id, 'http://example.org/actor');
+      assert(doc.object);
+      assert.equal(doc.object.length,1);
+      assert.equal(doc.object[0].id, 'http://example.org/object');
+      assert(doc.target);
+      assert.equal(doc.target.length,1);
+      assert.equal(doc.target[0].id, 'http://example.org/target');
+      assert(doc.result);
+      assert.equal(doc.result.length,1);
+      assert.equal(doc.result[0].id, 'http://example.org/result');
+      assert(doc.origin);
+      assert.equal(doc.origin.length,1);
+      assert.equal(doc.origin[0].id, 'http://example.org/origin');
+      assert(doc.instrument);
+      assert.equal(doc.instrument.length,1);
+      assert.equal(doc.instrument[0].id, 'http://example.org/instrument');
+    });
+
+    done();
+  });
+
+  it('should have appropriate values for every link property',
+    function(done) {
+    var test = {
+      '@context': 'http://www.w3.org/ns/activitystreams#',
+      '@id': 'http://example.org',
+      '@type': 'Link',
+      href: 'http://example.org',
+      rel: ['a','b'],
+      mediaType: 'application/text',
+      displayName: 'the display name',
+      title: 'the title',
+      hreflang: 'en',
+      height: 10,
+      width: 10,
+      duration: 10
+    };
+    as.import(test, function(err, doc) {
+      assert.equal(err, undefined);
+      assert(doc instanceof as.models.Link);
+      assert.equal(doc.id, 'http://example.org');
+      assert.equal(doc.href, 'http://example.org');
+      assert.equal(doc.rel[0], 'a');
+      assert.equal(doc.rel[1], 'b');
+      assert.equal(doc.mediaType, 'application/text');
+      assert.equal(doc.displayName, 'the display name');
+      assert.equal(doc.title, 'the title');
+      assert.equal(doc.hreflang, 'en');
+      assert.equal(doc.height, 10);
+      assert.equal(doc.width, 10);
+      assert.equal(doc.duration, 10);
+      done();
+    });
+  });
+
+  it('should have appropriate values for every link property',
+    function(done) {
+    var doc = as.link()
+      .id('http://example.org')
+      .href('http://example.org')
+      .rel('a')
+      .rel('b')
+      .mediaType('application/text')
+      .displayName('the display name')
+      .title('the title')
+      .hreflang('en')
+      .height(10)
+      .width(10)
+      .duration(10)
+      .get();
+
+    assert(doc instanceof as.models.Link);
+    assert.equal(doc.id, 'http://example.org');
+    assert.equal(doc.href, 'http://example.org');
+    assert.equal(doc.rel[0], 'a');
+    assert.equal(doc.rel[1], 'b');
+    assert.equal(doc.mediaType, 'application/text');
+    assert.equal(doc.displayName, 'the display name');
+    assert.equal(doc.title, 'the title');
+    assert.equal(doc.hreflang, 'en');
+    assert.equal(doc.height, 10);
+    assert.equal(doc.width, 10);
+    assert.equal(doc.duration, 10);
+    done();
+
+  });
+
+  it('should have appropriate values for every object property',
+     function(done) {
+    var test = {
+      '@context': 'http://www.w3.org/ns/activitystreams#',
+      '@id': 'http://example.org',
+      '@type': 'Object',
+      alias: '@test',
+      attachment: 'http://example.org/attachment',
+      attributedTo: 'http://sally.example.org',
+      content: 'the content',
+      context: 'http://example.org/context',
+      displayName: 'the display name',
+      endTime: '2015-12-12T12:12:12Z',
+      generator: 'http://example.org/generator',
+      icon: 'http://example.org/icon',
+      image: 'http://example.org/image',
+      inReplyTo: 'http://example.org/in-reply-to',
+      location: 'http://example.org/location',
+      preview: 'http://example.org/preview',
+      tag: 'http://example.org/tag',
+      title: 'the title',
+      updated: '2015-12-12T12:12:12Z',
+      published: '2015-12-12T12:12:12Z',
+      replies: 'http://example.org/replies',
+      scope: 'http://example.org/scope',
+      startTime: '2015-12-12T12:12:12Z',
+      url: 'http://example.org',
+      to: 'http://joe.example.org',
+      bto: 'http://sally.example.org',
+      cc: 'http://mark.example.org',
+      bcc: 'http://jane.example.org'
+    };
+    as.import(test, function(err, doc) {
+      assert.equal(err, undefined);
+      assert.equal(doc.id, 'http://example.org');
+      assert.equal(doc.type, vocabs.as.Object);
+      assert(doc.alias);
+      assert.equal(doc.alias.id, '@test');
+      assert(doc.attachment);
+      assert.equal(doc.attachment.length,1);
+      assert.equal(doc.attachment[0].id, 'http://example.org/attachment');
+      assert(doc.attributedTo);
+      assert.equal(doc.attributedTo.length,1);
+      assert.equal(doc.attributedTo[0].id, 'http://sally.example.org');
+      assert.equal(doc.content, 'the content');
+      assert(doc.context);
+      assert.equal(doc.context.length,1);
+      assert.equal(doc.context[0].id, 'http://example.org/context');
+      assert.equal(doc.displayName, 'the display name');
+      assert.equal(doc.endTime.valueOf(),
+        new Date('2015-12-12T12:12:12Z').valueOf());
+      assert(doc.generator);
+      assert.equal(doc.generator.length,1);
+      assert.equal(doc.generator[0].id, 'http://example.org/generator');
+      assert(doc.icon);
+      assert.equal(doc.icon.length,1);
+      assert.equal(doc.icon[0].id, 'http://example.org/icon');
+      assert(doc.image);
+      assert.equal(doc.image.length,1);
+      assert.equal(doc.image[0].id, 'http://example.org/image');
+      assert(doc.inReplyTo);
+      assert.equal(doc.inReplyTo.length,1);
+      assert.equal(doc.inReplyTo[0].id, 'http://example.org/in-reply-to');
+      assert(doc.location);
+      assert.equal(doc.location.length,1);
+      assert.equal(doc.location[0].id, 'http://example.org/location');
+      assert(doc.preview);
+      assert.equal(doc.preview.length,1);
+      assert.equal(doc.preview[0].id, 'http://example.org/preview');
+      assert(doc.tag);
+      assert.equal(doc.tag.length,1);
+      assert.equal(doc.tag[0].id, 'http://example.org/tag');
+      assert.equal(doc.title, 'the title');
+      assert.equal(doc.updated.valueOf(),
+        new Date('2015-12-12T12:12:12Z').valueOf());
+      assert.equal(doc.published.valueOf(),
+        new Date('2015-12-12T12:12:12Z').valueOf());
+      assert(doc.replies);
+      assert.equal(doc.replies.length,1);
+      assert.equal(doc.replies[0].id, 'http://example.org/replies');
+      assert(doc.scope);
+      assert.equal(doc.scope.length,1);
+      assert.equal(doc.scope[0].id, 'http://example.org/scope');
+      assert(doc.url);
+      assert.equal(doc.url.length,1);
+      assert.equal(doc.url[0].id, 'http://example.org');
+      assert.equal(doc.startTime.valueOf(),
+        new Date('2015-12-12T12:12:12Z').valueOf());
+      assert(doc.to);
+      assert.equal(doc.to.length,1);
+      assert.equal(doc.to[0].id, 'http://joe.example.org');
+      assert(doc.bto);
+      assert.equal(doc.bto.length,1);
+      assert.equal(doc.bto[0].id, 'http://sally.example.org');
+      assert(doc.cc);
+      assert.equal(doc.cc.length,1);
+      assert.equal(doc.cc[0].id, 'http://mark.example.org');
+      assert(doc.bcc);
+      assert.equal(doc.bcc.length,1);
+      assert.equal(doc.bcc[0].id, 'http://jane.example.org');
+      done();
+    });
+  });
+
+  it('should have appropriate values for every object property',
+     function(done) {
+    var doc = as.object()
+      .id('http://example.org')
+      .alias('@test')
+      .attachment('http://example.org/attachment')
+      .attributedTo('http://sally.example.org')
+      .content('the content')
+      .context('http://example.org/context')
+      .displayName('the display name')
+      .endTime(new Date('2015-12-12T12:12:12Z'))
+      .generator('http://example.org/generator')
+      .icon('http://example.org/icon')
+      .image('http://example.org/image')
+      .inReplyTo('http://example.org/in-reply-to')
+      .location('http://example.org/location')
+      .preview('http://example.org/preview')
+      .tag('http://example.org/tag')
+      .title('the title')
+      .updated(new Date('2015-12-12T12:12:12Z'))
+      .published(new Date('2015-12-12T12:12:12Z'))
+      .replies('http://example.org/replies')
+      .scope('http://example.org/scope')
+      .startTime(new Date('2015-12-12T12:12:12Z'))
+      .url('http://example.org')
+      .to('http://joe.example.org')
+      .bto('http://sally.example.org')
+      .cc('http://mark.example.org')
+      .bcc('http://jane.example.org')
+      .get();
+      assert.equal(doc.id, 'http://example.org');
+      assert.equal(doc.type, vocabs.as.Object);
+      assert(doc.alias);
+      assert.equal(doc.alias.id, '@test');
+      assert(doc.attachment);
+      assert.equal(doc.attachment.length,1);
+      assert.equal(doc.attachment[0].id, 'http://example.org/attachment');
+      assert(doc.attributedTo);
+      assert.equal(doc.attributedTo.length,1);
+      assert.equal(doc.attributedTo[0].id, 'http://sally.example.org');
+      assert.equal(doc.content, 'the content');
+      assert(doc.context);
+      assert.equal(doc.context.length,1);
+      assert.equal(doc.context[0].id, 'http://example.org/context');
+      assert.equal(doc.displayName, 'the display name');
+      assert.equal(doc.endTime.valueOf(),
+        new Date('2015-12-12T12:12:12Z').valueOf());
+      assert(doc.generator);
+      assert.equal(doc.generator.length,1);
+      assert.equal(doc.generator[0].id, 'http://example.org/generator');
+      assert(doc.icon);
+      assert.equal(doc.icon.length,1);
+      assert.equal(doc.icon[0].id, 'http://example.org/icon');
+      assert(doc.image);
+      assert.equal(doc.image.length,1);
+      assert.equal(doc.image[0].id, 'http://example.org/image');
+      assert(doc.inReplyTo);
+      assert.equal(doc.inReplyTo.length,1);
+      assert.equal(doc.inReplyTo[0].id, 'http://example.org/in-reply-to');
+      assert(doc.location);
+      assert.equal(doc.location.length,1);
+      assert.equal(doc.location[0].id, 'http://example.org/location');
+      assert(doc.preview);
+      assert.equal(doc.preview.length,1);
+      assert.equal(doc.preview[0].id, 'http://example.org/preview');
+      assert(doc.tag);
+      assert.equal(doc.tag.length,1);
+      assert.equal(doc.tag[0].id, 'http://example.org/tag');
+      assert.equal(doc.title, 'the title');
+      assert.equal(doc.updated.valueOf(),
+        new Date('2015-12-12T12:12:12Z').valueOf());
+      assert.equal(doc.published.valueOf(),
+        new Date('2015-12-12T12:12:12Z').valueOf());
+      assert(doc.replies);
+      assert.equal(doc.replies.length,1);
+      assert.equal(doc.replies[0].id, 'http://example.org/replies');
+      assert(doc.scope);
+      assert.equal(doc.scope.length,1);
+      assert.equal(doc.scope[0].id, 'http://example.org/scope');
+      assert(doc.url);
+      assert.equal(doc.url.length,1);
+      assert.equal(doc.url[0].id, 'http://example.org');
+      assert.equal(doc.startTime.valueOf(),
+        new Date('2015-12-12T12:12:12Z').valueOf());
+      assert(doc.to);
+      assert.equal(doc.to.length,1);
+      assert.equal(doc.to[0].id, 'http://joe.example.org');
+      assert(doc.bto);
+      assert.equal(doc.bto.length,1);
+      assert.equal(doc.bto[0].id, 'http://sally.example.org');
+      assert(doc.cc);
+      assert.equal(doc.cc.length,1);
+      assert.equal(doc.cc[0].id, 'http://mark.example.org');
+      assert(doc.bcc);
+      assert.equal(doc.bcc.length,1);
+      assert.equal(doc.bcc[0].id, 'http://jane.example.org');
+      done();
+
+  });
+
 });
+
 
 describe('Extensions...', function() {
   it('should initialize the Interval and Social Extensions', function() {

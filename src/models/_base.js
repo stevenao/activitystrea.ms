@@ -84,6 +84,10 @@ Base.prototype = {
                 value = value != 'false';
             }
             return value;
+          } else if (item['@list']) {
+            return item['@list'].map(function(i) {
+              return models.wrap_object(i);
+            });
           }
           return models.wrap_object(item);
         });
@@ -199,7 +203,8 @@ Base.Builder.prototype = {
       expanded[key] = expanded[key] || [];
       if (!is_array) val = [val];
       for (n = 0, l = val.length; n < l; n++) {
-        if (reasoner.is_object_property(key) || val[n] instanceof Base) {
+        if (reasoner.is_object_property(key) || val[n] instanceof Base ||
+          key == '@list') {
           if (val[n] instanceof Base) {
             expanded[key].push(val[n][_expanded]);
           } else if (utils.is_string(val[n])) {
