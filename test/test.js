@@ -346,9 +346,10 @@ describe('Basics...', function () {
       assert.equal(doc.items.length, 2);
       assert.equal(doc.items[0].id, 'http://example.org/item/1');
       assert.equal(doc.items[1].id, 'http://example.org/item/2');
+
+      done();
     });
 
-    done();
   });
 
   it('should have appropriate values for every collection property',
@@ -419,9 +420,9 @@ describe('Basics...', function () {
       assert.equal(doc.items.length, 2);
       assert.equal(doc.items[0].id, 'http://example.org/item/1');
       assert.equal(doc.items[1].id, 'http://example.org/item/2');
+      done();
     });
 
-    done();
   });
 
   it('should have appropriate values for every activity property',
@@ -504,9 +505,9 @@ describe('Basics...', function () {
       assert(doc.instrument);
       assert.equal(doc.instrument.length,1);
       assert.equal(doc.instrument[0].id, 'http://example.org/instrument');
+      done();
     });
 
-    done();
   });
 
   it('should have appropriate values for every link property',
@@ -779,6 +780,231 @@ describe('Basics...', function () {
 
   });
 
+  it('should have appropriate values for the relationship object',
+    function(done) {
+
+      var test = {
+        '@context': 'http://www.w3.org/ns/activitystreams#',
+        '@type': 'Relationship',
+        subject: 'http://sally.example.org',
+        relationship: 'http://example.org',
+        object: 'http://joe.example.org'
+      };
+
+      as.import(test, function(err,doc) {
+        assert.equal(err, undefined);
+        assert(doc instanceof as.models.Relationship);
+        assert(doc.subject.id, 'http://sally.example.org');
+        assert(doc.relationship);
+        assert.equal(doc.relationship.length, 1);
+        assert.equal(doc.relationship[0].id, 'http://example.org');
+        assert(doc.object);
+        assert.equal(doc.object.length, 1);
+        assert.equal(doc.object[0].id, 'http://joe.example.org');
+        done();
+      });
+
+  });
+
+  it('should have appropriate values for the relationship object',
+    function(done) {
+
+      var doc = as.relationship()
+        .subject('http://sally.example.org')
+        .relationship('http://example.org')
+        .object('http://joe.example.org')
+        .get();
+
+      assert(doc instanceof as.models.Relationship);
+      assert(doc.subject.id, 'http://sally.example.org');
+      assert(doc.relationship);
+      assert.equal(doc.relationship.length, 1);
+      assert.equal(doc.relationship[0].id, 'http://example.org');
+      assert(doc.object);
+      assert.equal(doc.object.length, 1);
+      assert.equal(doc.object[0].id, 'http://joe.example.org');
+      done();
+
+  });
+
+  it('should have appropriate values for the content object',
+    function(done) {
+
+    var test = {
+      '@context': 'http://www.w3.org/ns/activitystreams#',
+      '@type': 'Content',
+      height: 10,
+      width: 10,
+      duration: 10
+    };
+
+    as.import(test, function(err, doc) {
+      assert.equal(err, undefined);
+      assert(doc instanceof as.models.Content);
+      assert.equal(doc.height, 10);
+      assert.equal(doc.width, 10);
+      assert.equal(doc.duration, 10);
+      done();
+    });
+  });
+
+  it('should have appropriate values for the content object',
+    function(done) {
+
+    var doc = as.content()
+      .height(10)
+      .width(10)
+      .duration(10)
+      .get();
+
+    assert(doc instanceof as.models.Content);
+    assert.equal(doc.height, 10);
+    assert.equal(doc.width, 10);
+    assert.equal(doc.duration, 10);
+    done();
+
+  });
+
+  it('should have appropriate values for the question object',
+    function(done) {
+
+    var test = {
+      '@context': 'http://www.w3.org/ns/activitystreams#',
+      '@type': 'Question',
+      displayName: 'the question',
+      height: 10,
+      width: 10,
+      duration: 10,
+      anyOf: [{'@id':'urn:answer1'},{'@id':'urn:answer2'}]
+    };
+
+    as.import(test, function(err, doc) {
+      assert.equal(err, undefined);
+      assert(doc instanceof as.models.Question);
+      assert.equal(doc.height, 10);
+      assert.equal(doc.width, 10);
+      assert.equal(doc.duration, 10);
+      assert.equal(doc.displayName, 'the question');
+      assert(doc.anyOf);
+      assert.equal(doc.anyOf.length,2);
+      assert.equal(doc.anyOf[0].id, 'urn:answer1');
+      assert.equal(doc.anyOf[1].id, 'urn:answer2');
+      done();
+    });
+  });
+
+  it('should have appropriate values for the question object',
+    function(done) {
+
+    var doc = as.question()
+      .height(10)
+      .width(10)
+      .duration(10)
+      .displayName('the question')
+      .anyOf('urn:answer1')
+      .anyOf('urn:answer2')
+      .get();
+
+    assert(doc instanceof as.models.Question);
+    assert.equal(doc.height, 10);
+    assert.equal(doc.width, 10);
+    assert.equal(doc.duration, 10);
+    assert.equal(doc.displayName, 'the question');
+    assert(doc.anyOf);
+    assert.equal(doc.anyOf.length,2);
+    assert.equal(doc.anyOf[0].id, 'urn:answer1');
+    assert.equal(doc.anyOf[1].id, 'urn:answer2');
+    done();
+
+  });
+
+  it('should have appropriate values for the place object', function(done) {
+
+    var test = {
+      '@context': 'http://www.w3.org/ns/activitystreams#',
+      '@type': 'Place',
+      accuracy: 10,
+      altitude: 10,
+      latitude: 10,
+      longitude: 10,
+      radius: 10,
+      units: 'm'
+    };
+
+    as.import(test, function(err, doc) {
+      assert.equal(err, undefined);
+      assert(doc instanceof as.models.Place);
+      assert.equal(doc.accuracy, 10);
+      assert.equal(doc.altitude, 10);
+      assert.equal(doc.latitude, 10);
+      assert.equal(doc.longitude, 10);
+      assert.equal(doc.radius, 10);
+      assert.equal(doc.units, 'm');
+      done();
+    });
+
+  });
+
+  it('should have appropriate values for the place object', function(done) {
+
+    var doc = as.place()
+      .accuracy(10)
+      .altitude(10)
+      .latitude(10)
+      .longitude(10)
+      .radius(10)
+      .units('m')
+      .get();
+
+    assert(doc instanceof as.models.Place);
+    assert.equal(doc.accuracy, 10);
+    assert.equal(doc.altitude, 10);
+    assert.equal(doc.latitude, 10);
+    assert.equal(doc.longitude, 10);
+    assert.equal(doc.radius, 10);
+    assert.equal(doc.units, 'm');
+    done();
+
+  });
+
+  it('should have appropriate values for the profile object', function(done) {
+
+    var test = {
+      '@context': 'http://www.w3.org/ns/activitystreams#',
+      '@type': 'Profile',
+      describes: 'http://example.org'
+    };
+
+    as.import(test, function(err, doc) {
+      assert.equal(err, undefined);
+      assert(doc instanceof as.models.Profile);
+      assert.equal(doc.describes.id, 'http://example.org');
+      done();
+    });
+
+  });
+
+  it('should have appropriate values for the profile object', function(done) {
+
+    var doc = as.profile()
+      .describes('http://example.org')
+      .get();
+
+    assert(doc instanceof as.models.Profile);
+    assert.equal(doc.describes.id, 'http://example.org');
+    done();
+
+  });
+
+  it('should use the default context', function(done) {
+    var test = {'@id':'urn:test', displayName: 'test'};
+    as.import(test, function(err,doc) {
+      assert.equal(err, undefined);
+      assert.equal(doc.id, 'urn:test');
+      assert.equal(doc.displayName, 'test');
+      done();
+    });
+  });
 });
 
 

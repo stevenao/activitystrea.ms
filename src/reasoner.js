@@ -178,7 +178,7 @@ function _init(reasoner) {
 
   reasoner.add(as.describes, rdf.type, functionalObject);
   reasoner.add(as.subject, rdf.type, functionalObject);
-  reasoner.add(as.relationship, rdf.type, functionalObject);
+  reasoner.add(as.relationship, rdf.type, owl.ObjectProperty);
   reasoner.add(as.first, rdf.type, functionalObject);
   reasoner.add(rdf.rest, rdf.type, functionalObject);
   reasoner.add(as.first, rdf.type, functionalObject);

@@ -135,6 +135,8 @@ exports.import = function(input, callback) {
   throwif(
     typeof callback !== 'function',
     'A callback function must be provided');
+  if (input['@context'] === undefined)
+    input['@context'] = vocabs.as.ns;
   jsonld.expand(
     input, {
       expandContext: as_context,

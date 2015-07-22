@@ -63,6 +63,7 @@ utils.defineProperty(
   },
   function(val) {
     utils.set_non_negative_int.call(this, as.width, val);
+    return this;
   }
 );
 
