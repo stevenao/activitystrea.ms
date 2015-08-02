@@ -29,17 +29,15 @@ var jsonld        = require('./jsonld');
 var ext_context   = require('./extcontext');
 var as = vocabs.as;
 
-exports.verify = jsonld.verify;
-exports.models = models;
-exports.vocabs = vocabs;
-
 exports.use = function(extension) {
   if (extension && typeof extension.init === 'function')
     extension.init(models,reasoner,ext_context);
 };
 
+exports.verify = jsonld.verify;
+exports.models = models;
+exports.vocabs = vocabs;
 exports.import = jsonld.import;
-
 exports.importFromRDF = jsonld.importFromRDF;
 
 function define(type,base,types) {
@@ -110,4 +108,7 @@ utils.define(exports,'interval',function() {
 });
 utils.define(exports,'social',function() {
   return require('./social');
+});
+utils.define(exports,'Stream',function() {
+  return require('./stream');
 });

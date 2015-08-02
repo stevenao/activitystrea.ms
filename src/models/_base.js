@@ -20,6 +20,8 @@
  */
 'use strict';
 
+var Readable      = require('readable-stream').Readable;
+var util          = require('util');
 var Symbol        = require('es6-symbol');
 var vocabs        = require('linkeddata-vocabs');
 var uuid          = require('node-uuid');
@@ -48,22 +50,38 @@ function Base(expanded,builder) {
   this[_cache] = {};
   this[_builder] = builder;
 }
-Base.prototype = {
-  get id() {
-    return this[_expanded]['@id'];
-  },
-  get type() {
+
+Object.defineProperty(Base.prototype, 'id', {
+  configurable: false,
+  enumerable: true,
+  get: function() { return this[_expanded]['@id']; }
+});
+
+Object.defineProperty(Base.prototype, 'type', {
+  configurable: false,
+  enumerable: true,
+  get: function() {
     var types = this[_expanded]['@type'];
     return !types || types.length === 0 ? undefined :
            types.length === 1 ? types[0] :
            types;
-  },
-  has : function(key) {
+  }
+});
+
+Object.defineProperty(Base.prototype, 'has', {
+  configurable: false,
+  enumerable: true,
+  value: function(key) {
     key = utils.parsed_url(vocabs.as[key]||key);
     var ret = this[_expanded][key];
     return ret && (ret.length > 0 || utils.is_boolean(ret));
-  },
-  get : function(key) {
+  }
+});
+
+Object.defineProperty(Base.prototype, 'get', {
+  configurable: false,
+  enumerable: true,
+  value: function(key) {
     var ret;
     key = utils.parsed_url(vocabs.as[key]||key);
     if (!this[_cache].hasOwnProperty(key)) {
@@ -100,8 +118,13 @@ Base.prototype = {
       }
     }
     return this[_cache][key];
-  },
-  export : function(options, callback) {
+  }
+});
+
+Object.defineProperty(Base.prototype, 'export', {
+  configurable: false,
+  enumerable: true,
+  value: function(options, callback) {
     if (typeof options === 'function') {
       callback = options;
       options = {};
@@ -112,8 +135,13 @@ Base.prototype = {
       this[_expanded],
       options,
       callback);
-  },
-  toRDF : function(options, callback) {
+  }
+});
+
+Object.defineProperty(Base.prototype, 'toRDF', {
+  configurable: false,
+  enumerable: true,
+  value: function(options, callback) {
     if (typeof options === 'function') {
       callback = options;
       options = {};
@@ -123,8 +151,13 @@ Base.prototype = {
       this[_expanded],
       options,
       callback);
-  },
-  write : function(options, callback) {
+  }
+});
+
+Object.defineProperty(Base.prototype, 'write', {
+  configurable: false,
+  enumerable: true,
+  value: function(options, callback) {
     if (typeof options === 'function') {
       callback = options;
       options = {};
@@ -137,8 +170,13 @@ Base.prototype = {
       }
       callback(null, JSON.stringify(doc,null,options.space));
     });
-  },
-  prettyWrite : function(options, callback) {
+  }
+});
+
+Object.defineProperty(Base.prototype, 'prettyWrite', {
+  configurable: false,
+  enumerable: true,
+  value: function(options, callback) {
     if (typeof options === 'function') {
       callback = options;
       options = {};
@@ -146,11 +184,65 @@ Base.prototype = {
     options = options || {};
     options.space = options.space || 2;
     this.write(options, callback);
-  },
-  modify : function() {
+  }
+});
+
+Object.defineProperty(Base.prototype, 'modify', {
+  configurable: false,
+  enumerable: true,
+  value: function() {
     return this[_builder](this.type, this);
   }
-};
+});
+
+Object.defineProperty(Base.prototype, 'stream', {
+  configurable: false,
+  enumerable: true,
+  value: function(options) {
+    return new BaseReader(this, options);
+  }
+});
+
+Object.defineProperty(Base.prototype, 'pipe', {
+  configurable: false,
+  enumerable: true,
+  value: function(dest, options) {
+    this.stream(options).pipe(dest);
+  }
+});
+
+var _done = Symbol('done');
+var _base = Symbol('base');
+var _options = Symbol('options');
+function BaseReader(base, options) {
+  if (!(this instanceof BaseReader))
+    return new BaseReader(base, options);
+  options = options || {};
+  options.highwaterMark = options.highwaterMark || '16kb';
+  options.objectMode = true;
+  Readable.call(this,options);
+  this[_base] = base;
+  this[_options] = options;
+}
+util.inherits(BaseReader, Readable);
+Object.defineProperty(BaseReader.prototype, '_read', {
+  configurable: false,
+  enumerable: true,
+  value: function() {
+    var self = this;
+    if (self[_done]) return;
+    self[_done] = true;
+    self[_base].write(this[_options], function(err,doc) {
+      if (err) {
+        self.emit('error', err);
+      } else {
+        self.push(new Buffer(doc, 'utf8'));
+        self.push(null);
+      }
+      return false;
+    });
+  }
+});
 
 // ******** BUILDER ********* //
 
@@ -255,6 +347,9 @@ Base.Builder.prototype = {
   },
   prettyWrite: function(options, callback) {
     return this[_base].prettyWrite(options,callback);
+  },
+  pipe: function(dest,options) {
+    return this[_base].pipe(dest,options);
   }
 };
 

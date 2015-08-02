@@ -67,6 +67,30 @@ Which produces the output:
 }
 ```
 
+You can also use the Node.js stream model for parsing:
+```javascript
+var fs = require('fs');
+var AS2Stream = as.Stream;
+var path = require('path');
+var through = require('through2');
+
+fs.createReadStream(path.resolve(__dirname,'test.json'))
+  .pipe(new AS2Stream())
+  .pipe(through.obj(function(obj,encoding,callback) {
+    console.log(obj.type);
+    console.log(obj.displayName);
+  }));
+```
+And writing:
+```javascript
+var as = require('activitystrea.ms');
+var through = require('through2');
+as.object()
+  .displayName('test')
+  .get()
+  .pipe(process.stdout);
+```
+
 The API uses a fluent factory pattern for creating AS objects. There are
 factory methods for each of the main types of objects defined by the Activity
 Streams 2.0 vocabulary. Each takes an optional array of types that will be set
@@ -188,8 +212,8 @@ as.note().
    });
 ```
 
-To serialize the Activity Streams object out as JSON, use the `write` or
-`prettyWrite` methods.
+To serialize the Activity Streams object out as JSON, use the `write`,
+`prettyWrite`, or `pipe` methods
 
 ```javascript
 var as = require('activitystrea.ms');
@@ -213,6 +237,15 @@ as.note().
      // doc is a string
      console.log(doc);
    });
+```
+
+```javascript
+var as = require('activitystrea.ms');
+var through = require('through2');
+as.object()
+  .displayName('test')
+  .get()
+  .pipe(process.stdout);
 ```
 
 Note that The `export`, `write`, and `prettyWrite` methods are all async. You

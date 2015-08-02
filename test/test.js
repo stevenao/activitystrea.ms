@@ -24,7 +24,6 @@ var assert = require('assert');
 var as = require('..');
 var vocabs = require('linkeddata-vocabs');
 var models = require('../src/models');
-var as = require('../src/activitystreams');
 
 var now = new Date();
 
@@ -1007,6 +1006,39 @@ describe('Basics...', function () {
   });
 });
 
+describe('Streaming...', function() {
+
+  it('Should read and parse from the stream', function(done) {
+    var fs = require('fs');
+    var AS2Stream = as.Stream;
+    var path = require('path');
+    var through = require('through2');
+
+    fs.createReadStream(path.resolve(__dirname,'test.json'))
+      .pipe(new AS2Stream())
+      .pipe(through.obj(function(chunk,encoding,callback) {
+        assert(chunk);
+        assert(chunk.type);
+        assert.equal(chunk.type, vocabs.as.Person);
+        assert.equal(chunk.displayName.valueOf(), 'Sally');
+        done();
+      }));
+  });
+
+  it('Should write to the stream', function(done) {
+    var AS2Stream = as.Stream;
+    var through = require('through2');
+    var obj = as.object().displayName('test').get();
+    obj.stream()
+      .pipe(new AS2Stream())
+      .pipe(through.obj(function(chunk,encoding,callback) {
+        assert(chunk);
+        assert(chunk.type);
+        assert.equal(chunk.displayName.valueOf(), 'testing');
+      }));
+    done();
+  });
+});
 
 describe('Extensions...', function() {
   it('should initialize the Interval and Social Extensions', function() {
