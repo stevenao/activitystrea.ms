@@ -3,13 +3,13 @@
 -----BEGIN PGP SIGNATURE-----
 Comment: GPGTools - https://gpgtools.org
 
-iQEcBAABCgAGBQJVvbACAAoJEHNBsVwHCHesntUH/jiC2i0uEMZZ/2mc2Jxrypsr
-S5/vWbr0u1jbgykOpDrdzjHXj7wOWIjHzNTMCwxzu8hnvvgm+b81z4HVQdE2pm4R
-P6Ei0g4pXFtWvPwdlkA6KyAI/SIqfe9UoJiKkJ2ALSYvEGGyRtjyL43UGYEkrpkR
-KucU+KM0Fd6X9UyXP/yymq441jL9Zqp32FDwVixWd40C0w4RXry/T8NiJ+N04Rra
-JbhoKUt/0ajSpqYuZnfZuz/C7/bxT7YWrjnOHaw8W00VEaWlz+b1nSY7gvF321C3
-IzuZ/zlnBklSajP4bWDKg2Wkqddl6Mmls1Rwc3P1Lh1k+vbRIMXDikVYz5agZOo=
-=f3ap
+iQEcBAABCgAGBQJVvpk8AAoJEHNBsVwHCHesbcsH/1/vxWj97E46nwu7FZAKaj1t
+HFrvitl7BitjsQIqzcyYbiausiyQ++J3cHzrjPaXgJe7Wcb/LlQxwj63rf8Frz32
+TbKwr4CjVy50E2suKU8Re50TikcY+X3gZ1muO6D2fB7pP80DOafrltLt5Z2SjTgs
+T9Ey5z7JZycuAbvaComrnPo+DjppZEuuuzbgRJTktO0cKXcNHJ4IsHuQw55umxHC
+11rxa+5tmyzPkWD7mJh1bLna/yFQLtQgO20b8T1fYt8vLu8JT6O/CJyrmrFDIYVS
+U3R4XEMDmrq4Z8O2k3frZ1Y9r0sOKSfZ4p2+3GqgOdn8wQj+udpSZOq/Vll5yiU=
+=qopp
 -----END PGP SIGNATURE-----
 
 ```
@@ -27,10 +27,11 @@ size   exec  file                          contents
 489            .jshintrc                   cbc7c566ebc9688db23737aadf59d0db89f5069a90a89c1134efba8617257524
 880            CONTRIBUTING.md             8466fd261a695a6e94410759f82a97f7c3bfc78b1bbfb93adc2a9fbdaf9bf848
 11381          LICENSE                     2bcf83b42c65720625611f1fb2922bc9e3face6a22117331a13c9ed9f3af2903
-1022           package.json                b76607aac52ad8e9e57a9eccbc8424d5ac6bf5b95053d3dd15e5a8e14d1a34b6
+1022           package.json                9780554e344e4a3e3bbfe7fee1c38556f666beefff3753894a31cdf262eff884
 6126           README.md                   bddfde83f76108355ad51a1297cc9108ab03e1188d0b791318a6f57d6f3c76a7
                src/                                                                                        
-5372             activitystreams.js        197261359d39e26552ecc6119858a7ccce18bc42720effa7e2184fdba30000a8
+5445             activitystreams.js        2b77c34a38d53e1948cc2cd065f33e4f1efdbfdb0e964cd7df2bbe32b3645cdd
+650              dust.js                   cc9995dd6fbc3484061e467d701507c6d60e8dd5d7e566416722f659c2d16fcb
 922              extcontext.js             905e2ca95b0e2ba12b500f7eccdb75c6f5e52379ad5c32b1d95f987a9dbdd232
                  interval/                                                                                 
 2573               _model.js               1dbbb274090dbbae801393be8d790e63e37ae109da4507524c9853f24fb08625
@@ -43,7 +44,7 @@ size   exec  file                          contents
                  models/                                                                                   
 2779               _activity.js            e9b6a82536e12766c1f403623f21399bc1ff9e1e6c7ee6622ac018ead2771a11
 1407               _actor.js               484812657609598085d31803c250301c6cad0c82a33d7aae6c787d2b348177ef
-9909               _base.js                61ff403031d56ba89f2b638c231eb950f5be27044a6c58b8dea334e313e619bd
+10068              _base.js                05b8e515f7b6fec616d311ce90806a5b77cd87b8f7d5643fc26b89f46f1df9cc
 4431               _collection.js          ec1461cd75aed71ad44f650380d08b20fd73349350c88f1ebd012198e00cfd6e
 2135               _content.js             3f0f3124057e773f2ba8fb15526bf7a718d159fcc52fa0995a08e9b2dbbc9c29
 2153               _languagevalue.js       5adab85552eff0a48c1fd5c959ac0041ae5c113d6d6cb4cc5ac6f2b994315f1e

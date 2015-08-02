@@ -211,6 +211,14 @@ Object.defineProperty(Base.prototype, 'pipe', {
   }
 });
 
+Object.defineProperty(Base.prototype, 'dust', {
+  configurable: false,
+  enumerable: true,
+  value: function() {
+    return require('../dust')(this);
+  }
+});
+
 var _done = Symbol('done');
 var _base = Symbol('base');
 var _options = Symbol('options');
