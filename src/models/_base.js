@@ -20,6 +20,7 @@
  */
 'use strict';
 
+var Symbol        = require('es6-symbol');
 var vocabs        = require('linkeddata-vocabs');
 var uuid          = require('node-uuid');
 var utils         = require('../utils');
@@ -28,6 +29,8 @@ var jsonld        = require('../jsonld');
 var LanguageValue = require('./_languagevalue');
 var reasoner      = require('../reasoner');
 var throwif       = utils.throwif;
+var asx           = vocabs.asx;
+var owl           = vocabs.owl;
 
 var _expanded = Symbol('expanded');
 var _cache = Symbol('cache');
@@ -51,8 +54,7 @@ Base.prototype = {
   },
   get type() {
     var types = this[_expanded]['@type'];
-    if (!types) return undefined;
-    return types.length === 0 ? undefined :
+    return !types || types.length === 0 ? undefined :
            types.length === 1 ? types[0] :
            types;
   },
@@ -62,25 +64,26 @@ Base.prototype = {
     return ret && (ret.length > 0 || utils.is_boolean(ret));
   },
   get : function(key) {
-    var self = this;
-    var n, l, ret;
+    var ret;
     key = utils.parsed_url(vocabs.as[key]||key);
     if (!this[_cache].hasOwnProperty(key)) {
+      var nodekey = reasoner.node(key);
       var res = this[_expanded][key] || [];
       if (!res.length) return undefined;
-      if (reasoner.is_language_property(key)) {
-        this[_cache][key] = LanguageValue(res);
+      if (nodekey.is(asx.LanguageProperty)) {
+        this[_cache][key] = new LanguageValue(res);
       } else {
         ret = res.map(function(item) {
           if (is_literal(item)) {
             var type = item['@type'];
             var value = item['@value'];
             if (type) {
-              if (reasoner.is_number(type))
-                value = Number(value).valueOf();
-              else if (reasoner.is_date(type))
+              var node = reasoner.node(type);
+              if (node.is(asx.Number))
+                value = Number(value);
+              else if (node.is(asx.Date))
                 value = new Date(value);
-              else if (reasoner.is_boolean(type))
+              else if (node.is(asx.Boolean))
                 value = value != 'false';
             }
             return value;
@@ -92,7 +95,7 @@ Base.prototype = {
           return models.wrap_object(item);
         });
         this[_cache][key] =
-          reasoner.is_functional(key) ?
+          nodekey.is(owl.FunctionalProperty) ?
             ret[0] : ret;
       }
     }
@@ -178,6 +181,7 @@ Base.Builder.prototype = {
     } else {
       var ret = [];
       if (!Array.isArray(type)) type = [type];
+      type = reasoner.reduce(type);
       for (var n = 0, l = type.length; n < l; n++) {
         ret.push(type[n].valueOf());
       }
@@ -193,18 +197,19 @@ Base.Builder.prototype = {
     }
     var n, l;
     key = utils.parsed_url(vocabs.as[key]||key);
+    var nodekey = reasoner.node(key);
     if (val === null || val === undefined) {
       delete expanded[key];
     } else {
       var is_array = Array.isArray(val);
-      if (reasoner.is_functional(key)) {
+      if (nodekey.is(owl.FunctionalProperty)) {
         throwif(is_array, 'Functional properties cannot have array values');
         delete _expanded[key];
       }
       expanded[key] = expanded[key] || [];
       if (!is_array) val = [val];
       for (n = 0, l = val.length; n < l; n++) {
-        if (reasoner.is_object_property(key) || val[n] instanceof Base ||
+        if (nodekey.is(owl.ObjectProperty) || val[n] instanceof Base ||
           key == '@list') {
           if (val[n] instanceof Base) {
             expanded[key].push(val[n][_expanded]);

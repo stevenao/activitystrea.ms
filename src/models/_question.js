@@ -21,7 +21,6 @@
 'use strict';
 
 var util       = require('util');
-var reasoner   = require('../reasoner');
 var utils      = require('../utils');
 var as     = require('linkeddata-vocabs').as;
 var Activity = require('./_activity');
@@ -36,10 +35,8 @@ util.inherits(Question, Activity);
 Question.Builder = function(types,base) {
   if (!(this instanceof Question.Builder))
     return new Question.Builder(types, base);
-  Activity.Builder.call(
-    this,
-    utils.merge_types(reasoner, as.Question, types),
-    base || new Question({}));
+  types = (types || []).concat([as.Question]);
+  Activity.Builder.call(this, types, base || new Question({}));
 };
 util.inherits(Question.Builder, Activity.Builder);
 

@@ -27,7 +27,6 @@ var reasoner      = require('./reasoner');
 var utils         = require('./utils');
 var jsonld        = require('./jsonld');
 var ext_context   = require('./extcontext');
-var merge_types   = utils.merge_types;
 var as = vocabs.as;
 
 exports.verify = jsonld.verify;
@@ -43,72 +42,68 @@ exports.import = jsonld.import;
 
 exports.importFromRDF = jsonld.importFromRDF;
 
-function define(type,sub,types) {
-  if (sub !== undefined) {
-    return models[type].Builder(
-      merge_types(reasoner, sub, types));
-  } else {
-    return models[type].Builder(types);
-  }
+function define(type,base,types) {
+  return type.Builder((types || []).concat([base]));
 }
 
-exports.object = define.bind(this,'Object',undefined);
-exports.actor = define.bind(this,'Actor',undefined);
-exports.activity = define.bind(this,'Activity',undefined);
-exports.collection = define.bind(this,'Collection',undefined);
-exports.orderedCollection = define.bind(this,'OrderedCollection',undefined);
-exports.content = define.bind(this,'Content',undefined);
-exports.link = define.bind(this,'Link',undefined);
-exports.accept = define.bind(this,'Activity',as.Accept);
-exports.tentativeAccept = define.bind(this,'Activity',as.TentativeAccept);
-exports.add = define.bind(this,'Activity',as.Add);
-exports.arrive = define.bind(this,'Activity',as.Arrive);
-exports.create = define.bind(this,'Activity',as.Create);
-exports.delete = define.bind(this,'Activity',as.Delete);
-exports.follow = define.bind(this,'Activity',as.Follow);
-exports.ignore = define.bind(this,'Activity',as.Ignore);
-exports.join = define.bind(this,'Activity',as.Join);
-exports.leave = define.bind(this,'Activity',as.Leave);
-exports.like = define.bind(this,'Activity',as.Like);
-exports.offer = define.bind(this,'Activity',as.Offer);
-exports.invite = define.bind(this,'Activity',as.Invite);
-exports.reject = define.bind(this,'Activity',as.Reject);
-exports.tentativeReject = define.bind(this,'Activity',as.TentativeReject);
-exports.remove = define.bind(this,'Activity',as.Remove);
-exports.undo = define.bind(this,'Activity',as.Undo);
-exports.update = define.bind(this,'Activity',as.Update);
-exports.experience = define.bind(this,'Activity',as.Experience);
-exports.view = define.bind(this,'Activity',as.View);
-exports.listen = define.bind(this,'Activity',as.Listen);
-exports.read = define.bind(this,'Activity',as.Read);
-exports.move = define.bind(this,'Activity',as.Move);
-exports.travel = define.bind(this,'Activity',as.Travel);
-exports.announce = define.bind(this,'Activity',as.Announce);
-exports.block = define.bind(this,'Activity',as.Block);
-exports.flag = define.bind(this,'Activity',as.Flag);
-exports.dislike = define.bind(this,'Activity',as.Dislike);
-exports.application = define.bind(this,'Actor',as.Application);
-exports.group = define.bind(this,'Actor',as.Group);
-exports.person = define.bind(this,'Actor',as.Person);
-exports.process = define.bind(this,'Actor',as.Process);
-exports.service = define.bind(this,'Actor',as.Service);
-exports.organization = define.bind(this,'Actor',as.Organization);
-exports.article = define.bind(this,'Content',as.Article);
-exports.album = define.bind(this,'Collection',as.Album);
-exports.folder = define.bind(this,'Collection',as.Folder);
-exports.story = define.bind(this,'OrderedCollection',as.Story);
-exports.document = define.bind(this,'Content',as.Document);
-exports.audio = define.bind(this,'Content',as.Audio);
-exports.image = define.bind(this,'Content',as.Image);
-exports.video = define.bind(this,'Content',as.Video);
-exports.note = define.bind(this,'Content',as.Note);
-exports.page = define.bind(this,'Content',as.Page);
-exports.question = define.bind(this,'Question',undefined);
-exports.event = define.bind(this,'Object',as.Event);
-exports.relationship = define.bind(this,'Relationship',undefined);
-exports.profile = define.bind(this,'Profile',undefined);
-exports.place = define.bind(this,'Place',undefined);
-exports.mention = define.bind(this,'Link',as.Mention);
+exports.object = define.bind(this,models.Object,as.Object);
+exports.actor = define.bind(this,models.Actor,as.Actor);
+exports.activity = define.bind(this,models.Activity,as.Activity);
+exports.collection = define.bind(this,models.Collection,as.Collection);
+exports.orderedCollection = define.bind(this,
+  models.OrderedCollection, as.OrderedCollection);
+exports.content = define.bind(this,models.Content,as.Content);
+exports.link = define.bind(this,models.Link, as.Link);
+exports.accept = define.bind(this,models.Activity, as.Accept);
+exports.tentativeAccept = define.bind(this,models.Activity,as.TentativeAccept);
+exports.add = define.bind(this,models.Activity, as.Add);
+exports.arrive = define.bind(this,models.Activity, as.Arrive);
+exports.create = define.bind(this,models.Activity, as.Create);
+exports.delete = define.bind(this,models.Activity, as.Delete);
+exports.follow = define.bind(this,models.Activity, as.Follow);
+exports.ignore = define.bind(this,models.Activity, as.Ignore);
+exports.join = define.bind(this,models.Activity, as.Join);
+exports.leave = define.bind(this,models.Activity, as.Leave);
+exports.like = define.bind(this,models.Activity, as.Like);
+exports.offer = define.bind(this,models.Activity, as.Offer);
+exports.invite = define.bind(this,models.Activity, as.Invite);
+exports.reject = define.bind(this,models.Activity, as.Reject);
+exports.tentativeReject = define.bind(this,models.Activity, as.TentativeReject);
+exports.remove = define.bind(this,models.Activity, as.Remove);
+exports.undo = define.bind(this,models.Activity, as.Undo);
+exports.update = define.bind(this,models.Activity, as.Update);
+exports.experience = define.bind(this,models.Activity, as.Experience);
+exports.view = define.bind(this,models.Activity, as.View);
+exports.listen = define.bind(this,models.Activity, as.Listen);
+exports.read = define.bind(this,models.Activity, as.Read);
+exports.move = define.bind(this,models.Activity, as.Move);
+exports.travel = define.bind(this,models.Activity, as.Travel);
+exports.announce = define.bind(this,models.Activity, as.Announce);
+exports.block = define.bind(this,models.Activity, as.Block);
+exports.flag = define.bind(this,models.Activity, as.Flag);
+exports.dislike = define.bind(this,models.Activity, as.Dislike);
+exports.application = define.bind(this,models.Actor, as.Application);
+exports.group = define.bind(this,models.Actor, as.Group);
+exports.person = define.bind(this,models.Actor, as.Person);
+exports.process = define.bind(this,models.Actor, as.Process);
+exports.service = define.bind(this,models.Actor, as.Service);
+exports.organization = define.bind(this,models.Actor, as.Organization);
+exports.article = define.bind(this,models.Content, as.Article);
+exports.album = define.bind(this,models.Collection, as.Album);
+exports.folder = define.bind(this,models.Collection, as.Folder);
+exports.story = define.bind(this,models.OrderedCollection, as.Story);
+exports.document = define.bind(this,models.Content, as.Document);
+exports.audio = define.bind(this,models.Content, as.Audio);
+exports.image = define.bind(this,models.Content, as.Image);
+exports.video = define.bind(this,models.Content, as.Video);
+exports.note = define.bind(this,models.Content, as.Note);
+exports.page = define.bind(this,models.Content, as.Page);
+exports.question = define.bind(this,models.Question, as.Question);
+exports.event = define.bind(this,models.Object, as.Event);
+exports.relationship = define.bind(this,models.Relationship, as.Relationship);
+exports.profile = define.bind(this,models.Profile, as.Profile);
+exports.place = define.bind(this,models.Place, as.Place);
+exports.mention = define.bind(this,models.Link, as.Mention);
 
 utils.define(exports,'interval',function() {
   return require('./interval');

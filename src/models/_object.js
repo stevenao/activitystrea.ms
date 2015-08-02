@@ -21,7 +21,6 @@
 'use strict';
 
 var util = require('util');
-var reasoner = require('../reasoner');
 var utils = require('../utils');
 var as = require('linkeddata-vocabs').as;
 var Base = require('./_base');
@@ -36,10 +35,8 @@ util.inherits(AsObject, Base);
 AsObject.Builder = function(types, base) {
   if (!(this instanceof AsObject.Builder))
     return new AsObject.Builder(types, base);
-  Base.Builder.call(
-    this,
-    utils.merge_types(reasoner, as.Object,types),
-    base || new AsObject({}));
+  types = (types || []).concat([as.Object]);
+  Base.Builder.call(this, types, base || new AsObject({}));
 };
 util.inherits(AsObject.Builder, Base.Builder);
 

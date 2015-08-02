@@ -22,7 +22,6 @@
 
 var Population = require('./_population');
 var util = require('util');
-var reasoner = require('../reasoner');
 var utils = require('../utils');
 var social = require('linkeddata-vocabs').social;
 
@@ -36,10 +35,8 @@ util.inherits(CompoundPopulation, Population);
 CompoundPopulation.Builder = function(types,base) {
   if (!(this instanceof CompoundPopulation.Builder))
     return new CompoundPopulation.Builder(types,base);
-  Population.Builder.call(
-    this,
-    utils.merge_types(reasoner, social.CompoundPopulation, types),
-    base || new CompoundPopulation({}));
+  types = (types || []).concat([social.CompoundPopulation]);
+  Population.Builder.call(this, types, base || new CompoundPopulation({}));
 };
 util.inherits(CompoundPopulation.Builder,Population.Builder);
 

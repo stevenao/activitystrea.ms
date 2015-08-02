@@ -20,10 +20,8 @@
  */
 'use strict';
 
-var vocabs   = require('linkeddata-vocabs');
+var as       = require('linkeddata-vocabs').as;
 var util     = require('util');
-var reasoner = require('../reasoner');
-var utils    = require('../utils');
 var AsObject = require('./_object');
 
 function Actor(expanded,builder) {
@@ -36,10 +34,9 @@ util.inherits(Actor, AsObject);
 Actor.Builder = function(types, base) {
   if (!(this instanceof Actor.Builder))
     return new Actor.Builder(types, base);
+  types = (types || []).concat([as.Actor]);
   AsObject.Builder.call(
-    this,
-    utils.merge_types(reasoner, vocabs.as.Actor,types),
-    base || new Actor({}));
+    this, types, base || new Actor({}));
 };
 util.inherits(Actor.Builder, AsObject.Builder);
 

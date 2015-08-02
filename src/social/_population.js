@@ -22,7 +22,6 @@
 
 var util     = require('util');
 var AsObject = require('../models').Object;
-var reasoner = require('../reasoner');
 var utils    = require('../utils');
 var social   = require('linkeddata-vocabs').social;
 
@@ -36,10 +35,8 @@ util.inherits(Population, AsObject);
 Population.Builder = function(types, base) {
   if (!(this instanceof Population.Builder))
     return new Population.Builder(types, base);
-  AsObject.Builder.call(
-    this,
-    utils.merge_types(reasoner, social.Population, types),
-    base || new Population({}));
+  types = (types || []).concat([social.Population]);
+  AsObject.Builder.call(this, types,base || new Population({}));
 };
 util.inherits(Population.Builder, AsObject.Builder);
 

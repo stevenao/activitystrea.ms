@@ -1,352 +1,643 @@
-/**
- * Copyright 2013 International Business Machines Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Utility library for working with Activity Streams Actions
- * Requires underscorejs.
- *
- * @author James M Snell (jasnell@us.ibm.com)
- */
 'use strict';
 
+var Reasoner = require('reasoner');
 var vocabs = require('linkeddata-vocabs');
-var utils  = require('./utils');
-var util   = require('util');
-var N3     = require('n3');
+var Graph = Reasoner.Graph;
 var as = vocabs.as;
 var owl = vocabs.owl;
 var rdf = vocabs.rdf;
 var rdfs = vocabs.rdfs;
 var asx = vocabs.asx;
-var xsd = vocabs.xsd;
 
-function subClassHierarchy(store, subject) {
-  var types = [subject];
-  var res = store.findByIRI(subject, rdfs.subClassOf, null);
-  for (var n = 0, l = res.length; n < l; n++)
-    types.push(subClassHierarchy(store, res[n].object));
-  return types;
-}
+var functionalObject = [owl.ObjectProperty, owl.FunctionalProperty],
+  functionalDatatype = [owl.DatatypeProperty, owl.FunctionalProperty],
+  languageProperty = [owl.DatatypeProperty, asx.LanguageProperty];
 
-function subPropertyHierarchy(store, subject) {
-  var types = [subject];
-  var res = store.findByIRI(subject, rdfs.subPropertyOf, null);
-  for (var n = 0, l = res.length; n < l; n++)
-    types.push(subPropertyHierarchy(store, res[n].object));
-  return types;
-}
+var graph = new Graph();
 
-function descendantPropertiesOf(store, subject) {
-  var types = [subject];
-  var res = store.findByIRI(null, rdfs.subPropertyOf, subject);
-  for (var n = 0, l = res.length; n < l; n++)
-    types.push(descendantPropertiesOf(store, res[n].subject));
-  return types;
-}
+graph.add({
+  subject: as.items,
+  predicate: rdfs.subClassOf,
+  object: asx.PossiblyOrdered
+});
+graph.add({
+  subject: as.Accept,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Accept,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Activity,
+  predicate: rdfs.subClassOf,
+  object: as.Object
+});
+graph.add({
+  subject: as.Block,
+  predicate: rdfs.subClassOf,
+  object: as.Ignore
+});
+graph.add({
+  subject: as.IntransitiveActivity,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Actor,
+  predicate: rdfs.subClassOf,
+  object: as.Object
+});
+graph.add({
+  subject: as.Add,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Album,
+  predicate: rdfs.subClassOf,
+  object: as.Collection
+});
+graph.add({
+  subject: as.Announce,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Application,
+  predicate: rdfs.subClassOf,
+  object: as.Actor
+});
+graph.add({
+  subject: as.Arrive,
+  predicate: rdfs.subClassOf,
+  object: as.IntransitiveActivity
+});
+graph.add({
+  subject: as.Article,
+  predicate: rdfs.subClassOf,
+  object: as.Content
+});
+graph.add({
+  subject: as.Audio,
+  predicate: rdfs.subClassOf,
+  object: as.Document
+});
+graph.add({
+  subject: as.Collection,
+  predicate: rdfs.subClassOf,
+  object: as.Object
+});
+graph.add({
+  subject: as.Relationship,
+  predicate: rdfs.subClassOf,
+  object: as.Object
+});
+graph.add({
+  subject: as.Content,
+  predicate: rdfs.subClassOf,
+  object: as.Object
+});
+graph.add({
+  subject: as.Create,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Delete,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Dislike,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Document,
+  predicate: rdfs.subClassOf,
+  object: as.Content
+});
+graph.add({
+  subject: as.Event,
+  predicate: rdfs.subClassOf,
+  object: as.Object
+});
+graph.add({
+  subject: as.Flag,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Folder,
+  predicate: rdfs.subClassOf,
+  object: as.Collection
+});
+graph.add({
+  subject: as.Follow,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Group,
+  predicate: rdfs.subClassOf,
+  object: as.Actor
+});
+graph.add({
+  subject: as.Ignore,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Image,
+  predicate: rdfs.subClassOf,
+  object: as.Document
+});
+graph.add({
+  subject: as.Invite,
+  predicate: rdfs.subClassOf,
+  object: as.Offer
+});
+graph.add({
+  subject: as.Join,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Leave,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Like,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Experience,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.View,
+  predicate: rdfs.subClassOf,
+  object: as.Experience
+});
+graph.add({
+  subject: as.Listen,
+  predicate: rdfs.subClassOf,
+  object: as.Experience
+});
+graph.add({
+  subject: as.Read,
+  predicate: rdfs.subClassOf,
+  object: as.Experience
+});
+graph.add({
+  subject: as.Move,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Travel,
+  predicate: rdfs.subClassOf,
+  object: as.IntransitiveActivity
+});
+graph.add({
+  subject: as.Update,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Mention,
+  predicate: rdfs.subClassOf,
+  object: as.Link
+});
+graph.add({
+  subject: as.Note,
+  predicate: rdfs.subClassOf,
+  object: as.Content
+});
+graph.add({
+  subject: as.Offer,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.OrderedCollection,
+  predicate: rdfs.subClassOf,
+  object: as.Collection
+});
+graph.add({
+  subject: as.Page,
+  predicate: rdfs.subClassOf,
+  object: as.Content
+});
+graph.add({
+  subject: as.Profile,
+  predicate: rdfs.subClassOf,
+  object: as.Content
+});
+graph.add({
+  subject: as.Person,
+  predicate: rdfs.subClassOf,
+  object: as.Actor
+});
+graph.add({
+  subject: as.Organization,
+  predicate: rdfs.subClassOf,
+  object: as.Actor
+});
+graph.add({
+  subject: as.Place,
+  predicate: rdfs.subClassOf,
+  object: as.Object
+});
+graph.add({
+  subject: as.Process,
+  predicate: rdfs.subClassOf,
+  object: as.Actor
+});
+graph.add({
+  subject: as.Question,
+  predicate: rdfs.subClassOf,
+  object: [as.Content, as.IntransitiveActivity]
+});
+graph.add({
+  subject: as.Reject,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Remove,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Service,
+  predicate: rdfs.subClassOf,
+  object: as.Actor
+});
+graph.add({
+  subject: as.Story,
+  predicate: rdfs.subClassOf,
+  object: as.OrderedCollection
+});
+graph.add({
+  subject: as.TentativeAccept,
+  predicate: rdfs.subClassOf,
+  object: as.Accept
+});
+graph.add({
+  subject: as.TentativeReject,
+  predicate: rdfs.subClassOf,
+  object: as.Reject
+});
+graph.add({
+  subject: as.Undo,
+  predicate: rdfs.subClassOf,
+  object: as.Activity
+});
+graph.add({
+  subject: as.Video,
+  predicate: rdfs.subClassOf,
+  object: as.Document
+});
+//
+graph.add({
+  subject: as.describes,
+  predicate: rdf.type,
+  object: functionalObject
+});
+graph.add({
+  subject: as.subject,
+  predicate: rdf.type,
+  object: functionalObject
+});
+graph.add({
+  subject: as.relationship,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.first,
+  predicate: rdf.type,
+  object: functionalObject
+});
+graph.add({
+  subject: rdf.rest,
+  predicate: rdf.type,
+  object: functionalObject
+});
+graph.add({
+  subject: as.first,
+  predicate: rdf.type,
+  object: functionalObject
+});
+graph.add({
+  subject: as.actor,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.attributedTo,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.attachment,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.bcc,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.bto,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.cc,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.context,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.current,
+  predicate: rdf.type,
+  object: functionalObject
+});
+graph.add({
+  subject: as.first,
+  predicate: rdf.type,
+  object: functionalObject
+});
+graph.add({
+  subject: as.generator,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.icon,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.instrument,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.image,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.inReplyTo,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.items,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.last,
+  predicate: rdf.type,
+  object: functionalObject
+});
+graph.add({
+  subject: as.location,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.next,
+  predicate: rdf.type,
+  object: functionalObject
+});
+graph.add({
+  subject: as.object,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.oneOf,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.anyOf,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.prev,
+  predicate: rdf.type,
+  object: functionalObject
+});
+graph.add({
+  subject: as.preview,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.replies,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.result,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.scope,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.self,
+  predicate: rdf.type,
+  object: functionalObject
+});
+graph.add({
+  subject: as.tag,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.target,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.origin,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.to,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.url,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
+  subject: as.accuracy,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.alias,
+  predicate: rdf.type,
+  object: functionalObject
+});
+graph.add({
+  subject: as.altitude,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.content,
+  predicate: rdf.type,
+  object: languageProperty
+});
+graph.add({
+  subject: as.displayName,
+  predicate: rdf.type,
+  object: languageProperty
+});
+graph.add({
+  subject: as.duration,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.endTime,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.height,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.href,
+  predicate: rdf.type,
+  object: functionalObject
+});
+graph.add({
+  subject: as.hreflang,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.itemsPerPage,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.latitude,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.longitude,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.mediaType,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.priority,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.published,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.radius,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.rel,
+  predicate: rdf.type,
+  object: owl.DatatypeProperty
+});
+graph.add({
+  subject: as.startIndex,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.startTime,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.summary,
+  predicate: rdf.type,
+  object: languageProperty
+});
+graph.add({
+  subject: as.title,
+  predicate: rdf.type,
+  object: languageProperty
+});
+graph.add({
+  subject: as.totalItems,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.units,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.updated,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.width,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+//
+graph.add({
+  subject: as.actor,
+  predicate: rdfs.subPropertyOf,
+  object: as.attributedTo
+});
+graph.add({
+  subject: as.author,
+  predicate: rdfs.subPropertyOf,
+  object: as.attributedTo
+});
 
-function descendantClassesOf(store, subject) {
-  var types = [subject];
-  var res = store.findByIRI(null, rdfs.subClassOf, subject);
-  for (var n = 0, l = res.length; n < l; n++)
-    types.push(descendantClassesOf(store, res[n].subject));
-  return types;
-}
+module.exports = new Reasoner(graph);
 
-function searchTypes(types, object) {
-  for (var n = 0, l = types.length; n < l; n++) {
-    if (Array.isArray(types[n])) {
-      if (searchTypes(types[n],object))
-        return true;
-    } else {
-      if (object == types[n])
-        return true;
-    }
-  }
-  return false;
-}
-
-function isSubClassOf(store, subject, object) {
-  if (subject == object) return true;
-  var types = subClassHierarchy(store, subject);
-  return searchTypes(types, object);
-}
-
-function isSubPropertyOf(store, subject, object) {
-  if (subject == object) return true;
-  var types = subPropertyHierarchy(store, subject);
-  return searchTypes(types, object);
-}
-
-function count_type(subject, type) {
-  return this[_store].countByIRI(subject, rdf.type, type) > 0;
-}
-
-function _init(reasoner) {
-
-  var functionalObject = [owl.ObjectProperty, owl.FunctionalProperty],
-      functionalDatatype = [owl.DatatypeProperty , owl.FunctionalProperty],
-      languageProperty = [owl.DatatypeProperty , asx.LanguageProperty];
-
-  reasoner.add(as.items, rdfs.subClassOf, asx.PossiblyOrdered);
-  reasoner.add(xsd.float, rdfs.subClassOf, asx.Number);
-  reasoner.add(xsd.decimal, rdfs.subClassOf, asx.Number);
-  reasoner.add(xsd.double, rdfs.subClassOf, asx.Number);
-  reasoner.add(xsd.integer, rdfs.subClassOf, asx.Number);
-  reasoner.add(xsd.nonPositiveInteger, rdfs.subClassOf, asx.Number);
-  reasoner.add(xsd.long, rdfs.subClassOf, asx.Number);
-  reasoner.add(xsd.nonNegativeInteger, rdfs.subClassOf, asx.Number);
-  reasoner.add(xsd.negativeInteger, rdfs.subClassOf, asx.Number);
-  reasoner.add(xsd.int, rdfs.subClassOf, asx.Number);
-  reasoner.add(xsd.unsignedLong, rdfs.subClassOf, asx.Number);
-  reasoner.add(xsd.positiveInteger, rdfs.subClassOf, asx.Number);
-  reasoner.add(xsd.short, rdfs.subClassOf, asx.Number);
-  reasoner.add(xsd.unsignedInt, rdfs.subClassOf, asx.Number);
-  reasoner.add(xsd.byte, rdfs.subClassOf, asx.Number);
-  reasoner.add(xsd.unsignedShort, rdfs.subClassOf, asx.Number);
-  reasoner.add(xsd.unsignedByte, rdfs.subClassOf, asx.Number);
-  reasoner.add(xsd.dateTime, rdfs.subClassOf, asx.Date);
-  reasoner.add(xsd.date, rdfs.subClassOf, asx.Date);
-  reasoner.add(xsd.boolean, rdfs.subClassOf, asx.Boolean);
-  reasoner.add(as.Accept, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Activity, rdfs.subClassOf, as.Object);
-  reasoner.add(as.Block, rdfs.subClassOf, as.Ignore);
-  reasoner.add(as.IntransitiveActivity, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Actor, rdfs.subClassOf, as.Object);
-  reasoner.add(as.Add, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Album, rdfs.subClassOf, as.Collection);
-  reasoner.add(as.Announce, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Application, rdfs.subClassOf, as.Actor);
-  reasoner.add(as.Arrive, rdfs.subClassOf, as.IntransitiveActivity);
-  reasoner.add(as.Article, rdfs.subClassOf, as.Content);
-  reasoner.add(as.Audio, rdfs.subClassOf, as.Document);
-  reasoner.add(as.Collection, rdfs.subClassOf, as.Object);
-  reasoner.add(as.Relationship, rdfs.subClassOf, as.Object);
-  reasoner.add(as.Content, rdfs.subClassOf, as.Object);
-  reasoner.add(as.Create, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Delete, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Dislike, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Document, rdfs.subClassOf, as.Content);
-  reasoner.add(as.Event, rdfs.subClassOf, as.Object);
-  reasoner.add(as.Flag, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Folder, rdfs.subClassOf, as.Collection);
-  reasoner.add(as.Follow, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Group, rdfs.subClassOf, as.Actor);
-  reasoner.add(as.Ignore, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Image, rdfs.subClassOf, as.Document);
-  reasoner.add(as.Invite, rdfs.subClassOf, as.Offer);
-  reasoner.add(as.Join, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Leave, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Like, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Experience, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.View, rdfs.subClassOf, as.Experience);
-  reasoner.add(as.Listen, rdfs.subClassOf, as.Experience);
-  reasoner.add(as.Read, rdfs.subClassOf, as.Experience);
-  reasoner.add(as.Move, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Travel, rdfs.subClassOf, as.IntransitiveActivity);
-  reasoner.add(as.Update, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Mention, rdfs.subClassOf, as.Link);
-  reasoner.add(as.Note, rdfs.subClassOf, as.Content);
-  reasoner.add(as.Offer, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.OrderedCollection, rdfs.subClassOf, as.Collection);
-  reasoner.add(as.Page, rdfs.subClassOf, as.Content);
-  reasoner.add(as.Profile, rdfs.subClassOf, as.Content);
-  reasoner.add(as.Person, rdfs.subClassOf, as.Actor);
-  reasoner.add(as.Organization, rdfs.subClassOf, as.Actor);
-  reasoner.add(as.Place, rdfs.subClassOf, as.Object);
-  reasoner.add(as.Process, rdfs.subClassOf, as.Actor);
-  reasoner.add(as.Question, rdfs.subClassOf,
-    [as.Content,as.IntransitiveActivity]);
-  reasoner.add(as.Reject, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Remove, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Service, rdfs.subClassOf, as.Actor);
-  reasoner.add(as.Story, rdfs.subClassOf, as.OrderedCollection);
-  reasoner.add(as.TentativeAccept, rdfs.subClassOf, as.Accept);
-  reasoner.add(as.TentativeReject, rdfs.subClassOf, as.Reject);
-  reasoner.add(as.Undo, rdfs.subClassOf, as.Activity);
-  reasoner.add(as.Video, rdfs.subClassOf, as.Document);
-
-  reasoner.add(as.describes, rdf.type, functionalObject);
-  reasoner.add(as.subject, rdf.type, functionalObject);
-  reasoner.add(as.relationship, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.first, rdf.type, functionalObject);
-  reasoner.add(rdf.rest, rdf.type, functionalObject);
-  reasoner.add(as.first, rdf.type, functionalObject);
-  reasoner.add(as.actor, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.attributedTo, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.attachment, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.bcc, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.bto, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.cc, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.context, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.current, rdf.type, functionalObject);
-  reasoner.add(as.first, rdf.type, functionalObject);
-  reasoner.add(as.generator, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.icon, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.instrument, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.image, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.inReplyTo, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.items, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.last, rdf.type, functionalObject);
-  reasoner.add(as.location, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.next, rdf.type, functionalObject);
-  reasoner.add(as.object, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.oneOf, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.anyOf, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.prev, rdf.type, functionalObject);
-  reasoner.add(as.preview, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.replies, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.result, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.scope, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.self, rdf.type, functionalObject);
-  reasoner.add(as.tag, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.target, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.origin, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.to, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.url, rdf.type, owl.ObjectProperty);
-  reasoner.add(as.accuracy, rdf.type, functionalDatatype);
-  reasoner.add(as.alias, rdf.type, functionalObject);
-  reasoner.add(as.altitude, rdf.type, functionalDatatype);
-  reasoner.add(as.content, rdf.type, languageProperty);
-  reasoner.add(as.displayName, rdf.type, languageProperty);
-  reasoner.add(as.duration, rdf.type, functionalDatatype);
-  reasoner.add(as.endTime, rdf.type, functionalDatatype);
-  reasoner.add(as.height, rdf.type, functionalDatatype);
-  reasoner.add(as.href, rdf.type, functionalObject);
-  reasoner.add(as.hreflang, rdf.type, functionalDatatype);
-  reasoner.add(as.itemsPerPage, rdf.type, functionalDatatype);
-  reasoner.add(as.latitude, rdf.type, functionalDatatype);
-  reasoner.add(as.longitude, rdf.type, functionalDatatype);
-  reasoner.add(as.mediaType, rdf.type, functionalDatatype);
-  reasoner.add(as.priority, rdf.type, functionalDatatype);
-  reasoner.add(as.published, rdf.type, functionalDatatype);
-  reasoner.add(as.radius, rdf.type, functionalDatatype);
-  reasoner.add(as.rel, rdf.type, owl.DatatypeProperty);
-  reasoner.add(as.startIndex, rdf.type, functionalDatatype);
-  reasoner.add(as.startTime, rdf.type, functionalDatatype);
-  reasoner.add(as.summary, rdf.type, languageProperty);
-  reasoner.add(as.title, rdf.type, languageProperty);
-  reasoner.add(as.totalItems, rdf.type, functionalDatatype);
-  reasoner.add(as.units, rdf.type, functionalDatatype);
-  reasoner.add(as.updated, rdf.type, functionalDatatype);
-  reasoner.add(as.width, rdf.type, functionalDatatype);
-
-  reasoner.add(as.actor, rdfs.subPropertyOf, as.attributedTo);
-  reasoner.add(as.author, rdfs.subPropertyOf, as.attributedTo);
-
-}
-
-var _store = Symbol('store');
-var _cache = Symbol('cache');
-
-function Reasoner() {
-  if (!(this instanceof Reasoner))
-    return new Reasoner();
-  this[_store] = new N3.Store();
-  this[_cache] = {_sc:{},_sp:{},_tp:{}};
-  _init(this);
-}
-Reasoner.prototype = {
-  add : function(subject, predicate, object) {
-    var cache;
-    switch(predicate) {
-      case rdfs.subClassOf:
-        cache = this[_cache]._sc[subject] = this[_cache]._sc[subject] || {};
-        break;
-      case rdfs.subPropertyOf:
-        cache = this[_cache]._sp[subject] = this[_cache]._sp[subject] || {};
-        break;
-      case rdf.type:
-        cache = this[_cache]._tp[subject] = this[_cache]._tp[subject] || {};
-        break;
-    }
-    if (Array.isArray(object)) {
-      for (var n = 0, l = object.length; n < l; n++) {
-        this[_store].addTriple(subject, predicate, object[n]);
-        if (cache) cache[object[n]] = true;
-      }
-    } else {
-      this[_store].addTriple(subject, predicate, object);
-      if (cache) cache[object] = true;
-    }
-    return this;
-  },
-  declare : function(prefix, uri) {
-    this[_store].addPrefix(prefix, uri);
-    return this;
-  },
-  classHierarchy : function(subject) {
-    return subClassHierarchy(this[_store], subject);
-  },
-  propertyHierarchy : function(subject) {
-    return subPropertyHierarchy(this[_store], subject);
-  },
-  isSubClassOf : function(subject, object) {
-    var _sc = this[_cache]._sc;
-    var _subject = _sc[subject] = _sc[subject] || {};
-    _subject[object] = _subject[object] ||
-      isSubClassOf(this[_store], subject, object);
-    return _subject[object];
-  },
-  isSubPropertyOf : function(subject, object) {
-    var _sp = this[_cache]._sp;
-    var _subject = _sp[subject] = _sp[subject] || {};
-    _subject[object] = _subject[object] ||
-      isSubPropertyOf(this[_store], subject, object);
-    return _subject[object];
-  },
-  isTypeOf : function(subject, type) {
-    var _tp = this[_cache]._tp;
-    var _subject = _tp[subject] = _tp[subject] || {};
-    _subject[type] = _subject[type] ||
-      count_type.call(this, subject, type) > 0;
-    return _subject[type];
-  },
-  descendantClassesOf : function(subject) {
-    return descendantClassesOf(this[_store], subject);
-  },
-  descendantPropertiesOf : function(subject) {
-    return descendantPropertiesOf(this[_store], subject);
-  },
-  is_an_object : function(subject) {
-    return !this.isSubClassOf(subject, as.Link);
-  },
-  is_a_link : function(subject) {
-    return this.isSubClassOf(subject, as.Link);
-  },
-  is_object_property : function(subject) {
-    return this.isTypeOf(subject, owl.ObjectProperty);
-  },
-  is_functional : function(subject) {
-    return this.isTypeOf(subject, owl.FunctionalProperty);
-  },
-  is_language_property : function(subject) {
-    return this.isTypeOf(subject, asx.LanguageProperty);
-  },
-  is_intransitive : function(subject) {
-    return this.isSubClassOf(subject, as.IntransitiveActivity);
-  },
-  is_possibly_ordered : function(subject) {
-    return this.isSubClassOf(subject, asx.PossiblyOrdered);
-  },
-  is_number : function(subject) {
-    return this.isSubClassOf(subject, asx.Number);
-  },
-  is_date : function(subject) {
-    return this.isSubClassOf(subject, asx.Date);
-  },
-  is_boolean : function(subject) {
-    return this.isSubClassOf(subject, asx.Boolean);
-  }
-};
-module.exports = new Reasoner();
+module.exports.Graph = Reasoner.Graph;

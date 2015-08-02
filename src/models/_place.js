@@ -21,7 +21,6 @@
 'use strict';
 
 var util = require('util');
-var reasoner = require('../reasoner');
 var utils = require('../utils');
 var vocabs = require('linkeddata-vocabs');
 var as = vocabs.as;
@@ -38,10 +37,8 @@ util.inherits(Place, AsObject);
 Place.Builder = function(types,base) {
   if (!(this instanceof Place.Builder))
     return new Place.Builder(types,base);
-  AsObject.Builder.call(
-    this,
-    utils.merge_types(reasoner, as.Place, types),
-    base || new Place({}));
+  types = (types || []).concat([as.Place]);
+  AsObject.Builder.call(this, types, base || new Place({}));
 };
 util.inherits(Place.Builder,AsObject.Builder);
 

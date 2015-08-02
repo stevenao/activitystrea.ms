@@ -23,8 +23,6 @@
 
 var vocabs      = require('linkeddata-vocabs');
 var reasoner    = require('../reasoner');
-var utils       = require('../utils');
-var merge_types = utils.merge_types;
 var social = vocabs.social;
 var owl = vocabs.owl;
 var rdf = vocabs.rdf;
@@ -45,6 +43,10 @@ exports.model = {
   Common: Common
 };
 
+function gettypes(types, type) {
+  return (types || []).concat([type]);
+}
+
 exports.population = function(types) {
   return Population.Builder(types);
 };
@@ -52,16 +54,15 @@ exports.everyone = function(types) {
   return Everyone.Builder(types);
 };
 exports.public = function(types) {
-  return Population.Builder(
-    merge_types(reasoner, social.Public,types));
+  return Population.Builder(gettypes(types, social.Public));
 };
 exports.private = function(types) {
   return Population.Builder(
-    merge_types(reasoner, social.Private,types));
+    gettypes(types, social.Private));
 };
 exports.direct = function(types) {
   return Population.Builder(
-    merge_types(reasoner, social.Direct,types));
+    gettypes(types, social.Direct));
 };
 exports.common = function(types) {
   return Common.Builder(types);
@@ -71,19 +72,19 @@ exports.interested = function(types) {
 };
 exports.self = function(types) {
   return Population.Builder(
-    merge_types(reasoner, social.Self,types));
+    gettypes(types, social.Self));
 };
 exports.all = function(types) {
   return CompoundPopulation.Builder(
-    merge_types(reasoner, social.All,types));
+    gettypes(types, social.All));
 };
 exports.any = function(types) {
   return CompoundPopulation.Builder(
-    merge_types(reasoner, social.Any,types));
+    gettypes(types, social.Any));
 };
 exports.none = function(types) {
   return CompoundPopulation.Builder(
-    merge_types(reasoner, social.None,types));
+    gettypes(types, social.None));
 };
 exports.compoundPopulation = function(types) {
   return CompoundPopulation.Builder(types);
@@ -91,16 +92,19 @@ exports.compoundPopulation = function(types) {
 
 function social_recognizer(type) {
   var thing;
-  if (reasoner.isSubClassOf(type,social.Common)) {
-    thing = Common;
-  } else if (reasoner.isSubClassOf(type,social.Interested)) {
-    thing = Interested;
-  } else if (reasoner.isSubClassOf(type,social.CompoundPopulation)) {
-    thing = CompoundPopulation;
-  } else if (reasoner.isSubClassOf(type,social.Everyone)) {
-    thing = Everyone;
-  } else if (reasoner.isSubClassOf(type,social.Population)) {
-    thing = Population;
+  if (type) {
+    var node = reasoner.node(type);
+    if (node.is(social.Common)) {
+      thing = Common;
+    } else if (node.is(social.Interested)) {
+      thing = Interested;
+    } else if (node.is(social.CompoundPopulation)) {
+      thing = CompoundPopulation;
+    } else if (node.is(social.Everyone)) {
+      thing = Everyone;
+    } else if (node.is(social.Population)) {
+      thing = Population;
+    }
   }
   return thing;
 }
@@ -133,6 +137,7 @@ exports.init = function(models, reasoner, context) {
 
   models.use(social_recognizer);
 
+  var graph = new reasoner.Graph();
   [
     [social.Population, as.Object],
     [social.Everyone, social.Population],
@@ -147,7 +152,11 @@ exports.init = function(models, reasoner, context) {
     [social.None, social.CompoundPopulation],
     [social.CompoundPopulation, social.Population]
   ].forEach(function (pair) {
-    reasoner.add(pair[0], rdfs.subClassOf, pair[1]);
+    graph.add({
+      subject: pair[0],
+      predicate: rdfs.subClassOf,
+      object: pair[1]
+    });
   });
 
   var functionalDatatype = [
@@ -162,6 +171,12 @@ exports.init = function(models, reasoner, context) {
     [social.havingRelationship, owl.ObjectProperty],
     [social.distance, functionalDatatype]
   ].forEach(function(pair) {
-    reasoner.add(pair[0], rdf.type, pair[1]);
+    graph.add({
+      subject: pair[0],
+      predicate: rdf.type,
+      object: pair[1]
+    });
   });
+
+  reasoner.bind(graph);
 };

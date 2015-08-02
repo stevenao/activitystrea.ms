@@ -78,11 +78,6 @@ exports.is_date = function(val) {
          _toString.apply(val) === '[object Date]';
 };
 
-exports.is_plain_object = function(val) {
-  if (typeof val !== 'object' || Array.isArray(val)) return false;
-  return val === val.valueOf() && _toString.apply(val) === '[object Object]';
-};
-
 exports.is_integer = function(val) {
   return exports.is_number(val) &&
     isFinite(val) &&
@@ -99,51 +94,12 @@ exports.parsed_url = function(val) {
   }
 };
 
-exports.is_buffer = function(val) {
-  return val instanceof Buffer ||
-         val instanceof TypedArray ||
-         val instanceof DataView ||
-         val instanceof ArrayBuffer;
-};
-
-exports.to_hexbinary = function(val) {
-  if (val instanceof Buffer)
-    return val.toString('hex');
-  else if (val.byteLength) {
-    val = val.buffer || val;
-    var ret = '';
-    for (var n = 0, l = val.byteLength; n < l; n++)
-      ret += val[n].toString(16);
-    return ret;
-  }
-};
-
-exports.merge_types = function(reasoner, type, types) {
-  types = types || [];
-  if (!Array.isArray(types)) {
-    types = [types];
-  }
-  exports.throwif(typeof type !== 'string', 'type is not a string');
-  if (types.indexOf(type) === -1) {
-    var ok = true;
-    for (var n = 0, l = types.length; n < l; n++) {
-      if (reasoner.isSubClassOf(types[n], type)) {
-        ok = false;
-        break;
-      }
-    }
-    if (ok) types.push(type);
-  }
-  return types;
-};
-
 exports.set_date_val = function(key, val) {
   exports.throwif(!(val instanceof Date), key+' must be a date');
   this.set(key, val.toISOString(),{type:vocabs.xsd.dateTime});
 };
 
 exports.set_lang_val = function(key, val, lang) {
-  var options;
   if (lang) {
     this.set(key, val, {lang:lang});
   } else {

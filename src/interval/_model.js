@@ -25,7 +25,6 @@ var interval = require('linkeddata-vocabs').interval;
 var xsd      = require('linkeddata-vocabs').xsd;
 var AsObject = require('../models').Object;
 var utils    = require('../utils');
-var reasoner = require('../reasoner');
 
 function Interval(expanded, builder) {
   if (!(this instanceof Interval))
@@ -37,10 +36,8 @@ util.inherits(Interval, AsObject);
 Interval.Builder = function(types, base) {
   if (!(this instanceof Interval.Builder))
     return new Interval.Builder(types, base);
-  AsObject.Builder.call(
-    this,
-    utils.merge_types(reasoner, interval.Interval, types),
-    base || new Interval({}));
+  types = (types || []).concat([interval.Interval]);
+  AsObject.Builder.call(this, types, base || new Interval({}));
 };
 util.inherits(Interval.Builder, AsObject.Builder);
 

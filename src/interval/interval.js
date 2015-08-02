@@ -25,7 +25,6 @@ var vocabs      = require('linkeddata-vocabs');
 var reasoner    = require('../reasoner');
 var utils       = require('../utils');
 var Interval    = require('./_model');
-var merge_types = utils.merge_types;
 var interval = vocabs.interval;
 var as = vocabs.as;
 var owl = vocabs.owl;
@@ -40,42 +39,38 @@ module.exports.model = {
   Interval: Interval
 };
 
+function gettypes(types, type) {
+  return (types || []).concat([type]);
+}
+
 exports.open = function(types) {
-  return Interval.Builder(
-    merge_types(reasoner, interval.OpenInterval,types));
+  return Interval.Builder(gettypes(types,interval.OpenInterval));
 };
 exports.closed = function(types) {
-  return Interval.Builder(
-    merge_types(reasoner, interval.ClosedInterval,types));
+  return Interval.Builder(gettypes(types,interval.ClosedInterval));
 };
 exports.openClosed = function(types) {
-  return Interval.Builder(
-    merge_types(reasoner, interval.OpenClosedInterval,types));
+  return Interval.Builder(gettypes(types,interval.OpenClosedInterval));
 };
 exports.closedOpen = function(types) {
-  return Interval.Builder(
-    merge_types(reasoner, interval.ClosedOpenInterval,types));
+  return Interval.Builder(gettypes(types,interval.ClosedOpenInterval));
 };
 exports.leftOpen = function(types) {
-  return Interval.Builder(
-    merge_types(reasoner, interval.LeftOpenInterval,types));
+  return Interval.Builder(gettypes(types,interval.LeftOpenInterval));
 };
 exports.rightOpen = function(types) {
-  return Interval.Builder(
-    merge_types(reasoner, interval.RightOpenInterval,types));
+  return Interval.Builder(gettypes(types,interval.RightOpenInterval));
 };
 exports.leftClosed = function(types) {
-  return Interval.Builder(
-    merge_types(reasoner, interval.LeftClosedInterval,types));
+  return Interval.Builder(gettypes(types,interval.LeftClosedInterval));
 };
 exports.rightClosed = function(types) {
-  return Interval.Builder(
-    merge_types(reasoner, interval.RightClosedInterval,types));
+  return Interval.Builder(gettypes(types,interval.RightClosedInterval));
 };
 
 function interval_recognizer(type) {
   var thing;
-  if (reasoner.isSubClassOf(type,interval.Interval)) {
+  if (type && reasoner.node(type).is(interval.Interval)) {
     thing = Interval;
   }
   return thing;
@@ -89,6 +84,7 @@ exports.init = function(models, reasoner, context) {
 
   models.use(interval_recognizer);
 
+  var graph = new reasoner.Graph();
   [
     [interval.Interval, as.Object],
     [interval.OpenInterval, interval.Interval],
@@ -100,7 +96,11 @@ exports.init = function(models, reasoner, context) {
     [interval.LeftClosedInterval, interval.Interval],
     [interval.RightClosedInterval, interval.Interval]
   ].forEach(function (pair) {
-    reasoner.add(pair[0], rdfs.subClassOf, pair[1]);
+    graph.add({
+      subject: pair[0],
+      predicate: rdfs.subClassOf,
+      object: pair[1]
+    });
   });
 
   var functionalDatatype = [
@@ -120,8 +120,14 @@ exports.init = function(models, reasoner, context) {
     [interval.upper, functionalDatatype],
     [interval.step, functionalDatatype],
   ].forEach(function(pair) {
-    reasoner.add(pair[0], rdf.type, pair[1]);
+    graph.add({
+      subject: pair[0],
+      predicate: rdf.type,
+      object: pair[1]
+    });
   });
+
+  reasoner.bind(graph);
 
   utils.defineProperty(
     'indexRange',models.Collection,

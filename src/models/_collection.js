@@ -20,9 +20,9 @@
  */
 'use strict';
 
+var Symbol   = require('es6-symbol');
 var vocabs   = require('linkeddata-vocabs');
 var util     = require('util');
-var reasoner = require('../reasoner');
 var utils    = require('../utils');
 var AsObject = require('./_object');
 var Base     = require('./_base');
@@ -43,9 +43,10 @@ util.inherits(Collection, AsObject);
 Collection.Builder = function(types, base) {
   if (!(this instanceof Collection.Builder))
     return new Collection.Builder(types, base);
+  types = (types || []).concat([as.Collection]);
   AsObject.Builder.call(
     this,
-    utils.merge_types(reasoner, as.Collection, types),
+    types,
     base || new Collection({}));
   this[_ordered] = 0;
 };

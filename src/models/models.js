@@ -20,7 +20,7 @@
  */
 'use strict';
 
-var vocabs = require('linkeddata-vocabs');
+var as = require('linkeddata-vocabs').as;
 var reasoner = require('../reasoner');
 var utils = require('../utils');
 
@@ -74,25 +74,26 @@ utils.define(exports,'Question',function() {
 
 function core_recognizer(type) {
   var thing;
-  if (reasoner.isSubClassOf(type,vocabs.as.Link)) {
+  var node = reasoner.node(type);
+  if (node.is(as.Link)) {
     thing = exports.Link;
-  } else if (reasoner.isSubClassOf(type,vocabs.as.OrderedCollection)) {
+  } else if (node.is(as.OrderedCollection)) {
     thing = exports.OrderedCollection;
-  } else if (reasoner.isSubClassOf(type,vocabs.as.Collection)) {
+  } else if (node.is(as.Collection)) {
     thing = exports.Collection;
-  } else if (reasoner.isSubClassOf(type,vocabs.as.Actor)) {
+  } else if (node.is(as.Actor)) {
     thing = exports.Actor;
-  } else if (reasoner.isSubClassOf(type,vocabs.as.Question)) {
+  } else if (node.is(as.Question)) {
     thing = exports.Question;
-  } else if (reasoner.isSubClassOf(type,vocabs.as.Activity)) {
+  } else if (node.is(as.Activity)) {
     thing = exports.Activity;
-  } else if (reasoner.isSubClassOf(type,vocabs.as.Profile)) {
+  } else if (node.is(as.Profile)) {
     thing = exports.Profile;
-  } else if (reasoner.isSubClassOf(type,vocabs.as.Content)) {
+  } else if (node.is(as.Content)) {
     thing = exports.Content;
-  } else if (reasoner.isSubClassOf(type,vocabs.as.Place)) {
+  } else if (node.is(as.Place)) {
     thing = exports.Place;
-  } else if (reasoner.isSubClassOf(type,vocabs.as.Relationship)) {
+  } else if (node.is(as.Relationship)) {
     thing = exports.Relationship;
   }
   return thing;
@@ -116,7 +117,7 @@ exports.use = function(recognizer) {
 };
 
 exports.wrap_object = function (expanded) {
-  var types = expanded['@type'] || [];
+  var types = reasoner.reduce(expanded['@type'] || []);
   var thing;
   // this isn't that great yet because it uses the
   // first recognized type and does not verify if

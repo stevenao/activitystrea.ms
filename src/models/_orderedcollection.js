@@ -22,7 +22,6 @@
 
 var Collection = require('./_collection');
 var util = require('util');
-var reasoner = require('../reasoner');
 var utils = require('../utils');
 var as = require('linkeddata-vocabs').as;
 
@@ -36,10 +35,8 @@ util.inherits(OrderedCollection, Collection);
 OrderedCollection.Builder = function(types, base) {
   if (!(this instanceof OrderedCollection.Builder))
     return new OrderedCollection.Builder(types, base);
-  Collection.Builder.call(
-    this,
-    utils.merge_types(reasoner, as.OrderedCollection, types),
-    base || new OrderedCollection({}));
+  types = (types || []).concat([as.OrderedCollection]);
+  Collection.Builder.call(this, types, base || new OrderedCollection({}));
 };
 util.inherits(OrderedCollection.Builder, Collection.Builder);
 
@@ -55,7 +52,7 @@ utils.defineProperty(
   }
 );
 
-OrderedCollection.Builder.prototype.items = function(val) {
+OrderedCollection.Builder.prototype.items = function() {
   return this.orderedItems.apply(this,arguments);
 };
 

@@ -21,7 +21,6 @@
 'use strict';
 
 var util = require('util');
-var reasoner = require('../reasoner');
 var utils = require('../utils');
 var as = require('linkeddata-vocabs').as;
 var AsObject = require('./_object');
@@ -36,10 +35,8 @@ util.inherits(Relationship, AsObject);
 Relationship.Builder = function(types,base) {
   if (!(this instanceof Relationship.Builder))
     return new Relationship.Builder(types,base);
-  AsObject.Builder.call(
-    this,
-    utils.merge_types(reasoner, as.Relationship, types),
-    base || new Relationship({}));
+  types = (types || []).concat([as.Relationship]);
+  AsObject.Builder.call(this, types,base || new Relationship({}));
 };
 util.inherits(Relationship.Builder,AsObject.Builder);
 

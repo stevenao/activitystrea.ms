@@ -20,6 +20,7 @@
  */
 'use strict';
 
+var Symbol = require('es6-symbol');
 var LanguageTag = require('rfc5646');
 var utils = require('../utils');
 

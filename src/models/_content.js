@@ -22,7 +22,6 @@
 
 var as = require('linkeddata-vocabs').as;
 var util = require('util');
-var reasoner = require('../reasoner');
 var utils = require('../utils');
 var AsObject = require('./_object');
 
@@ -36,10 +35,8 @@ util.inherits(Content, AsObject);
 Content.Builder = function(types, base) {
   if (!(this instanceof Content.Builder))
     return new Content.Builder(types, base);
-  AsObject.Builder.call(
-    this,
-    utils.merge_types(reasoner, as.Content, types),
-    base || new Content({}));
+  types = (types || []).concat([as.Content]);
+  AsObject.Builder.call(this, types, base || new Content({}));
 };
 util.inherits(Content.Builder, AsObject.Builder);
 

@@ -22,7 +22,6 @@
 
 var util     = require('util');
 var vocabs   = require('linkeddata-vocabs');
-var reasoner = require('../reasoner');
 var utils    = require('../utils');
 var AsObject = require('./_object');
 var as = vocabs.as;
@@ -38,10 +37,8 @@ util.inherits(Activity, AsObject);
 Activity.Builder = function(types, base) {
   if (!(this instanceof Activity.Builder))
     return new Activity.Builder(types, base);
-  AsObject.Builder.call(
-    this,
-    utils.merge_types(reasoner,as.Activity, types),
-    base || new Activity({}));
+  types = (types || []).concat([as.Activity]);
+  AsObject.Builder.call(this, types, base || new Activity({}));
 };
 util.inherits(Activity.Builder, AsObject.Builder);
 

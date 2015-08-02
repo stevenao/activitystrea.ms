@@ -21,7 +21,6 @@
 'use strict';
 
 var util = require('util');
-var reasoner = require('../reasoner');
 var utils = require('../utils');
 var as = require('linkeddata-vocabs').as;
 var Content = require('./_content');
@@ -36,10 +35,8 @@ util.inherits(Profile, Content);
 Profile.Builder = function(types,base) {
   if (!(this instanceof Profile.Builder))
     return new Profile.Builder(types,base);
-  Content.Builder.call(
-    this,
-    utils.merge_types(reasoner, as.Profile, types),
-    base || new Profile({}));
+  types = (types || []).concat([as.Profile]);
+  Content.Builder.call(this, types, base || new Profile({}));
 };
 util.inherits(Profile.Builder,Content.Builder);
 
