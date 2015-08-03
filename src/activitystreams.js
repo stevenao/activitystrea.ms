@@ -112,6 +112,11 @@ utils.define(exports,'social',function() {
 utils.define(exports,'Stream',function() {
   return require('./stream');
 });
+utils.define(exports,'Middleware',function() {
+  return require('./middle');
+});
 utils.define(exports,'Dust',function() {
   return require('./dust');
 });
+
+utils.define(exports,'mediaType','application/activity+json');

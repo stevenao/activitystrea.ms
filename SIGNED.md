@@ -3,13 +3,13 @@
 -----BEGIN PGP SIGNATURE-----
 Comment: GPGTools - https://gpgtools.org
 
-iQEcBAABCgAGBQJVvpk8AAoJEHNBsVwHCHesbcsH/1/vxWj97E46nwu7FZAKaj1t
-HFrvitl7BitjsQIqzcyYbiausiyQ++J3cHzrjPaXgJe7Wcb/LlQxwj63rf8Frz32
-TbKwr4CjVy50E2suKU8Re50TikcY+X3gZ1muO6D2fB7pP80DOafrltLt5Z2SjTgs
-T9Ey5z7JZycuAbvaComrnPo+DjppZEuuuzbgRJTktO0cKXcNHJ4IsHuQw55umxHC
-11rxa+5tmyzPkWD7mJh1bLna/yFQLtQgO20b8T1fYt8vLu8JT6O/CJyrmrFDIYVS
-U3R4XEMDmrq4Z8O2k3frZ1Y9r0sOKSfZ4p2+3GqgOdn8wQj+udpSZOq/Vll5yiU=
-=qopp
+iQEcBAABCgAGBQJVv/GjAAoJEHNBsVwHCHes+bMH/2a5aZBfr9kdHr6g0BPUdl6w
+v47Qk1+PQDkMuclEGq+ulnsd5wPRC7mKe/QQQ+6mig5sAbn3ZoSAZRA6ZWjsJIr8
+mST6reBULC5MTO1YftGy4JH6lcQc2Y68lKFEKoPGepNfn+Pkp7nPWehvNWtNBDT5
+LoGazyUXTyOOOZk9DHcaqSkxT8EfIv6nvVNP7dmh5OZaFw+TttA9dU1A2HyUu+Qi
+fNcWpuVvuIV4eyrH1eil0bMLWQgom3tQzJ4n05cCtjt7iR+Bk4ydxSSsZg7XwEAV
+27WUUi6rwfi1bnEOLhNbU5UPADzCOWFf2Ta4+hIzm5vjaqYHz/Z82/baL+0PLH8=
+=Wy6h
 -----END PGP SIGNATURE-----
 
 ```
@@ -27,10 +27,10 @@ size   exec  file                          contents
 489            .jshintrc                   cbc7c566ebc9688db23737aadf59d0db89f5069a90a89c1134efba8617257524
 880            CONTRIBUTING.md             8466fd261a695a6e94410759f82a97f7c3bfc78b1bbfb93adc2a9fbdaf9bf848
 11381          LICENSE                     2bcf83b42c65720625611f1fb2922bc9e3face6a22117331a13c9ed9f3af2903
-1022           package.json                9780554e344e4a3e3bbfe7fee1c38556f666beefff3753894a31cdf262eff884
+1022           package.json                7e8348b817c4d4e0325e4b2a1f158d50e36ecbd27971f1366676bb2f5583c134
 6126           README.md                   bddfde83f76108355ad51a1297cc9108ab03e1188d0b791318a6f57d6f3c76a7
                src/                                                                                        
-5445             activitystreams.js        2b77c34a38d53e1948cc2cd065f33e4f1efdbfdb0e964cd7df2bbe32b3645cdd
+5590             activitystreams.js        ce7153c4865cc9d972e231a4b980dfc4d796969dab398d7040da8c4707bb81eb
 650              dust.js                   cc9995dd6fbc3484061e467d701507c6d60e8dd5d7e566416722f659c2d16fcb
 922              extcontext.js             905e2ca95b0e2ba12b500f7eccdb75c6f5e52379ad5c32b1d95f987a9dbdd232
                  interval/                                                                                 
@@ -41,10 +41,11 @@ size   exec  file                          contents
 1655               context.json            72009bd7ed38b86c88bf73da28650fc7803d39c4015df4d439e580c9616ff5dd
 49                 package.json            6b3cfa63a6a298dbcad253384b99cff9b3776259c226297b8031396bd44f3666
 4656             jsonld.js                 ec6ca6f2e9d5d7f41f8c1d8714401afb90b16d62f7135ba61f6fe3f968ac7b8e
+937              middle.js                 613593a1331732b8365635dbcdfdb0d7aed0dce9ac66227ec793af964664373d
                  models/                                                                                   
 2779               _activity.js            e9b6a82536e12766c1f403623f21399bc1ff9e1e6c7ee6622ac018ead2771a11
 1407               _actor.js               484812657609598085d31803c250301c6cad0c82a33d7aae6c787d2b348177ef
-10068              _base.js                05b8e515f7b6fec616d311ce90806a5b77cd87b8f7d5643fc26b89f46f1df9cc
+10761              _base.js                85cc961a99fd2d9a21e4631353479119dfdbcc9ba76169967a4d839bbedfcef2
 4431               _collection.js          ec1461cd75aed71ad44f650380d08b20fd73349350c88f1ebd012198e00cfd6e
 2135               _content.js             3f0f3124057e773f2ba8fb15526bf7a718d159fcc52fa0995a08e9b2dbbc9c29
 2153               _languagevalue.js       5adab85552eff0a48c1fd5c959ac0041ae5c113d6d6cb4cc5ac6f2b994315f1e
@@ -69,7 +70,7 @@ size   exec  file                          contents
 1169             stream.js                 d1dbd20737e2df1afcffcac4e47f7545656dd9c70bc4cb4366e0825b439f7008
 3983             utils.js                  ee445b4d4fb37f31715b742c9e9c13258af349020413472756e077ebf489bdc9
                test/                                                                                       
-39070            test.js                   d389d896e007324d64aa8fa59f12813fccad636399c82e249dae786b96e7deb3
+39531            test.js                   955c770003cf9162fff68126ae80d001cf0a9d5c0e7a9491107b193428e562bc
 105              test.json                 edbb8d51f80f2580d3ae2255f170425f23dfe4abf9b79a72660d4f4a6b99d14a
 ```
 

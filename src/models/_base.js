@@ -219,6 +219,31 @@ Object.defineProperty(Base.prototype, 'dust', {
   }
 });
 
+Object.defineProperty(Base.prototype, 'template', {
+  configurable: false,
+  enumerable: true,
+  value: function() {
+    var builder = this[_builder];
+    var type = this.type;
+    var exp = this[_expanded];
+    var tmpl = {};
+    var keys = Object.keys(exp);
+    for (var n = 0, l = keys.length; n < l; n++) {
+      var key = keys[n];
+      var value = exp[key];
+      if (Array.isArray(value)) {
+        value = [].concat(value);
+      }
+      tmpl[key] = value;
+    }
+    return function() {
+      var bld = builder(type);
+      bld[_expanded] = bld[_base][_expanded] = Object.create(tmpl);
+      return bld;
+    };
+  }
+});
+
 var _done = Symbol('done');
 var _base = Symbol('base');
 var _options = Symbol('options');
@@ -358,6 +383,9 @@ Base.Builder.prototype = {
   },
   pipe: function(dest,options) {
     return this[_base].pipe(dest,options);
+  },
+  template: function() {
+    return this[_base].template();
   }
 };
 

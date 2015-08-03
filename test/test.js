@@ -1040,6 +1040,19 @@ describe('Streaming...', function() {
   });
 });
 
+describe('Templates...', function() {
+  it('Should use one object as a template for another', function(done) {
+    var tmpl = as.like().actor(as.person().displayName('Joe')).template();
+    var like = tmpl().object('http://example.org/foo').get();
+    assert(like.actor);
+    assert.equal(like.actor[0].displayName, 'Joe');
+    assert(like.object);
+    assert.equal(like.object[0].id, 'http://example.org/foo');
+    assert(!tmpl.object);
+    done();
+  });
+});
+
 describe('Extensions...', function() {
   it('should initialize the Interval and Social Extensions', function() {
     as.use(as.interval);
