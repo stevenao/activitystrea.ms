@@ -513,7 +513,7 @@ Returns a new Node.js Transform Stream that parses JSON input into an appropriat
 var through = require('through2');
 var fs = require('fs');
 var fsstr = fs.createReadStream('data.json');
-fsstr.pipe(new as.Strean())
+fsstr.pipe(new as.Stream())
      .pipe(through.obj(function(chunk,encoding,callback) {
         console.log(chunk.displayName);
         callback();
