@@ -1029,7 +1029,7 @@ describe('Streaming...', function() {
     var AS2Stream = as.Stream;
     var through = require('through2');
     var obj = as.object().displayName('test').get();
-    obj.stream()
+    obj.stream({objectMode:true})
       .pipe(new AS2Stream())
       .pipe(through.obj(function(chunk,encoding,callback) {
         assert(chunk);

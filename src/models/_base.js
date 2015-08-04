@@ -252,7 +252,6 @@ function BaseReader(base, options) {
     return new BaseReader(base, options);
   options = options || {};
   options.highwaterMark = options.highwaterMark || '16kb';
-  options.objectMode = true;
   Readable.call(this,options);
   this[_base] = base;
   this[_options] = options;
@@ -264,12 +263,17 @@ Object.defineProperty(BaseReader.prototype, '_read', {
   value: function() {
     var self = this;
     if (self[_done]) return;
+    var objectmode = this[_options].objectMode;
     self[_done] = true;
-    self[_base].write(this[_options], function(err,doc) {
+    var method =
+      objectmode ?
+        self[_base].export :
+        self[_base].write;
+    method.call(self[_base], this[_options], function(err,doc) {
       if (err) {
         self.emit('error', err);
       } else {
-        self.push(new Buffer(doc, 'utf8'));
+        self.push(objectmode ? doc : new Buffer(doc, 'utf8'));
         self.push(null);
       }
       return false;
