@@ -207,7 +207,7 @@ Object.defineProperty(Base.prototype, 'pipe', {
   configurable: false,
   enumerable: true,
   value: function(dest, options) {
-    this.stream(options).pipe(dest);
+    return this.stream(options).pipe(dest);
   }
 });
 

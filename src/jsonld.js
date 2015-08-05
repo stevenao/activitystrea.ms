@@ -65,7 +65,7 @@ function custom_doc_loader(url, callback) {
 jsonld.documentLoader = custom_doc_loader;
 
 function getContext(options) {
-  var ctx = [vocabs.as.ns];
+  var ctx = [];
   var ext = ext_context.get();
   if (ext)
     ctx = ctx.concat(ext);
@@ -73,6 +73,7 @@ function getContext(options) {
     ctx.push(jsig.SECURITY_CONTEXT_URL);
   if (options && options.additional_context)
     ctx.push(options.additional_context);
+  ctx.push(vocabs.as.ns);
   return {'@context': ctx.length > 1 ? ctx : ctx[0]};
 }
 

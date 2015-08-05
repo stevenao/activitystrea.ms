@@ -3,13 +3,13 @@
 -----BEGIN PGP SIGNATURE-----
 Comment: GPGTools - https://gpgtools.org
 
-iQEcBAABCgAGBQJVwSSOAAoJEHNBsVwHCHesS5UIALOj1UAJ/tGsiNC4fBkvwg4E
-Osc4PlZELwdtsh/pX7jYlWPRYO86rxlSIhg/OuiaIE4A85NaLktvhJPNyLiH57Pa
-338Ph1eHYTQrcO1ET/0IFZSz4zB8s/yNGLHik90AMZTXK3I8n0PrpC1rUHw1gJXv
-pZeckc50nF6ivp+IbDMM3kXBCTPkZfcCQ8uTtHcJaFClbOaoqlQxzfHT6UEKyBpm
-HeIN6dsDXrbIsTtizuDCFqkxDfy89EBqomsNCQ0/XL7tzj+mEVLlRQVAIyPziftC
-79ScpQNvrfs+Yz362s9jfx/87WAtjN9cZgIOFx3SiLzPz0lq9DwNtWgfplEtxTQ=
-=L6hC
+iQEcBAABCgAGBQJVwVK8AAoJEHNBsVwHCHes1XoH/iDRd9qnM2ZQ0q/YcdKQmOAF
+XE/M73V9e6672FYSrXA+1oVGlSwSiHHdvRRcdPfsYxsxE99/RVWg0aJ97aE81Lot
+eny+cEyOojnIGWlnVfo1lZwLQrriVTRj9ADbBsz/ylBuD/E8oZKnwOaVJZTbJKEk
+PlFwrrDiFeuVN1zpC7yz2/UE4AO3Q17Xddty+Bk7D7h8NtxTc15j5W3nG6CxFaoO
+gEeSGspzgnSZAsYTN3B/jqD0h2yFkC5rIJ4qwhrv+rvULkLP13AJm1Gcuo9X6ouF
++QYWYugKKAbgFMMEHYqMmERKDhQctVcoU29K5WUz4DI0om6GOrXloW0x9rRJJtw=
+=oJf/
 -----END PGP SIGNATURE-----
 
 ```
@@ -27,7 +27,7 @@ size   exec  file                          contents
 489            .jshintrc                   cbc7c566ebc9688db23737aadf59d0db89f5069a90a89c1134efba8617257524
 880            CONTRIBUTING.md             8466fd261a695a6e94410759f82a97f7c3bfc78b1bbfb93adc2a9fbdaf9bf848
 11381          LICENSE                     2bcf83b42c65720625611f1fb2922bc9e3face6a22117331a13c9ed9f3af2903
-1022           package.json                c90702c0373b1b8c8f23825e6cfa4d836a02d560467dfbd14358f39bb8480b51
+1022           package.json                deafdb0c0c7bef6f481307ab5ae854d3defe986a7535b896c03dac2a67116950
 52484          README.md                   b14fcb5f21b10e516f3c8cff5360ded8488037303bebd1d1a2b8c14beaa875e3
                src/                                                                                        
 5590             activitystreams.js        ce7153c4865cc9d972e231a4b980dfc4d796969dab398d7040da8c4707bb81eb
@@ -40,12 +40,12 @@ size   exec  file                          contents
                  jsig/                                                                                     
 1655               context.json            72009bd7ed38b86c88bf73da28650fc7803d39c4015df4d439e580c9616ff5dd
 49                 package.json            6b3cfa63a6a298dbcad253384b99cff9b3776259c226297b8031396bd44f3666
-4656             jsonld.js                 ec6ca6f2e9d5d7f41f8c1d8714401afb90b16d62f7135ba61f6fe3f968ac7b8e
+4670             jsonld.js                 9ef25456aff7e87f498f866f6a50c11f57c8cfe97171d7d1eaca554f094abcf1
 937              middle.js                 613593a1331732b8365635dbcdfdb0d7aed0dce9ac66227ec793af964664373d
                  models/                                                                                   
 2779               _activity.js            e9b6a82536e12766c1f403623f21399bc1ff9e1e6c7ee6622ac018ead2771a11
 1407               _actor.js               484812657609598085d31803c250301c6cad0c82a33d7aae6c787d2b348177ef
-10898              _base.js                235cb10bc45de2609325a19297abc6154eaf0bc6a581f956c5b21d9d7972d61f
+10905              _base.js                679177227a59b4c1d881b009058dd0f5de6c6d2f0b283b0eaae7f0b50c731e66
 4431               _collection.js          ec1461cd75aed71ad44f650380d08b20fd73349350c88f1ebd012198e00cfd6e
 2135               _content.js             3f0f3124057e773f2ba8fb15526bf7a718d159fcc52fa0995a08e9b2dbbc9c29
 2153               _languagevalue.js       5adab85552eff0a48c1fd5c959ac0041ae5c113d6d6cb4cc5ac6f2b994315f1e
@@ -72,7 +72,6 @@ size   exec  file                          contents
                test/                                                                                       
 39548            test.js                   107afaf943068390aa3538ef8df8b1c0f1019efb220883e247764bd37ad639a4
 105              test.json                 edbb8d51f80f2580d3ae2255f170425f23dfe4abf9b79a72660d4f4a6b99d14a
-214            test.js                     6425812fd38609e6e23979bc557d79b86992cca5282c94ad162fc2e0b354b65e
 ```
 
 #### Ignore
