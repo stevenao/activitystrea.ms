@@ -113,7 +113,7 @@ function recognize(type) {
 exports.use = function(recognizer) {
   if (typeof recognizer !== 'function')
     throw Error('Recognizer must be a function');
-  recognizers.push(recognizer);
+  recognizers = [recognizer].concat(recognizers);
 };
 
 exports.wrap_object = function (expanded) {

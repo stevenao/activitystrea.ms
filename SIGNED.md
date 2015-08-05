@@ -3,13 +3,13 @@
 -----BEGIN PGP SIGNATURE-----
 Comment: GPGTools - https://gpgtools.org
 
-iQEcBAABCgAGBQJVwVK8AAoJEHNBsVwHCHes1XoH/iDRd9qnM2ZQ0q/YcdKQmOAF
-XE/M73V9e6672FYSrXA+1oVGlSwSiHHdvRRcdPfsYxsxE99/RVWg0aJ97aE81Lot
-eny+cEyOojnIGWlnVfo1lZwLQrriVTRj9ADbBsz/ylBuD/E8oZKnwOaVJZTbJKEk
-PlFwrrDiFeuVN1zpC7yz2/UE4AO3Q17Xddty+Bk7D7h8NtxTc15j5W3nG6CxFaoO
-gEeSGspzgnSZAsYTN3B/jqD0h2yFkC5rIJ4qwhrv+rvULkLP13AJm1Gcuo9X6ouF
-+QYWYugKKAbgFMMEHYqMmERKDhQctVcoU29K5WUz4DI0om6GOrXloW0x9rRJJtw=
-=oJf/
+iQEcBAABCgAGBQJVwlgmAAoJEHNBsVwHCHescW4H/05wb59/uvxhtLJ4ev2fvP7f
+U3Qd4tufRlEFIbNP9qbpEyWjtcmVTYls8s8VU5Ey/xoEJWq5NTY+RynbQRv+LXW+
+i8zBYXXY8tlwRgkonYUIilO9IDXAEWDacJmzkVnMH3/uWgAv+wprPutsRfGm79lG
+zCALo+KIfhrfY9SfD/zIvx/cZ9HKdCmEn2BCYY7LlK88Y9Szsx7eOTQUn7mqgB+/
+hxVAqYncc+k+UQdjKTRilHxZSSTQJe7jOBgBWXq+TxLkSnQgvSMrlgaoZMruurQ1
+kJkTuucn+zcm2v79CLxdYs8+g6MlfPuig5iyn/qv8zShQxl0NI6Hr8sm1nyKZ44=
+=f/hd
 -----END PGP SIGNATURE-----
 
 ```
@@ -27,7 +27,7 @@ size   exec  file                          contents
 489            .jshintrc                   cbc7c566ebc9688db23737aadf59d0db89f5069a90a89c1134efba8617257524
 880            CONTRIBUTING.md             8466fd261a695a6e94410759f82a97f7c3bfc78b1bbfb93adc2a9fbdaf9bf848
 11381          LICENSE                     2bcf83b42c65720625611f1fb2922bc9e3face6a22117331a13c9ed9f3af2903
-1022           package.json                deafdb0c0c7bef6f481307ab5ae854d3defe986a7535b896c03dac2a67116950
+1022           package.json                188ed1bb904af6e04fd2f003793aa3637e7efb8c4a58d944887f1213bd232b10
 52484          README.md                   b14fcb5f21b10e516f3c8cff5360ded8488037303bebd1d1a2b8c14beaa875e3
                src/                                                                                        
 5590             activitystreams.js        ce7153c4865cc9d972e231a4b980dfc4d796969dab398d7040da8c4707bb81eb
@@ -56,7 +56,7 @@ size   exec  file                          contents
 1619               _profile.js             ff4956778f7ff629df8cbd41d2c3d4e3d24c9c2e74bfe14b3d0ce6b183741f50
 2496               _question.js            5d66bde3914454e69f64dd701bc1ebaf1133d5df59681e1b58840787217bc0ac
 2043               _relationship.js        431d0afa249ae5674946fe8a054a8d561a47d1eb735e7b070e94e56919eb9195
-3585               models.js               77f130d184ae0e46fcb096a524e0d5c13ac52abede06598698c3a193a69025b6
+3603               models.js               cb123f9714f62c378cce347540b1f8221c65a50d711846553a1a60b9178f0d02
 48                 package.json            d4508cf04e6c506651cabdb46bcf0649948778a3c49da5a0d8f87ff72a9f9dca
 11805            reasoner.js               d4fc75ab5771d46af1c85588ca4c5a598c78b3644cac40534428144a20be08fc
                  social/                                                                                   
