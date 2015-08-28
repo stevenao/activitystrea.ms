@@ -30,6 +30,7 @@ var models        = require('../models');
 var jsonld        = require('../jsonld');
 var LanguageValue = require('./_languagevalue');
 var reasoner      = require('../reasoner');
+var include_send  = require('./_send');
 var throwif       = utils.throwif;
 var asx           = vocabs.asx;
 var owl           = vocabs.owl;
@@ -243,6 +244,9 @@ Object.defineProperty(Base.prototype, 'template', {
     };
   }
 });
+
+// optionally include the send method
+include_send(Base.prototype);
 
 var _done = Symbol('done');
 var _base = Symbol('base');
