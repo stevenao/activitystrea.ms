@@ -16,6 +16,14 @@ Includes experimental support for:
 
 `npm install activitystrea.ms`
 
+### Known Issues
+
+Dependencies are currently having an issue installing under io.js 3.x and
+Node.js 4.0.0-pre. In order to install on those versios, you need to have a
+local copy of the Node.js v0.12.7 source and use the `--nodedir` option.
+Once installed, however, everything should work fine. This is a current
+limitation of the jsonld dependency.
+
 ### Usage
 
 ```javascript
