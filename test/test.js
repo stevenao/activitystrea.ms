@@ -280,28 +280,18 @@ describe('Basics...', function () {
     var doc = as.orderedCollection()
       .id('http://example.org')
       .totalItems(1)
-      .itemsPerPage(1)
-      .startIndex(1)
       .current('http://example.org/current')
-      .next('http://example.org/next')
-      .prev('http://example.org/prev')
       .first('http://example.org/first')
       .last('http://example.org/last')
-      .self('http://example.org/self')
       .items('http://example.org/item/1')
       .items('http://example.org/item/2')
       .get();
 
     assert(doc instanceof as.models.OrderedCollection);
     assert.equal(doc.totalItems, 1);
-    assert.equal(doc.itemsPerPage, 1);
-    assert.equal(doc.startIndex, 1);
     assert.equal(doc.current.id, 'http://example.org/current');
-    assert.equal(doc.next.id, 'http://example.org/next');
-    assert.equal(doc.prev.id, 'http://example.org/prev');
     assert.equal(doc.first.id, 'http://example.org/first');
     assert.equal(doc.last.id, 'http://example.org/last');
-    assert.equal(doc.self.id, 'http://example.org/self');
     assert.equal(doc.items.length, 2);
     assert.equal(doc.items[0].id, 'http://example.org/item/1');//TODO:this fails
     assert.equal(doc.items[1].id, 'http://example.org/item/2');//TODO:this fails
@@ -316,14 +306,9 @@ describe('Basics...', function () {
       '@id': 'http://example.org',
       '@type': 'OrderedCollection',
       totalItems: 1,
-      itemsPerPage: 1,
-      startIndex: 1,
       current: 'http://example.org/current',
-      next: 'http://example.org/next',
-      prev: 'http://example.org/prev',
       first: 'http://example.org/first',
       last: 'http://example.org/last',
-      self: 'http://example.org/self',
       items: [
         'http://example.org/item/1',
         'http://example.org/item/2'
@@ -334,14 +319,9 @@ describe('Basics...', function () {
       assert.equal(err, undefined);
       assert(doc instanceof as.models.OrderedCollection);
       assert.equal(doc.totalItems, 1);
-      assert.equal(doc.itemsPerPage, 1);
-      assert.equal(doc.startIndex, 1);
       assert.equal(doc.current.id, 'http://example.org/current');
-      assert.equal(doc.next.id, 'http://example.org/next');
-      assert.equal(doc.prev.id, 'http://example.org/prev');
       assert.equal(doc.first.id, 'http://example.org/first');
       assert.equal(doc.last.id, 'http://example.org/last');
-      assert.equal(doc.self.id, 'http://example.org/self');
       assert.equal(doc.items.length, 2);
       assert.equal(doc.items[0].id, 'http://example.org/item/1');
       assert.equal(doc.items[1].id, 'http://example.org/item/2');
@@ -357,26 +337,18 @@ describe('Basics...', function () {
     var doc = as.collection()
       .id('http://example.org')
       .totalItems(1)
-      .itemsPerPage(1)
       .current('http://example.org/current')
-      .next('http://example.org/next')
-      .prev('http://example.org/prev')
       .first('http://example.org/first')
       .last('http://example.org/last')
-      .self('http://example.org/self')
       .items('http://example.org/item/1')
       .items('http://example.org/item/2')
       .get();
 
     assert(doc instanceof as.models.Collection);
     assert.equal(doc.totalItems, 1);
-    assert.equal(doc.itemsPerPage, 1);
     assert.equal(doc.current.id, 'http://example.org/current');
-    assert.equal(doc.next.id, 'http://example.org/next');
-    assert.equal(doc.prev.id, 'http://example.org/prev');
     assert.equal(doc.first.id, 'http://example.org/first');
     assert.equal(doc.last.id, 'http://example.org/last');
-    assert.equal(doc.self.id, 'http://example.org/self');
     assert.equal(doc.items.length, 2);
     assert.equal(doc.items[0].id, 'http://example.org/item/1');
     assert.equal(doc.items[1].id, 'http://example.org/item/2');
@@ -392,13 +364,9 @@ describe('Basics...', function () {
       '@id': 'http://example.org',
       '@type': 'Collection',
       totalItems: 1,
-      itemsPerPage: 1,
       current: 'http://example.org/current',
-      next: 'http://example.org/next',
-      prev: 'http://example.org/prev',
       first: 'http://example.org/first',
       last: 'http://example.org/last',
-      self: 'http://example.org/self',
       items: [
         'http://example.org/item/1',
         'http://example.org/item/2'
@@ -409,13 +377,9 @@ describe('Basics...', function () {
       assert.equal(err, undefined);
       assert(doc instanceof as.models.Collection);
       assert.equal(doc.totalItems, 1);
-      assert.equal(doc.itemsPerPage, 1);
       assert.equal(doc.current.id, 'http://example.org/current');
-      assert.equal(doc.next.id, 'http://example.org/next');
-      assert.equal(doc.prev.id, 'http://example.org/prev');
       assert.equal(doc.first.id, 'http://example.org/first');
       assert.equal(doc.last.id, 'http://example.org/last');
-      assert.equal(doc.self.id, 'http://example.org/self');
       assert.equal(doc.items.length, 2);
       assert.equal(doc.items[0].id, 'http://example.org/item/1');
       assert.equal(doc.items[1].id, 'http://example.org/item/2');

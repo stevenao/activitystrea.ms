@@ -45,46 +45,12 @@ utils.defineProperty(
 );
 
 utils.defineProperty(
-  'itemsPerPage', Collection,
-  function() {
-    var ret = Math.max(0,this.get(as.itemsPerPage));
-    return isNaN(ret) ? 0 : ret ;
-  },
-  function(val) {
-    utils.set_non_negative_int.call(this, as.itemsPerPage, val);
-    return this;
-  }
-);
-
-utils.defineProperty(
   'current', Collection,
   function() {
     return this.get(as.current);
   },
   function(val) {
     this.set(as.current, val);
-    return this;
-  }
-);
-
-utils.defineProperty(
-  'next', Collection,
-  function() {
-    return this.get(as.next);
-  },
-  function(val) {
-    this.set(as.next, val);
-    return this;
-  }
-);
-
-utils.defineProperty(
-  'prev', Collection,
-  function() {
-    return this.get(as.prev);
-  },
-  function(val) {
-    this.set(as.prev, val);
     return this;
   }
 );
@@ -107,17 +73,6 @@ utils.defineProperty(
   },
   function(val) {
     this.set(as.first, val);
-    return this;
-  }
-);
-
-utils.defineProperty(
-  'self', Collection,
-  function() {
-    return this.get(as.self);
-  },
-  function(val) {
-    this.set(as.self, val);
     return this;
   }
 );

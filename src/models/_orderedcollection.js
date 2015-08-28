@@ -20,18 +20,6 @@ OrderedCollection.Builder = function(types, base) {
 };
 util.inherits(OrderedCollection.Builder, Collection.Builder);
 
-utils.defineProperty(
-  'startIndex',OrderedCollection,
-  function() {
-    var ret = Math.max(0,this.get(as.startIndex));
-    return isNaN(ret) ? 0 : ret;
-  },
-  function(val) {
-    utils.set_non_negative_int.call(this, as.startIndex, val);
-    return this;
-  }
-);
-
 OrderedCollection.Builder.prototype.items = function() {
   return this.orderedItems.apply(this,arguments);
 };

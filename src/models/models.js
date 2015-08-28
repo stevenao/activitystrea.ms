@@ -28,6 +28,14 @@ utils.define(exports,'OrderedCollection',function() {
   return require('./_orderedcollection');
 });
 
+utils.define(exports,'CollectionPage',function() {
+  return require('./_collectionpage');
+});
+
+utils.define(exports,'OrderedCollectionPage',function() {
+  return require('./_orderedcollectionpage');
+});
+
 utils.define(exports,'Content',function() {
   return require('./_content');
 });
@@ -57,6 +65,10 @@ function core_recognizer(type) {
   var node = reasoner.node(type);
   if (node.is(as.Link)) {
     thing = exports.Link;
+  } else if (node.is(as.OrderedCollectionPage)) {
+    thing = exports.OrderedCollectionPage;
+  } else if (node.is(as.CollectionPage)) {
+    thing = exports.CollectionPage;
   } else if (node.is(as.OrderedCollection)) {
     thing = exports.OrderedCollection;
   } else if (node.is(as.Collection)) {

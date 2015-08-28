@@ -29,6 +29,10 @@ exports.activity = define.bind(this,models.Activity,as.Activity);
 exports.collection = define.bind(this,models.Collection,as.Collection);
 exports.orderedCollection = define.bind(this,
   models.OrderedCollection, as.OrderedCollection);
+exports.collectionPage = define.bind(this,
+  models.CollectionPage, as.CollectionPage);
+exports.orderedCollectionPage = define.bind(this,
+  models.OrderedCollectionPage, as.OrderedCollectionPage);
 exports.content = define.bind(this,models.Content,as.Content);
 exports.link = define.bind(this,models.Link, as.Link);
 exports.accept = define.bind(this,models.Activity, as.Accept);

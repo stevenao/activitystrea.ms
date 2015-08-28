@@ -91,6 +91,21 @@ graph.add({
   object: as.Object
 });
 graph.add({
+  subject: as.CollectionPage,
+  predicate: rdfs.subClassOf,
+  object: as.Collection
+});
+graph.add({
+  subject: as.OrderedCollectionPage,
+  predicate: rdfs.subClassOf,
+  object: as.CollectionPage
+});
+graph.add({
+  subject: as.OrderedCollectionPage,
+  predicate: rdfs.subClassOf,
+  object: as.OrderedCollection
+});
+graph.add({
   subject: as.Relationship,
   predicate: rdfs.subClassOf,
   object: as.Object
@@ -352,6 +367,11 @@ graph.add({
   object: owl.ObjectProperty
 });
 graph.add({
+  subject: as.partOf,
+  predicate: rdf.type,
+  object: functionalObject
+});
+graph.add({
   subject: as.bcc,
   predicate: rdf.type,
   object: owl.ObjectProperty
@@ -467,11 +487,6 @@ graph.add({
   object: owl.ObjectProperty
 });
 graph.add({
-  subject: as.self,
-  predicate: rdf.type,
-  object: functionalObject
-});
-graph.add({
   subject: as.tag,
   predicate: rdf.type,
   object: owl.ObjectProperty
@@ -543,11 +558,6 @@ graph.add({
 });
 graph.add({
   subject: as.hreflang,
-  predicate: rdf.type,
-  object: functionalDatatype
-});
-graph.add({
-  subject: as.itemsPerPage,
   predicate: rdf.type,
   object: functionalDatatype
 });
