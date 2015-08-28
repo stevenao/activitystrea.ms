@@ -1,8 +1,8 @@
 'use strict';
 
-var as = require('linkeddata-vocabs').as;
-var reasoner = require('../reasoner');
-var utils = require('../utils');
+const as = require('linkeddata-vocabs').as;
+const reasoner = require('../reasoner');
+const utils = require('../utils');
 
 utils.define(exports,'Base',function() {
   return require('./_base');

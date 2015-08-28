@@ -1,9 +1,9 @@
 'use strict';
 
-var util       = require('util');
-var utils      = require('../utils');
-var as     = require('linkeddata-vocabs').as;
-var Activity = require('./_activity');
+const util       = require('util');
+const utils      = require('../utils');
+const as     = require('linkeddata-vocabs').as;
+const Activity = require('./_activity');
 
 function Question(expanded, builder) {
   if (!(this instanceof Question))

@@ -1,15 +1,15 @@
 'use strict';
 
-var jsonld        = require('jsonld')();
-var jsig = require('jsonld-signatures')({inject:{jsonld:jsonld}});
-var throwif       = require('./utils').throwif;
-var vocabs        = require('linkeddata-vocabs');
-var as_context    = require('activitystreams-context');
-var securityContext = require('./jsig');
-var ext_context   = require('./extcontext');
-var models        = require('./models');
+const jsonld        = require('jsonld')();
+const jsig = require('jsonld-signatures')({inject:{jsonld:jsonld}});
+const throwif       = require('./utils').throwif;
+const vocabs        = require('linkeddata-vocabs');
+const as_context    = require('activitystreams-context');
+const securityContext = require('./jsig');
+const ext_context   = require('./extcontext');
+const models        = require('./models');
 
-var default_doc_loader = jsonld.documentLoaders.node();
+const default_doc_loader = jsonld.documentLoaders.node();
 
 var warned = false;
 function warn() {

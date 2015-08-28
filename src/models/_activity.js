@@ -1,11 +1,11 @@
 'use strict';
 
-var util     = require('util');
-var vocabs   = require('linkeddata-vocabs');
-var utils    = require('../utils');
-var AsObject = require('./_object');
-var as = vocabs.as;
-var xsd = vocabs.xsd;
+const util     = require('util');
+const vocabs   = require('linkeddata-vocabs');
+const utils    = require('../utils');
+const AsObject = require('./_object');
+const as = vocabs.as;
+const xsd = vocabs.xsd;
 
 function Activity(expanded,builder) {
   if (!(this instanceof Activity))

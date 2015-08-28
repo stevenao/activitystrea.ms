@@ -1,9 +1,9 @@
 'use strict';
 
-var util = require('util');
-var utils = require('../utils');
-var as = require('linkeddata-vocabs').as;
-var Content = require('./_content');
+const util = require('util');
+const utils = require('../utils');
+const as = require('linkeddata-vocabs').as;
+const Content = require('./_content');
 
 function Profile(expanded, builder) {
   if (!(this instanceof Profile))

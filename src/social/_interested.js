@@ -1,9 +1,9 @@
 'use strict';
 
-var util       = require('util');
-var Population = require('./_population');
-var utils      = require('../utils');
-var social     = require('linkeddata-vocabs').social;
+const util       = require('util');
+const Population = require('./_population');
+const utils      = require('../utils');
+const social     = require('linkeddata-vocabs').social;
 
 function Interested(expanded, builder) {
   if (!(this instanceof Interested))

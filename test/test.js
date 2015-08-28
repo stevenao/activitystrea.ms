@@ -20,12 +20,12 @@
  */
 'use strict';
 
-var assert = require('assert');
-var as = require('..');
-var vocabs = require('linkeddata-vocabs');
-var models = require('../src/models');
+const assert = require('assert');
+const as = require('..');
+const vocabs = require('linkeddata-vocabs');
+const models = require('../src/models');
 
-var now = new Date();
+const now = new Date();
 
 describe('Basics...', function () {
   it('should build a minimal object', function () {

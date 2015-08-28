@@ -1,6 +1,6 @@
 'use strict';
 
-var as = require('../activitystreams');
+const as = require('../activitystreams');
 
 function get_request() {
   try {

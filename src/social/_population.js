@@ -1,9 +1,9 @@
 'use strict';
 
-var util     = require('util');
-var AsObject = require('../models').Object;
-var utils    = require('../utils');
-var social   = require('linkeddata-vocabs').social;
+const util     = require('util');
+const AsObject = require('../models').Object;
+const utils    = require('../utils');
+const social   = require('linkeddata-vocabs').social;
 
 function Population(expanded, builder) {
   if (!(this instanceof Population))

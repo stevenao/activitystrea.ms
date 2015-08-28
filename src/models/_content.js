@@ -1,9 +1,9 @@
 'use strict';
 
-var as = require('linkeddata-vocabs').as;
-var util = require('util');
-var utils = require('../utils');
-var AsObject = require('./_object');
+const as = require('linkeddata-vocabs').as;
+const util = require('util');
+const utils = require('../utils');
+const AsObject = require('./_object');
 
 function Content(expanded, builder) {
   if (!(this instanceof Content))

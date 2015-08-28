@@ -1,9 +1,9 @@
 'use strict';
 
-var util = require('util');
-var utils = require('../utils');
-var as = require('linkeddata-vocabs').as;
-var AsObject = require('./_object');
+const util = require('util');
+const utils = require('../utils');
+const as = require('linkeddata-vocabs').as;
+const AsObject = require('./_object');
 
 function Relationship(expanded, builder) {
   if (!(this instanceof Relationship))

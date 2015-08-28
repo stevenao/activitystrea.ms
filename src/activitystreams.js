@@ -1,12 +1,12 @@
 'use strict';
 
-var models        = require('./models');
-var vocabs        = require('linkeddata-vocabs');
-var reasoner      = require('./reasoner');
-var utils         = require('./utils');
-var jsonld        = require('./jsonld');
-var ext_context   = require('./extcontext');
-var as = vocabs.as;
+const models        = require('./models');
+const vocabs        = require('linkeddata-vocabs');
+const reasoner      = require('./reasoner');
+const utils         = require('./utils');
+const jsonld        = require('./jsonld');
+const ext_context   = require('./extcontext');
+const as = vocabs.as;
 
 exports.use = function(extension) {
   if (extension && typeof extension.init === 'function')

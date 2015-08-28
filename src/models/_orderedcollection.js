@@ -1,9 +1,9 @@
 'use strict';
 
-var Collection = require('./_collection');
-var util = require('util');
-var utils = require('../utils');
-var as = require('linkeddata-vocabs').as;
+const Collection = require('./_collection');
+const util = require('util');
+const utils = require('../utils');
+const as = require('linkeddata-vocabs').as;
 
 function OrderedCollection(expanded,builder) {
   if (!(this instanceof OrderedCollection))

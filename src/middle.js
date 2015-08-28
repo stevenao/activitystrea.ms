@@ -1,7 +1,7 @@
 'use strict';
 
-var stream = require('readable-stream');
-var as = require('./activitystreams');
+const stream = require('readable-stream');
+const as = require('./activitystreams');
 
 function AS2Writer(req) {
   if (!(this instanceof AS2Writer))

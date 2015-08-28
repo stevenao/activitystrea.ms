@@ -1,19 +1,19 @@
 'use strict';
 
-var Reasoner = require('reasoner');
-var vocabs = require('linkeddata-vocabs');
-var Graph = Reasoner.Graph;
-var as = vocabs.as;
-var owl = vocabs.owl;
-var rdf = vocabs.rdf;
-var rdfs = vocabs.rdfs;
-var asx = vocabs.asx;
+const Reasoner = require('reasoner');
+const vocabs = require('linkeddata-vocabs');
+const Graph = Reasoner.Graph;
+const as = vocabs.as;
+const owl = vocabs.owl;
+const rdf = vocabs.rdf;
+const rdfs = vocabs.rdfs;
+const asx = vocabs.asx;
 
-var functionalObject = [owl.ObjectProperty, owl.FunctionalProperty],
+const functionalObject = [owl.ObjectProperty, owl.FunctionalProperty],
   functionalDatatype = [owl.DatatypeProperty, owl.FunctionalProperty],
   languageProperty = [owl.DatatypeProperty, asx.LanguageProperty];
 
-var graph = new Graph();
+const graph = new Graph();
 
 graph.add({
   subject: as.items,

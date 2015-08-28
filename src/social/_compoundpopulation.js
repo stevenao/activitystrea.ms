@@ -1,9 +1,9 @@
 'use strict';
 
-var Population = require('./_population');
-var util = require('util');
-var utils = require('../utils');
-var social = require('linkeddata-vocabs').social;
+const Population = require('./_population');
+const util = require('util');
+const utils = require('../utils');
+const social = require('linkeddata-vocabs').social;
 
 function CompoundPopulation(expanded,builder) {
   if (!(this instanceof CompoundPopulation))

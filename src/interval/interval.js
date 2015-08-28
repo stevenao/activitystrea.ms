@@ -1,14 +1,14 @@
 'use strict';
 
-var vocabs      = require('linkeddata-vocabs');
-var reasoner    = require('../reasoner');
-var utils       = require('../utils');
-var Interval    = require('./_model');
-var interval = vocabs.interval;
-var as = vocabs.as;
-var owl = vocabs.owl;
-var rdf = vocabs.rdf;
-var rdfs = vocabs.rdfs;
+const vocabs = require('linkeddata-vocabs');
+const reasoner = require('../reasoner');
+const utils = require('../utils');
+const Interval = require('./_model');
+const interval = vocabs.interval;
+const as = vocabs.as;
+const owl = vocabs.owl;
+const rdf = vocabs.rdf;
+const rdfs = vocabs.rdfs;
 
 module.exports = exports = function(types) {
   return Interval.Builder(types);

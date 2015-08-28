@@ -1,18 +1,18 @@
 'use strict';
 
-var vocabs      = require('linkeddata-vocabs');
-var reasoner    = require('../reasoner');
-var social = vocabs.social;
-var owl = vocabs.owl;
-var rdf = vocabs.rdf;
-var as = vocabs.as;
-var rdfs = vocabs.rdfs;
+const vocabs      = require('linkeddata-vocabs');
+const reasoner    = require('../reasoner');
+const social = vocabs.social;
+const owl = vocabs.owl;
+const rdf = vocabs.rdf;
+const as = vocabs.as;
+const rdfs = vocabs.rdfs;
 
-var Population = require('./_population');
-var Interested = require('./_interested');
-var Everyone = require('./_everyone');
-var CompoundPopulation = require('./_compoundpopulation');
-var Common = require('./_common');
+const Population = require('./_population');
+const Interested = require('./_interested');
+const Everyone = require('./_everyone');
+const CompoundPopulation = require('./_compoundpopulation');
+const Common = require('./_common');
 
 exports.model = {
   Population: Population,

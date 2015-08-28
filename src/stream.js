@@ -1,12 +1,11 @@
 'use strict';
 
-var Transform = require('readable-stream/transform');
-var inherits = require('util').inherits;
-var as = require('./activitystreams');
-var context = require('activitystreams-context');
-var Symbol = require('es6-symbol');
-
-var buf = Symbol('buffer');
+const Transform = require('readable-stream/transform');
+const inherits = require('util').inherits;
+const as = require('./activitystreams');
+const context = require('activitystreams-context');
+const Symbol = require('es6-symbol');
+const buf = Symbol('buffer');
 
 function AS2Stream(options) {
   if (!(this instanceof AS2Stream))

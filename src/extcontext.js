@@ -1,6 +1,6 @@
 'use strict';
 
-var ctx = [];
+const ctx = [];
 
 exports.add = function(context) {
   // todo add checking...

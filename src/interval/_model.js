@@ -1,10 +1,10 @@
 'use strict';
 
-var util     = require('util');
-var interval = require('linkeddata-vocabs').interval;
-var xsd      = require('linkeddata-vocabs').xsd;
-var AsObject = require('../models').Object;
-var utils    = require('../utils');
+const util     = require('util');
+const interval = require('linkeddata-vocabs').interval;
+const xsd      = require('linkeddata-vocabs').xsd;
+const AsObject = require('../models').Object;
+const utils    = require('../utils');
 
 function Interval(expanded, builder) {
   if (!(this instanceof Interval))

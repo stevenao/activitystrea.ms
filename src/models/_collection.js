@@ -1,17 +1,17 @@
 'use strict';
 
-var Symbol   = require('es6-symbol');
-var vocabs   = require('linkeddata-vocabs');
-var util     = require('util');
-var utils    = require('../utils');
-var AsObject = require('./_object');
-var Base     = require('./_base');
-var as = vocabs.as;
+const  Symbol   = require('es6-symbol');
+const  vocabs   = require('linkeddata-vocabs');
+const  util     = require('util');
+const  utils    = require('../utils');
+const  AsObject = require('./_object');
+const  Base     = require('./_base');
+const  as = vocabs.as;
 
-var _ordered = Symbol('ordered');
-var _items = Symbol('items');
+const  _ordered = Symbol('ordered');
+const  _items = Symbol('items');
 
-var slice = Array.prototype.slice;
+const  slice = Array.prototype.slice;
 
 function Collection(expanded, builder) {
   if (!(this instanceof Collection))

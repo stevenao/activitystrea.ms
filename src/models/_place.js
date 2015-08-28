@@ -1,11 +1,11 @@
 'use strict';
 
-var util = require('util');
-var utils = require('../utils');
-var vocabs = require('linkeddata-vocabs');
-var as = vocabs.as;
-var xsd = vocabs.xsd;
-var AsObject = require('./_object');
+const util = require('util');
+const utils = require('../utils');
+const vocabs = require('linkeddata-vocabs');
+const as = vocabs.as;
+const xsd = vocabs.xsd;
+const AsObject = require('./_object');
 
 function Place(expanded, builder) {
   if (!(this instanceof Place))

@@ -1,24 +1,26 @@
 'use strict';
 
-var Readable      = require('readable-stream').Readable;
-var util          = require('util');
-var Symbol        = require('es6-symbol');
-var vocabs        = require('linkeddata-vocabs');
-var uuid          = require('node-uuid');
-var utils         = require('../utils');
-var models        = require('../models');
-var jsonld        = require('../jsonld');
-var LanguageValue = require('./_languagevalue');
-var reasoner      = require('../reasoner');
-var include_send  = require('./_send');
-var throwif       = utils.throwif;
-var asx           = vocabs.asx;
-var owl           = vocabs.owl;
+const Readable      = require('readable-stream').Readable;
+const util          = require('util');
+const Symbol        = require('es6-symbol');
+const vocabs        = require('linkeddata-vocabs');
+const uuid          = require('node-uuid');
+const utils         = require('../utils');
+const models        = require('../models');
+const jsonld        = require('../jsonld');
+const LanguageValue = require('./_languagevalue');
+const reasoner      = require('../reasoner');
+const include_send  = require('./_send');
+const throwif       = utils.throwif;
+const asx           = vocabs.asx;
+const owl           = vocabs.owl;
 
-var _expanded = Symbol('expanded');
-var _cache = Symbol('cache');
-var _base = Symbol('base');
-var _builder = Symbol('builder');
+const _expanded = Symbol('expanded');
+const _cache = Symbol('cache');
+const _base = Symbol('base');
+const _builder = Symbol('builder');
+const _done = Symbol('done');
+const _options = Symbol('options');
 
 function is_literal(item) {
   return item && item.hasOwnProperty('@value');
@@ -228,9 +230,6 @@ Object.defineProperty(Base.prototype, 'template', {
 // optionally include the send method
 include_send(Base.prototype);
 
-var _done = Symbol('done');
-var _base = Symbol('base');
-var _options = Symbol('options');
 function BaseReader(base, options) {
   if (!(this instanceof BaseReader))
     return new BaseReader(base, options);

@@ -1,10 +1,10 @@
 'use strict';
 
-var Symbol = require('es6-symbol');
-var LanguageTag = require('rfc5646');
-var utils = require('../utils');
+const Symbol = require('es6-symbol');
+const LanguageTag = require('rfc5646');
+const utils = require('../utils');
 
-var _def = Symbol('_def');
+const _def = Symbol('_def');
 
 function LanguageValue(res) {
   if (!(this instanceof LanguageValue))

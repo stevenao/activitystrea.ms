@@ -1,9 +1,9 @@
 'use strict';
 
-var social = require('linkeddata-vocabs').social;
-var util = require('util');
-var utils = require('../utils');
-var Population = require('./_population');
+const social = require('linkeddata-vocabs').social;
+const util = require('util');
+const utils = require('../utils');
+const Population = require('./_population');
 
 function Common(expanded,builder) {
   if (!(this instanceof Common))

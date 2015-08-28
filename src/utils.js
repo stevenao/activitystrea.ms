@@ -1,8 +1,8 @@
 'use strict';
 
-var url = require('url');
-var vocabs = require('linkeddata-vocabs');
-var _toString = {}.toString;
+const url = require('url');
+const vocabs = require('linkeddata-vocabs');
+const _toString = {}.toString;
 
 exports.throwif = function(condition, message) {
   if (condition) throw Error(message);

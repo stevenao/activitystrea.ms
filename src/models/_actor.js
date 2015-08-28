@@ -1,8 +1,8 @@
 'use strict';
 
-var as       = require('linkeddata-vocabs').as;
-var util     = require('util');
-var AsObject = require('./_object');
+const as       = require('linkeddata-vocabs').as;
+const util     = require('util');
+const AsObject = require('./_object');
 
 function Actor(expanded,builder) {
   if (!(this instanceof Actor))
