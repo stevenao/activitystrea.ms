@@ -24,6 +24,9 @@ local copy of the Node.js v0.12.7 source and use the `--nodedir` option.
 Once installed, however, everything should work fine. This is a current
 limitation of the jsonld dependency.
 
+When running on Node v0.12.x, you will need the `--harmony` command line
+switch.
+
 ### Usage
 
 ```javascript
@@ -112,6 +115,8 @@ been built, call the `get` method to return the generated object.
 * `as.activity([types])`
 * `as.collection([types])`
 * `as.orderedCollection([types])`
+* `as.collectionPage([types])`
+* `as.orderedCollectionPage([types])`
 * `as.content([types])`
 * `as.link([types])`
 * `as.accept([types])`
@@ -285,6 +290,14 @@ Returns a new `as.models.Collection.Builder` instance.
 #### `<as.models.OrderedCollection.Builder> as.orderedCollection([types])`
 
 Returns a new `as.models.OrderedCollection.Builder` instance.
+
+#### `<as.models.CollectionPage.Builder> as.collectionPage([types])`
+
+Returns a new `as.models.CollectionPage.Builder` instance.
+
+#### `<as.models.OrderedCollectionPage.Builder> as.orderedCollectionPage([types])`
+
+Returns a new `as.models.OrderedCollectionPage.Builder` instance.
 
 #### `<as.models.Content.Builder> as.content([types])`
 
@@ -998,21 +1011,9 @@ The base class for all Activity Streams 2.0 Collection objects. Inherits from `a
 
 Returns the value of the `http://www.w3.org/ns/activitystreams#totalItems` property. The value will either be `undefined` or a numeric integer greater than or equal to zero.
 
-#### Property: `as.models.Collection.prototype.itemsPerPage`
-
-Returns the value of the `http://www.w3.org/ns/activitystreams#itemsPerPage` property. The value will either be `undefined` or a numeric integer greater than or equal to zero.
-
 #### Property: `as.models.Collection.prototype.current`
 
 Returns the value of the `http://www.w3.org/ns/activitystreams#current` property. The value will either be `undefined` or a `as.models.Base` instance.
-
-#### Property: `as.models.Collection.prototype.next`
-
-Returns the value of the `http://www.w3.org/ns/activitystreams#next` property. The value will either be `undefined` or a `as.models.Base` instance.
-
-#### Property: `as.models.Collection.prototype.prev`
-
-Returns the value of the `http://www.w3.org/ns/activitystreams#prev` property. The value will either be `undefined` or a `as.models.Base` instance.
 
 #### Property: `as.models.Collection.prototype.last`
 
@@ -1021,10 +1022,6 @@ Returns the value of the `http://www.w3.org/ns/activitystreams#last` property. T
 #### Property: `as.models.Collection.prototype.first`
 
 Returns the value of the `http://www.w3.org/ns/activitystreams#first` property. The value will either be `undefined` or a `as.models.Base` instance.
-
-#### Property: `as.models.Collection.prototype.self`
-
-Returns the value of the `http://www.w3.org/ns/activitystreams#self` property. The value will either be `undefined` or a `as.models.Base` instance.
 
 #### Property: `as.models.Collection.prototype.items`
 
@@ -1038,21 +1035,9 @@ The base class for all `as.models.Collection` builders. Inherits from `as.models
 
 Sets the value of the `http://www.w3.org/ns/activitystreams#totalItems` property. The value must be a numeric integer greater than or equal to 0.
 
-#### Method: `<Builder> as.models.Collection.Builder.itemsPerPage(val)`
-
-Sets the value of the `http://www.w3.org/ns/activitystreams#itemsPerPage` property. The value must be a numeric integer greater than or equal to 0.
-
 #### Method: `<Builder> as.models.Collection.Builder.current(val)`
 
 Sets the value of the `http://www.w3.org/ns/activitystreams#current` property. The value must either be a URL string or a `as.models.Link` instance.
-
-#### Method: `<Builder> as.models.Collection.Builder.next(val)`
-
-Sets the value of the `http://www.w3.org/ns/activitystreams#next` property. The value must either be a URL string or a `as.models.Link` instance.
-
-#### Method: `<Builder> as.models.Collection.Builder.prev(val)`
-
-Sets the value of the `http://www.w3.org/ns/activitystreams#prev` property. The value must either be a URL string or a `as.models.Link` instance.
 
 #### Method: `<Builder> as.models.Collection.Builder.last(val)`
 
@@ -1062,10 +1047,6 @@ Sets the value of the `http://www.w3.org/ns/activitystreams#last` property. The 
 
 Sets the value of the `http://www.w3.org/ns/activitystreams#first` property. The value must either be a URL string or a `as.models.Link` instance.
 
-#### Method: `<Builder> as.models.Collection.Builder.self(val)`
-
-Sets the value of the `http://www.w3.org/ns/activitystreams#self` property. The value must either be a URL string or a `as.models.Link` instance.
-
 #### Method: `<Builder> as.models.Collection.Builder.items(val)`
 
 Adds a value to the `http://www.w3.org/ns/activitystreams#items` property.
@@ -1074,15 +1055,47 @@ Adds a value to the `http://www.w3.org/ns/activitystreams#items` property.
 
 The base class for all Activity Streams 2.0 OrderedCollection objects. Inherits from `as.models.Collection`
 
-#### Property: `as.models.OrderedCollection.prototype.startIndex`
-
-Returns the value of the `http://www.w3.org/ns/activitystreams#startIndex` property. The value will either be `undefined` or a numeric integer greater than or equal to zero.
-
 ### Class: `as.models.OrderedCollection.Builder > as.models.Collection.Builder`
 
 The base class for all `as.models.OrderedCollection` builders. Inherits from `as.models.Collection.Builder`
 
-#### Method: `as.models.OrderedCollection.Builder.prototype.startIndex(val)`
+### Class: `as.models.CollectionPage > as.models.Collection`
+
+The base class for all `as.models.CollectionPage` instances. Inherits from `as.models.Collection`
+
+#### Property: `as.models.CollectionPage.prototype.next`
+
+Returns the value of the `http://www.w3.org/ns/activitystreams#next` property. The value will either be `undefined` or a `as.models.Base` instance.
+
+#### Property: `as.models.CollectionPage.prototype.prev`
+
+Returns the value of the `http://www.w3.org/ns/activitystreams#prev` property. The value will either be `undefined` or a `as.models.Base` instance.
+
+### Class: `as.models.CollectionPage.Builder > as.models.Collection.Builder`
+
+The base class for all `as.models.CollectionPage` builders. Inherits from `as.models.Collection.Builder`
+
+#### Method: `<Builder> as.models.CollectionPage.Builder.next(val)`
+
+Sets the value of the `http://www.w3.org/ns/activitystreams#next` property. The value must either be a URL string or a `as.models.Link` instance.
+
+#### Method: `<Builder> as.models.CollectionPage.Builder.prev(val)`
+
+Sets the value of the `http://www.w3.org/ns/activitystreams#prev` property. The value must either be a URL string or a `as.models.Link` instance.
+
+### Class: `as.models.OrderedCollectionPage > as.models.CollectionPage, as.models.OrderedCollection`
+
+The base class for all `as.models.OrderedCollectionPage` instances. Inherits from both `as.models.CollectionPage` and `as.models.OrderedCollection`
+
+#### Property: `as.models.OrderedCollectionPage.prototype.startIndex`
+
+Returns the value of the `http://www.w3.org/ns/activitystreams#startIndex` property. The value will either be `undefined` or a numeric integer greater than or equal to zero.
+
+### Class: `as.models.OrderedCollectionPage.Builder > as.models.CollectionPage.Builder, as.models.OrderedCollection.Builder`
+
+The base class for all `as.models.OrderedCollectionPage` builders. Inherits from both `as.models.CollectionPage.Builder` and `as.models.OrderedCollection.Builder`.
+
+#### Method: `as.models.OrderedCollectionPage.Builder.prototype.startIndex(val)`
 
 Sets the value of the `http://www.w3.org/ns/activitystreams#startIndex` property. The value must be a numeric integer greater than or equal to zero.
 
