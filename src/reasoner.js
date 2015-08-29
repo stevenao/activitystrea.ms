@@ -636,7 +636,6 @@ graph.add({
   predicate: rdf.type,
   object: functionalDatatype
 });
-//
 graph.add({
   subject: as.actor,
   predicate: rdfs.subPropertyOf,

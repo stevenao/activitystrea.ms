@@ -19,72 +19,244 @@ exports.vocabs = vocabs;
 exports.import = jsonld.import;
 exports.importFromRDF = jsonld.importFromRDF;
 
-function define(type,base,types) {
-  return type.Builder((types || []).concat([base]));
-}
+exports.object = function(types) {
+  return models.Object.Builder((types || []).concat(as.Object));
+};
 
-exports.object = define.bind(this,models.Object,as.Object);
-exports.actor = define.bind(this,models.Actor,as.Actor);
-exports.activity = define.bind(this,models.Activity,as.Activity);
-exports.collection = define.bind(this,models.Collection,as.Collection);
-exports.orderedCollection = define.bind(this,
-  models.OrderedCollection, as.OrderedCollection);
-exports.collectionPage = define.bind(this,
-  models.CollectionPage, as.CollectionPage);
-exports.orderedCollectionPage = define.bind(this,
-  models.OrderedCollectionPage, as.OrderedCollectionPage);
-exports.content = define.bind(this,models.Content,as.Content);
-exports.link = define.bind(this,models.Link, as.Link);
-exports.accept = define.bind(this,models.Activity, as.Accept);
-exports.tentativeAccept = define.bind(this,models.Activity,as.TentativeAccept);
-exports.add = define.bind(this,models.Activity, as.Add);
-exports.arrive = define.bind(this,models.Activity, as.Arrive);
-exports.create = define.bind(this,models.Activity, as.Create);
-exports.delete = define.bind(this,models.Activity, as.Delete);
-exports.follow = define.bind(this,models.Activity, as.Follow);
-exports.ignore = define.bind(this,models.Activity, as.Ignore);
-exports.join = define.bind(this,models.Activity, as.Join);
-exports.leave = define.bind(this,models.Activity, as.Leave);
-exports.like = define.bind(this,models.Activity, as.Like);
-exports.offer = define.bind(this,models.Activity, as.Offer);
-exports.invite = define.bind(this,models.Activity, as.Invite);
-exports.reject = define.bind(this,models.Activity, as.Reject);
-exports.tentativeReject = define.bind(this,models.Activity, as.TentativeReject);
-exports.remove = define.bind(this,models.Activity, as.Remove);
-exports.undo = define.bind(this,models.Activity, as.Undo);
-exports.update = define.bind(this,models.Activity, as.Update);
-exports.experience = define.bind(this,models.Activity, as.Experience);
-exports.view = define.bind(this,models.Activity, as.View);
-exports.listen = define.bind(this,models.Activity, as.Listen);
-exports.read = define.bind(this,models.Activity, as.Read);
-exports.move = define.bind(this,models.Activity, as.Move);
-exports.travel = define.bind(this,models.Activity, as.Travel);
-exports.announce = define.bind(this,models.Activity, as.Announce);
-exports.block = define.bind(this,models.Activity, as.Block);
-exports.flag = define.bind(this,models.Activity, as.Flag);
-exports.dislike = define.bind(this,models.Activity, as.Dislike);
-exports.application = define.bind(this,models.Actor, as.Application);
-exports.group = define.bind(this,models.Actor, as.Group);
-exports.person = define.bind(this,models.Actor, as.Person);
-exports.process = define.bind(this,models.Actor, as.Process);
-exports.service = define.bind(this,models.Actor, as.Service);
-exports.organization = define.bind(this,models.Actor, as.Organization);
-exports.article = define.bind(this,models.Content, as.Article);
-exports.album = define.bind(this,models.Collection, as.Album);
-exports.folder = define.bind(this,models.Collection, as.Folder);
-exports.story = define.bind(this,models.OrderedCollection, as.Story);
-exports.document = define.bind(this,models.Content, as.Document);
-exports.audio = define.bind(this,models.Content, as.Audio);
-exports.image = define.bind(this,models.Content, as.Image);
-exports.video = define.bind(this,models.Content, as.Video);
-exports.note = define.bind(this,models.Content, as.Note);
-exports.page = define.bind(this,models.Content, as.Page);
-exports.question = define.bind(this,models.Question, as.Question);
-exports.event = define.bind(this,models.Object, as.Event);
-exports.relationship = define.bind(this,models.Relationship, as.Relationship);
-exports.profile = define.bind(this,models.Profile, as.Profile);
-exports.place = define.bind(this,models.Place, as.Place);
-exports.mention = define.bind(this,models.Link, as.Mention);
+exports.actor = function(types) {
+  return models.Actor.Builder((types || []).concat(as.Actor));
+};
+
+exports.activity = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Activity));
+};
+
+exports.collection = function(types) {
+  return models.Collection.Builder((types || []).concat(as.Collection));
+};
+
+exports.orderedCollection = function(types) {
+  return models.OrderedCollection.Builder(
+    (types || []).concat(as.OrderedCollection));
+};
+
+exports.collectionPage = function(types) {
+  return models.CollectionPage.Builder(
+    (types || []).concat(as.CollectionPage));
+};
+
+exports.orderedCollectionPage = function(types) {
+  return models.OrderedCollectionPage.Builder(
+    (types || []).concat(as.OrderedCollectionPage));
+};
+
+exports.content = function(types) {
+  return models.Content.Builder((types || []).concat(as.Content));
+};
+
+exports.link = function(types) {
+  return models.Link.Builder((types || []).concat(as.Link));
+};
+
+exports.accept = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Accept));
+};
+
+exports.tentativeAccept = function(types) {
+  return models.Activity.Builder((types || []).concat(as.TentativeAccept));
+};
+
+exports.add = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Add));
+};
+
+exports.arrive = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Arrive));
+};
+
+exports.create = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Create));
+};
+
+exports.delete = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Delete));
+};
+
+exports.follow = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Follow));
+};
+
+exports.ignore = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Ignore));
+};
+
+exports.join = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Join));
+};
+
+exports.leave = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Leave));
+};
+
+exports.like = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Like));
+};
+
+exports.offer = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Offer));
+};
+
+exports.invite = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Invite));
+};
+
+exports.reject = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Reject));
+};
+
+exports.tentativeReject = function(types) {
+  return models.Activity.Builder((types || []).concat(as.TentativeReject));
+};
+
+exports.remove = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Remove));
+};
+
+exports.undo = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Undo));
+};
+
+exports.update = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Update));
+};
+
+exports.experience = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Experience));
+};
+
+exports.view = function(types) {
+  return models.Activity.Builder((types || []).concat(as.View));
+};
+
+exports.listen = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Listen));
+};
+
+exports.read = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Read));
+};
+
+exports.move = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Move));
+};
+
+exports.travel = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Travel));
+};
+
+exports.announce = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Announce));
+};
+
+exports.block = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Block));
+};
+
+exports.flag = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Flag));
+};
+
+exports.dislike = function(types) {
+  return models.Activity.Builder((types || []).concat(as.Dislike));
+};
+
+exports.application = function(types) {
+  return models.Actor.Builder((types || []).concat(as.Application));
+};
+
+exports.group = function(types) {
+  return models.Actor.Builder((types || []).concat(as.Group));
+};
+
+exports.person = function(types) {
+  return models.Actor.Builder((types || []).concat(as.Person));
+};
+
+exports.process = function(types) {
+  return models.Actor.Builder((types || []).concat(as.Process));
+};
+
+exports.service = function(types) {
+  return models.Actor.Builder((types || []).concat(as.Service));
+};
+
+exports.organization = function(types) {
+  return models.Actor.Builder((types || []).concat(as.Organization));
+};
+
+exports.article = function(types) {
+  return models.Content.Builder((types || []).concat(as.Article));
+};
+
+exports.album = function(types) {
+  return models.Collection.Builder((types || []).concat(as.Album));
+};
+
+exports.folder = function(types) {
+  return models.Collection.Builder((types || []).concat(as.Folder));
+};
+
+exports.story = function(types) {
+  return models.OrderedCollection.Builder((types || []).concat(as.Story));
+};
+
+exports.document = function(types) {
+  return models.Content.Builder((types || []).concat(as.Document));
+};
+
+exports.audio = function(types) {
+  return models.Content.Builder((types || []).concat(as.Audio));
+};
+
+exports.image = function(types) {
+  return models.Content.Builder((types || []).concat(as.Image));
+};
+
+exports.video = function(types) {
+  return models.Content.Builder((types || []).concat(as.Video));
+};
+
+exports.note = function(types) {
+  return models.Content.Builder((types || []).concat(as.Note));
+};
+
+exports.page = function(types) {
+  return models.Content.Builder((types || []).concat(as.Page));
+};
+
+exports.question = function(types) {
+  return models.Question.Builder((types || []).concat(as.Question));
+};
+
+exports.event = function(types) {
+  return models.Object.Builder((types || []).concat(as.Event));
+};
+
+exports.relationship = function(types) {
+  return models.Relationship.Builder((types || []).concat(as.Relationship));
+};
+
+exports.profile = function(types) {
+  return models.Profile.Builder((types || []).concat(as.Profile));
+};
+
+exports.place = function(types) {
+  return models.Place.Builder((types || []).concat(as.Place));
+};
+
+exports.mention = function(types) {
+  return models.Link.Builder((types || []).concat(as.Mention));
+};
 
 utils.define(exports,'interval',function() {
   return require('./interval');
