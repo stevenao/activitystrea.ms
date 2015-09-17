@@ -1,6 +1,6 @@
 {
   "name": "activitystrea.ms",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Activity Streams 2.0 JavaScript Implementation",
   "author": {
     "name": "James M Snell",
@@ -28,19 +28,19 @@
   "dependencies": {
     "activitystreams-context": "^0.7.0",
     "es6-symbol": "^2.0.1",
-    "jsonld": "^0.3.25",
-    "jsonld-signatures": "^1.0.1",
+    "jsonld": "^0.4.1",
+    "jsonld-signatures": "^1.0.2",
     "linkeddata-vocabs": "^0.7.0",
     "node-uuid": "^1.4.3",
     "readable-stream": "^2.0.2",
-    "reasoner": "0.0.3",
+    "reasoner": "0.0.5",
     "rfc5646": "^1.0.1"
   },
   "optionalDependencies": {
-    "request": "^2.61.0"
+    "request": "^2.62.0"
   },
   "devDependencies": {
-    "mocha": "^2.2.5",
+    "mocha": "^2.3.2",
     "through2": "^2.0.0"
   },
   "main": "./src/activitystreams.js"
