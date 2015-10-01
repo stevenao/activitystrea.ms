@@ -200,12 +200,12 @@ describe('Basics...', function () {
         .get();
 
     assert.equal(1, obj.actor.length);
-    var actor = obj.actor[0];
+    var actor = obj.actor.first;
     assert.equal('acct:joe@example.org', actor.id);
     assert(actor instanceof models.Object);
 
     assert.equal(1, obj.object.length);
-    var note = obj.object[0];
+    var note = obj.object.first;
     assert.equal(vocabs.as.Note, note.type);
     assert.equal(note.content, 'this is a note');
   });
@@ -286,15 +286,15 @@ describe('Basics...', function () {
       .items('http://example.org/item/1')
       .items('http://example.org/item/2')
       .get();
-
     assert(doc instanceof as.models.OrderedCollection);
     assert.equal(doc.totalItems, 1);
     assert.equal(doc.current.id, 'http://example.org/current');
     assert.equal(doc.first.id, 'http://example.org/first');
     assert.equal(doc.last.id, 'http://example.org/last');
     assert.equal(doc.items.length, 2);
-    assert.equal(doc.items[0].id, 'http://example.org/item/1');//TODO:this fails
-    assert.equal(doc.items[1].id, 'http://example.org/item/2');//TODO:this fails
+    const iter = doc.items[Symbol.iterator]();
+    assert.equal(iter.next().value.id, 'http://example.org/item/1');//TODO:this fails
+    assert.equal(iter.next().value.id, 'http://example.org/item/2');//TODO:this fails
     done();
   });
 
@@ -323,8 +323,9 @@ describe('Basics...', function () {
       assert.equal(doc.first.id, 'http://example.org/first');
       assert.equal(doc.last.id, 'http://example.org/last');
       assert.equal(doc.items.length, 2);
-      assert.equal(doc.items[0].id, 'http://example.org/item/1');
-      assert.equal(doc.items[1].id, 'http://example.org/item/2');
+      const iter = doc.items[Symbol.iterator]();
+      assert.equal(iter.next().value.id, 'http://example.org/item/1');
+      assert.equal(iter.next().value.id, 'http://example.org/item/2');
 
       done();
     });
@@ -350,8 +351,9 @@ describe('Basics...', function () {
     assert.equal(doc.first.id, 'http://example.org/first');
     assert.equal(doc.last.id, 'http://example.org/last');
     assert.equal(doc.items.length, 2);
-    assert.equal(doc.items[0].id, 'http://example.org/item/1');
-    assert.equal(doc.items[1].id, 'http://example.org/item/2');
+    const iter = doc.items[Symbol.iterator]();
+    assert.equal(iter.next().value.id, 'http://example.org/item/1');
+    assert.equal(iter.next().value.id, 'http://example.org/item/2');
 
     done();
   });
@@ -381,8 +383,9 @@ describe('Basics...', function () {
       assert.equal(doc.first.id, 'http://example.org/first');
       assert.equal(doc.last.id, 'http://example.org/last');
       assert.equal(doc.items.length, 2);
-      assert.equal(doc.items[0].id, 'http://example.org/item/1');
-      assert.equal(doc.items[1].id, 'http://example.org/item/2');
+      const iter = doc.items[Symbol.iterator]();
+      assert.equal(iter.next().value.id, 'http://example.org/item/1');
+      assert.equal(iter.next().value.id, 'http://example.org/item/2');
       done();
     });
 
@@ -408,22 +411,22 @@ describe('Basics...', function () {
 
     assert(doc.actor);
     assert.equal(doc.actor.length,1);
-    assert.equal(doc.actor[0].id, 'http://example.org/actor');
+    assert.equal(doc.actor.first.id, 'http://example.org/actor');
     assert(doc.object);
     assert.equal(doc.object.length,1);
-    assert.equal(doc.object[0].id, 'http://example.org/object');
+    assert.equal(doc.object.first.id, 'http://example.org/object');
     assert(doc.target);
     assert.equal(doc.target.length,1);
-    assert.equal(doc.target[0].id, 'http://example.org/target');
+    assert.equal(doc.target.first.id, 'http://example.org/target');
     assert(doc.result);
     assert.equal(doc.result.length,1);
-    assert.equal(doc.result[0].id, 'http://example.org/result');
+    assert.equal(doc.result.first.id, 'http://example.org/result');
     assert(doc.origin);
     assert.equal(doc.origin.length,1);
-    assert.equal(doc.origin[0].id, 'http://example.org/origin');
+    assert.equal(doc.origin.first.id, 'http://example.org/origin');
     assert(doc.instrument);
     assert.equal(doc.instrument.length,1);
-    assert.equal(doc.instrument[0].id, 'http://example.org/instrument');
+    assert.equal(doc.instrument.first.id, 'http://example.org/instrument');
 
     done();
   });
@@ -452,22 +455,22 @@ describe('Basics...', function () {
 
       assert(doc.actor);
       assert.equal(doc.actor.length,1);
-      assert.equal(doc.actor[0].id, 'http://example.org/actor');
+      assert.equal(doc.actor.first.id, 'http://example.org/actor');
       assert(doc.object);
       assert.equal(doc.object.length,1);
-      assert.equal(doc.object[0].id, 'http://example.org/object');
+      assert.equal(doc.object.first.id, 'http://example.org/object');
       assert(doc.target);
       assert.equal(doc.target.length,1);
-      assert.equal(doc.target[0].id, 'http://example.org/target');
+      assert.equal(doc.target.first.id, 'http://example.org/target');
       assert(doc.result);
       assert.equal(doc.result.length,1);
-      assert.equal(doc.result[0].id, 'http://example.org/result');
+      assert.equal(doc.result.first.id, 'http://example.org/result');
       assert(doc.origin);
       assert.equal(doc.origin.length,1);
-      assert.equal(doc.origin[0].id, 'http://example.org/origin');
+      assert.equal(doc.origin.first.id, 'http://example.org/origin');
       assert(doc.instrument);
       assert.equal(doc.instrument.length,1);
-      assert.equal(doc.instrument[0].id, 'http://example.org/instrument');
+      assert.equal(doc.instrument.first.id, 'http://example.org/instrument');
       done();
     });
 
@@ -494,15 +497,16 @@ describe('Basics...', function () {
       assert(doc instanceof as.models.Link);
       assert.equal(doc.id, 'http://example.org');
       assert.equal(doc.href, 'http://example.org');
-      assert.equal(doc.rel[0], 'a');
-      assert.equal(doc.rel[1], 'b');
+      const iter = doc.rel[Symbol.iterator]();
+      assert.equal(iter.next().value, 'a');
+      assert.equal(iter.next().value, 'b');
       assert.equal(doc.mediaType, 'application/text');
       assert.equal(doc.displayName, 'the display name');
       assert.equal(doc.title, 'the title');
       assert.equal(doc.hreflang, 'en');
       assert.equal(doc.height, 10);
       assert.equal(doc.width, 10);
-      assert.equal(doc.duration, 10);
+      assert.equal(doc.duration.seconds(), 10);
       done();
     });
   });
@@ -526,15 +530,16 @@ describe('Basics...', function () {
     assert(doc instanceof as.models.Link);
     assert.equal(doc.id, 'http://example.org');
     assert.equal(doc.href, 'http://example.org');
-    assert.equal(doc.rel[0], 'a');
-    assert.equal(doc.rel[1], 'b');
+    const iter = doc.rel[Symbol.iterator]();
+    assert.equal(iter.next().value, 'a');
+    assert.equal(iter.next().value, 'b');
     assert.equal(doc.mediaType, 'application/text');
     assert.equal(doc.displayName, 'the display name');
     assert.equal(doc.title, 'the title');
     assert.equal(doc.hreflang, 'en');
     assert.equal(doc.height, 10);
     assert.equal(doc.width, 10);
-    assert.equal(doc.duration, 10);
+    assert.equal(doc.duration.seconds(), 10);
     done();
 
   });
@@ -579,38 +584,38 @@ describe('Basics...', function () {
       assert.equal(doc.alias.id, '@test');
       assert(doc.attachment);
       assert.equal(doc.attachment.length,1);
-      assert.equal(doc.attachment[0].id, 'http://example.org/attachment');
+      assert.equal(doc.attachment.first.id, 'http://example.org/attachment');
       assert(doc.attributedTo);
       assert.equal(doc.attributedTo.length,1);
-      assert.equal(doc.attributedTo[0].id, 'http://sally.example.org');
+      assert.equal(doc.attributedTo.first.id, 'http://sally.example.org');
       assert.equal(doc.content, 'the content');
       assert(doc.context);
       assert.equal(doc.context.length,1);
-      assert.equal(doc.context[0].id, 'http://example.org/context');
+      assert.equal(doc.context.first.id, 'http://example.org/context');
       assert.equal(doc.displayName, 'the display name');
       assert.equal(doc.endTime.valueOf(),
         new Date('2015-12-12T12:12:12Z').valueOf());
       assert(doc.generator);
       assert.equal(doc.generator.length,1);
-      assert.equal(doc.generator[0].id, 'http://example.org/generator');
+      assert.equal(doc.generator.first.id, 'http://example.org/generator');
       assert(doc.icon);
       assert.equal(doc.icon.length,1);
-      assert.equal(doc.icon[0].id, 'http://example.org/icon');
+      assert.equal(doc.icon.first.id, 'http://example.org/icon');
       assert(doc.image);
       assert.equal(doc.image.length,1);
-      assert.equal(doc.image[0].id, 'http://example.org/image');
+      assert.equal(doc.image.first.id, 'http://example.org/image');
       assert(doc.inReplyTo);
       assert.equal(doc.inReplyTo.length,1);
-      assert.equal(doc.inReplyTo[0].id, 'http://example.org/in-reply-to');
+      assert.equal(doc.inReplyTo.first.id, 'http://example.org/in-reply-to');
       assert(doc.location);
       assert.equal(doc.location.length,1);
-      assert.equal(doc.location[0].id, 'http://example.org/location');
+      assert.equal(doc.location.first.id, 'http://example.org/location');
       assert(doc.preview);
       assert.equal(doc.preview.length,1);
-      assert.equal(doc.preview[0].id, 'http://example.org/preview');
+      assert.equal(doc.preview.first.id, 'http://example.org/preview');
       assert(doc.tag);
       assert.equal(doc.tag.length,1);
-      assert.equal(doc.tag[0].id, 'http://example.org/tag');
+      assert.equal(doc.tag.first.id, 'http://example.org/tag');
       assert.equal(doc.title, 'the title');
       assert.equal(doc.updated.valueOf(),
         new Date('2015-12-12T12:12:12Z').valueOf());
@@ -618,27 +623,27 @@ describe('Basics...', function () {
         new Date('2015-12-12T12:12:12Z').valueOf());
       assert(doc.replies);
       assert.equal(doc.replies.length,1);
-      assert.equal(doc.replies[0].id, 'http://example.org/replies');
+      assert.equal(doc.replies.first.id, 'http://example.org/replies');
       assert(doc.scope);
       assert.equal(doc.scope.length,1);
-      assert.equal(doc.scope[0].id, 'http://example.org/scope');
+      assert.equal(doc.scope.first.id, 'http://example.org/scope');
       assert(doc.url);
       assert.equal(doc.url.length,1);
-      assert.equal(doc.url[0].id, 'http://example.org');
+      assert.equal(doc.url.first.id, 'http://example.org');
       assert.equal(doc.startTime.valueOf(),
         new Date('2015-12-12T12:12:12Z').valueOf());
       assert(doc.to);
       assert.equal(doc.to.length,1);
-      assert.equal(doc.to[0].id, 'http://joe.example.org');
+      assert.equal(doc.to.first.id, 'http://joe.example.org');
       assert(doc.bto);
       assert.equal(doc.bto.length,1);
-      assert.equal(doc.bto[0].id, 'http://sally.example.org');
+      assert.equal(doc.bto.first.id, 'http://sally.example.org');
       assert(doc.cc);
       assert.equal(doc.cc.length,1);
-      assert.equal(doc.cc[0].id, 'http://mark.example.org');
+      assert.equal(doc.cc.first.id, 'http://mark.example.org');
       assert(doc.bcc);
       assert.equal(doc.bcc.length,1);
-      assert.equal(doc.bcc[0].id, 'http://jane.example.org');
+      assert.equal(doc.bcc.first.id, 'http://jane.example.org');
       done();
     });
   });
@@ -679,38 +684,38 @@ describe('Basics...', function () {
       assert.equal(doc.alias.id, '@test');
       assert(doc.attachment);
       assert.equal(doc.attachment.length,1);
-      assert.equal(doc.attachment[0].id, 'http://example.org/attachment');
+      assert.equal(doc.attachment.first.id, 'http://example.org/attachment');
       assert(doc.attributedTo);
       assert.equal(doc.attributedTo.length,1);
-      assert.equal(doc.attributedTo[0].id, 'http://sally.example.org');
+      assert.equal(doc.attributedTo.first.id, 'http://sally.example.org');
       assert.equal(doc.content, 'the content');
       assert(doc.context);
       assert.equal(doc.context.length,1);
-      assert.equal(doc.context[0].id, 'http://example.org/context');
+      assert.equal(doc.context.first.id, 'http://example.org/context');
       assert.equal(doc.displayName, 'the display name');
       assert.equal(doc.endTime.valueOf(),
         new Date('2015-12-12T12:12:12Z').valueOf());
       assert(doc.generator);
       assert.equal(doc.generator.length,1);
-      assert.equal(doc.generator[0].id, 'http://example.org/generator');
+      assert.equal(doc.generator.first.id, 'http://example.org/generator');
       assert(doc.icon);
       assert.equal(doc.icon.length,1);
-      assert.equal(doc.icon[0].id, 'http://example.org/icon');
+      assert.equal(doc.icon.first.id, 'http://example.org/icon');
       assert(doc.image);
       assert.equal(doc.image.length,1);
-      assert.equal(doc.image[0].id, 'http://example.org/image');
+      assert.equal(doc.image.first.id, 'http://example.org/image');
       assert(doc.inReplyTo);
       assert.equal(doc.inReplyTo.length,1);
-      assert.equal(doc.inReplyTo[0].id, 'http://example.org/in-reply-to');
+      assert.equal(doc.inReplyTo.first.id, 'http://example.org/in-reply-to');
       assert(doc.location);
       assert.equal(doc.location.length,1);
-      assert.equal(doc.location[0].id, 'http://example.org/location');
+      assert.equal(doc.location.first.id, 'http://example.org/location');
       assert(doc.preview);
       assert.equal(doc.preview.length,1);
-      assert.equal(doc.preview[0].id, 'http://example.org/preview');
+      assert.equal(doc.preview.first.id, 'http://example.org/preview');
       assert(doc.tag);
       assert.equal(doc.tag.length,1);
-      assert.equal(doc.tag[0].id, 'http://example.org/tag');
+      assert.equal(doc.tag.first.id, 'http://example.org/tag');
       assert.equal(doc.title, 'the title');
       assert.equal(doc.updated.valueOf(),
         new Date('2015-12-12T12:12:12Z').valueOf());
@@ -718,27 +723,27 @@ describe('Basics...', function () {
         new Date('2015-12-12T12:12:12Z').valueOf());
       assert(doc.replies);
       assert.equal(doc.replies.length,1);
-      assert.equal(doc.replies[0].id, 'http://example.org/replies');
+      assert.equal(doc.replies.first.id, 'http://example.org/replies');
       assert(doc.scope);
       assert.equal(doc.scope.length,1);
-      assert.equal(doc.scope[0].id, 'http://example.org/scope');
+      assert.equal(doc.scope.first.id, 'http://example.org/scope');
       assert(doc.url);
       assert.equal(doc.url.length,1);
-      assert.equal(doc.url[0].id, 'http://example.org');
+      assert.equal(doc.url.first.id, 'http://example.org');
       assert.equal(doc.startTime.valueOf(),
         new Date('2015-12-12T12:12:12Z').valueOf());
       assert(doc.to);
       assert.equal(doc.to.length,1);
-      assert.equal(doc.to[0].id, 'http://joe.example.org');
+      assert.equal(doc.to.first.id, 'http://joe.example.org');
       assert(doc.bto);
       assert.equal(doc.bto.length,1);
-      assert.equal(doc.bto[0].id, 'http://sally.example.org');
+      assert.equal(doc.bto.first.id, 'http://sally.example.org');
       assert(doc.cc);
       assert.equal(doc.cc.length,1);
-      assert.equal(doc.cc[0].id, 'http://mark.example.org');
+      assert.equal(doc.cc.first.id, 'http://mark.example.org');
       assert(doc.bcc);
       assert.equal(doc.bcc.length,1);
-      assert.equal(doc.bcc[0].id, 'http://jane.example.org');
+      assert.equal(doc.bcc.first.id, 'http://jane.example.org');
       done();
 
   });
@@ -760,10 +765,10 @@ describe('Basics...', function () {
         assert(doc.subject.id, 'http://sally.example.org');
         assert(doc.relationship);
         assert.equal(doc.relationship.length, 1);
-        assert.equal(doc.relationship[0].id, 'http://example.org');
+        assert.equal(doc.relationship.first.id, 'http://example.org');
         assert(doc.object);
         assert.equal(doc.object.length, 1);
-        assert.equal(doc.object[0].id, 'http://joe.example.org');
+        assert.equal(doc.object.first.id, 'http://joe.example.org');
         done();
       });
 
@@ -782,10 +787,10 @@ describe('Basics...', function () {
       assert(doc.subject.id, 'http://sally.example.org');
       assert(doc.relationship);
       assert.equal(doc.relationship.length, 1);
-      assert.equal(doc.relationship[0].id, 'http://example.org');
+      assert.equal(doc.relationship.first.id, 'http://example.org');
       assert(doc.object);
       assert.equal(doc.object.length, 1);
-      assert.equal(doc.object[0].id, 'http://joe.example.org');
+      assert.equal(doc.object.first.id, 'http://joe.example.org');
       done();
 
   });
@@ -806,7 +811,7 @@ describe('Basics...', function () {
       assert(doc instanceof as.models.Content);
       assert.equal(doc.height, 10);
       assert.equal(doc.width, 10);
-      assert.equal(doc.duration, 10);
+      assert.equal(doc.duration.seconds(), 10);
       done();
     });
   });
@@ -823,7 +828,7 @@ describe('Basics...', function () {
     assert(doc instanceof as.models.Content);
     assert.equal(doc.height, 10);
     assert.equal(doc.width, 10);
-    assert.equal(doc.duration, 10);
+    assert.equal(doc.duration.seconds(), 10);
     done();
 
   });
@@ -846,12 +851,13 @@ describe('Basics...', function () {
       assert(doc instanceof as.models.Question);
       assert.equal(doc.height, 10);
       assert.equal(doc.width, 10);
-      assert.equal(doc.duration, 10);
+      assert.equal(doc.duration.seconds(), 10);
       assert.equal(doc.displayName, 'the question');
       assert(doc.anyOf);
       assert.equal(doc.anyOf.length,2);
-      assert.equal(doc.anyOf[0].id, 'urn:answer1');
-      assert.equal(doc.anyOf[1].id, 'urn:answer2');
+      const iter = doc.anyOf[Symbol.iterator]();
+      assert.equal(iter.next().value.id, 'urn:answer1');
+      assert.equal(iter.next().value.id, 'urn:answer2');
       done();
     });
   });
@@ -871,12 +877,13 @@ describe('Basics...', function () {
     assert(doc instanceof as.models.Question);
     assert.equal(doc.height, 10);
     assert.equal(doc.width, 10);
-    assert.equal(doc.duration, 10);
+    assert.equal(doc.duration.seconds(), 10);
     assert.equal(doc.displayName, 'the question');
     assert(doc.anyOf);
     assert.equal(doc.anyOf.length,2);
-    assert.equal(doc.anyOf[0].id, 'urn:answer1');
-    assert.equal(doc.anyOf[1].id, 'urn:answer2');
+    const iter = doc.anyOf[Symbol.iterator]();
+    assert.equal(iter.next().value.id, 'urn:answer1');
+    assert.equal(iter.next().value.id, 'urn:answer2');
     done();
 
   });
@@ -1009,9 +1016,9 @@ describe('Templates...', function() {
     var tmpl = as.like().actor(as.person().displayName('Joe')).template();
     var like = tmpl().object('http://example.org/foo').get();
     assert(like.actor);
-    assert.equal(like.actor[0].displayName, 'Joe');
+    assert.equal(like.actor.first.displayName, 'Joe');
     assert(like.object);
-    assert.equal(like.object[0].id, 'http://example.org/foo');
+    assert.equal(like.object.first.id, 'http://example.org/foo');
     assert(!tmpl.object);
     done();
   });

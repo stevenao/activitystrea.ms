@@ -1,19 +1,19 @@
 'use strict';
 
-const stream = require('readable-stream');
+const Writable = require('readable-stream').Writable;
 const as = require('./activitystreams');
 
-function AS2Writer(req) {
-  if (!(this instanceof AS2Writer))
-    return new AS2Writer(req);
-  stream.Writable.call(this,{objectMode:true});
-  this.req = req;
+class AS2Writer extends Writable {
+  constructor(req) {
+    super({objectMode:true});
+    this.req = req;
+  }
+
+  _write(chunk, encoding, callback) {
+    this.req.body = chunk;
+    callback();
+  }
 }
-require('util').inherits(AS2Writer,stream.Writable);
-AS2Writer.prototype._write = function(chunk, encoding, callback) {
-  this.req.body = chunk;
-  callback();
-};
 
 function as2middleware(req,res,next) {
   function error() {
@@ -26,7 +26,7 @@ function as2middleware(req,res,next) {
   if (req.is('application/json') || req.is('application/*+json')) {
     var str = new as.Stream();
     req.pipe(str)
-       .on('end', function() {next();})
+       .on('end', ()=>{next();})
        .on('error', error)
        .pipe(new AS2Writer(req))
        .on('error', error);

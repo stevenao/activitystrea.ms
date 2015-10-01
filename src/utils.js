@@ -2,122 +2,108 @@
 
 const url = require('url');
 const vocabs = require('linkeddata-vocabs');
+const moment = require('moment');
 const _toString = {}.toString;
 
-exports.throwif = function(condition, message) {
-  if (condition) throw Error(message);
-};
+module.exports = exports = {
+  throwif(condition, message) {
+    if (condition) throw Error(message);
+  },
 
-exports.defineProperty = function(name,type,getter,setter) {
-  exports.define(type.prototype, name, getter);
-  type.Builder.prototype[name] = setter;
-};
+  define(target, key, accessor, writable) {
+    var def = {
+      configurable: false,
+      enumerable: true
+    };
+    if (typeof accessor === 'function')
+      def.get = accessor;
+    else
+      def.value = accessor;
+    if (writable === true)
+      def.writable = true;
+    Object.defineProperty(target, key, def);
+  },
 
-exports.define = function(target, key, accessor, writable) {
-  var def = {
-    configurable: false,
-    enumerable: true
-  };
-  if (typeof accessor === 'function')
-    def.get = accessor;
-  else
-    def.value = accessor;
-  if (writable === true)
-    def.writable = true;
-  Object.defineProperty(target, key, def);
-};
+  is_primitive(val) {
+    return val === null ||
+           val === undefined ||
+           exports.is_string(val) ||
+           !isNaN(val) ||
+           exports.is_boolean(val);
+  },
 
-exports.is_primitive = function(val) {
-  return val === null ||
-         val === undefined ||
-         exports.is_string(val) ||
-         exports.is_number(val) ||
-         exports.is_boolean(val);
-};
+  is_string(val) {
+    return typeof val === 'string' ||
+           val instanceof String ||
+           _toString.apply(val) === '[object String]';
+  },
 
-exports.is_string = function(val) {
-  return typeof val === 'string' ||
-         val instanceof String ||
-         _toString.apply(val) === '[object String]';
-};
+  is_boolean(val) {
+    return typeof val === 'boolean' ||
+           val instanceof Boolean ||
+           _toString.apply(val) === '[object Boolean]';
+  },
 
-exports.is_boolean = function(val) {
-  return typeof val === 'boolean' ||
-         val instanceof Boolean ||
-         _toString.apply(val) === '[object Boolean]';
-};
+  is_date(val) {
+    return val instanceof Date ||
+           _toString.apply(val) === '[object Date]' ||
+           moment.isMoment(val);
+  },
 
-exports.is_number = function(val) {
-  return typeof val === 'number' ||
-         val instanceof Number ||
-         _toString.apply(val) === '[object Number]';
-};
+  is_integer(val) {
+    return !isNaN(val) &&
+      isFinite(val) &&
+      val > -9007199254740992 &&
+      val < 9007199254740992 &&
+      Math.floor(val) === val;
+  },
 
-exports.is_date = function(val) {
-  return val instanceof Date ||
-         _toString.apply(val) === '[object Date]';
-};
+  parsed_url(val) {
+    try {
+      return url.parse(val).href;
+    } catch(err) {
+      throw Error('Value must be a valid URL');
+    }
+  },
 
-exports.is_integer = function(val) {
-  return exports.is_number(val) &&
-    isFinite(val) &&
-    val > -9007199254740992 &&
-    val < 9007199254740992 &&
-    Math.floor(val) === val;
-};
+  set_date_val(key, val) {
+    exports.throwif(!exports.is_date(val), key+' must be a date');
+    let fmt = moment.isMoment(val) ? val.format() : val.toISOString();
+    this.set(key, fmt,{type:vocabs.xsd.dateTime});
+  },
 
-exports.parsed_url = function(val) {
-  try {
-    return url.parse(val).href;
-  } catch(err) {
-    throw Error('Value must be a valid URL');
-  }
-};
+  set_lang_val(key, val, lang) {
+    if (lang) {
+      this.set(key, val, {lang:lang});
+    } else {
+      this.set(key, val);
+    }
+  },
 
-exports.set_date_val = function(key, val) {
-  exports.throwif(!(val instanceof Date), key+' must be a date');
-  this.set(key, val.toISOString(),{type:vocabs.xsd.dateTime});
-};
+  set_ranged_val(key, val, min, max, type) {
+    exports.throwif(isNaN(val), key + ' must be a number');
+    if (!isFinite(val)) return;
+    val = Math.min(max, Math.max(min, val));
+    this.set(key, val, {type: type});
+  },
 
-exports.set_lang_val = function(key, val, lang) {
-  if (lang) {
-    this.set(key, val, {lang:lang});
-  } else {
-    this.set(key, val);
-  }
-};
+  set_non_negative_int(key, val) {
+    exports.throwif(isNaN(val), key + ' must be a number');
+    if (!isFinite(val)) return;
+    val = Math.max(0, Math.floor(val));
+    this.set(key, val, {type: vocabs.xsd.nonNegativeInteger});
+  },
 
-exports.set_ranged_val = function(key, val, min, max, type) {
-  exports.throwif(!exports.is_number(val), key + ' must be a number');
-  if (!isFinite(val)) return;
-  val = Math.min(max, Math.max(min, val));
-  this.set(key, val, {type: type});
-};
-
-exports.set_non_negative_int = function(key, val) {
-  exports.throwif(!exports.is_number(val), key + ' must be a number');
-  if (!isFinite(val)) return;
-  val = Math.max(0, Math.floor(val));
-  this.set(key, val, {type: vocabs.xsd.nonNegativeInteger});
-};
-
-exports.set_duration_val = function(key, val) {
-  if (exports.is_number(val)) {
-    exports.set_non_negative_int.call(this, key, val);
-  }
-  else {
-    this.set(key, val.toString());
-  }
-  return this;
-};
-
-exports.mixin = function(ctor, superCtor) {
-  var names = Object.getOwnPropertyNames(superCtor.prototype);
-  for (var n = 0, l = names.length; n < l; n++) {
-    var prop = names[n];
-    if (prop !== 'constructor') {
-      var desc = Object.getOwnPropertyDescriptor(superCtor.prototype,prop);
-      Object.defineProperty(ctor.prototype, prop, desc);
+  set_duration_val(key, val) {
+    exports.throwif(
+      isNaN(val) && !exports.is_string(val) && typeof val.humanize === 'undefined',
+      key + ' must be a number or a string');
+    if (typeof val.humanize === 'function') {
+      this.set(key, val.toString(), {type: vocabs.xsd.duration});
+    } else if (!isNaN(val)) {
+      exports.set_non_negative_int.call(this, key, val);
+    } else {
+      this.set(key, val.toString());
     }
   }
 };

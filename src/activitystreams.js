@@ -1,277 +1,306 @@
 'use strict';
 
-const models        = require('./models');
-const vocabs        = require('linkeddata-vocabs');
-const reasoner      = require('./reasoner');
-const utils         = require('./utils');
-const jsonld        = require('./jsonld');
-const ext_context   = require('./extcontext');
+const vocabs = require('linkeddata-vocabs');
+const reasoner = require('./reasoner');
+const jsonld = require('./jsonld');
+const ext_context = require('./extcontext');
 const as = vocabs.as;
 
-exports.use = function(extension) {
-  if (extension && typeof extension.init === 'function')
-    extension.init(models,reasoner,ext_context);
+function _types(types, additional) {
+  types = types || [];
+  if (!Array.isArray(types))
+    types = [types];
+  if (additional) {
+    if (!Array.isArray(additional))
+      additional = [additional];
+    types = types.concat(additional);
+  }
+  return types;
+}
+
+module.exports = {
+  use(extension) {
+    if (extension && typeof extension.init === 'function')
+      extension.init(this.models, reasoner, ext_context);
+  },
+
+  get verify() {
+    return jsonld.verify;
+  },
+
+  get models() {
+    return require('./models');
+  },
+
+  get vocabs() {
+    return vocabs;
+  },
+
+  get import() {
+    return jsonld.import;
+  },
+
+  get importFromRDF() {
+    return jsonld.importFromRDF;
+  },
+
+  object(types) {
+    return new this.models.Object.Builder(_types(types));
+  },
+
+  actor(types) {
+    return new this.models.Actor.Builder(_types(types));
+  },
+
+  activity(types) {
+    return new this.models.Activity.Builder(_types(types));
+  },
+
+  collection(types) {
+    return new this.models.Collection.Builder(_types(types));
+  },
+
+  orderedCollection(types) {
+    return new this.models.OrderedCollection.Builder(_types(types));
+  },
+
+  collectionPage(types) {
+    return new this.models.CollectionPage.Builder(_types(types));
+  },
+
+  orderedCollectionPage(types) {
+    return new this.models.OrderedCollectionPage.Builder(_types(types));
+  },
+
+  content(types) {
+    return new this.models.Content.Builder(_types(types));
+  },
+
+  link(types) {
+    return new this.models.Link.Builder(_types(types));
+  },
+
+  accept(types) {
+    return new this.models.Activity.Builder(_types(types,as.Accept));
+  },
+
+  tentativeAccept(types) {
+    return new this.models.Activity.Builder(_types(types,as.TentativeAccept));
+  },
+
+  add(types) {
+    return new this.models.Activity.Builder(_types(types,as.Add));
+  },
+
+  arrive(types) {
+    return new this.models.Activity.Builder(_types(types,as.Arrive));
+  },
+
+  create(types) {
+    return new this.models.Activity.Builder(_types(types,as.Create));
+  },
+
+  delete(types) {
+    return new this.models.Activity.Builder(_types(types,as.Delete));
+  },
+
+  follow(types) {
+    return new this.models.Activity.Builder(_types(types,as.Follow));
+  },
+
+  ignore(types) {
+    return new this.models.Activity.Builder(_types(types,as.Ignore));
+  },
+
+  join(types) {
+    return new this.models.Activity.Builder(_types(types,as.Join));
+  },
+
+  leave(types) {
+    return new this.models.Activity.Builder(_types(types,as.Leave));
+  },
+
+  like(types) {
+    return new this.models.Activity.Builder(_types(types,as.Like));
+  },
+
+  offer(types) {
+    return new this.models.Activity.Builder(_types(types,as.Offer));
+  },
+
+  invite(types) {
+    return new this.models.Activity.Builder(_types(types,as.Invite));
+  },
+
+  reject(types) {
+    return new this.models.Activity.Builder(_types(types,as.Reject));
+  },
+
+  tentativeReject(types) {
+    return new this.models.Activity.Builder(_types(types,as.TentativeReject));
+  },
+
+  remove(types) {
+    return new this.models.Activity.Builder(_types(types,as.Remove));
+  },
+
+  undo(types) {
+    return new this.models.Activity.Builder(_types(types,as.Undo));
+  },
+
+  update(types) {
+    return new this.models.Activity.Builder(_types(types,as.Update));
+  },
+
+  experience(types) {
+    return new this.models.Activity.Builder(_types(types,as.Experience));
+  },
+
+  view(types) {
+    return new this.models.Activity.Builder(_types(types,as.View));
+  },
+
+  listen(types) {
+    return new this.models.Activity.Builder(_types(types,as.Listen));
+  },
+
+  read(types) {
+    return new this.models.Activity.Builder(_types(types,as.Read));
+  },
+
+  move(types) {
+    return new this.models.Activity.Builder(_types(types,as.Move));
+  },
+
+  travel(types) {
+    return new this.models.Activity.Builder(_types(types,as.Travel));
+  },
+
+  announce(types) {
+    return new this.models.Activity.Builder(_types(types,as.Announce));
+  },
+
+  block(types) {
+    return new this.models.Activity.Builder(_types(types,as.Block));
+  },
+
+  flag(types) {
+    return new this.models.Activity.Builder(_types(types,as.Flag));
+  },
+
+  dislike(types) {
+    return new this.models.Activity.Builder(_types(types,as.Dislike));
+  },
+
+  application(types) {
+    return new this.models.Actor.Builder(_types(types,as.Application));
+  },
+
+  group(types) {
+    return new this.models.Actor.Builder(_types(types,as.Group));
+  },
+
+  person(types) {
+    return new this.models.Actor.Builder(_types(types,as.Person));
+  },
+
+  process(types) {
+    return new this.models.Actor.Builder(_types(types,as.Process));
+  },
+
+  service(types) {
+    return new this.models.Actor.Builder(_types(types,as.Service));
+  },
+
+  organization(types) {
+    return new this.models.Actor.Builder(_types(types,as.Organization));
+  },
+
+  article(types) {
+    return new this.models.Content.Builder(_types(types,as.Article));
+  },
+
+  album(types) {
+    return new this.models.Collection.Builder(_types(types,as.Album));
+  },
+
+  folder(types) {
+    return new this.models.Collection.Builder(_types(types,as.Folder));
+  },
+
+  story(types) {
+    return new this.models.OrderedCollection.Builder(_types(types,as.Story));
+  },
+
+  document(types) {
+    return new this.models.Content.Builder(_types(types,as.Document));
+  },
+
+  audio(types) {
+    return new this.models.Content.Builder(_types(types,as.Audio));
+  },
+
+  image(types) {
+    return new this.models.Content.Builder(_types(types,as.Image));
+  },
+
+  video(types) {
+    return new this.models.Content.Builder(_types(types,as.Video));
+  },
+
+  note(types) {
+    return new this.models.Content.Builder(_types(types,as.Note));
+  },
+
+  page(types) {
+    return new this.models.Content.Builder(_types(types,as.Page));
+  },
+
+  question(types) {
+    return new this.models.Question.Builder(_types(types));
+  },
+
+  event(types) {
+    return new this.models.Object.Builder(_types(types,as.Event));
+  },
+
+  relationship(types) {
+    return new this.models.Relationship.Builder(_types(types));
+  },
+
+  profile(types) {
+    return new this.models.Profile.Builder(_types(types));
+  },
+
+  place(types) {
+    return new this.models.Place.Builder(_types(types));
+  },
+
+  mention(types) {
+    return new this.models.Link.Builder(_types(types,as.Mention));
+  },
+
+  get interval() {
+    return require('./interval');
+  },
+
+  get social() {
+    return require('./social');
+  },
+
+  get Stream() {
+    return require('./stream');
+  },
+
+  get Middleware() {
+    return require('./middle');
+  },
+
+  get Dust() {
+    return require('./dust');
+  },
+
+  get mediaType() {
+    return 'application/activity+json';
+  }
 };
-
-exports.verify = jsonld.verify;
-exports.models = models;
-exports.vocabs = vocabs;
-exports.import = jsonld.import;
-exports.importFromRDF = jsonld.importFromRDF;
-
-exports.object = function(types) {
-  return models.Object.Builder((types || []).concat(as.Object));
-};
-
-exports.actor = function(types) {
-  return models.Actor.Builder((types || []).concat(as.Actor));
-};
-
-exports.activity = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Activity));
-};
-
-exports.collection = function(types) {
-  return models.Collection.Builder((types || []).concat(as.Collection));
-};
-
-exports.orderedCollection = function(types) {
-  return models.OrderedCollection.Builder(
-    (types || []).concat(as.OrderedCollection));
-};
-
-exports.collectionPage = function(types) {
-  return models.CollectionPage.Builder(
-    (types || []).concat(as.CollectionPage));
-};
-
-exports.orderedCollectionPage = function(types) {
-  return models.OrderedCollectionPage.Builder(
-    (types || []).concat(as.OrderedCollectionPage));
-};
-
-exports.content = function(types) {
-  return models.Content.Builder((types || []).concat(as.Content));
-};
-
-exports.link = function(types) {
-  return models.Link.Builder((types || []).concat(as.Link));
-};
-
-exports.accept = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Accept));
-};
-
-exports.tentativeAccept = function(types) {
-  return models.Activity.Builder((types || []).concat(as.TentativeAccept));
-};
-
-exports.add = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Add));
-};
-
-exports.arrive = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Arrive));
-};
-
-exports.create = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Create));
-};
-
-exports.delete = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Delete));
-};
-
-exports.follow = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Follow));
-};
-
-exports.ignore = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Ignore));
-};
-
-exports.join = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Join));
-};
-
-exports.leave = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Leave));
-};
-
-exports.like = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Like));
-};
-
-exports.offer = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Offer));
-};
-
-exports.invite = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Invite));
-};
-
-exports.reject = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Reject));
-};
-
-exports.tentativeReject = function(types) {
-  return models.Activity.Builder((types || []).concat(as.TentativeReject));
-};
-
-exports.remove = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Remove));
-};
-
-exports.undo = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Undo));
-};
-
-exports.update = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Update));
-};
-
-exports.experience = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Experience));
-};
-
-exports.view = function(types) {
-  return models.Activity.Builder((types || []).concat(as.View));
-};
-
-exports.listen = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Listen));
-};
-
-exports.read = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Read));
-};
-
-exports.move = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Move));
-};
-
-exports.travel = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Travel));
-};
-
-exports.announce = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Announce));
-};
-
-exports.block = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Block));
-};
-
-exports.flag = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Flag));
-};
-
-exports.dislike = function(types) {
-  return models.Activity.Builder((types || []).concat(as.Dislike));
-};
-
-exports.application = function(types) {
-  return models.Actor.Builder((types || []).concat(as.Application));
-};
-
-exports.group = function(types) {
-  return models.Actor.Builder((types || []).concat(as.Group));
-};
-
-exports.person = function(types) {
-  return models.Actor.Builder((types || []).concat(as.Person));
-};
-
-exports.process = function(types) {
-  return models.Actor.Builder((types || []).concat(as.Process));
-};
-
-exports.service = function(types) {
-  return models.Actor.Builder((types || []).concat(as.Service));
-};
-
-exports.organization = function(types) {
-  return models.Actor.Builder((types || []).concat(as.Organization));
-};
-
-exports.article = function(types) {
-  return models.Content.Builder((types || []).concat(as.Article));
-};
-
-exports.album = function(types) {
-  return models.Collection.Builder((types || []).concat(as.Album));
-};
-
-exports.folder = function(types) {
-  return models.Collection.Builder((types || []).concat(as.Folder));
-};
-
-exports.story = function(types) {
-  return models.OrderedCollection.Builder((types || []).concat(as.Story));
-};
-
-exports.document = function(types) {
-  return models.Content.Builder((types || []).concat(as.Document));
-};
-
-exports.audio = function(types) {
-  return models.Content.Builder((types || []).concat(as.Audio));
-};
-
-exports.image = function(types) {
-  return models.Content.Builder((types || []).concat(as.Image));
-};
-
-exports.video = function(types) {
-  return models.Content.Builder((types || []).concat(as.Video));
-};
-
-exports.note = function(types) {
-  return models.Content.Builder((types || []).concat(as.Note));
-};
-
-exports.page = function(types) {
-  return models.Content.Builder((types || []).concat(as.Page));
-};
-
-exports.question = function(types) {
-  return models.Question.Builder((types || []).concat(as.Question));
-};
-
-exports.event = function(types) {
-  return models.Object.Builder((types || []).concat(as.Event));
-};
-
-exports.relationship = function(types) {
-  return models.Relationship.Builder((types || []).concat(as.Relationship));
-};
-
-exports.profile = function(types) {
-  return models.Profile.Builder((types || []).concat(as.Profile));
-};
-
-exports.place = function(types) {
-  return models.Place.Builder((types || []).concat(as.Place));
-};
-
-exports.mention = function(types) {
-  return models.Link.Builder((types || []).concat(as.Mention));
-};
-
-utils.define(exports,'interval',function() {
-  return require('./interval');
-});
-utils.define(exports,'social',function() {
-  return require('./social');
-});
-utils.define(exports,'Stream',function() {
-  return require('./stream');
-});
-utils.define(exports,'Middleware',function() {
-  return require('./middle');
-});
-utils.define(exports,'Dust',function() {
-  return require('./dust');
-});
-
-utils.define(exports,'mediaType','application/activity+json');

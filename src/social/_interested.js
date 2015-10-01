@@ -1,38 +1,34 @@
 'use strict';
 
-const util       = require('util');
 const Population = require('./_population');
-const utils      = require('../utils');
-const social     = require('linkeddata-vocabs').social;
+const utils = require('../utils');
+const social = require('linkeddata-vocabs').social;
 
-function Interested(expanded, builder) {
-  if (!(this instanceof Interested))
-    return new Interested(expanded, builder);
-  Population.call(this, expanded, builder || Interested.Builder);
-}
-util.inherits(Interested, Population);
+class Interested extends Population {
+  constructor(expanded, builder) {
+    super(expanded, builder || Interested.Builder);
+  }
 
-Interested.Builder = function(types,base) {
-  if (!(this instanceof Interested.Builder))
-    return new Interested.Builder(types,base);
-  types = (types || []).concat([social.Interested]);
-  Population.Builder.call(this, types, base || new Interested({}));
-};
-util.inherits(Interested.Builder,Population.Builder);
-
-utils.defineProperty(
-  'confidence',Interested,
-  function() {
+  get confidence() {
     var ret = Math.min(100,Math.max(0,this.get(social.confidence)));
     return isNaN(ret) ? undefined : ret;
-  },
-  function(val) {
+  }
+}
+
+class InterestedBuilder extends Population.Builder {
+  constructor(types, base) {
+    types = (types || []).concat([social.Interested]);
+    super(types, base || new Interested({}));
+  }
+
+  confidence(val) {
     if (!utils.is_integer(val))
       throw Error('confidence must be an integer between 0 and 100');
     val = Math.max(0, Math.min(100, val));
     this.set(social.confidence, val);
     return this;
   }
-);
+}
+Interested.Builder = InterestedBuilder;
 
 module.exports = Interested;

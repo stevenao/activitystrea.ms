@@ -57,99 +57,102 @@ function getContext(options) {
   return {'@context': ctx.length > 1 ? ctx : ctx[0]};
 }
 
-exports.normalize = function(expanded, options, callback) {
-  if (typeof options === 'function') {
-    callback = options;
-    options = {};
-  }
-  options = options || {};
+function checkCallback(callback) {
   throwif(
     typeof callback !== 'function',
     'A callback function must be provided');
-  jsonld.normalize(
-    expanded,
-    {format:'application/nquads'},
-    function(err,doc) {
-      if (err) {
-        callback(err);
-        return;
-      }
-      callback(null,doc);
-    });
-};
+}
 
-exports.compact = function(expanded, options, callback) {
-  if (typeof options === 'function') {
-    callback = options;
-    options = {};
-  }
-  options = options || {};
-  throwif(
-    typeof callback !== 'function',
-    'A callback function must be provided');
-  var _context = getContext(options);
-  jsonld.compact(
-    expanded, _context,
-    {documentLoader: custom_doc_loader},
-    function(err, doc) {
-      if (err) {
-        callback(err);
-        return;
-      }
-      if (typeof options.sign === 'object') {
-        warn();
-        jsig.sign(doc,options.sign,callback);
-      } else {
-        callback(null, doc);
-      }
-    });
-};
+module.exports = {
 
-exports.verify = function(input, options, callback) {
-  warn();
-  if (typeof input === 'string')
-    input = JSON.parse(input);
-  jsig.verify(input, options, callback);
-};
+  normalize(expanded, options, callback) {
+    if (typeof options === 'function') {
+      callback = options;
+      options = {};
+    }
+    options = options || {};
+    checkCallback(callback);
+    jsonld.normalize(
+      expanded,
+      {format:'application/nquads'},
+      function(err,doc) {
+        if (err) {
+          callback(err);
+          return;
+        }
+        callback(null,doc);
+      });
+  },
 
-exports.import = function(input, callback) {
-  throwif(
-    typeof callback !== 'function',
-    'A callback function must be provided');
-  if (input['@context'] === undefined)
-    input['@context'] = vocabs.as.ns;
-  jsonld.expand(
-    input, {
-      expandContext: as_context,
-      documentLoader: custom_doc_loader,
-      keepFreeFloatingNodes: true
-    },
+  compact(expanded, options, callback) {
+    if (typeof options === 'function') {
+      callback = options;
+      options = {};
+    }
+    options = options || {};
+    checkCallback(callback);
+    var _context = getContext(options);
+    jsonld.compact(
+      expanded, _context,
+      {documentLoader: custom_doc_loader},
+      function(err, doc) {
+        if (err) {
+          callback(err);
+          return;
+        }
+        if (typeof options.sign === 'object') {
+          warn();
+          jsig.sign(doc,options.sign,callback);
+        } else {
+          callback(null, doc);
+        }
+      });
+  },
+
+  verify(input, options, callback) {
+    warn();
+    if (typeof input === 'string')
+      input = JSON.parse(input);
+    checkCallback(callback);
+    jsig.verify(input, options, callback);
+  },
+
+  import(input, callback) {
+    checkCallback(callback);
+    if (input['@context'] === undefined)
+      input['@context'] = vocabs.as.ns;
+    jsonld.expand(
+      input, {
+        expandContext: as_context,
+        documentLoader: custom_doc_loader,
+        keepFreeFloatingNodes: true
+      },
+      function(err,expanded) {
+        if (err) {
+          callback(err);
+          return;
+        }
+        if (expanded && expanded.length > 0) {
+          var base = models.wrap_object(expanded[0]);
+          callback(null,base);
+        } else {
+          callback(null,null);
+        }
+      }
+    );
+  },
+
+  importFromRDF(input, callback) {
+    checkCallback(callback);
+    jsonld.fromRDF(input, {format:'application/nquads'},
     function(err,expanded) {
       if (err) {
         callback(err);
         return;
       }
-      if (expanded && expanded.length > 0) {
-        var base = models.wrap_object(expanded[0]);
-        callback(null,base);
-      } else {
-        callback(null,null);
-      }
-    }
-  );
-};
+      var base = models.wrap_object(expanded[0]);
+      callback(null,base);
+    });
+  }
 
-exports.importFromRDF = function(input, callback) {
-  throwif(
-    typeof callback !== 'function',
-    'A callback function must be provided');
-  jsonld.fromRDF(input, {format:'application/nquads'},
-  function(err,expanded) {
-    if (err) {
-      callback(err);
-      return;
-    }
-    var base = models.wrap_object(expanded[0]);
-    callback(null,base);
-  });
 };

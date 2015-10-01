@@ -1,125 +1,108 @@
 'use strict';
 
-const util = require('util');
 const utils = require('../utils');
 const as = require('linkeddata-vocabs').as;
 const Base = require('./_base');
+const moment = require('moment');
 
-function Link(expanded, builder) {
-  if (!(this instanceof Link))
-    return new Link(expanded, builder);
-  Base.call(this, expanded, builder || Link.Builder);
-}
-util.inherits(Link, Base);
+class Link extends Base {
+  constructor(expanded, builder) {
+    super(expanded, builder || Link.Builder);
+  }
 
-Link.Builder = function(types, base) {
-  if (!(this instanceof Link.Builder))
-    return new Link.Builder(types, base);
-  types = (types || []).concat([as.Link]);
-  Base.Builder.call(this, types, base || new Link({}));
-};
-util.inherits(Link.Builder, Base.Builder);
-
-utils.defineProperty(
-  'href',Link,
-  function() {
+  get href() {
     var ret = this.get(as.href);
     return ret ? ret.id : undefined;
-  },
-  function(val) {
+  }
+
+  get rel() {
+    return this.get(as.rel);
+  }
+
+  get mediaType() {
+    return this.get(as.mediaType);
+  }
+
+  get displayName() {
+    return this.get(as.displayName);
+  }
+
+  get title() {
+    return this.get(as.title);
+  }
+
+  get hreflang() {
+    return this.get(as.hreflang);
+  }
+
+  get height() {
+    var ret = Math.max(0, this.get(as.height));
+    return isNaN(ret) ? 0 : ret;
+  }
+
+  get width() {
+    var ret = Math.max(0, this.get(as.width));
+    return isNaN(ret) ? 0 : ret;
+  }
+
+  get duration() {
+    var ret = this.get(as.duration);
+    if (typeof ret === 'undefined') return;
+    return moment.duration(isNaN(ret)?ret:(ret*1000));
+  }
+
+}
+
+class LinkBuilder extends Base.Builder {
+  constructor(types, base) {
+    types = (types || []).concat([as.Link]);
+    super(types, base || new Link({}));
+  }
+
+  href(val) {
     this.set(as.href, val);
     return this;
   }
-);
 
-utils.defineProperty(
-  'rel',Link,
-  function() {
-    return this.get(as.rel);
-  },
-  function(val) {
+  rel(val) {
     this.set(as.rel, val);
     return this;
   }
-);
 
-utils.defineProperty(
-  'mediaType',Link,
-  function() {
-    return this.get(as.mediaType);
-  },
-  function(val) {
+  mediaType(val) {
     this.set(as.mediaType, val);
     return this;
   }
-);
 
-utils.defineProperty(
-  'displayName',Link,
-  function() {
-    return this.get(as.displayName);
-  },
-  function(val, lang) {
+  displayName(val, lang) {
     utils.set_lang_val.call(this, as.displayName, val, lang);
     return this;
   }
-);
 
-utils.defineProperty(
-  'title',Link,
-  function() {
-    return this.get(as.title);
-  },
-  function(val, lang) {
+  title(val, lang) {
     utils.set_lang_val.call(this, as.title, val, lang);
     return this;
   }
-);
 
-utils.defineProperty(
-  'hreflang',Link,
-  function() {
-    return this.get(as.hreflang);
-  },
-  function(val) {
-    this.set(as.hreflang, val);
-    return this;
+  hreflang(val) {
+    return this.set(as.hreflang, val);
   }
-);
 
-utils.defineProperty(
-  'height',Link,
-  function() {
-    var ret = Math.max(0, this.get(as.height));
-    return isNaN(ret) ? 0 : ret;
-  },
-  function(val) {
+  height(val) {
     utils.set_non_negative_int.call(this, as.height, val);
     return this;
   }
-);
 
-utils.defineProperty(
-  'width',Link,
-  function() {
-    var ret = Math.max(0, this.get(as.width));
-    return isNaN(ret) ? 0 : ret;
-  },
-  function(val) {
+  width(val) {
     utils.set_non_negative_int.call(this, as.width, val);
     return this;
   }
-);
 
-utils.defineProperty(
-  'duration',Link,
-  function() {
-    return this.get(as.duration);
-  },
-  function(val) {
+  duration(val) {
     utils.set_duration_val.call(this, as.duration, val);
     return this;
   }
-);
+}
+Link.Builder = LinkBuilder;
 
 module.exports = Link;

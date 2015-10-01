@@ -1,49 +1,43 @@
 'use strict';
 
 const social = require('linkeddata-vocabs').social;
-const util = require('util');
 const utils = require('../utils');
 const Population = require('./_population');
 
-function Common(expanded,builder) {
-  if (!(this instanceof Common))
-    return new Common(expanded, builder);
-  Population.call(this, expanded, builder || Common.Builder);
-}
-util.inherits(Common, Population);
+class Common extends Population {
+  constructor(expanded, builder) {
+    super(expanded, builder || Common.Builder);
+  }
 
-Common.Builder = function(types,base) {
-  if (!(this instanceof Common.Builder))
-    return new Common.Builder(types,base);
-  types = (types || []).concat([social.Common]);
-  Population.Builder.call(this, types, base || new Common({}));
-};
-util.inherits(Common.Builder,Population.Builder);
-
-utils.defineProperty(
-  'havingDimension', Common,
-  function() {
+  get havingDimension() {
     return this.get(social.havingDimension);
-  },
-  function(val) {
+  }
+
+  get confidence() {
+    var ret = Math.min(100,Math.max(0,this.get(social.confidence)));
+    return isNaN(ret) ? undefined : ret;
+  }
+}
+
+class CommonBuilder extends Population.Builder {
+  constructor(types, base) {
+    types = (types || []).concat([social.Common]);
+    super(types, base || new Common({}));
+  }
+
+  havingDimension(val) {
     this.set(social.havingDimension, val);
     return this;
   }
-);
 
-utils.defineProperty(
-  'confidence', Common,
-  function() {
-    var ret = Math.min(100,Math.max(0,this.get(social.confidence)));
-    return isNaN(ret) ? undefined : ret;
-  },
-  function(val) {
+  confidence(val) {
     if (!utils.is_integer(val))
       throw Error('confidence must be an integer between 0 and 100');
     val = Math.max(0, Math.min(100, val));
     this.set(social.confidence, val);
     return this;
   }
-);
+}
+Common.Builder = CommonBuilder;
 
 module.exports = Common;

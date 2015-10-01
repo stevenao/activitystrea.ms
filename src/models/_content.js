@@ -1,58 +1,54 @@
 'use strict';
 
 const as = require('linkeddata-vocabs').as;
-const util = require('util');
 const utils = require('../utils');
 const AsObject = require('./_object');
+const moment = require('moment');
 
-function Content(expanded, builder) {
-  if (!(this instanceof Content))
-    return new Content(expanded, builder);
-  AsObject.call(this, expanded, builder || Content.Builder);
-}
-util.inherits(Content, AsObject);
+class Content extends AsObject {
+  constructor(expanded, builder) {
+    super(expanded, builder || Content.Builder);
+  }
 
-Content.Builder = function(types, base) {
-  if (!(this instanceof Content.Builder))
-    return new Content.Builder(types, base);
-  types = (types || []).concat([as.Content]);
-  AsObject.Builder.call(this, types, base || new Content({}));
-};
-util.inherits(Content.Builder, AsObject.Builder);
-
-utils.defineProperty(
-  'height',Content,
-  function() {
+  get height() {
     var ret = Math.max(0, this.get(as.height));
     return isNaN(ret) ? 0 : ret;
-  },
-  function(val) {
+  }
+
+  get width() {
+    var ret = Math.max(0, this.get(as.width));
+    return isNaN(ret) ? 0 : ret;
+  }
+
+  get duration() {
+    var ret = this.get(as.duration);
+    if (typeof ret === 'undefined') return;
+    return moment.duration(isNaN(ret)?ret:(ret*1000));
+  }
+
+}
+
+class ContentBuilder extends AsObject.Builder {
+  constructor(types, base) {
+    types = (types || []).concat([as.Content]);
+    super(types, base || new Content({}));
+  }
+
+  height(val) {
     utils.set_non_negative_int.call(this, as.height, val);
     return this;
   }
-);
 
-utils.defineProperty(
-  'width',Content,
-  function() {
-    var ret = Math.max(0, this.get(as.width));
-    return isNaN(ret) ? 0 : ret;
-  },
-  function(val) {
+  width(val) {
     utils.set_non_negative_int.call(this, as.width, val);
     return this;
   }
-);
 
-utils.defineProperty(
-  'duration',Content,
-  function() {
-    return this.get(as.duration);
-  },
-  function(val) {
+  duration(val) {
     utils.set_duration_val.call(this, as.duration, val);
     return this;
   }
-);
+}
+Content.Builder = ContentBuilder;
 
 module.exports = Content;
