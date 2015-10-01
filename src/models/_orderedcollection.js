@@ -1,27 +1,25 @@
 'use strict';
 
 const Collection = require('./_collection');
-const util = require('util');
-const utils = require('../utils');
 const as = require('linkeddata-vocabs').as;
+const slice = Array.prototype.slice;
 
-function OrderedCollection(expanded,builder) {
-  if (!(this instanceof OrderedCollection))
-    return new OrderedCollection(expanded,builder);
-  Collection.call(this,expanded,builder || OrderedCollection.Builder);
+class OrderedCollection extends Collection {
+  constructor(expanded, builder) {
+    super(expanded, builder || OrderedCollection.Builder);
+  }
 }
-util.inherits(OrderedCollection, Collection);
 
-OrderedCollection.Builder = function(types, base) {
-  if (!(this instanceof OrderedCollection.Builder))
-    return new OrderedCollection.Builder(types, base);
-  types = (types || []).concat([as.OrderedCollection]);
-  Collection.Builder.call(this, types, base || new OrderedCollection({}));
-};
-util.inherits(OrderedCollection.Builder, Collection.Builder);
+class OrderedCollectionBuilder extends Collection.Builder {
+  constructor(types, base) {
+    types = (types || []).concat([as.OrderedCollection]);
+    super(types, base || new OrderedCollection({}));
+  }
 
-OrderedCollection.Builder.prototype.items = function() {
-  return this.orderedItems.apply(this,arguments);
-};
+  get items() {
+    return this.orderedItems;
+  }
+}
+OrderedCollection.Builder = OrderedCollectionBuilder;
 
 module.exports = OrderedCollection;

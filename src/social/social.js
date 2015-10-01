@@ -8,18 +8,22 @@ const rdf = vocabs.rdf;
 const as = vocabs.as;
 const rdfs = vocabs.rdfs;
 
-const Population = require('./_population');
-const Interested = require('./_interested');
-const Everyone = require('./_everyone');
-const CompoundPopulation = require('./_compoundpopulation');
-const Common = require('./_common');
-
 exports.model = {
-  Population: Population,
-  Interested: Interested,
-  Everyone: Everyone,
-  CompoundPopulation: CompoundPopulation,
-  Common: Common
+  get Population() {
+    return require('./_population');
+  },
+  get Interested() {
+    return require('./_interested');
+  },
+  get Everyone() {
+    return require('./_everyone');
+  },
+  get CompoundPopulation() {
+    return require('./_compoundpopulation');
+  },
+  get Common() {
+    return require('./_common');
+  }
 };
 
 function gettypes(types, type) {
@@ -27,46 +31,46 @@ function gettypes(types, type) {
 }
 
 exports.population = function(types) {
-  return Population.Builder(types);
+  return new exports.model.Population.Builder(types);
 };
 exports.everyone = function(types) {
-  return Everyone.Builder(types);
+  return new exports.model.Everyone.Builder(types);
 };
 exports.public = function(types) {
-  return Population.Builder(gettypes(types, social.Public));
+  return new exports.model.Population.Builder(gettypes(types, social.Public));
 };
 exports.private = function(types) {
-  return Population.Builder(
+  return new exports.model.Population.Builder(
     gettypes(types, social.Private));
 };
 exports.direct = function(types) {
-  return Population.Builder(
+  return new exports.model.Population.Builder(
     gettypes(types, social.Direct));
 };
 exports.common = function(types) {
-  return Common.Builder(types);
+  return new exports.model.Common.Builder(types);
 };
 exports.interested = function(types) {
-  return Interested.Builder(types);
+  return new exports.model.Interested.Builder(types);
 };
 exports.self = function(types) {
-  return Population.Builder(
+  return new exports.model.Population.Builder(
     gettypes(types, social.Self));
 };
 exports.all = function(types) {
-  return CompoundPopulation.Builder(
+  return new exports.model.CompoundPopulation.Builder(
     gettypes(types, social.All));
 };
 exports.any = function(types) {
-  return CompoundPopulation.Builder(
+  return new exports.model.CompoundPopulation.Builder(
     gettypes(types, social.Any));
 };
 exports.none = function(types) {
-  return CompoundPopulation.Builder(
+  return new exports.model.CompoundPopulation.Builder(
     gettypes(types, social.None));
 };
 exports.compoundPopulation = function(types) {
-  return CompoundPopulation.Builder(types);
+  return new exports.model.CompoundPopulation.Builder(types);
 };
 
 function social_recognizer(type) {
@@ -74,15 +78,15 @@ function social_recognizer(type) {
   if (type) {
     var node = reasoner.node(type);
     if (node.is(social.Common)) {
-      thing = Common;
+      thing = exports.Common;
     } else if (node.is(social.Interested)) {
-      thing = Interested;
+      thing = exports.Interested;
     } else if (node.is(social.CompoundPopulation)) {
-      thing = CompoundPopulation;
+      thing = exports.CompoundPopulation;
     } else if (node.is(social.Everyone)) {
-      thing = Everyone;
+      thing = exports.Everyone;
     } else if (node.is(social.Population)) {
-      thing = Population;
+      thing = exports.Population;
     }
   }
   return thing;

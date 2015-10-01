@@ -1,56 +1,45 @@
 'use strict';
 
-const util = require('util');
-const utils = require('../utils');
 const as = require('linkeddata-vocabs').as;
 const AsObject = require('./_object');
 
-function Relationship(expanded, builder) {
-  if (!(this instanceof Relationship))
-    return new Relationship(expanded, builder);
-  AsObject.call(this, expanded, builder || Relationship.Builder);
-}
-util.inherits(Relationship, AsObject);
+class Relationship extends AsObject {
+  constructor(expanded, builder) {
+    super(expanded, builder || Relationship.Builder);
+  }
 
-Relationship.Builder = function(types,base) {
-  if (!(this instanceof Relationship.Builder))
-    return new Relationship.Builder(types,base);
-  types = (types || []).concat([as.Relationship]);
-  AsObject.Builder.call(this, types,base || new Relationship({}));
-};
-util.inherits(Relationship.Builder,AsObject.Builder);
-
-utils.defineProperty(
-  'subject',Relationship,
-  function() {
+  get subject() {
     return this.get(as.subject);
-  },
-  function(val) {
-    this.set(as.subject, val);
-    return this;
   }
-);
 
-utils.defineProperty(
-  'object',Relationship,
-  function() {
+  get object() {
     return this.get(as.object);
-  },
-  function(val) {
-    this.set(as.object, val);
-    return this;
   }
-);
 
-utils.defineProperty(
-  'relationship',Relationship,
-  function() {
+  get relationship() {
     return this.get(as.relationship);
-  },
-  function(val) {
-    this.set(as.relationship, val);
-    return this;
   }
-);
+
+}
+
+class RelationshipBuilder extends AsObject.Builder {
+  constructor(types, base) {
+    types = (types || []).concat([as.Relationship]);
+    super(types, base || new Relationship({}));
+  }
+
+  subject(val) {
+    return this.set(as.subject, val);
+  }
+
+  object(val) {
+    return this.set(as.object, val);
+  }
+
+  relationship(val) {
+    return this.set(as.relationship, val);
+  }
+}
+Relationship.Builder = RelationshipBuilder;
 
 module.exports = Relationship;

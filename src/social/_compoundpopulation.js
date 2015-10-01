@@ -1,34 +1,29 @@
 'use strict';
 
 const Population = require('./_population');
-const util = require('util');
-const utils = require('../utils');
 const social = require('linkeddata-vocabs').social;
 
-function CompoundPopulation(expanded,builder) {
-  if (!(this instanceof CompoundPopulation))
-    return new CompoundPopulation(expanded,builder);
-  Population.call(this, expanded, builder || CompoundPopulation.Builder);
-}
-util.inherits(CompoundPopulation, Population);
+class CompoundPopulation extends Population {
+  constructor(expanded, builder) {
+    super(expanded, builder || CompoundPopulation.Builder);
+  }
 
-CompoundPopulation.Builder = function(types,base) {
-  if (!(this instanceof CompoundPopulation.Builder))
-    return new CompoundPopulation.Builder(types,base);
-  types = (types || []).concat([social.CompoundPopulation]);
-  Population.Builder.call(this, types, base || new CompoundPopulation({}));
-};
-util.inherits(CompoundPopulation.Builder,Population.Builder);
-
-utils.defineProperty(
-  'member',CompoundPopulation,
-  function() {
+  get member() {
     return this.get(social.member);
-  },
-  function(val) {
+  }
+}
+
+class CompoundPopulationBuilder extends Population.Builder {
+  constructor(types, base) {
+    types = (types || []).concat([social.CompoundPopulation]);
+    super(types, base || new CompoundPopulation({}));
+  }
+
+  member(val) {
     this.set(social.member, val);
     return this;
   }
-);
+}
+CompoundPopulation.Builder = CompoundPopulationBuilder;
 
 module.exports = CompoundPopulation;

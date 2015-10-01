@@ -1,249 +1,99 @@
 'use strict';
 
-const Readable      = require('readable-stream').Readable;
-const util          = require('util');
-const Symbol        = require('es6-symbol');
-const vocabs        = require('linkeddata-vocabs');
-const uuid          = require('node-uuid');
-const utils         = require('../utils');
-const models        = require('../models');
-const jsonld        = require('../jsonld');
+const Readable = require('readable-stream').Readable;
+const vocabs = require('linkeddata-vocabs');
+const request = require('request');
+const reasoner = require('../reasoner');
 const LanguageValue = require('./_languagevalue');
-const reasoner      = require('../reasoner');
-const include_send  = require('./_send');
-const throwif       = utils.throwif;
-const asx           = vocabs.asx;
-const owl           = vocabs.owl;
+const models = require('../models');
+const utils = require('../utils');
+const jsonld = require('../jsonld');
+const moment = require('moment');
+const as = vocabs.as;
+const asx = vocabs.asx;
+const owl = vocabs.owl;
+const throwif = utils.throwif;
 
 const _expanded = Symbol('expanded');
 const _cache = Symbol('cache');
 const _base = Symbol('base');
 const _builder = Symbol('builder');
-const _done = Symbol('done');
 const _options = Symbol('options');
+const _done = Symbol('done');
+const _items = Symbol('items');
 
 function is_literal(item) {
   return item && item.hasOwnProperty('@value');
 }
 
-function Base(expanded,builder) {
-  if (!(this instanceof Base))
-    return new Base(expanded,builder);
-  this[_expanded] = expanded;
-  this[_cache] = {};
-  this[_builder] = builder;
+function is_iterable(item) {
+  return item &&
+    typeof item !== 'string' &&
+    !(item instanceof Base) &&
+    (typeof item[Symbol.iterator] === 'function' ||
+     typeof item.next === 'function');
 }
 
-Object.defineProperty(Base.prototype, 'id', {
-  configurable: false,
-  enumerable: true,
-  get: function() { return this[_expanded]['@id']; }
-});
-
-Object.defineProperty(Base.prototype, 'type', {
-  configurable: false,
-  enumerable: true,
-  get: function() {
-    var types = this[_expanded]['@type'];
-    return !types || types.length === 0 ? undefined :
-           types.length === 1 ? types[0] :
-           types;
+function convert(item) {
+  let type = item['@type'];
+  let value = item['@value'];
+  if (type) {
+    let node = reasoner.node(type);
+    if (node.is(asx.Number))
+      value = Number(value);
+    else if (node.is(asx.Date))
+      value = moment(value);
+    else if (node.is(asx.Boolean))
+      value = value != 'false';
   }
-});
+  return value;
+}
 
-Object.defineProperty(Base.prototype, 'has', {
-  configurable: false,
-  enumerable: true,
-  value: function(key) {
-    key = utils.parsed_url(vocabs.as[key]||key);
-    var ret = this[_expanded][key];
-    return ret && (ret.length > 0 || utils.is_boolean(ret));
+class ValueIterator {
+  constructor(items) {
+    this[_items] = items;
   }
-});
-
-Object.defineProperty(Base.prototype, 'get', {
-  configurable: false,
-  enumerable: true,
-  value: function(key) {
-    var ret;
-    key = utils.parsed_url(vocabs.as[key]||key);
-    if (!this[_cache].hasOwnProperty(key)) {
-      var nodekey = reasoner.node(key);
-      var res = this[_expanded][key] || [];
-      if (!res.length) return undefined;
-      if (nodekey.is(asx.LanguageProperty)) {
-        this[_cache][key] = new LanguageValue(res);
+  *[Symbol.iterator] () {
+    for (let item of this[_items]) {
+      if (is_literal(item)) {
+        yield convert(item);
+      } else if (item['@list']) {
+        for (let litem of item['@list']) {
+          if (is_literal(litem))
+            yield convert(litem);
+          else
+            yield models.wrap_object(litem);
+        }
       } else {
-        ret = res.map(function(item) {
-          if (is_literal(item)) {
-            var type = item['@type'];
-            var value = item['@value'];
-            if (type) {
-              var node = reasoner.node(type);
-              if (node.is(asx.Number))
-                value = Number(value);
-              else if (node.is(asx.Date))
-                value = new Date(value);
-              else if (node.is(asx.Boolean))
-                value = value != 'false';
-            }
-            return value;
-          } else if (item['@list']) {
-            return item['@list'].map(function(i) {
-              return models.wrap_object(i);
-            });
-          }
-          return models.wrap_object(item);
-        });
-        this[_cache][key] =
-          nodekey.is(owl.FunctionalProperty) ?
-            ret[0] : ret;
+        yield models.wrap_object(item);
       }
     }
-    return this[_cache][key];
   }
-});
 
-Object.defineProperty(Base.prototype, 'export', {
-  configurable: false,
-  enumerable: true,
-  value: function(options, callback) {
-    if (typeof options === 'function') {
-      callback = options;
-      options = {};
-    }
-    options = options || {};
-    var handler = options.handler || jsonld.compact;
-    handler(
-      this[_expanded],
-      options,
-      callback);
+  get first() {
+    return this[Symbol.iterator]().next().value;
   }
-});
 
-Object.defineProperty(Base.prototype, 'toRDF', {
-  configurable: false,
-  enumerable: true,
-  value: function(options, callback) {
-    if (typeof options === 'function') {
-      callback = options;
-      options = {};
-    }
-    options = options || {};
-    jsonld.normalize(
-      this[_expanded],
-      options,
-      callback);
+  get length() {
+    if (this[_items].length > 0 && this[_items][0]['@list'])
+      return this[_items][0]['@list'].length;
+    return this[_items].length;
   }
-});
 
-Object.defineProperty(Base.prototype, 'write', {
-  configurable: false,
-  enumerable: true,
-  value: function(options, callback) {
-    if (typeof options === 'function') {
-      callback = options;
-      options = {};
-    }
-    options = options || {};
-    this.export(options, function(err,doc) {
-      if (err) {
-        callback(err);
-        return;
-      }
-      callback(null, JSON.stringify(doc,null,options.space));
-    });
+  toArray() {
+    return Array.from(this);
   }
-});
-
-Object.defineProperty(Base.prototype, 'prettyWrite', {
-  configurable: false,
-  enumerable: true,
-  value: function(options, callback) {
-    if (typeof options === 'function') {
-      callback = options;
-      options = {};
-    }
-    options = options || {};
-    options.space = options.space || 2;
-    this.write(options, callback);
-  }
-});
-
-Object.defineProperty(Base.prototype, 'modify', {
-  configurable: false,
-  enumerable: true,
-  value: function() {
-    return this[_builder](this.type, this);
-  }
-});
-
-Object.defineProperty(Base.prototype, 'stream', {
-  configurable: false,
-  enumerable: true,
-  value: function(options) {
-    return new BaseReader(this, options);
-  }
-});
-
-Object.defineProperty(Base.prototype, 'pipe', {
-  configurable: false,
-  enumerable: true,
-  value: function(dest, options) {
-    return this.stream(options).pipe(dest);
-  }
-});
-
-Object.defineProperty(Base.prototype, 'dust', {
-  configurable: false,
-  enumerable: true,
-  value: function() {
-    return require('../dust')(this);
-  }
-});
-
-Object.defineProperty(Base.prototype, 'template', {
-  configurable: false,
-  enumerable: true,
-  value: function() {
-    var builder = this[_builder];
-    var type = this.type;
-    var exp = this[_expanded];
-    var tmpl = {};
-    var keys = Object.keys(exp);
-    for (var n = 0, l = keys.length; n < l; n++) {
-      var key = keys[n];
-      var value = exp[key];
-      if (Array.isArray(value)) {
-        value = [].concat(value);
-      }
-      tmpl[key] = value;
-    }
-    return function() {
-      var bld = builder(type);
-      bld[_expanded] = bld[_base][_expanded] = Object.create(tmpl);
-      return bld;
-    };
-  }
-});
-
-// optionally include the send method
-include_send(Base.prototype);
-
-function BaseReader(base, options) {
-  if (!(this instanceof BaseReader))
-    return new BaseReader(base, options);
-  options = options || {};
-  options.highwaterMark = options.highwaterMark || '16kb';
-  Readable.call(this,options);
-  this[_base] = base;
-  this[_options] = options;
 }
-util.inherits(BaseReader, Readable);
-Object.defineProperty(BaseReader.prototype, '_read', {
-  configurable: false,
-  enumerable: true,
-  value: function() {
+
+class BaseReader extends Readable {
+  constructor(base, options) {
+    options = options || {};
+    options.highwaterMark = options.highwaterMark || '16kb';
+    super(options);
+    this[_base] = base;
+    this[_options] = options;
+  }
+  _read() {
     var self = this;
     if (self[_done]) return;
     var objectmode = this[_options].objectMode;
@@ -262,118 +112,332 @@ Object.defineProperty(BaseReader.prototype, '_read', {
       return false;
     });
   }
-});
+}
 
-// ******** BUILDER ********* //
-
-Base.Builder = function(types, base) {
-  if (!(this instanceof Base.Builder))
-    return new Base.Builder(types, base);
-  base = base || new Base({});
-  this[_base] = base;
-  this[_expanded] = base[_expanded];
-  this.type(types);
-};
-Base.Builder.prototype = {
-  id : function(id) {
-    if (id === undefined || id === false) {
-      delete this[_expanded]['@id'];
-    } else {
-      if (id === true) {
-        return this.id('urn:uuid:'+uuid.v4());
-      } else {
-        this[_expanded]['@id'] = String(id);
-      }
-    }
-    return this;
-  },
-  type : function(type) {
-    if (!type) {
-      delete this[_expanded]['@type'];
-    } else {
-      var ret = [];
-      if (!Array.isArray(type)) type = [type];
-      type = reasoner.reduce(type);
-      for (var n = 0, l = type.length; n < l; n++) {
-        ret.push(type[n].valueOf());
-      }
-      this[_expanded]['@type'] = ret;
-    }
-    return this;
-  },
-  set : function(key, val, options) {
-    var expanded = this[_expanded];
-    options = options || {};
-    if (val instanceof Base.Builder) {
-      val = val.get();
-    }
-    var n, l;
-    key = utils.parsed_url(vocabs.as[key]||key);
-    var nodekey = reasoner.node(key);
-    if (val === null || val === undefined) {
-      delete expanded[key];
-    } else {
-      var is_array = Array.isArray(val);
-      if (nodekey.is(owl.FunctionalProperty)) {
-        throwif(is_array, 'Functional properties cannot have array values');
-        delete _expanded[key];
-      }
-      expanded[key] = expanded[key] || [];
-      if (!is_array) val = [val];
-      for (n = 0, l = val.length; n < l; n++) {
-        if (nodekey.is(owl.ObjectProperty) || val[n] instanceof Base ||
-          key == '@list') {
-          if (val[n] instanceof Base) {
-            expanded[key].push(val[n][_expanded]);
-          } else if (utils.is_string(val[n])) {
-            expanded[key].push({'@id': val[n]});
-          } else if (typeof val[n] === 'object') {
-            var builder = Base.Builder();
-            var keys = Object.keys(val[n]);
-            for (n = 0, l = keys.length; n < l; n++) {
-              var k = keys[n];
-              var value = val[n][k];
-              if (k === '@id') builder.id(value);
-              else if (k === '@type') builder.type(value);
-              else builder.set(k, value);
-            }
-            expanded[key].push(builder.get()[_expanded]);
-          } else {
-            throw Error('Invalid object property type');
-          }
-        } else {
-          var lang = options.lang;
-          var type = options.type;
-          var ret = {
-            '@value': val[n]
-          };
-          if (lang) ret['@language'] = lang;
-          if (type) ret['@type'] = type;
-          expanded[key].push(ret);
-        }
-      }
-    }
-    return this;
-  },
-  get : function(callback) {
-    if (typeof callback === 'function') {
-      this[_base].export(callback);
-      return;
-    }
-    return this[_base];
-  },
-  write : function(options, callback) {
-    return this[_base].write(options,callback);
-  },
-  prettyWrite: function(options, callback) {
-    return this[_base].prettyWrite(options,callback);
-  },
-  pipe: function(dest,options) {
-    return this[_base].pipe(dest,options);
-  },
-  template: function() {
-    return this[_base].template();
+class Base {
+  constructor(expanded, builder) {
+    this[_expanded] = expanded || {};
+    this[_cache] = {};
+    this[_builder] = builder || Base.Builder;
   }
-};
+
+  /**
+   * Get the unique @id of this object
+   **/
+  get id() {
+    return this[_expanded]['@id'];
+  }
+
+  /**
+   * Get the @type(s) of this object
+   **/
+  get type() {
+    var types = this[_expanded]['@type'];
+    return !types || types.length === 0 ? undefined :
+           types.length === 1 ? types[0] :
+           types;
+  }
+
+  /**
+   * Returns true if the given key exists in the object
+   **/
+  has(key) {
+    key = vocabs.as[key] || key;
+    var ret = this[_expanded][key];
+    return ret && (ret.length > 0 || typeof ret === 'boolean');
+  }
+
+  /**
+   * Return the value of the given key
+   **/
+  get(key) {
+    var ret;
+    key = vocabs.as[key] || key;
+    if (!this[_cache].hasOwnProperty(key)) {
+      let nodekey = reasoner.node(key);
+      let res = this[_expanded][key] || [];
+      if (!res.length) return;
+      if (nodekey.is(asx.LanguageProperty)) {
+        this[_cache][key] = new LanguageValue(res);
+      } else {
+        ret = new ValueIterator(res);
+        this[_cache][key] =
+          nodekey.is(owl.FunctionalProperty) ?
+            ret.first : ret;
+      }
+    }
+    return this[_cache][key];
+  }
+
+  /**
+   * Export the object to a normal, 'unwrapped' JavaScript object
+   **/
+  export(options, callback) {
+    if (typeof options === 'function') {
+      callback = options;
+      options = {};
+    }
+    options = options || {};
+    var handler = options.handler || jsonld.compact;
+    handler(
+      this[_expanded],
+      options,
+      callback);
+  }
+
+  /**
+   * Export the object to an RDF/Triple string
+   **/
+   toRDF(options, callback) {
+     if (typeof options === 'function') {
+       callback = options;
+       options = {};
+     }
+     options = options || {};
+     jsonld.normalize(
+       this[_expanded],
+       options,
+       callback);
+   }
+
+   /**
+    * Write the object out to a String
+    **/
+   write(options, callback) {
+     if (typeof options === 'function') {
+       callback = options;
+       options = {};
+     }
+     options = options || {};
+     this.export(options, function(err,doc) {
+       if (err) {
+         callback(err);
+         return;
+       }
+       callback(null, JSON.stringify(doc,null,options.space));
+     });
+   }
+
+   /**
+    * Write the object out to to a string with indenting
+    **/
+   prettyWrite(options, callback) {
+     if (typeof options === 'function') {
+       callback = options;
+       options = {};
+     }
+     options = options || {};
+     options.space = options.space || 2;
+     this.write(options, callback);
+   }
+
+   /**
+    * Return a Readable Stream for this object
+    **/
+   stream(options) {
+     return new BaseReader(this, options);
+   }
+
+   /**
+    * Pipe this object out to the specified destination
+    **/
+   pipe(dest, options) {
+     return this.stream(options).pipe(dest);
+   }
+
+   /**
+    * Return a Dust context object for this object
+    **/
+   dust() {
+     return require('../dust')(this);
+   }
+
+   send(options, callback) {
+     var self = this;
+     setImmediate(function() {
+       if (typeof options === 'string') {
+         options = {url:options};
+       }
+       options.headers = options.headers || {};
+       options.headers['Content-Type'] = as.mediaType;
+       self.pipe(
+         request.post(options)
+                .on('response', function(res) {
+                  setImmediate(function() {
+                    callback(null,res.statusCode,res);
+                  });
+                })
+                .on('error', function(err) {
+                  setImmediate(function() {
+                    callback(err);
+                  });
+                }), options
+       );
+     });
+   }
+
+   modify() {
+     return new this[_builder](this.type, this);
+   }
+
+   template() {
+     var Builder = this[_builder];
+     var type = this.type;
+     var exp = this[_expanded];
+     var tmpl = {};
+     for (let key of Object.keys(exp)) {
+       var value = exp[key];
+       if (Array.isArray(value))
+         value = [].concat(value);
+       tmpl[key] = value;
+     }
+     return function() {
+       var bld = new Builder(type);
+       bld[_expanded] = bld[_base][_expanded] = Object.create(tmpl);
+       return bld;
+     };
+   }
+
+   * [Symbol.iterator]() {
+       for (let key of Object.keys(this[_expanded])) {
+           yield key;
+       }
+   }
+}
+
+class BaseBuilder {
+  constructor(types, base) {
+    this[_base] = base || new Base();
+    this.type(types);
+  }
+
+  /**
+   * Set the value of the given key
+   **/
+   set(key, val, options) {
+     var expanded = this[_base][_expanded];
+     options = options || {};
+     if (val instanceof BaseBuilder)
+       val = val.get();
+     var n, l;
+     key = vocabs.as[key] || key;
+     var nodekey = reasoner.node(key);
+     if (val === null || val === undefined) {
+       delete expanded[key];
+     } else {
+       let is_iter = is_iterable(val);
+       if (nodekey.is(owl.FunctionalProperty)) {
+         throwif(is_iter, 'Functional properties cannot have array values');
+         delete _expanded[key];
+       }
+       expanded[key] = expanded[key] || [];
+       if (!is_iter) val = [val];
+       for (let value of val) {
+         if (nodekey.is(owl.ObjectProperty) ||
+             value instanceof Base ||
+             key == '@list') {
+           if (value instanceof Base) {
+             expanded[key].push(value[_expanded]);
+           } else if (utils.is_string(value)) {
+             expanded[key].push({'@id': value});
+           } else if (typeof value === 'object') {
+             var base = new Base();
+             for (let k of Object.keys(value)) {
+               var v = value[k];
+               if (k === '@id') base.id(v);
+               else if (k === '@type') base.type(v);
+               else base.set(k, v);
+             }
+             expanded[key].push(base[_expanded]);
+           } else {
+             throw new Error('Invalid object property type');
+           }
+         } else {
+           var lang = options.lang;
+           var type = options.type;
+           var ret = {
+             '@value': value
+           };
+           if (lang) ret['@language'] = lang;
+           if (type) ret['@type'] = type;
+           expanded[key].push(ret);
+         }
+       }
+     }
+     return this;
+   }
+
+   /**
+    * Set the unique @id of this object
+    **/
+   id(val) {
+     // TODO: verify that it's an absolute IRI
+     this[_base][_expanded]['@id'] = val;
+     return this;
+   }
+
+   /**
+    * Set the @type(s) of this object.
+    **/
+   type(types) {
+     var exp = this[_base][_expanded];
+     if (!types) {
+       delete exp['@type'];
+     } else {
+       var ret = [];
+       if (!Array.isArray(types)) types = [types];
+       types = reasoner.reduce(types);
+       for (let type of types) {
+         ret.push(type.valueOf());
+       }
+       exp['@type'] = ret;
+     }
+     return this;
+   }
+
+   /**
+    * Get the built object
+    **/
+   get() {
+     return this[_base];
+   }
+
+   export(options, callback) {
+     return this.get().export(options, callback);
+   }
+
+   toRDF(options, callback) {
+     return this.get().toRDF(options, callback);
+   }
+
+   write(options, callback) {
+     return this.get().write(options, callback);
+   }
+
+   prettyWrite(options, callback) {
+     return this.get().prettyWrite(options, callback);
+   }
+
+   stream(options) {
+     return this.get().stream(options);
+   }
+
+   pipe(dest, options) {
+     return this.get().pipe(dest, options);
+   }
+
+   dust() {
+     return this.get().dust();
+   }
+
+   send(options, callback) {
+     return this.get().send(options, callback);
+   }
+
+   template() {
+     return this.get().template();
+   }
+}
+Base.Builder = BaseBuilder;
 
 module.exports = Base;

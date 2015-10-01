@@ -11,7 +11,7 @@ const rdf = vocabs.rdf;
 const rdfs = vocabs.rdfs;
 
 module.exports = exports = function(types) {
-  return Interval.Builder(types);
+  return new Interval.Builder(types);
 };
 
 module.exports.model = {
@@ -23,28 +23,28 @@ function gettypes(types, type) {
 }
 
 exports.open = function(types) {
-  return Interval.Builder(gettypes(types,interval.OpenInterval));
+  return new Interval.Builder(gettypes(types,interval.OpenInterval));
 };
 exports.closed = function(types) {
-  return Interval.Builder(gettypes(types,interval.ClosedInterval));
+  return new Interval.Builder(gettypes(types,interval.ClosedInterval));
 };
 exports.openClosed = function(types) {
-  return Interval.Builder(gettypes(types,interval.OpenClosedInterval));
+  return new Interval.Builder(gettypes(types,interval.OpenClosedInterval));
 };
 exports.closedOpen = function(types) {
-  return Interval.Builder(gettypes(types,interval.ClosedOpenInterval));
+  return new Interval.Builder(gettypes(types,interval.ClosedOpenInterval));
 };
 exports.leftOpen = function(types) {
-  return Interval.Builder(gettypes(types,interval.LeftOpenInterval));
+  return new Interval.Builder(gettypes(types,interval.LeftOpenInterval));
 };
 exports.rightOpen = function(types) {
-  return Interval.Builder(gettypes(types,interval.RightOpenInterval));
+  return new Interval.Builder(gettypes(types,interval.RightOpenInterval));
 };
 exports.leftClosed = function(types) {
-  return Interval.Builder(gettypes(types,interval.LeftClosedInterval));
+  return new Interval.Builder(gettypes(types,interval.LeftClosedInterval));
 };
 exports.rightClosed = function(types) {
-  return Interval.Builder(gettypes(types,interval.RightClosedInterval));
+  return new Interval.Builder(gettypes(types,interval.RightClosedInterval));
 };
 
 function interval_recognizer(type) {
@@ -107,38 +107,5 @@ exports.init = function(models, reasoner, context) {
   });
 
   reasoner.bind(graph);
-
-  utils.defineProperty(
-    'indexRange',models.Collection,
-    function() {
-      return this.get(interval.indexRange);
-    },
-    function(val) {
-      this.set(interval.indexRange, val);
-      return this;
-    }
-  );
-
-  utils.defineProperty(
-    'publishedRange',models.Collection,
-    function() {
-      return this.get(interval.publishedRange);
-    },
-    function(val) {
-      this.set(interval.publishedRange, val);
-      return this;
-    }
-  );
-
-  utils.defineProperty(
-    'startTimeRange',models.Collection,
-    function() {
-      return this.get(interval.startTimeRange);
-    },
-    function(val) {
-      this.set(interval.startTimeRange, val);
-      return this;
-    }
-  );
 
 };

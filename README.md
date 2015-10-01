@@ -10,22 +10,13 @@ Includes experimental support for:
 * http://ns.jasnell.me/interval
 * http://ns.jasnell.me/social
 
+Starting with version `v0.8.0`, a minimum of Node v4.0.0 / ES6 is required.
+
 ## Getting Started
 
 ### Installation
 
 `npm install activitystrea.ms`
-
-### Known Issues
-
-Dependencies are currently having an issue installing under io.js 3.x and
-Node.js 4.0.0-pre. In order to install on those versios, you need to have a
-local copy of the Node.js v0.12.7 source and use the `--nodedir` option.
-Once installed, however, everything should work fine. This is a current
-limitation of the jsonld dependency.
-
-When running on Node v0.12.x, you will need the `--harmony` command line
-switch.
 
 ### Usage
 
@@ -589,7 +580,7 @@ Returns true if the object has a value for the specified `key`
 
 #### Method: `<any> as.models.Base.prototype.get(key)`
 
-Returns the value for the specified `key`. The return value will vary based on the property being requested. The return value can be a JavaScript primitive, a `as.models.Base` instance, or an Array of JavaScript primitives or `as.models.Base` instances. Will returned `undefined` if the no value is specified for the given `key`
+Returns the value for the specified `key`. The return value will vary based on the property being requested. The return value can be a JavaScript primitive, a `as.models.Base` instance, or an Iterable  of JavaScript primitives or `as.models.Base` instances. Will returned `undefined` if the no value is specified for the given `key`
 
 #### Method: `<void> as.models.Base.prototype.export([options, ] callback)`
 
@@ -705,11 +696,11 @@ Returns the value of the `http://www.w3.org/ns/activitystreams#alias` property.
 
 #### Property: `as.models.Object.prototype.attachment`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#attachment` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#attachment` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Object.prototype.attributedTo'
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#attributedTo` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#attributedTo` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Object.prototype.content`
 
@@ -717,7 +708,7 @@ Returns the value of the `http://www.w3.org/ns/activitystreams#content` property
 
 #### Property: `as.models.Object.prototype.context`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#context` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#context` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Object.prototype.displayName`
 
@@ -749,59 +740,59 @@ Returns the value of the `http://www.w3.org/ns/activitystreams#updated` property
 
 #### Property: `as.models.Object.prototype.generator`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#generator` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#generator` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Object.prototype.icon`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#icon` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#icon` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Object.prototype.image`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#image` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#image` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Object.prototype.inReplyTo`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#inReplyTo` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#inReplyTo` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Object.prototype.location`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#location` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#location` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Object.prototype.preview`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#preview` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#preview` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Object.prototype.replies`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#replies` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#replies` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Object.prototype.scope`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#scope` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#scope` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Object.prototype.tag`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#tag` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#tag` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Object.prototype.url`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#url` property. Will be either `undefined` or an Array of `as.model.Link` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#url` property. Will be either `undefined` or an Iterable  of `as.model.Link` instances.
 
 #### Property: `as.models.Object.prototype.to`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#to` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#to` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Object.prototype.bto`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#bto` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#bto` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Object.prototype.cc`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#cc` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#cc` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Object.prototype.bcc`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#bcc` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#bcc` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 ### Class: `as.models.Object.Builder > as.models.Base.Builder`
 
@@ -937,27 +928,27 @@ Base class for all Activity Streams 2.0 Activity instances. Inherits from `as.mo
 
 #### Property: `as.models.Activity.prototype.actor`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#actor` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#actor` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Activity.prototype.object`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#object` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#object` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Activity.prototype.target`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#target` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#target` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Activity.prototype.result`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#result` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#result` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Activity.prototype.origin`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#origin` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#origin` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Activity.prototype.instrument`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#instrument` property. Will be either `undefined` or an Array of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#instrument` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Activity.prototype.priority`
 
@@ -1025,7 +1016,7 @@ Returns the value of the `http://www.w3.org/ns/activitystreams#first` property. 
 
 #### Property: `as.models.Collection.prototype.items`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#items` property as an Array of `as.models.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#items` property as an Iterable of `as.models.Base` instances.
 
 ### Class: `as.models.Collection.Builder> as.models.Object.Builder`
 
@@ -1145,7 +1136,7 @@ Returns the value of the `http://www.w3.org/ns/activitystreams#href` property. T
 
 #### Property: `as.models.Link.prototype.rel`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#rel` property. The value will either be `undefined` or an Array of strings.
+Returns the value of the `http://www.w3.org/ns/activitystreams#rel` property. The value will either be `undefined` or an Iterable  of strings.
 
 #### Property: `as.models.Link.prototype.mediaType`
 
@@ -1300,11 +1291,11 @@ both `as.models.Content` and `as.models.Activity`;
 
 #### Property: `as.models.Question.prototype.anyOf`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#anyOf` property. The value will either be `undefined` or an Array of `as.models.Base` objects.
+Returns the value of the `http://www.w3.org/ns/activitystreams#anyOf` property. The value will either be `undefined` or an Iterable  of `as.models.Base` objects.
 
 #### Property: `as.models.Question.prototype.oneOf`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#oneOf` property. The value will either be `undefined` or an Array of `as.models.Base` objects.
+Returns the value of the `http://www.w3.org/ns/activitystreams#oneOf` property. The value will either be `undefined` or an Iterable  of `as.models.Base` objects.
 
 ### Class: `as.models.Question.Builder > as.models.Content.Builder, as.models.Activity.Builder`
 
@@ -1328,11 +1319,11 @@ Returns the value of the `http://www.w3.org/ns/activitystreams#subject` property
 
 #### Property: `as.models.Relationship.prototype.relationship`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#relationship` property. The value will either be `undefined` or an Array of `as.models.Base` objects.
+Returns the value of the `http://www.w3.org/ns/activitystreams#relationship` property. The value will either be `undefined` or an Iterable  of `as.models.Base` objects.
 
 #### Property: `as.models.Relationship.prototype.object`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#object` property. The value will either be `undefined` or an Array of `as.models.Base` objects.
+Returns the value of the `http://www.w3.org/ns/activitystreams#object` property. The value will either be `undefined` or an Iterable  of `as.models.Base` objects.
 
 ### Class: `as.models.Relationship.Builder > as.models.Object.Builder`
 

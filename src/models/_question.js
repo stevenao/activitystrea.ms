@@ -1,80 +1,70 @@
 'use strict';
 
-const util       = require('util');
 const utils      = require('../utils');
 const as     = require('linkeddata-vocabs').as;
 const Activity = require('./_activity');
+const moment = require('moment');
 
-function Question(expanded, builder) {
-  if (!(this instanceof Question))
-    return new Question(expanded, builder);
-  Activity.call(this, expanded, builder || Question.Builder);
-}
-util.inherits(Question, Activity);
+class Question extends Activity {
+  constructor(expanded, builder) {
+    super(expanded, builder || Question.Builder);
+  }
 
-Question.Builder = function(types,base) {
-  if (!(this instanceof Question.Builder))
-    return new Question.Builder(types, base);
-  types = (types || []).concat([as.Question]);
-  Activity.Builder.call(this, types, base || new Question({}));
-};
-util.inherits(Question.Builder, Activity.Builder);
-
-utils.defineProperty(
-  'height',Question,
-  function() {
+  get height() {
     var ret = Math.max(0, this.get(as.height));
     return isNaN(ret) ? 0 : ret;
-  },
-  function(val) {
+  }
+
+  get width() {
+    var ret = Math.max(0, this.get(as.width));
+    return isNaN(ret) ? 0 : ret;
+  }
+
+  get duration() {
+    var ret = this.get(as.duration);
+    if (typeof ret === 'undefined') return;
+    return moment.duration(isNaN(ret)?ret:(ret*1000));
+  }
+
+  get anyOf() {
+    return this.get(as.anyOf);
+  }
+
+  get oneOf() {
+    return this.get(as.oneOf);
+  }
+
+}
+
+class QuestionBuilder extends Activity.Builder {
+  constructor(types, base) {
+    types = (types || []).concat([as.Question]);
+    super(types, base || new Question({}));
+  }
+
+  height(val) {
     utils.set_non_negative_int.call(this, as.height, val);
     return this;
   }
-);
 
-utils.defineProperty(
-  'width',Question,
-  function() {
-    var ret = Math.max(0, this.get(as.width));
-    return isNaN(ret) ? 0 : ret;
-  },
-  function(val) {
+  width(val) {
     utils.set_non_negative_int.call(this, as.width, val);
     return this;
   }
-);
 
-utils.defineProperty(
-  'duration',Question,
-  function() {
-    return this.get(as.duration);
-  },
-  function(val) {
+  duration(val) {
     utils.set_duration_val.call(this, as.duration, val);
     return this;
   }
-);
 
-utils.defineProperty(
-  'anyOf',Question,
-  function() {
-    return this.get(as.anyOf);
-  },
-  function(val) {
-    this.set(as.anyOf, val);
-    return this;
+  anyOf(val) {
+    return this.set(as.anyOf, val);
   }
-);
 
-utils.defineProperty(
-  'oneOf',Question,
-  function() {
-    return this.get(as.oneOf);
-  },
-  function(val) {
-    this.set(as.oneOf, val);
-    return this;
+  oneOf(val) {
+    return this.set(as.oneOf, val);
   }
-);
+}
+Question.Builder = QuestionBuilder;
 
 module.exports = Question;
