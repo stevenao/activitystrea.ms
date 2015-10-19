@@ -30,8 +30,7 @@ function is_iterable(item) {
   return item &&
     typeof item !== 'string' &&
     !(item instanceof Base) &&
-    (typeof item[Symbol.iterator] === 'function' ||
-     typeof item.next === 'function');
+    (typeof item[Symbol.iterator] === 'function');
 }
 
 function convert(item) {
@@ -94,20 +93,19 @@ class BaseReader extends Readable {
     this[_options] = options;
   }
   _read() {
-    var self = this;
-    if (self[_done]) return;
-    var objectmode = this[_options].objectMode;
-    self[_done] = true;
-    var method =
+    if (this[_done]) return;
+    let objectmode = this[_options].objectMode;
+    this[_done] = true;
+    let method =
       objectmode ?
-        self[_base].export :
-        self[_base].write;
-    method.call(self[_base], this[_options], function(err,doc) {
+        this[_base].export :
+        this[_base].write;
+    method.call(this[_base], this[_options], (err,doc)=> {
       if (err) {
-        self.emit('error', err);
+        this.emit('error', err);
       } else {
-        self.push(objectmode ? doc : new Buffer(doc, 'utf8'));
-        self.push(null);
+        this.push(objectmode ? doc : new Buffer(doc, 'utf8'));
+        this.push(null);
       }
       return false;
     });
@@ -132,7 +130,7 @@ class Base {
    * Get the @type(s) of this object
    **/
   get type() {
-    var types = this[_expanded]['@type'];
+    let types = this[_expanded]['@type'];
     return !types || types.length === 0 ? undefined :
            types.length === 1 ? types[0] :
            types;
@@ -143,7 +141,7 @@ class Base {
    **/
   has(key) {
     key = vocabs.as[key] || key;
-    var ret = this[_expanded][key];
+    let ret = this[_expanded][key];
     return ret && (ret.length > 0 || typeof ret === 'boolean');
   }
 
@@ -151,7 +149,7 @@ class Base {
    * Return the value of the given key
    **/
   get(key) {
-    var ret;
+    let ret;
     key = vocabs.as[key] || key;
     if (!this[_cache].hasOwnProperty(key)) {
       let nodekey = reasoner.node(key);
@@ -178,7 +176,7 @@ class Base {
       options = {};
     }
     options = options || {};
-    var handler = options.handler || jsonld.compact;
+    let handler = options.handler || jsonld.compact;
     handler(
       this[_expanded],
       options,
@@ -253,25 +251,21 @@ class Base {
    }
 
    send(options, callback) {
-     var self = this;
-     setImmediate(function() {
-       if (typeof options === 'string') {
-         options = {url:options};
-       }
+     if (typeof options === 'string') {
+       options = {url:options};
+     } else {
+       options = options || {};
+     }
+     setImmediate(()=> {
        options.headers = options.headers || {};
        options.headers['Content-Type'] = as.mediaType;
-       self.pipe(
+       this.pipe(
          request.post(options)
-                .on('response', function(res) {
-                  setImmediate(function() {
-                    callback(null,res.statusCode,res);
-                  });
+                .on('response', (res)=> {
+                  callback(null,res.statusCode,res);
                 })
-                .on('error', function(err) {
-                  setImmediate(function() {
-                    callback(err);
-                  });
-                }), options
+                .on('error', callback),
+         options
        );
      });
    }
@@ -281,18 +275,18 @@ class Base {
    }
 
    template() {
-     var Builder = this[_builder];
-     var type = this.type;
-     var exp = this[_expanded];
-     var tmpl = {};
+     let Builder = this[_builder];
+     let type = this.type;
+     let exp = this[_expanded];
+     let tmpl = {};
      for (let key of Object.keys(exp)) {
-       var value = exp[key];
+       let value = exp[key];
        if (Array.isArray(value))
          value = [].concat(value);
        tmpl[key] = value;
      }
      return function() {
-       var bld = new Builder(type);
+       let bld = new Builder(type);
        bld[_expanded] = bld[_base][_expanded] = Object.create(tmpl);
        return bld;
      };
@@ -315,13 +309,13 @@ class BaseBuilder {
    * Set the value of the given key
    **/
    set(key, val, options) {
-     var expanded = this[_base][_expanded];
+     let expanded = this[_base][_expanded];
      options = options || {};
      if (val instanceof BaseBuilder)
        val = val.get();
-     var n, l;
+     let n, l;
      key = vocabs.as[key] || key;
-     var nodekey = reasoner.node(key);
+     let nodekey = reasoner.node(key);
      if (val === null || val === undefined) {
        delete expanded[key];
      } else {
@@ -341,9 +335,9 @@ class BaseBuilder {
            } else if (utils.is_string(value)) {
              expanded[key].push({'@id': value});
            } else if (typeof value === 'object') {
-             var base = new Base();
+             let base = new Base();
              for (let k of Object.keys(value)) {
-               var v = value[k];
+               let v = value[k];
                if (k === '@id') base.id(v);
                else if (k === '@type') base.type(v);
                else base.set(k, v);
@@ -353,9 +347,9 @@ class BaseBuilder {
              throw new Error('Invalid object property type');
            }
          } else {
-           var lang = options.lang;
-           var type = options.type;
-           var ret = {
+           let lang = options.lang;
+           let type = options.type;
+           let ret = {
              '@value': value
            };
            if (lang) ret['@language'] = lang;
@@ -380,11 +374,11 @@ class BaseBuilder {
     * Set the @type(s) of this object.
     **/
    type(types) {
-     var exp = this[_base][_expanded];
+     let exp = this[_base][_expanded];
      if (!types) {
        delete exp['@type'];
      } else {
-       var ret = [];
+       let ret = [];
        if (!Array.isArray(types)) types = [types];
        types = reasoner.reduce(types);
        for (let type of types) {

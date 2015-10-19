@@ -48,7 +48,7 @@ exports.rightClosed = function(types) {
 };
 
 function interval_recognizer(type) {
-  var thing;
+  let thing;
   if (type && reasoner.node(type).is(interval.Interval)) {
     thing = Interval;
   }
@@ -63,7 +63,7 @@ exports.init = function(models, reasoner, context) {
 
   models.use(interval_recognizer);
 
-  var graph = new reasoner.Graph();
+  let graph = new reasoner.Graph();
   [
     [interval.Interval, as.Object],
     [interval.OpenInterval, interval.Interval],
@@ -74,7 +74,7 @@ exports.init = function(models, reasoner, context) {
     [interval.RightOpenInterval, interval.Interval],
     [interval.LeftClosedInterval, interval.Interval],
     [interval.RightClosedInterval, interval.Interval]
-  ].forEach(function (pair) {
+  ].forEach((pair)=> {
     graph.add({
       subject: pair[0],
       predicate: rdfs.subClassOf,
@@ -82,7 +82,7 @@ exports.init = function(models, reasoner, context) {
     });
   });
 
-  var functionalDatatype = [
+  let functionalDatatype = [
         owl.DatatypeProperty,
         owl.FunctionalProperty
       ],
@@ -98,7 +98,7 @@ exports.init = function(models, reasoner, context) {
     [interval.lower, functionalDatatype],
     [interval.upper, functionalDatatype],
     [interval.step, functionalDatatype],
-  ].forEach(function(pair) {
+  ].forEach((pair)=> {
     graph.add({
       subject: pair[0],
       predicate: rdf.type,

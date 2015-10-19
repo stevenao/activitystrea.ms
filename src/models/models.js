@@ -63,8 +63,8 @@ module.exports = exports = {
   },
 
   wrap_object(expanded) {
-    var types = reasoner.reduce(expanded['@type'] || []);
-    var Thing;
+    let types = reasoner.reduce(expanded['@type'] || []);
+    let Thing;
     // this isn't that great yet because it uses the
     // first recognized type and does not verify if
     // the full set of declared types make sense
@@ -86,8 +86,8 @@ module.exports = exports = {
 
 
 function core_recognizer(type) {
-  var thing;
-  var node = reasoner.node(type);
+  let thing;
+  let node = reasoner.node(type);
   if (node.is(as.Link)) {
     thing = exports.Link;
   } else if (node.is(as.OrderedCollectionPage)) {
@@ -119,8 +119,8 @@ function core_recognizer(type) {
 var recognizers = [core_recognizer];
 
 function recognize(type) {
-  for (var n = 0, l = recognizers.length; n < l; n++) {
-    var thing = recognizers[n](type);
+  for (let recognizer of recognizers) {
+    let thing = recognizer(type);
     if (thing) return thing;
   }
   return undefined;

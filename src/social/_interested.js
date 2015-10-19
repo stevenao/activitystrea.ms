@@ -10,7 +10,7 @@ class Interested extends Population {
   }
 
   get confidence() {
-    var ret = Math.min(100,Math.max(0,this.get(social.confidence)));
+    let ret = Math.min(100,Math.max(0,this.get(social.confidence)));
     return isNaN(ret) ? undefined : ret;
   }
 }

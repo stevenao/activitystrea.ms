@@ -6,7 +6,7 @@ const AsObject = require('../models').Object;
 const utils    = require('../utils');
 
 function _set(target, key, val) {
-  var options = {};
+  let options = {};
   if (utils.is_primitive(val)) {
     if (utils.is_string(val))
       options.type = xsd.string;

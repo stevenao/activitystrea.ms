@@ -36,7 +36,8 @@ class Activity extends AsObject {
   }
 
   get priority() {
-    return this.get(as.priority);
+    let ret = Math.min(1,Math.max(0,this.get(as.priority)));
+    return isNaN(ret) ? 0 : ret;
   }
 
 }

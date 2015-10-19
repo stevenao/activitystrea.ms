@@ -11,7 +11,7 @@ module.exports = exports = {
   },
 
   define(target, key, accessor, writable) {
-    var def = {
+    let def = {
       configurable: false,
       enumerable: true
     };

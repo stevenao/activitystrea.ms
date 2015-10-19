@@ -21,7 +21,7 @@ class Collection extends AsObject {
   }
 
   get totalItems() {
-    var ret = Math.max(0,this.get(as.totalItems));
+    let ret = Math.max(0,this.get(as.totalItems));
     return isNaN(ret) ? 0 : ret ;
   }
 
@@ -38,7 +38,7 @@ class Collection extends AsObject {
   }
 
   get items() {
-    var val = this.get(as.items);
+    let val = this.get(as.items);
     if (!val) return undefined;
     return Array.isArray(val) && Array.isArray(val[0]) ? val[0] : val;
   }
@@ -89,7 +89,7 @@ class CollectionBuilder extends AsObject.Builder {
     if (!val) return this;
     if (!Array.isArray(val) && arguments.length > 1)
       val = slice.call(arguments);
-    var set = false;
+    let set = false;
     if (!this[_items]) {
       this[_items] = new Base.Builder();
       set = true;

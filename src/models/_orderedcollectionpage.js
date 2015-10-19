@@ -10,7 +10,7 @@ class OrderedCollectionPage extends CollectionPage {
   }
 
   get startIndex() {
-    var ret = Math.max(0,this.get(as.startIndex));
+    let ret = Math.max(0,this.get(as.startIndex));
     return isNaN(ret) ? 0 : ret;
   }
 }

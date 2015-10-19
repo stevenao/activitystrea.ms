@@ -11,7 +11,7 @@ class Link extends Base {
   }
 
   get href() {
-    var ret = this.get(as.href);
+    let ret = this.get(as.href);
     return ret ? ret.id : undefined;
   }
 
@@ -36,17 +36,17 @@ class Link extends Base {
   }
 
   get height() {
-    var ret = Math.max(0, this.get(as.height));
+    let ret = Math.max(0, this.get(as.height));
     return isNaN(ret) ? 0 : ret;
   }
 
   get width() {
-    var ret = Math.max(0, this.get(as.width));
+    let ret = Math.max(0, this.get(as.width));
     return isNaN(ret) ? 0 : ret;
   }
 
   get duration() {
-    var ret = this.get(as.duration);
+    let ret = this.get(as.duration);
     if (typeof ret === 'undefined') return;
     return moment.duration(isNaN(ret)?ret:(ret*1000));
   }

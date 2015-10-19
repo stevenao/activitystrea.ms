@@ -12,27 +12,27 @@ class Place extends AsObject {
   }
 
   get accuracy() {
-    var ret = Math.min(100, Math.max(0, this.get(as.accuracy)));
+    let ret = Math.min(100, Math.max(0, this.get(as.accuracy)));
     return isNaN(ret) ? undefined : ret ;
   }
 
   get altitude() {
-    var ret = this.get(as.altitude);
+    let ret = this.get(as.altitude);
     return isNaN(ret) ? undefined : ret ;
   }
 
   get latitude() {
-    var ret = Math.min(90.0, Math.max(-90.0, this.get(as.latitude)));
+    let ret = Math.min(90.0, Math.max(-90.0, this.get(as.latitude)));
     return isNaN(ret) ? undefined : ret ;
   }
 
   get longitude() {
-    var ret = Math.min(180.0, Math.max(-180.0, this.get(as.longitude)));
+    let ret = Math.min(180.0, Math.max(-180.0, this.get(as.longitude)));
     return isNaN(ret) ? undefined : ret ;
   }
 
   get radius() {
-    var ret = Math.max(0, this.get(as.radius));
+    let ret = Math.max(0, this.get(as.radius));
     return isNaN(ret) ? undefined : ret ;
   }
 

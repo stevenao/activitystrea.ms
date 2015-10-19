@@ -21,18 +21,14 @@ class AS2Stream extends Transform {
   }
 
   _flush(callback) {
-    var self = this;
-    setImmediate(function() {
+    setImmediate(()=> {
       try {
-        var res = JSON.parse(self[buf]);
-        self[buf] = '';
+        let res = JSON.parse(this[buf]);
+        this[buf] = '';
         res['@context'] = res['@context'] || ctx;
-        as.import(res, function(err,obj) {
-          if (err) {
-            callback(err);
-            return;
-          }
-          self.push(obj);
+        as.import(res, (err,obj)=> {
+          if (err) return callback(err);
+          this.push(obj);
           callback();
         });
       } catch (err) {

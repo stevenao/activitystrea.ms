@@ -74,9 +74,9 @@ exports.compoundPopulation = function(types) {
 };
 
 function social_recognizer(type) {
-  var thing;
+  let thing;
   if (type) {
-    var node = reasoner.node(type);
+    let node = reasoner.node(type);
     if (node.is(social.Common)) {
       thing = exports.Common;
     } else if (node.is(social.Interested)) {
@@ -120,7 +120,7 @@ exports.init = function(models, reasoner, context) {
 
   models.use(social_recognizer);
 
-  var graph = new reasoner.Graph();
+  let graph = new reasoner.Graph();
   [
     [social.Population, as.Object],
     [social.Everyone, social.Population],
@@ -134,7 +134,7 @@ exports.init = function(models, reasoner, context) {
     [social.Any, social.CompoundPopulation],
     [social.None, social.CompoundPopulation],
     [social.CompoundPopulation, social.Population]
-  ].forEach(function (pair) {
+  ].forEach((pair)=> {
     graph.add({
       subject: pair[0],
       predicate: rdfs.subClassOf,
@@ -142,7 +142,7 @@ exports.init = function(models, reasoner, context) {
     });
   });
 
-  var functionalDatatype = [
+  let functionalDatatype = [
         owl.DatatypeProperty,
         owl.FunctionalProperty
       ];
@@ -153,7 +153,7 @@ exports.init = function(models, reasoner, context) {
     [social.havingRole, owl.ObjectProperty],
     [social.havingRelationship, owl.ObjectProperty],
     [social.distance, functionalDatatype]
-  ].forEach(function(pair) {
+  ].forEach((pair)=> {
     graph.add({
       subject: pair[0],
       predicate: rdf.type,

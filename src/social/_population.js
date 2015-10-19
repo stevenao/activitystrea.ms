@@ -10,7 +10,7 @@ class Population extends AsObject {
   }
 
   get distance() {
-    var ret = Math.max(0,this.get(social.distance));
+    let ret = Math.max(0,this.get(social.distance));
     return isNaN(ret) ? undefined : ret;
   }
 }

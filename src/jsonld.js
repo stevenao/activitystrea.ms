@@ -21,11 +21,15 @@ function warn() {
   }
 }
 
-function custom_doc_loader(url, callback) {
+function checkCallback(callback) {
   throwif(
     typeof callback !== 'function',
     'A callback function must be provided');
-  var u = url;
+}
+
+function custom_doc_loader(url, callback) {
+  checkCallback(callback);
+  let u = url;
   if (u[u.length-1] !== '#') u += '#';
   if (u === vocabs.as.ns) {
     return callback(null, {
@@ -45,8 +49,8 @@ function custom_doc_loader(url, callback) {
 jsonld.documentLoader = custom_doc_loader;
 
 function getContext(options) {
-  var ctx = [];
-  var ext = ext_context.get();
+  let ctx = [];
+  let ext = ext_context.get();
   if (ext)
     ctx = ctx.concat(ext);
   if (options && options.sign)
@@ -55,12 +59,6 @@ function getContext(options) {
     ctx.push(options.additional_context);
   ctx.push(vocabs.as.ns);
   return {'@context': ctx.length > 1 ? ctx : ctx[0]};
-}
-
-function checkCallback(callback) {
-  throwif(
-    typeof callback !== 'function',
-    'A callback function must be provided');
 }
 
 module.exports = {
@@ -75,11 +73,8 @@ module.exports = {
     jsonld.normalize(
       expanded,
       {format:'application/nquads'},
-      function(err,doc) {
-        if (err) {
-          callback(err);
-          return;
-        }
+      (err,doc)=> {
+        if (err) return callback(err);
         callback(null,doc);
       });
   },
@@ -91,15 +86,12 @@ module.exports = {
     }
     options = options || {};
     checkCallback(callback);
-    var _context = getContext(options);
+    let _context = getContext(options);
     jsonld.compact(
       expanded, _context,
       {documentLoader: custom_doc_loader},
-      function(err, doc) {
-        if (err) {
-          callback(err);
-          return;
-        }
+      (err, doc)=> {
+        if (err) return callback(err);
         if (typeof options.sign === 'object') {
           warn();
           jsig.sign(doc,options.sign,callback);
@@ -127,13 +119,10 @@ module.exports = {
         documentLoader: custom_doc_loader,
         keepFreeFloatingNodes: true
       },
-      function(err,expanded) {
-        if (err) {
-          callback(err);
-          return;
-        }
+      (err,expanded)=> {
+        if (err) return callback(err);
         if (expanded && expanded.length > 0) {
-          var base = models.wrap_object(expanded[0]);
+          let base = models.wrap_object(expanded[0]);
           callback(null,base);
         } else {
           callback(null,null);
@@ -145,12 +134,9 @@ module.exports = {
   importFromRDF(input, callback) {
     checkCallback(callback);
     jsonld.fromRDF(input, {format:'application/nquads'},
-    function(err,expanded) {
-      if (err) {
-        callback(err);
-        return;
-      }
-      var base = models.wrap_object(expanded[0]);
+    (err,expanded)=> {
+      if (err) return callback(err);
+      let base = models.wrap_object(expanded[0]);
       callback(null,base);
     });
   }
