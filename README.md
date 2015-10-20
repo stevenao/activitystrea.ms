@@ -2,8 +2,8 @@
 
 Based on:
 
-* http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams2.html
-* http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams2-vocabulary.html
+* http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams-core/index.html
+* http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams-vocabulary/index.html
 
 Includes experimental support for:
 
