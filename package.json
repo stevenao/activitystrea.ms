@@ -1,6 +1,6 @@
 {
   "name": "activitystrea.ms",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "description": "Activity Streams 2.0 JavaScript Implementation",
   "author": {
     "name": "James M Snell",
@@ -35,7 +35,7 @@
     "readable-stream": "^2.0.2",
     "reasoner": "0.1.0",
     "request": "^2.65.0",
-    "rfc5646": "^1.0.1"
+    "rfc5646": "^2.0.0"
   },
   "devDependencies": {
     "mocha": "^2.3.3",

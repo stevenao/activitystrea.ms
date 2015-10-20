@@ -6,6 +6,10 @@ const utils = require('../utils');
 
 module.exports = exports = {
 
+  get LanguageValue() {
+    return require('./_languagevalue');
+  },
+
   get Base() {
     return require('./_base');
   },

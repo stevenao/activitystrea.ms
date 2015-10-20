@@ -26,8 +26,10 @@ var as = require('activitystrea.ms');
 // Create a simple object
 as.object().
   displayName('baz').
-  content('bar', 'en').
-  content('foo', 'fr').
+  content(
+    as.langmap()
+      .set('en', 'bar')
+      .set('fr', 'foo'))
   publishedNow().
   prettyWrite(function(err,doc) {
     console.log(doc);
@@ -810,25 +812,91 @@ Adds a value to the `http://www.w3.org/ns/activitystreams#attachment` property.
 
 Adds a value to the `http://www.w3.org/ns/activitystreams#attributedTo` property.
 
-#### Method: `<Builder> as.models.Object.Builder.prototype.content(val[, lang])`
+#### Method: `<Builder> as.models.Object.Builder.prototype.content(val)`
 
-Sets an optional language-tagged value for the `http://www.w3.org/ns/activitystreams#content` property.
+Sets an optional language-tagged value for the `http://www.w3.org/ns/activitystreams#content` property. To set
+language-tagged values, use the `as.langmap` method to create a
+LanguageValue.Builder.
+
+```
+as.object()
+  .content('simple content')
+  .get();
+```
+
+```
+as.object()
+  .content(
+    as.langmap()
+      .set('default content')
+      .set('es', 'other content')
+  )
+  .get();
+```
 
 #### Method: `<Builder> as.models.Object.Builder.prototype.context(val)`
 
 Adds a value to the `http://www.w3.org/ns/activitystreams#context` property.
 
-#### Method: `<Builder> as.models.Object.Builder.prototype.displayName(val[, lang])`
+#### Method: `<Builder> as.models.Object.Builder.prototype.displayName(val)`
 
 Sets an optional language-tagged value for the `http://www.w3.org/ns/activitystreams#displayName` property.
 
-#### Method: `<Builder> as.models.Object.Builder.prototype.summary(val[, lang])`
+```
+as.object()
+  .displayName('simple display name')
+  .get();
+```
+
+```
+as.object()
+  .displayName(
+    as.langmap()
+      .set('default display name')
+      .set('es', 'other display name')
+  )
+  .get();
+```
+
+#### Method: `<Builder> as.models.Object.Builder.prototype.summary(val)`
 
 Sets an optional language-tagged value for the `http://www.w3.org/ns/activitystreams#summary` property.
 
-#### Method: `<Builder> as.models.Object.Builder.prototype.title(val[, lang])`
+```
+as.object()
+  .summary('simple summary')
+  .get();
+```
+
+```
+as.object()
+  .summary(
+    as.langmap()
+      .set('default summary')
+      .set('es', 'other summary')
+  )
+  .get();
+```
+
+#### Method: `<Builder> as.models.Object.Builder.prototype.title(val)`
 
 Sets an optional language-tagged value for the `http://www.w3.org/ns/activitystreams#title` property.
+
+```
+as.object()
+  .title('simple title')
+  .get();
+```
+
+```
+as.object()
+  .title(
+    as.langmap()
+      .set('default title')
+      .set('es', 'other title')
+  )
+  .get();
+```
 
 #### Method: `<Builder> as.models.Object.Builder.prototype.endTime(val)`
 
@@ -1182,13 +1250,45 @@ Adds a value to the `http://www.w3.org/ns/activitystreams#rel` property;
 
 Sets the value of the `http://www.w3.org/ns/activitystreams#mediaType` property. The value must be a valid MIME type.
 
-#### Method: `<Builder> as.models.Link.Builder.prototype.displayName(val[, lang])`
+#### Method: `<Builder> as.models.Link.Builder.prototype.displayName(val)`
 
 Specifies an optionally language-tagged displayName.
 
-#### Method: `<Builder> as.models.Link.Builder.prototype.title(val[, lang])`
+```
+as.link()
+  .displayName('simple display name')
+  .get();
+```
+
+```
+as.link()
+  .displayName(
+    as.langmap()
+      .set('default display name')
+      .set('es', 'other display name')
+  )
+  .get();
+```
+
+#### Method: `<Builder> as.models.Link.Builder.prototype.title(val)`
 
 Specifies an optionally language-tagged title.
+
+```
+as.link()
+  .title('simple title')
+  .get();
+```
+
+```
+as.link()
+  .title(
+    as.langmap()
+      .set('default title')
+      .set('es', 'other title')
+  )
+  .get();
+```
 
 #### Method: `<Builder> as.models.Link.Builder.prototype.hreflang(val)`
 
@@ -1348,23 +1448,27 @@ Used to encapsulate language tagged properties within an Activity Streams docume
 ```javascript
 // assuming the default system locale is  `en-US`:
 var obj = as.object()
-  .displayName('default display name')
-  .displayName('other display name', 'sp')
+  .displayName(
+    as.langmap()
+      .set('default display name')
+      .set('es', 'other display name')
+  )
   .get();
 var languagevalue = obj.displayName;
-console.log(languagevalue.valueOf()); // 'default display name'
-console.log(languagevalue.valueOf('sp')); // 'other display name'
+console.log(languagevalue.get()); // 'default display name'
+console.log(languagevalue.get('es')); // 'other display name'
 ```
 
 ```javascript
 // assuming the default system locale is  `sp`:
 var obj = as.object()
-  .displayName('default display name')
-  .displayName('other display name', 'sp')
+  .displayName(
+    as.langmap()
+      .set('default display name')
+      .set('es', 'other display name')
+  )
   .get();
 var languagevalue = obj.displayName;
-console.log(languagevalue.valueOf()); // 'other display name'
-console.log(languagevalue.valueOf('en-US')); // 'other display name'
+console.log(languagevalue.get()); // 'other display name'
+console.log(languagevalue.get('en-US')); // 'default display name'
 ```
-
-Developers will not create instances of this class directly.

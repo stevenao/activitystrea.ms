@@ -72,14 +72,6 @@ module.exports = exports = {
     this.set(key, fmt,{type:vocabs.xsd.dateTime});
   },
 
-  set_lang_val(key, val, lang) {
-    if (lang) {
-      this.set(key, val, {lang:lang});
-    } else {
-      this.set(key, val);
-    }
-  },
-
   set_ranged_val(key, val, min, max, type) {
     exports.throwif(isNaN(val), key + ' must be a number');
     if (!isFinite(val)) return;

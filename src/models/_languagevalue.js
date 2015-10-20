@@ -3,44 +3,60 @@
 const LanguageTag = require('rfc5646');
 const utils = require('../utils');
 
-const _def = Symbol('_def');
+const _map = Symbol('map');
 
 class LanguageValue {
-  constructor(res) {
-    utils.throwif(!Array.isArray(res));
-    res.forEach((item)=> {
-      let value = item['@value'];
-      let language = item['@language'];
-      if (language !== undefined) {
-        utils.define(this, new LanguageTag(language).toString(), value);
-      } else {
-        this[_def] = value;
-      }
-    });
+  constructor(map) {
+    this[_map] = map;
   }
-
-  toString() {
-    return this.valueOf();
-  }
-
-  valueOf(tag) {
-    if (!tag) return this[_def] || this.valueOf(LanguageValue.system_language);
-    // first check for an exact match
-    let checktag = new LanguageTag(tag);
-    if (this.hasOwnProperty(checktag.toString()))
-      return this[checktag.toString()];
-    // otherwise, search for a match
-    for (let key of Object.getOwnPropertyNames(this)) {
-      let keytag = new LanguageTag(key);
-      if (keytag.suitableFor(checktag) ||
-          checktag.suitableFor(keytag))
-        return this[key];
+  get(lang) {
+    if (!lang) return this.get(LanguageValue.SYSLANG);
+    let checktag = new LanguageTag(lang);
+    if (this[_map].has(checktag.toString()))
+      return this[_map].get(checktag.toString());
+    for (let pair of this[_map]) {
+      let key = new LanguageTag(pair[0]);
+      if (checktag == '*' ||
+          key.suitableFor(checktag) ||
+          checktag.suitableFor(key))
+        return pair[1];
     }
+  }
+  has(lang) {
+    if (!lang) return this.get(LanguageValue.SYSLANG);
+    let checktag = new LanguageTag(lang);
+    return this[_map].has(checktag);
+  }
+  *[Symbol.iterator]() {
+    for (let pair of this[_map])
+      yield [pair[0].toString(), pair[1]];
+  }
+  valueOf(lang) {
+    return this.get(lang);
   }
 }
 
-LanguageValue.system_language =
+class LanguageValueBuilder {
+  constructor() {
+    this[_map] = new Map();
+  }
+  set(lang, value) {
+    if (arguments.length === 1) {
+      value = lang;
+      lang = LanguageValue.SYSLANG;
+    }
+    this[_map].set(new LanguageTag(lang).toString(), value);
+    return this;
+  }
+  get() {
+    return new LanguageValue(this[_map]);
+  }
+}
+
+LanguageValue.SYSLANG =
   process.env.LANG ?
-    process.env.LANG.split('.')[0].replace('_','-') : 'en';
+    process.env.LANG.split('.')[0].replace('_','-') : 'en-US';
+
+LanguageValue.Builder = LanguageValueBuilder;
 
 module.exports = LanguageValue;

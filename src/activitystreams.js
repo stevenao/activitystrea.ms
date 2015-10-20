@@ -44,6 +44,10 @@ module.exports = {
     return jsonld.importFromRDF;
   },
 
+  langmap() {
+    return new this.models.LanguageValue.Builder();
+  },
+
   object(types) {
     return new this.models.Object.Builder(_types(types));
   },

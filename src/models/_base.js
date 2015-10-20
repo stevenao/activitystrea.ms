@@ -30,7 +30,9 @@ function is_iterable(item) {
   return item &&
     typeof item !== 'string' &&
     !(item instanceof Base) &&
-    (typeof item[Symbol.iterator] === 'function');
+    (typeof item[Symbol.iterator] === 'function') &&
+    !(item instanceof LanguageValue) &&
+    !(item instanceof LanguageValue.Builder);
 }
 
 function convert(item) {
@@ -156,7 +158,13 @@ class Base {
       let res = this[_expanded][key] || [];
       if (!res.length) return;
       if (nodekey.is(asx.LanguageProperty)) {
-        this[_cache][key] = new LanguageValue(res);
+        let lvb = new LanguageValue.Builder();
+        res.forEach((item)=>{
+          let language = item['@language'] || LanguageValue.SYSLANG;
+          let value = item['@value'];
+          lvb.set(language, value);
+        });
+        this[_cache][key] = lvb.get();
       } else {
         ret = new ValueIterator(res);
         this[_cache][key] =
@@ -311,7 +319,7 @@ class BaseBuilder {
    set(key, val, options) {
      let expanded = this[_base][_expanded];
      options = options || {};
-     if (val instanceof BaseBuilder)
+     if (val instanceof BaseBuilder || val instanceof LanguageValue.Builder)
        val = val.get();
      let n, l;
      key = vocabs.as[key] || key;
@@ -345,6 +353,13 @@ class BaseBuilder {
              expanded[key].push(base[_expanded]);
            } else {
              throw new Error('Invalid object property type');
+           }
+         } else if (value instanceof LanguageValue) {
+           for (let pair of value) {
+             expanded[key].push({
+               '@language': pair[0],
+               '@value': pair[1]
+             });
            }
          } else {
            let lang = options.lang;

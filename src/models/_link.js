@@ -74,13 +74,13 @@ class LinkBuilder extends Base.Builder {
     return this;
   }
 
-  displayName(val, lang) {
-    utils.set_lang_val.call(this, as.displayName, val, lang);
+  displayName(val) {
+    this.set(as.displayName, val);
     return this;
   }
 
-  title(val, lang) {
-    utils.set_lang_val.call(this, as.title, val, lang);
+  title(val) {
+    this.set(as.title, val);
     return this;
   }
 

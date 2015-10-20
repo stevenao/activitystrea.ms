@@ -137,8 +137,8 @@ class AsObjectBuilder extends Base.Builder {
     return this;
   }
 
-  content(val, lang) {
-    utils.set_lang_val.call(this, as.content, val, lang);
+  content(val) {
+    this.set(as.content, val);
     return this;
   }
 
@@ -147,18 +147,18 @@ class AsObjectBuilder extends Base.Builder {
     return this;
   }
 
-  displayName(val, lang) {
-    utils.set_lang_val.call(this, as.displayName, val, lang);
+  displayName(val) {
+    this.set(as.displayName, val);
     return this;
   }
 
-  summary(val, lang) {
-    utils.set_lang_val.call(this, as.summary, val, lang);
+  summary(val) {
+    this.set(as.summary, val);
     return this;
   }
 
-  title(val, lang) {
-    utils.set_lang_val.call(this, as.title, val, lang);
+  title(val) {
+    this.set(as.title, val);
     return this;
   }
 
