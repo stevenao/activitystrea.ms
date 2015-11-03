@@ -11,6 +11,7 @@ const jsonld = require('../jsonld');
 const moment = require('moment');
 const as = vocabs.as;
 const asx = vocabs.asx;
+const xsd = vocabs.xsd;
 const owl = vocabs.owl;
 const throwif = utils.throwif;
 
@@ -42,6 +43,8 @@ function convert(item) {
     let node = reasoner.node(type);
     if (node.is(asx.Number))
       value = Number(value);
+    else if (node.is(xsd.duration))
+      value = value;
     else if (node.is(asx.Date))
       value = moment(value);
     else if (node.is(asx.Boolean))
@@ -166,10 +169,9 @@ class Base {
         });
         this[_cache][key] = lvb.get();
       } else {
-        ret = new ValueIterator(res);
-        this[_cache][key] =
-          nodekey.is(owl.FunctionalProperty) ?
-            ret.first : ret;
+        res = new ValueIterator(res);
+        this[_cache][key] = nodekey.is(owl.FunctionalProperty) ?
+          res.first : res;
       }
     }
     return this[_cache][key];

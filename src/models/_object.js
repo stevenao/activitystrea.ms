@@ -10,10 +10,6 @@ class AsObject extends Base {
     super(expanded, builder || AsObject.Builder);
   }
 
-  get alias() {
-    return this.get(as.alias);
-  }
-
   get attachment() {
     return this.get(as.attachment);
   }
@@ -120,11 +116,6 @@ class AsObjectBuilder extends Base.Builder {
   constructor(types, base) {
     types = (types || []).concat([as.Object]);
     super(types, base || new AsObject({}));
-  }
-
-  alias(val) {
-    this.set(as.alias, val);
-    return this;
   }
 
   attachment(val) {

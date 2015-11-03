@@ -90,12 +90,11 @@ module.exports = exports = {
     exports.throwif(
       isNaN(val) && !exports.is_string(val) && typeof val.humanize === 'undefined',
       key + ' must be a number or a string');
-    if (typeof val.humanize === 'function') {
-      this.set(key, val.toString(), {type: vocabs.xsd.duration});
-    } else if (!isNaN(val)) {
-      exports.set_non_negative_int.call(this, key, val);
+    if (!isNaN(val)) {
+      val = moment.duration(val * 1000).toString();
     } else {
-      this.set(key, val.toString());
+      val = val.toString();
     }
+    this.set(key, val, {type: vocabs.xsd.duration});
   }
 };

@@ -10,6 +10,10 @@ class Content extends AsObject {
     super(expanded, builder || Content.Builder);
   }
 
+  get mediaType() {
+    return this.get(as.mediaType) || 'text/html';
+  }
+  
   get height() {
     let ret = Math.max(0, this.get(as.height));
     return isNaN(ret) ? 0 : ret;
@@ -32,6 +36,11 @@ class ContentBuilder extends AsObject.Builder {
   constructor(types, base) {
     types = (types || []).concat([as.Content]);
     super(types, base || new Content({}));
+  }
+
+  mediaType(val) {
+    this.set(as.mediaType, val);
+    return this;
   }
 
   height(val) {

@@ -372,10 +372,6 @@ Returns a new `as.models.Activity.Builder` instance generating an `http://www.w3
 
 Returns a new `as.models.Activity.Builder` instance generating an `http://www.w3.org/ns/activity#Update` activity.
 
-#### `<as.models.Activity.Builder> as.experience([types])`
-
-Returns a new `as.models.Activity.Builder` instance generating an `http://www.w3.org/ns/activity#Experience` activity.
-
 #### `<as.models.Activity.Builder> as.view([types])`
 
 Returns a new `as.models.Activity.Builder` instance generating an `http://www.w3.org/ns/activity#View` activity.
@@ -423,10 +419,6 @@ Returns a new `as.models.Actor.Builder` instance generating an `http://www.w3.or
 #### `<as.models.Actor.Builder> as.person([types])`
 
 Returns a new `as.models.Actor.Builder` instance generating an `http://www.w3.org/ns/activity#Person` object.
-
-#### `<as.models.Actor.Builder> as.process([types])`
-
-Returns a new `as.models.Actor.Builder` instance generating an `http://www.w3.org/ns/activity#Process` object.
 
 #### `<as.models.Actor.Builder> as.service([types])`
 
@@ -692,10 +684,6 @@ Returns the constructed `as.models.Base` instance.
 
 The base class for all Activity Streams 2.0 Object instances. Inherits from `as.models.Base`
 
-#### Property: `as.models.Object.prototype.alias`
-
-Returns the value of the `http://www.w3.org/ns/activitystreams#alias` property.
-
 #### Property: `as.models.Object.prototype.attachment`
 
 Returns the value of the `http://www.w3.org/ns/activitystreams#attachment` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
@@ -799,10 +787,6 @@ Returns the value of the `http://www.w3.org/ns/activitystreams#bcc` property. Wi
 ### Class: `as.models.Object.Builder > as.models.Base.Builder`
 
 Builder for `as.models.Object` instances.
-
-#### Method: `<Builder> as.models.Object.Builder.prototype.alias(val)`
-
-Sets the value of the `http://www.w3.org/ns/activitystreams#alias` property.
 
 #### Method: `<Builder> as.models.Object.Builder.prototype.attachment(val)`
 
@@ -1018,10 +1002,6 @@ Returns the value of the `http://www.w3.org/ns/activitystreams#origin` property.
 
 Returns the value of the `http://www.w3.org/ns/activitystreams#instrument` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
-#### Property: `as.models.Activity.prototype.priority`
-
-Returns the value of the `http://www.w3.org/ns/activitystreams#priority` property. With be either `undefined` or a Numeric float value between 0.0 and 1.0.
-
 ### Class: `as.models.Activity.Builder > as.models.Object.Builder`
 
 The base class for all `as.models.Activity` builder instances. Inherits from `as.models.Object.Builder`
@@ -1049,10 +1029,6 @@ Adds a value to the `http://www.w3.org/ns/activitystreams#origin` property.
 #### Method: `<Builder> as.models.Activity.Builder.instrument(val)`
 
 Adds a value to the `http://www.w3.org/ns/activitystreams#instrument` property.
-
-#### Method: `<Builder> as.models.Activity.Builder.priority(val)`
-
-Sets the value of the `http://www.w3.org/ns/activitystreams#priority` property. The value must be a Numeric float between 0.0 and 1.0.
 
 ### Class: `as.models.Actor > as.models.Object`
 

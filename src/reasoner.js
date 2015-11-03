@@ -191,24 +191,19 @@ graph.add({
   object: as.Activity
 });
 graph.add({
-  subject: as.Experience,
+  subject: as.View,
   predicate: rdfs.subClassOf,
   object: as.Activity
 });
 graph.add({
-  subject: as.View,
-  predicate: rdfs.subClassOf,
-  object: as.Experience
-});
-graph.add({
   subject: as.Listen,
   predicate: rdfs.subClassOf,
-  object: as.Experience
+  object: as.Activity
 });
 graph.add({
   subject: as.Read,
   predicate: rdfs.subClassOf,
-  object: as.Experience
+  object: as.Activity
 });
 graph.add({
   subject: as.Move,
@@ -269,11 +264,6 @@ graph.add({
   subject: as.Place,
   predicate: rdfs.subClassOf,
   object: as.Object
-});
-graph.add({
-  subject: as.Process,
-  predicate: rdfs.subClassOf,
-  object: as.Actor
 });
 graph.add({
   subject: as.Question,
@@ -517,11 +507,6 @@ graph.add({
   object: functionalDatatype
 });
 graph.add({
-  subject: as.alias,
-  predicate: rdf.type,
-  object: functionalObject
-});
-graph.add({
   subject: as.altitude,
   predicate: rdf.type,
   object: functionalDatatype
@@ -573,11 +558,6 @@ graph.add({
 });
 graph.add({
   subject: as.mediaType,
-  predicate: rdf.type,
-  object: functionalDatatype
-});
-graph.add({
-  subject: as.priority,
   predicate: rdf.type,
   object: functionalDatatype
 });

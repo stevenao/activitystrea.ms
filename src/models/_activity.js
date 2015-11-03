@@ -35,11 +35,6 @@ class Activity extends AsObject {
     return this.get(as.instrument);
   }
 
-  get priority() {
-    let ret = Math.min(1,Math.max(0,this.get(as.priority)));
-    return isNaN(ret) ? 0 : ret;
-  }
-
 }
 
 class ActivityBuilder extends AsObject.Builder {
@@ -78,15 +73,6 @@ class ActivityBuilder extends AsObject.Builder {
     return this;
   }
 
-  priority(val) {
-    utils.set_ranged_val.call(
-      this,
-      as.priority,
-      val, 0.0, 1.0,
-      xsd.float
-    );
-    return this;
-  }
 }
 Activity.Builder = ActivityBuilder;
 

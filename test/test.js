@@ -34,7 +34,6 @@ describe('Basics...', function () {
   });
   
   function testFunctionalProperties(object) {
-    assert.equal(object.alias.id, 'http://example.org/foo');
     assert.equal(object.content.get(), 'bar');
     assert.equal(object.content.get('fr'), 'foo');
     assert.equal(object.displayName.get('de'), 'baz');
@@ -48,7 +47,6 @@ describe('Basics...', function () {
   
   it('should create an object and return all the correct values', function () {
     var object = as.object()
-      .alias('http://example.org/foo')
       .content(
         as.langmap()
           .set('en', 'bar')
@@ -72,7 +70,6 @@ describe('Basics...', function () {
   
   it('should roundtrip correctly', function() {
     var object = as.object()
-      .alias('http://example.org/foo')
       .content(
         as.langmap()
           .set('en', 'bar')
@@ -143,7 +140,6 @@ describe('Basics...', function () {
      ['remove',vocabs.as.Remove],
      ['undo',vocabs.as.Undo],
      ['update',vocabs.as.Update],
-     ['experience',vocabs.as.Experience],
      ['view',vocabs.as.View],
      ['listen',vocabs.as.Listen],
      ['read',vocabs.as.Read],
@@ -167,7 +163,6 @@ describe('Basics...', function () {
      ['group',vocabs.as.Group],
      ['person',vocabs.as.Person],
      ['organization',vocabs.as.Organization],
-     ['process',vocabs.as.Process],
      ['service',vocabs.as.Service],
      ['article',vocabs.as.Article],
      ['document',vocabs.as.Document],
@@ -415,12 +410,10 @@ describe('Basics...', function () {
       .result('http://example.org/result')
       .origin('http://example.org/origin')
       .instrument('http://example.org/instrument')
-      .priority(0.50)
       .get();
 
     assert(doc instanceof as.models.Activity);
     assert.equal(doc.id, 'http://example.org');
-    assert.equal(doc.priority, 0.50);
 
     assert(doc.actor);
     assert.equal(doc.actor.length,1);
@@ -456,15 +449,13 @@ describe('Basics...', function () {
       target: 'http://example.org/target',
       result: 'http://example.org/result',
       origin: 'http://example.org/origin',
-      instrument: 'http://example.org/instrument',
-      priority: 0.50
+      instrument: 'http://example.org/instrument'
     };
 
     as.import(test, function(err,doc) {
       assert.equal(err, undefined);
       assert(doc instanceof as.models.Activity);
       assert.equal(doc.id, 'http://example.org');
-      assert.equal(doc.priority, 0.50);
 
       assert(doc.actor);
       assert.equal(doc.actor.length,1);
@@ -503,7 +494,7 @@ describe('Basics...', function () {
       hreflang: 'en',
       height: 10,
       width: 10,
-      duration: 10
+      duration: 'PT10S'
     };
     as.import(test, function(err, doc) {
       assert.equal(err, undefined);
@@ -563,7 +554,6 @@ describe('Basics...', function () {
       '@context': 'http://www.w3.org/ns/activitystreams#',
       '@id': 'http://example.org',
       '@type': 'Object',
-      alias: '@test',
       attachment: 'http://example.org/attachment',
       attributedTo: 'http://sally.example.org',
       content: 'the content',
@@ -593,8 +583,6 @@ describe('Basics...', function () {
       assert.equal(err, undefined);
       assert.equal(doc.id, 'http://example.org');
       assert.equal(doc.type, vocabs.as.Object);
-      assert(doc.alias);
-      assert.equal(doc.alias.id, '@test');
       assert(doc.attachment);
       assert.equal(doc.attachment.length,1);
       assert.equal(doc.attachment.first.id, 'http://example.org/attachment');
@@ -665,7 +653,6 @@ describe('Basics...', function () {
      function(done) {
     var doc = as.object()
       .id('http://example.org')
-      .alias('@test')
       .attachment('http://example.org/attachment')
       .attributedTo('http://sally.example.org')
       .content('the content')
@@ -693,8 +680,6 @@ describe('Basics...', function () {
       .get();
       assert.equal(doc.id, 'http://example.org');
       assert.equal(doc.type, vocabs.as.Object);
-      assert(doc.alias);
-      assert.equal(doc.alias.id, '@test');
       assert(doc.attachment);
       assert.equal(doc.attachment.length,1);
       assert.equal(doc.attachment.first.id, 'http://example.org/attachment');
@@ -816,7 +801,7 @@ describe('Basics...', function () {
       '@type': 'Content',
       height: 10,
       width: 10,
-      duration: 10
+      duration: 'PT10S'
     };
 
     as.import(test, function(err, doc) {
@@ -855,7 +840,7 @@ describe('Basics...', function () {
       displayName: 'the question',
       height: 10,
       width: 10,
-      duration: 10,
+      duration: 'PT10S',
       anyOf: [{'@id':'urn:answer1'},{'@id':'urn:answer2'}]
     };
 

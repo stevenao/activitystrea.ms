@@ -156,10 +156,6 @@ module.exports = {
     return new module.exports.models.Activity.Builder(_types(types,as.Update));
   },
 
-  experience(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Experience));
-  },
-
   view(types) {
     return new module.exports.models.Activity.Builder(_types(types,as.View));
   },
@@ -206,10 +202,6 @@ module.exports = {
 
   person(types) {
     return new module.exports.models.Actor.Builder(_types(types,as.Person));
-  },
-
-  process(types) {
-    return new module.exports.models.Actor.Builder(_types(types,as.Process));
   },
 
   service(types) {
