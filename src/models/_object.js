@@ -9,6 +9,10 @@ class AsObject extends Base {
   constructor(expanded, builder) {
     super(expanded, builder || AsObject.Builder);
   }
+  
+  get mediaType() {
+    return this.get(as.mediaType) || 'text/html';
+  }
 
   get attachment() {
     return this.get(as.attachment);
@@ -116,6 +120,11 @@ class AsObjectBuilder extends Base.Builder {
   constructor(types, base) {
     types = (types || []).concat([as.Object]);
     super(types, base || new AsObject({}));
+  }
+
+  mediaType(val) {
+    this.set(as.mediaType, val);
+    return this;
   }
 
   attachment(val) {
