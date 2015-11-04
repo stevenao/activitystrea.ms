@@ -3,13 +3,13 @@
 -----BEGIN PGP SIGNATURE-----
 Comment: GPGTools - https://gpgtools.org
 
-iQEcBAABCgAGBQJWOTssAAoJEHNBsVwHCHesWrkH/j7RvezzmORMlVTevgBpmaHC
-GUEEv1COGOpWSIJoOf9jS4qkn2CmJ0yGist0EhiK0LcUxFOaz0jD5sfQ7tk0bvLz
-xY9zqe0xxDZAI4hs3NYoG5iQ+azd82rgf4EX/InaN2j5oZWhA653efGCnt55VW9Z
-4c9ALMzMA866kKfQXgRaAUGyBh5Z9ntXXIlPeCKcLMaSjf9ILi9+zgoCwjENpxWF
-qD1skgM/r0N6o31SrVNaD497/MPYQO7c1DfqZOg0QgGa001PRuqt+ri5GHziR+tl
-7wye9d2loFBw+qHUCwykuMey5wLWz8MLwADqEtn/xN/tTte3dAavf92O1VZuvk4=
-=qAW4
+iQEcBAABCgAGBQJWOnXhAAoJEHNBsVwHCHes5IsH/RBwyvjBwNbYCan/WEuO78sW
+aY0zJw6StBUq7EoleX+J2n3MTh1KfRDAw1WgreGumclPgs+AJPGBrQiNtBb447pt
+iRrVCsNREHkriZtejUg0Lg14cK9R7CjJR7FuR6Q2uIgMAcOGwRJKqJJZZHMOXdYX
+SBjD+jsZMJAt3RPWvVXqmSObpjc77fZeSsO5bfeAllYo5Ayy2gUq5S02TLtF9uv9
+feQPiyYjM92hveT67T3+c/tZRCzXKT3Jr6v2XstIMWcb9lxM3I6cA9Ik+H+99DN7
+pVGSMNVJJ6E51F+iE2H0n2rzYj6bPSp65KE0C/BzNVB4Zr7ILr9K0teYIg0wZ3A=
+=IAv0
 -----END PGP SIGNATURE-----
 
 ```
@@ -27,7 +27,7 @@ size   exec  file                             contents
 219            .jshintrc                      8e2ce6f347fb7062481f9cdbf0f6c2a10a81b081df51c735145efe08d5a2eb23
 880            CONTRIBUTING.md                8466fd261a695a6e94410759f82a97f7c3bfc78b1bbfb93adc2a9fbdaf9bf848
 11381          LICENSE                        2bcf83b42c65720625611f1fb2922bc9e3face6a22117331a13c9ed9f3af2903
-1087           package.json                   4a1291cf543e6a0ff79b95a4a8f7a6f8d5592cac370203557dbf1812946d1660
+1087           package.json                   3216d30165b382d08f66872f0f7b0ac86b686a0f734ac03b0c2dda75c9e4a84b
 53239          README.md                      1b62016a16d87078ae7f74bb74b6aecc4809e1d32eb315759569587f47938b88
                src/                                                                                           
 7182             activitystreams.js           bc6b7eb72e8ed676f29c3d68d2254020e6a02244c4fe8637b1f8cb55b968f5f8
@@ -48,10 +48,10 @@ size   exec  file                             contents
 10995              _base.js                   c516b8f82b5e20e4a623340c7adad3cd2a28ec2e8bbccd48402853fec6502be1
 2484               _collection.js             fcfd2186a9b66889a02a9db833105d5fccc1e8499d8b10d64763d2b44cd2843c
 882                _collectionpage.js         149d79dec790ad1a9597ba2a9b9b017ea3325bb590e6e53536ec758205dafa92
-1332               _content.js                bfacba4bf1c5f5fc5f35877a13044f0d5d233a88bf0cb3c928a1265bf33ddd9a
+1181               _content.js                fadea9a78491c687e3a298e344bc7a6e895176f592b3f580e35bffc6f4075db1
 1445               _languagevalue.js          7aa323a3e962da6a8ce9a37cb6622592364015e01ef6d1e411c7a5d410324dea
 1921               _link.js                   b1ae2d1b9abfa527512289dd899928c4d3febb0a19d60bc1f2499b982d4918cf
-3810               _object.js                 7e01ae3ecd33c6be7fda156fa69a52a9e0c3a3bff44c6e829aa9e3eee6e54dc7
+3961               _object.js                 39a6d1834c340b9f2607e4d1f5723ff0326a5b5153157af8b8bf85aa26e016d8
 636                _orderedcollection.js      f9ea4a7f348fed110042341d26f4925a7931e8836ba44a386180ca1821bf272a
 919                _orderedcollectionpage.js  06564ca923b98e3946038e24a76583671c39a8aec02e0746ff05ba5e8a8e6b34
 2070               _place.js                  36208093fa674202b5165e3385e28560da68ffd6c92afabec7519fbb91cfca1f
