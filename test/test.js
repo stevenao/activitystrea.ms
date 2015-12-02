@@ -36,9 +36,8 @@ describe('Basics...', function () {
   function testFunctionalProperties(object) {
     assert.equal(object.content.get(), 'bar');
     assert.equal(object.content.get('fr'), 'foo');
-    assert.equal(object.displayName.get('de'), 'baz');
+    assert.equal(object.name.get('de'), 'baz');
     assert.equal(object.summary.get('es'), 'bar');
-    assert.equal(object.title.get('it'), 'foo');
     assert.equal(object.endTime.toISOString(), now.toISOString());
     assert.equal(object.startTime.toISOString(), now.toISOString());
     assert.equal(object.published.toISOString(), now.toISOString());
@@ -51,15 +50,12 @@ describe('Basics...', function () {
         as.langmap()
           .set('en', 'bar')
           .set('fr', 'foo'))
-      .displayName(
+      .name(
         as.langmap()
           .set('de', 'baz'))
       .summary(
         as.langmap()
           .set('es', 'bar'))
-      .title(
-        as.langmap()
-          .set('it', 'foo'))
       .endTime(now)
       .startTime(now)
       .published(now)
@@ -74,15 +70,12 @@ describe('Basics...', function () {
         as.langmap()
           .set('en', 'bar')
           .set('fr', 'foo'))
-      .displayName(
+      .name(
         as.langmap()
           .set('de', 'baz'))
       .summary(
         as.langmap()
           .set('es', 'bar'))
-      .title(
-        as.langmap()
-          .set('it', 'foo'))
       .endTime(now)
       .startTime(now)
       .published(now)
@@ -183,17 +176,6 @@ describe('Basics...', function () {
     });
   });
   
-  it('should create collection objects with an appropriate type', function() {
-    [['album',vocabs.as.Album],
-     ['folder',vocabs.as.Folder],
-     ['story',vocabs.as.Story]
-    ].forEach(function(key) {
-      var obj = as[key[0]]().get();
-      assert(obj instanceof models.Collection);
-      assert.equal(obj.type,key[1]);
-    });
-  });
-  
   it('should create link objects with an appropriate type', function() {
     [['mention',vocabs.as.Mention]].forEach(function(key) {
       var obj = as[key[0]]().get();
@@ -224,23 +206,23 @@ describe('Basics...', function () {
   it('should import from JSON without errors', function() {
     as.import({
       '@type': 'Like',
-      displayNameMap: {
+      nameMap: {
         en: 'foo'
       },
       actor: {
         '@type': 'Person',
-        displayName: 'Joe'
+        name: 'Joe'
       },
       object: {
         '@type': 'http://example.org/Table',
-        displayName: 'Table'
+        name: 'Table'
       }
     }, function(err, doc) {
       assert.equal(null, err);
       assert.equal(vocabs.as.Like, doc.type);
-      assert.equal(doc.displayName, 'foo');
+      assert.equal(doc.name, 'foo');
       assert.equal(vocabs.as.Person, doc.actor[0].type);
-      assert.equal(doc.actor[0].displayName, 'Joe');
+      assert.equal(doc.actor[0].name, 'Joe');
     });
   });
 
@@ -261,13 +243,13 @@ describe('Basics...', function () {
   });
 
   it('should roundtrip the RDF properly', function(done) {
-    var obj = as.object().title('test').get();
+    var obj = as.object().name('test').get();
     obj.toRDF(function(err,doc) {
       assert.equal(err, undefined);
       assert(doc);
       as.importFromRDF(doc, function(err,doc) {
         assert.equal(err, undefined);
-        assert.equal(doc.title.get(), 'test');
+        assert.equal(doc.name.get(), 'test');
         done();
       });
     });
@@ -489,8 +471,7 @@ describe('Basics...', function () {
       href: 'http://example.org',
       rel: ['a','b'],
       mediaType: 'application/text',
-      displayName: 'the display name',
-      title: 'the title',
+      name: 'the display name',
       hreflang: 'en',
       height: 10,
       width: 10,
@@ -505,8 +486,7 @@ describe('Basics...', function () {
       assert.equal(iter.next().value, 'a');
       assert.equal(iter.next().value, 'b');
       assert.equal(doc.mediaType, 'application/text');
-      assert.equal(doc.displayName.get(), 'the display name');
-      assert.equal(doc.title.get(), 'the title');
+      assert.equal(doc.name.get(), 'the display name');
       assert.equal(doc.hreflang, 'en');
       assert.equal(doc.height, 10);
       assert.equal(doc.width, 10);
@@ -523,8 +503,7 @@ describe('Basics...', function () {
       .rel('a')
       .rel('b')
       .mediaType('application/text')
-      .displayName('the display name')
-      .title('the title')
+      .name('the display name')
       .hreflang('en')
       .height(10)
       .width(10)
@@ -538,8 +517,7 @@ describe('Basics...', function () {
     assert.equal(iter.next().value, 'a');
     assert.equal(iter.next().value, 'b');
     assert.equal(doc.mediaType, 'application/text');
-    assert.equal(doc.displayName.get(), 'the display name');
-    assert.equal(doc.title.get(), 'the title');
+    assert.equal(doc.name.get(), 'the display name');
     assert.equal(doc.hreflang, 'en');
     assert.equal(doc.height, 10);
     assert.equal(doc.width, 10);
@@ -558,7 +536,7 @@ describe('Basics...', function () {
       attributedTo: 'http://sally.example.org',
       content: 'the content',
       context: 'http://example.org/context',
-      displayName: 'the display name',
+      name: 'the display name',
       endTime: '2015-12-12T12:12:12Z',
       generator: 'http://example.org/generator',
       icon: 'http://example.org/icon',
@@ -567,7 +545,6 @@ describe('Basics...', function () {
       location: 'http://example.org/location',
       preview: 'http://example.org/preview',
       tag: 'http://example.org/tag',
-      title: 'the title',
       updated: '2015-12-12T12:12:12Z',
       published: '2015-12-12T12:12:12Z',
       replies: 'http://example.org/replies',
@@ -593,7 +570,7 @@ describe('Basics...', function () {
       assert(doc.context);
       assert.equal(doc.context.length,1);
       assert.equal(doc.context.first.id, 'http://example.org/context');
-      assert.equal(doc.displayName.get(), 'the display name');
+      assert.equal(doc.name.get(), 'the display name');
       assert.equal(doc.endTime.valueOf(),
         new Date('2015-12-12T12:12:12Z').valueOf());
       assert(doc.generator);
@@ -617,7 +594,6 @@ describe('Basics...', function () {
       assert(doc.tag);
       assert.equal(doc.tag.length,1);
       assert.equal(doc.tag.first.id, 'http://example.org/tag');
-      assert.equal(doc.title.get(), 'the title');
       assert.equal(doc.updated.valueOf(),
         new Date('2015-12-12T12:12:12Z').valueOf());
       assert.equal(doc.published.valueOf(),
@@ -657,7 +633,7 @@ describe('Basics...', function () {
       .attributedTo('http://sally.example.org')
       .content('the content')
       .context('http://example.org/context')
-      .displayName('the display name')
+      .name('the display name')
       .endTime(new Date('2015-12-12T12:12:12Z'))
       .generator('http://example.org/generator')
       .icon('http://example.org/icon')
@@ -666,7 +642,6 @@ describe('Basics...', function () {
       .location('http://example.org/location')
       .preview('http://example.org/preview')
       .tag('http://example.org/tag')
-      .title('the title')
       .updated(new Date('2015-12-12T12:12:12Z'))
       .published(new Date('2015-12-12T12:12:12Z'))
       .replies('http://example.org/replies')
@@ -690,7 +665,7 @@ describe('Basics...', function () {
       assert(doc.context);
       assert.equal(doc.context.length,1);
       assert.equal(doc.context.first.id, 'http://example.org/context');
-      assert.equal(doc.displayName.get(), 'the display name');
+      assert.equal(doc.name.get(), 'the display name');
       assert.equal(doc.endTime.valueOf(),
         new Date('2015-12-12T12:12:12Z').valueOf());
       assert(doc.generator);
@@ -714,7 +689,6 @@ describe('Basics...', function () {
       assert(doc.tag);
       assert.equal(doc.tag.length,1);
       assert.equal(doc.tag.first.id, 'http://example.org/tag');
-      assert.equal(doc.title.get(), 'the title');
       assert.equal(doc.updated.valueOf(),
         new Date('2015-12-12T12:12:12Z').valueOf());
       assert.equal(doc.published.valueOf(),
@@ -837,7 +811,7 @@ describe('Basics...', function () {
     var test = {
       '@context': 'http://www.w3.org/ns/activitystreams#',
       '@type': 'Question',
-      displayName: 'the question',
+      name: 'the question',
       height: 10,
       width: 10,
       duration: 'PT10S',
@@ -850,7 +824,7 @@ describe('Basics...', function () {
       assert.equal(doc.height, 10);
       assert.equal(doc.width, 10);
       assert.equal(doc.duration.seconds(), 10);
-      assert.equal(doc.displayName.get(), 'the question');
+      assert.equal(doc.name.get(), 'the question');
       assert(doc.anyOf);
       assert.equal(doc.anyOf.length,2);
       const iter = doc.anyOf[Symbol.iterator]();
@@ -867,7 +841,7 @@ describe('Basics...', function () {
       .height(10)
       .width(10)
       .duration(10)
-      .displayName('the question')
+      .name('the question')
       .anyOf('urn:answer1')
       .anyOf('urn:answer2')
       .get();
@@ -876,7 +850,7 @@ describe('Basics...', function () {
     assert.equal(doc.height, 10);
     assert.equal(doc.width, 10);
     assert.equal(doc.duration.seconds(), 10);
-    assert.equal(doc.displayName.get(), 'the question');
+    assert.equal(doc.name.get(), 'the question');
     assert(doc.anyOf);
     assert.equal(doc.anyOf.length,2);
     const iter = doc.anyOf[Symbol.iterator]();
@@ -965,11 +939,11 @@ describe('Basics...', function () {
   });
 
   it('should use the default context', function(done) {
-    var test = {'@id':'urn:test', displayName: 'test'};
+    var test = {'@id':'urn:test', name: 'test'};
     as.import(test, function(err,doc) {
       assert.equal(err, undefined);
       assert.equal(doc.id, 'urn:test');
-      assert.equal(doc.displayName.get(), 'test');
+      assert.equal(doc.name.get(), 'test');
       done();
     });
   });
@@ -989,7 +963,7 @@ describe('Streaming...', function() {
         assert(chunk);
         assert(chunk.type);
         assert.equal(chunk.type, vocabs.as.Person);
-        assert.equal(chunk.displayName.get(), 'Sally');
+        assert.equal(chunk.name.get(), 'Sally');
         done();
       }));
   });
@@ -997,13 +971,13 @@ describe('Streaming...', function() {
   it('Should write to the stream', function(done) {
     var AS2Stream = as.Stream;
     var through = require('through2');
-    var obj = as.object().displayName('test').get();
+    var obj = as.object().name('test').get();
     obj.stream({objectMode:true})
       .pipe(new AS2Stream())
       .pipe(through.obj(function(chunk,encoding,callback) {
         assert(chunk);
         assert(chunk.type);
-        assert.equal(chunk.displayName.valueOf(), 'testing');
+        assert.equal(chunk.name.valueOf(), 'testing');
       }));
     done();
   });
@@ -1011,10 +985,10 @@ describe('Streaming...', function() {
 
 describe('Templates...', function() {
   it('Should use one object as a template for another', function(done) {
-    var tmpl = as.like().actor(as.person().displayName('Joe')).template();
+    var tmpl = as.like().actor(as.person().name('Joe')).template();
     var like = tmpl().object('http://example.org/foo').get();
     assert(like.actor);
-    assert.equal(like.actor.first.displayName.get(), 'Joe');
+    assert.equal(like.actor.first.name.get(), 'Joe');
     assert(like.object);
     assert.equal(like.object.first.id, 'http://example.org/foo');
     assert(!tmpl.object);
@@ -1113,7 +1087,7 @@ describe('Extensions...', function() {
       publicKey: [testPublicKey]
     };
 
-    var obj = as.object().displayName('foo').get();
+    var obj = as.object().name('foo').get();
 
     var options = {
       sign: {

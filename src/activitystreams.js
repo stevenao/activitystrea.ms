@@ -216,18 +216,6 @@ module.exports = {
     return new module.exports.models.Content.Builder(_types(types,as.Article));
   },
 
-  album(types) {
-    return new module.exports.models.Collection.Builder(_types(types,as.Album));
-  },
-
-  folder(types) {
-    return new module.exports.models.Collection.Builder(_types(types,as.Folder));
-  },
-
-  story(types) {
-    return new module.exports.models.OrderedCollection.Builder(_types(types,as.Story));
-  },
-
   document(types) {
     return new module.exports.models.Content.Builder(_types(types,as.Document));
   },

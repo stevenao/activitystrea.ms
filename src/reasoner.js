@@ -56,11 +56,6 @@ graph.add({
   object: as.Activity
 });
 graph.add({
-  subject: as.Album,
-  predicate: rdfs.subClassOf,
-  object: as.Collection
-});
-graph.add({
   subject: as.Announce,
   predicate: rdfs.subClassOf,
   object: as.Activity
@@ -144,11 +139,6 @@ graph.add({
   subject: as.Flag,
   predicate: rdfs.subClassOf,
   object: as.Activity
-});
-graph.add({
-  subject: as.Folder,
-  predicate: rdfs.subClassOf,
-  object: as.Collection
 });
 graph.add({
   subject: as.Follow,
@@ -284,11 +274,6 @@ graph.add({
   subject: as.Service,
   predicate: rdfs.subClassOf,
   object: as.Actor
-});
-graph.add({
-  subject: as.Story,
-  predicate: rdfs.subClassOf,
-  object: as.OrderedCollection
 });
 graph.add({
   subject: as.TentativeAccept,
@@ -517,7 +502,7 @@ graph.add({
   object: languageProperty
 });
 graph.add({
-  subject: as.displayName,
+  subject: as.name,
   predicate: rdf.type,
   object: languageProperty
 });
@@ -588,11 +573,6 @@ graph.add({
 });
 graph.add({
   subject: as.summary,
-  predicate: rdf.type,
-  object: languageProperty
-});
-graph.add({
-  subject: as.title,
   predicate: rdf.type,
   object: languageProperty
 });

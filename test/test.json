@@ -1,5 +1,5 @@
 {
   "_@context": "http://www.w3.org/ns/activitystreams",
   "@type": "Person",
-  "displayName": "Sally"
+  "name": "Sally"
 }

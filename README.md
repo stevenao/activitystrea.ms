@@ -25,7 +25,7 @@ var as = require('activitystrea.ms');
 
 // Create a simple object
 as.object().
-  displayName('baz').
+  name('baz').
   content(
     as.langmap()
       .set('en', 'bar')
@@ -46,7 +46,7 @@ Which produces the output:
     "en": "bar",
     "fr": "foo"
   },
-  "displayName": "baz",
+  "name": "baz",
   "published": "2015-07-17T00:50:09.889Z"
 }
 ```
@@ -82,7 +82,7 @@ fs.createReadStream(path.resolve(__dirname,'test.json'))
   .pipe(new AS2Stream())
   .pipe(through.obj(function(obj,encoding,callback) {
     console.log(obj.type);
-    console.log(obj.displayName);
+    console.log(obj.name);
   }));
 ```
 And writing:
@@ -90,7 +90,7 @@ And writing:
 var as = require('activitystrea.ms');
 var through = require('through2');
 as.object()
-  .displayName('test')
+  .name('test')
   .get()
   .pipe(process.stdout);
 ```
@@ -131,11 +131,9 @@ been built, call the `get` method to return the generated object.
 * `as.remove([types])`
 * `as.undo([types])`
 * `as.update([types])`
-* `as.experience([types])`
 * `as.view([types])`
 * `as.listen([types])`
 * `as.read([types])`
-* `as.respond([types])`
 * `as.move([types])`
 * `as.travel([types])`
 * `as.announce([types])`
@@ -146,12 +144,8 @@ been built, call the `get` method to return the generated object.
 * `as.content([types])`
 * `as.group([types])`
 * `as.person([types])`
-* `as.process([types])`
 * `as.service([types])`
 * `as.article([types])`
-* `as.album([types])`
-* `as.folder([types])`
-* `as.story([types])`
 * `as.document([types])`
 * `as.profile([types])`
 * `as.audio([types])`
@@ -194,11 +188,11 @@ method. This will generate a JSON-LD compliant Javascript object.
 var as = require('activitystrea.ms');
 
 var note = as.note().
-   displayName('foo').
+   name('foo').
    content('this is a simple note').
    get();
 
-console.log(note.displayName.valueOf());
+console.log(note.name.valueOf());
 console.log(note.content.valueOf());
 console.log(note.type);
 ```
@@ -207,13 +201,13 @@ console.log(note.type);
 var as = require('activitystrea.ms');
 
 as.note().
-   displayName('foo').
+   name('foo').
    content('this is a simple note').
    get().
    export(function (err, obj) {
      // obj is an ordinary javascript object
      console.log(obj['@type']);
-     console.log(obj['displayName']);
+     console.log(obj['name']);
      console.log(obj['content']);
    });
 ```
@@ -225,7 +219,7 @@ To serialize the Activity Streams object out as JSON, use the `write`,
 var as = require('activitystrea.ms');
 
 as.note().
-   displayName('foo').
+   name('foo').
    content('this is a simple note').
    write(function (err, doc) {
      // doc is a string
@@ -237,7 +231,7 @@ as.note().
 var as = require('activitystrea.ms');
 
 as.note().
-   displayName('foo').
+   name('foo').
    content('this is a simple note').
    prettyWrite(function (err, doc) {
      // doc is a string
@@ -249,7 +243,7 @@ as.note().
 var as = require('activitystrea.ms');
 var through = require('through2');
 as.object()
-  .displayName('test')
+  .name('test')
   .get()
   .pipe(process.stdout);
 ```
@@ -432,18 +426,6 @@ Returns a new `as.models.Actor.Builder` instance generating an `http://www.w3.or
 
 Returns a new `as.models.Content.Builder` instance generating an `http://www.w3.org/ns/activity#Article` object.
 
-#### `<as.models.Collection.Builder> as.album([types])`
-
-Returns a new `as.models.Collection.Builder` instance generating an `http://www.w3.org/ns/activity#Album` object.
-
-#### `<as.models.Collection.Builder> as.folder([types])`
-
-Returns a new `as.models.Collection.Builder` instance generating an `http://www.w3.org/ns/activity#Folder` object.
-
-#### `<as.models.OrderedCollection.Builder> as.story([types])`
-
-Returns a new `as.models.OrderedCollection.Builder` instance generating an `http://www.w3.org/ns/activity#Story` object.
-
 #### `<as.models.Content.Builder> as.document([types])`
 
 Returns a new `as.models.Content.Builder` instance generating an `http://www.w3.org/ns/activity#Document` object.
@@ -500,7 +482,7 @@ Imports the specified JavaScript object `obj`, performing JSON-LD expansion as n
 var obj = {
   '@context': 'http://www.w3.org/ns/activitystreams#',
   '@type': 'Person',
-  displayName: 'Joe'
+  name: 'Joe'
 };
 as.import(obj, function(err, imp) {
   if (err) {
@@ -521,7 +503,7 @@ var fs = require('fs');
 var fsstr = fs.createReadStream('data.json');
 fsstr.pipe(new as.Stream())
      .pipe(through.obj(function(chunk,encoding,callback) {
-        console.log(chunk.displayName);
+        console.log(chunk.name);
         callback();
      }));
 ```
@@ -545,7 +527,7 @@ Returns a function that creates a Dust Context Helper wrapper for a
 `as.models.Object` instance.
 
 ```javascript`
-var obj = as.object().displayName('test').get();
+var obj = as.object().name('test').get();
 var wrp = as.Dust(obj);
 ```
 
@@ -581,13 +563,13 @@ Returns the value for the specified `key`. The return value will vary based on t
 Exports the object by performing a JSON-LD compaction. If export fails, the callback will be called with the error as the first argument. If the export succeeds, the exported JavaScript object will be passed as the second argument of the callback.
 
 ```javascript
-var obj = as.object().displayName('Joe').get();
+var obj = as.object().name('Joe').get();
 obj.export(function(err,exp) {
   if (err) {
     console.error(err);
     return;
   }
-  console.log(exp.displayName);
+  console.log(exp.name);
   console.log(exp['@type']);
 });
 ```
@@ -597,7 +579,7 @@ obj.export(function(err,exp) {
 Write the object out to a JSON-LD string. If writing fails, the callback will will be called with the error as the first argument. If the write succeeds, the JSON-LD string will be passed as the second argument of the callback.
 
 ```javascript
-var obj = as.object().displayName('Joe').get();
+var obj = as.object().name('Joe').get();
 obj.write(function(err,string) {
   if (err) {
     console.error(err);
@@ -612,7 +594,7 @@ obj.write(function(err,string) {
 Write the object out to a JSON-LD string. If writing fails, the callback will will be called with the error as the first argument. If the write succeeds, the JSON-LD string will be passed as the second argument of the callback.
 
 ```javascript
-var obj = as.object().displayName('Joe').get();
+var obj = as.object().name('Joe').get();
 obj.prettyWrite(function(err,string) {
   if (err) {
     console.error(err);
@@ -636,7 +618,7 @@ Returns a Readable Stream instance that can be used to read this object as a str
 Pipes this objects JSON-LD to the specified writable
 
 ```javascript
-var obj = as.person().displayName('Sally').get();
+var obj = as.person().name('Sally').get();
 obj.pipe(process.stdout);
 ```
 
@@ -700,17 +682,13 @@ Returns the value of the `http://www.w3.org/ns/activitystreams#content` property
 
 Returns the value of the `http://www.w3.org/ns/activitystreams#context` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
-#### Property: `as.models.Object.prototype.displayName`
+#### Property: `as.models.Object.prototype.name`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#displayName` property. Will be either `undefined` or a `as.models.LanguageValue`.
+Returns the value of the `http://www.w3.org/ns/activitystreams#name` property. Will be either `undefined` or a `as.models.LanguageValue`.
 
 #### Property: `as.models.Object.prototype.summary`
 
 Returns the value of the `http://www.w3.org/ns/activitystreams#summary` property. Will be either `undefined` or a `as.models.LanguageValue`.
-
-#### Property: `as.models.Object.prototype.title`
-
-Returns the value of the `http://www.w3.org/ns/activitystreams#title` property. Will be either `undefined` or a `as.models.LanguageValue`.
 
 #### Property: `as.models.Object.prototype.endTime`
 
@@ -822,19 +800,19 @@ as.object()
 
 Adds a value to the `http://www.w3.org/ns/activitystreams#context` property.
 
-#### Method: `<Builder> as.models.Object.Builder.prototype.displayName(val)`
+#### Method: `<Builder> as.models.Object.Builder.prototype.name(val)`
 
-Sets an optional language-tagged value for the `http://www.w3.org/ns/activitystreams#displayName` property.
+Sets an optional language-tagged value for the `http://www.w3.org/ns/activitystreams#name` property.
 
 ```
 as.object()
-  .displayName('simple display name')
+  .name('simple display name')
   .get();
 ```
 
 ```
 as.object()
-  .displayName(
+  .name(
     as.langmap()
       .set('default display name')
       .set('es', 'other display name')
@@ -858,26 +836,6 @@ as.object()
     as.langmap()
       .set('default summary')
       .set('es', 'other summary')
-  )
-  .get();
-```
-
-#### Method: `<Builder> as.models.Object.Builder.prototype.title(val)`
-
-Sets an optional language-tagged value for the `http://www.w3.org/ns/activitystreams#title` property.
-
-```
-as.object()
-  .title('simple title')
-  .get();
-```
-
-```
-as.object()
-  .title(
-    as.langmap()
-      .set('default title')
-      .set('es', 'other title')
   )
   .get();
 ```
@@ -1186,13 +1144,9 @@ Returns the value of the `http://www.w3.org/ns/activitystreams#rel` property. Th
 
 Returns the value of the `http://www.w3.org/ns/activitystreams#mediaType` property. The value will either be `undefined` or a MIME Media Type.
 
-#### Property: `as.models.Link.prototype.displayName`
+#### Property: `as.models.Link.prototype.name`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#displayName` property as a `LanguageValue`.
-
-#### Property: `as.models.Link.prototype.title`
-
-Returns the value of the `http://www.w3.org/ns/activitystreams#title` property as a `LanguageValue`.
+Returns the value of the `http://www.w3.org/ns/activitystreams#name` property as a `LanguageValue`.
 
 #### Property: `as.models.Link.prototype.hreflang`
 
@@ -1226,42 +1180,22 @@ Adds a value to the `http://www.w3.org/ns/activitystreams#rel` property;
 
 Sets the value of the `http://www.w3.org/ns/activitystreams#mediaType` property. The value must be a valid MIME type.
 
-#### Method: `<Builder> as.models.Link.Builder.prototype.displayName(val)`
+#### Method: `<Builder> as.models.Link.Builder.prototype.name(val)`
 
-Specifies an optionally language-tagged displayName.
+Specifies an optionally language-tagged name.
 
 ```
 as.link()
-  .displayName('simple display name')
+  .name('simple display name')
   .get();
 ```
 
 ```
 as.link()
-  .displayName(
+  .name(
     as.langmap()
       .set('default display name')
       .set('es', 'other display name')
-  )
-  .get();
-```
-
-#### Method: `<Builder> as.models.Link.Builder.prototype.title(val)`
-
-Specifies an optionally language-tagged title.
-
-```
-as.link()
-  .title('simple title')
-  .get();
-```
-
-```
-as.link()
-  .title(
-    as.langmap()
-      .set('default title')
-      .set('es', 'other title')
   )
   .get();
 ```
@@ -1424,13 +1358,13 @@ Used to encapsulate language tagged properties within an Activity Streams docume
 ```javascript
 // assuming the default system locale is  `en-US`:
 var obj = as.object()
-  .displayName(
+  .name(
     as.langmap()
       .set('default display name')
       .set('es', 'other display name')
   )
   .get();
-var languagevalue = obj.displayName;
+var languagevalue = obj.name;
 console.log(languagevalue.get()); // 'default display name'
 console.log(languagevalue.get('es')); // 'other display name'
 ```
@@ -1438,13 +1372,13 @@ console.log(languagevalue.get('es')); // 'other display name'
 ```javascript
 // assuming the default system locale is  `sp`:
 var obj = as.object()
-  .displayName(
+  .name(
     as.langmap()
       .set('default display name')
       .set('es', 'other display name')
   )
   .get();
-var languagevalue = obj.displayName;
+var languagevalue = obj.name;
 console.log(languagevalue.get()); // 'other display name'
 console.log(languagevalue.get('en-US')); // 'default display name'
 ```

@@ -30,16 +30,12 @@ class AsObject extends Base {
     return this.get(as.context);
   }
 
-  get displayName() {
-    return this.get(as.displayName);
+  get name() {
+    return this.get(as.name);
   }
 
   get summary() {
     return this.get(as.summary);
-  }
-
-  get title() {
-    return this.get(as.title);
   }
 
   get endTime() {
@@ -147,18 +143,13 @@ class AsObjectBuilder extends Base.Builder {
     return this;
   }
 
-  displayName(val) {
-    this.set(as.displayName, val);
+  name(val) {
+    this.set(as.name, val);
     return this;
   }
 
   summary(val) {
     this.set(as.summary, val);
-    return this;
-  }
-
-  title(val) {
-    this.set(as.title, val);
     return this;
   }
 

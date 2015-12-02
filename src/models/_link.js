@@ -23,12 +23,8 @@ class Link extends Base {
     return this.get(as.mediaType);
   }
 
-  get displayName() {
-    return this.get(as.displayName);
-  }
-
-  get title() {
-    return this.get(as.title);
+  get name() {
+    return this.get(as.name);
   }
 
   get hreflang() {
@@ -74,13 +70,8 @@ class LinkBuilder extends Base.Builder {
     return this;
   }
 
-  displayName(val) {
-    this.set(as.displayName, val);
-    return this;
-  }
-
-  title(val) {
-    this.set(as.title, val);
+  name(val) {
+    this.set(as.name, val);
     return this;
   }
 
