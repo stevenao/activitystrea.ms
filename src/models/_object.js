@@ -110,6 +110,11 @@ class AsObject extends Base {
     return this.get(as.bcc);
   }
 
+  get duration() {
+    let ret = this.get(as.duration);
+    if (typeof ret === 'undefined') return;
+    return moment.duration(isNaN(ret)?ret:(ret*1000));
+  }
 }
 
 class AsObjectBuilder extends Base.Builder {
@@ -243,6 +248,11 @@ class AsObjectBuilder extends Base.Builder {
 
   bcc(val) {
     return this.set(as.bcc, val);
+  }
+  
+  duration(val) {
+    utils.set_duration_val.call(this, as.duration, val);
+    return this;
   }
 }
 AsObject.Builder = AsObjectBuilder;

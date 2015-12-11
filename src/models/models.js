@@ -42,10 +42,6 @@ module.exports = exports = {
     return require('./_orderedcollectionpage');
   },
 
-  get Content() {
-    return require('./_content');
-  },
-
   get Link() {
     return require('./_link');
   },
@@ -110,8 +106,6 @@ function core_recognizer(type) {
     thing = exports.Activity;
   } else if (node.is(as.Profile)) {
     thing = exports.Profile;
-  } else if (node.is(as.Content)) {
-    thing = exports.Content;
   } else if (node.is(as.Place)) {
     thing = exports.Place;
   } else if (node.is(as.Relationship)) {

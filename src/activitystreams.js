@@ -76,10 +76,6 @@ module.exports = {
     return new module.exports.models.OrderedCollectionPage.Builder(_types(types));
   },
 
-  content(types) {
-    return new module.exports.models.Content.Builder(_types(types));
-  },
-
   link(types) {
     return new module.exports.models.Link.Builder(_types(types));
   },
@@ -213,31 +209,31 @@ module.exports = {
   },
 
   article(types) {
-    return new module.exports.models.Content.Builder(_types(types,as.Article));
+    return new module.exports.models.Object.Builder(_types(types,as.Article));
   },
 
   document(types) {
-    return new module.exports.models.Content.Builder(_types(types,as.Document));
+    return new module.exports.models.Object.Builder(_types(types,as.Document));
   },
 
   audio(types) {
-    return new module.exports.models.Content.Builder(_types(types,as.Audio));
+    return new module.exports.models.Object.Builder(_types(types,as.Audio));
   },
 
   image(types) {
-    return new module.exports.models.Content.Builder(_types(types,as.Image));
+    return new module.exports.models.Object.Builder(_types(types,as.Image));
   },
 
   video(types) {
-    return new module.exports.models.Content.Builder(_types(types,as.Video));
+    return new module.exports.models.Object.Builder(_types(types,as.Video));
   },
 
   note(types) {
-    return new module.exports.models.Content.Builder(_types(types,as.Note));
+    return new module.exports.models.Object.Builder(_types(types,as.Note));
   },
 
   page(types) {
-    return new module.exports.models.Content.Builder(_types(types,as.Page));
+    return new module.exports.models.Object.Builder(_types(types,as.Page));
   },
 
   question(types) {

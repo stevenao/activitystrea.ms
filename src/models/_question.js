@@ -10,22 +10,6 @@ class Question extends Activity {
     super(expanded, builder || Question.Builder);
   }
 
-  get height() {
-    let ret = Math.max(0, this.get(as.height));
-    return isNaN(ret) ? 0 : ret;
-  }
-
-  get width() {
-    let ret = Math.max(0, this.get(as.width));
-    return isNaN(ret) ? 0 : ret;
-  }
-
-  get duration() {
-    let ret = this.get(as.duration);
-    if (typeof ret === 'undefined') return;
-    return moment.duration(isNaN(ret)?ret:(ret*1000));
-  }
-
   get anyOf() {
     return this.get(as.anyOf);
   }
@@ -40,21 +24,6 @@ class QuestionBuilder extends Activity.Builder {
   constructor(types, base) {
     types = (types || []).concat([as.Question]);
     super(types, base || new Question({}));
-  }
-
-  height(val) {
-    utils.set_non_negative_int.call(this, as.height, val);
-    return this;
-  }
-
-  width(val) {
-    utils.set_non_negative_int.call(this, as.width, val);
-    return this;
-  }
-
-  duration(val) {
-    utils.set_duration_val.call(this, as.duration, val);
-    return this;
   }
 
   anyOf(val) {

@@ -106,10 +106,6 @@ describe('Basics...', function () {
     assert(as.orderedCollection().get() instanceof models.OrderedCollection);
   });
   
-  it('should create a basic content object', function() {
-    assert(as.content().get() instanceof models.Content);
-  });
-  
   it('should create a basic link object', function() {
     assert(as.link().get() instanceof models.Link);
   });
@@ -152,7 +148,6 @@ describe('Basics...', function () {
   it('should create objects with an appropriate type', function() {
     [
      ['application',vocabs.as.Application],
-     ['content',vocabs.as.Content],
      ['group',vocabs.as.Group],
      ['person',vocabs.as.Person],
      ['organization',vocabs.as.Organization],
@@ -475,7 +470,6 @@ describe('Basics...', function () {
       hreflang: 'en',
       height: 10,
       width: 10,
-      duration: 'PT10S'
     };
     as.import(test, function(err, doc) {
       assert.equal(err, undefined);
@@ -490,7 +484,6 @@ describe('Basics...', function () {
       assert.equal(doc.hreflang, 'en');
       assert.equal(doc.height, 10);
       assert.equal(doc.width, 10);
-      assert.equal(doc.duration.seconds(), 10);
       done();
     });
   });
@@ -507,7 +500,6 @@ describe('Basics...', function () {
       .hreflang('en')
       .height(10)
       .width(10)
-      .duration(10)
       .get();
 
     assert(doc instanceof as.models.Link);
@@ -521,7 +513,6 @@ describe('Basics...', function () {
     assert.equal(doc.hreflang, 'en');
     assert.equal(doc.height, 10);
     assert.equal(doc.width, 10);
-    assert.equal(doc.duration.seconds(), 10);
     done();
 
   });
@@ -767,44 +758,6 @@ describe('Basics...', function () {
 
   });
 
-  it('should have appropriate values for the content object',
-    function(done) {
-
-    var test = {
-      '@context': 'http://www.w3.org/ns/activitystreams#',
-      '@type': 'Content',
-      height: 10,
-      width: 10,
-      duration: 'PT10S'
-    };
-
-    as.import(test, function(err, doc) {
-      assert.equal(err, undefined);
-      assert(doc instanceof as.models.Content);
-      assert.equal(doc.height, 10);
-      assert.equal(doc.width, 10);
-      assert.equal(doc.duration.seconds(), 10);
-      done();
-    });
-  });
-
-  it('should have appropriate values for the content object',
-    function(done) {
-
-    var doc = as.content()
-      .height(10)
-      .width(10)
-      .duration(10)
-      .get();
-
-    assert(doc instanceof as.models.Content);
-    assert.equal(doc.height, 10);
-    assert.equal(doc.width, 10);
-    assert.equal(doc.duration.seconds(), 10);
-    done();
-
-  });
-
   it('should have appropriate values for the question object',
     function(done) {
 
@@ -812,18 +765,12 @@ describe('Basics...', function () {
       '@context': 'http://www.w3.org/ns/activitystreams#',
       '@type': 'Question',
       name: 'the question',
-      height: 10,
-      width: 10,
-      duration: 'PT10S',
       anyOf: [{'@id':'urn:answer1'},{'@id':'urn:answer2'}]
     };
 
     as.import(test, function(err, doc) {
       assert.equal(err, undefined);
       assert(doc instanceof as.models.Question);
-      assert.equal(doc.height, 10);
-      assert.equal(doc.width, 10);
-      assert.equal(doc.duration.seconds(), 10);
       assert.equal(doc.name.get(), 'the question');
       assert(doc.anyOf);
       assert.equal(doc.anyOf.length,2);
@@ -838,18 +785,12 @@ describe('Basics...', function () {
     function(done) {
 
     var doc = as.question()
-      .height(10)
-      .width(10)
-      .duration(10)
       .name('the question')
       .anyOf('urn:answer1')
       .anyOf('urn:answer2')
       .get();
 
     assert(doc instanceof as.models.Question);
-    assert.equal(doc.height, 10);
-    assert.equal(doc.width, 10);
-    assert.equal(doc.duration.seconds(), 10);
     assert.equal(doc.name.get(), 'the question');
     assert(doc.anyOf);
     assert.equal(doc.anyOf.length,2);

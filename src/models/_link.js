@@ -41,12 +41,6 @@ class Link extends Base {
     return isNaN(ret) ? 0 : ret;
   }
 
-  get duration() {
-    let ret = this.get(as.duration);
-    if (typeof ret === 'undefined') return;
-    return moment.duration(isNaN(ret)?ret:(ret*1000));
-  }
-
 }
 
 class LinkBuilder extends Base.Builder {
@@ -89,10 +83,6 @@ class LinkBuilder extends Base.Builder {
     return this;
   }
 
-  duration(val) {
-    utils.set_duration_val.call(this, as.duration, val);
-    return this;
-  }
 }
 Link.Builder = LinkBuilder;
 

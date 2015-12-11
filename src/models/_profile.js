@@ -1,9 +1,9 @@
 'use strict';
 
 const as = require('linkeddata-vocabs').as;
-const Content = require('./_content');
+const AsObject = require('./_object');
 
-class Profile extends Content {
+class Profile extends AsObject {
   constructor(expanded, builder) {
     super(expanded, builder || Profile.Builder);
   }
@@ -14,7 +14,7 @@ class Profile extends Content {
 
 }
 
-class ProfileBuilder extends Content.Builder {
+class ProfileBuilder extends AsObject.Builder {
   constructor(types, base) {
     types = (types || []).concat([as.Profile]);
     super(types, base || new Profile({}));

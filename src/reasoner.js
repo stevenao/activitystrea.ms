@@ -73,7 +73,7 @@ graph.add({
 graph.add({
   subject: as.Article,
   predicate: rdfs.subClassOf,
-  object: as.Content
+  object: as.Object
 });
 graph.add({
   subject: as.Audio,
@@ -106,11 +106,6 @@ graph.add({
   object: as.Object
 });
 graph.add({
-  subject: as.Content,
-  predicate: rdfs.subClassOf,
-  object: as.Object
-});
-graph.add({
   subject: as.Create,
   predicate: rdfs.subClassOf,
   object: as.Activity
@@ -128,7 +123,7 @@ graph.add({
 graph.add({
   subject: as.Document,
   predicate: rdfs.subClassOf,
-  object: as.Content
+  object: as.Object
 });
 graph.add({
   subject: as.Event,
@@ -218,7 +213,7 @@ graph.add({
 graph.add({
   subject: as.Note,
   predicate: rdfs.subClassOf,
-  object: as.Content
+  object: as.Object
 });
 graph.add({
   subject: as.Offer,
@@ -233,12 +228,12 @@ graph.add({
 graph.add({
   subject: as.Page,
   predicate: rdfs.subClassOf,
-  object: as.Content
+  object: as.Object
 });
 graph.add({
   subject: as.Profile,
   predicate: rdfs.subClassOf,
-  object: as.Content
+  object: as.Object
 });
 graph.add({
   subject: as.Person,
@@ -258,7 +253,7 @@ graph.add({
 graph.add({
   subject: as.Question,
   predicate: rdfs.subClassOf,
-  object: [as.Content, as.IntransitiveActivity]
+  object: [as.Object, as.IntransitiveActivity]
 });
 graph.add({
   subject: as.Reject,
