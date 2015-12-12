@@ -2,6 +2,7 @@
 
 const Readable = require('readable-stream').Readable;
 const vocabs = require('linkeddata-vocabs');
+const LRU = require('lru-cache');
 const request = require('request');
 const reasoner = require('../reasoner');
 const LanguageValue = require('./_languagevalue');
@@ -63,10 +64,9 @@ class ValueIterator {
         yield convert(item);
       } else if (item['@list']) {
         for (let litem of item['@list']) {
-          if (is_literal(litem))
-            yield convert(litem);
-          else
-            yield models.wrap_object(litem);
+          yield is_literal(litem) ?
+            convert(litem) :
+            models.wrap_object(litem);
         }
       } else {
         yield models.wrap_object(item);
@@ -79,9 +79,9 @@ class ValueIterator {
   }
 
   get length() {
-    if (this[_items].length > 0 && this[_items][0]['@list'])
-      return this[_items][0]['@list'].length;
-    return this[_items].length;
+    return (this[_items].length > 0 && this[_items][0]['@list']) ?
+      this[_items][0]['@list'].length :
+      this[_items].length;
   }
 
   toArray() {
@@ -120,7 +120,10 @@ class BaseReader extends Readable {
 class Base {
   constructor(expanded, builder) {
     this[_expanded] = expanded || {};
-    this[_cache] = {};
+    this[_cache] = LRU({
+      max: 20,
+      maxAge: 1000 * 60 * 60
+    });
     this[_builder] = builder || Base.Builder;
   }
 
@@ -154,9 +157,9 @@ class Base {
    * Return the value of the given key
    **/
   get(key) {
-    let ret;
     key = vocabs.as[key] || key;
-    if (!this[_cache].hasOwnProperty(key)) {
+    let ret = this[_cache].get(key);
+    if (!ret) {
       let nodekey = reasoner.node(key);
       let res = this[_expanded][key] || [];
       if (!res.length) return;
@@ -167,14 +170,15 @@ class Base {
           let value = item['@value'];
           lvb.set(language, value);
         });
-        this[_cache][key] = lvb.get();
+        ret = lvb.get();
       } else {
         res = new ValueIterator(res);
-        this[_cache][key] = nodekey.is(owl.FunctionalProperty) ?
+        ret = nodekey.is(owl.FunctionalProperty) ?
           res.first : res;
       }
+      this[_cache].set(key, ret);
     }
-    return this[_cache][key];
+    return ret;
   }
 
   /**
@@ -364,13 +368,11 @@ class BaseBuilder {
              });
            }
          } else {
-           let lang = options.lang;
-           let type = options.type;
            let ret = {
              '@value': value
            };
-           if (lang) ret['@language'] = lang;
-           if (type) ret['@type'] = type;
+           if (options.lang) ret['@language'] = options.lang;
+           if (options.type) ret['@type'] = options.type;
            expanded[key].push(ret);
          }
        }
@@ -392,7 +394,7 @@ class BaseBuilder {
     **/
    type(types) {
      let exp = this[_base][_expanded];
-     if (!types) {
+     if (!types || (types && types.length === 0)) {
        delete exp['@type'];
      } else {
        let ret = [];
