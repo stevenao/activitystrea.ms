@@ -1,7 +1,6 @@
 'use strict';
 
 const reasoner = require('../reasoner');
-const utils = require('../utils');
 const Interval = require('./_model');
 const interval = require('vocabs-interval');
 const as = require('vocabs-as');

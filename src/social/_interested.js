@@ -2,6 +2,9 @@
 
 const Population = require('./_population');
 const utils = require('../utils');
+const throwif = utils.throwif;
+const is_integer = utils.is_integer;
+const range = utils.range;
 const social = require('vocabs-social');
 
 class Interested extends Population {
@@ -10,7 +13,7 @@ class Interested extends Population {
   }
 
   get confidence() {
-    let ret = Math.min(100,Math.max(0,this.get(social.confidence)));
+    let ret = range(0,100,this.get(social.confidence));
     return isNaN(ret) ? undefined : ret;
   }
 }
@@ -22,10 +25,11 @@ class InterestedBuilder extends Population.Builder {
   }
 
   confidence(val) {
-    if (!utils.is_integer(val))
-      throw Error('confidence must be an integer between 0 and 100');
-    val = Math.max(0, Math.min(100, val));
-    this.set(social.confidence, val);
+    throwif(
+      !is_integer(val),
+      'confidence must be an integer between 0 and 100'
+    );
+    this.set(social.confidence, range(0,100,val));
     return this;
   }
 }

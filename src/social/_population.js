@@ -2,6 +2,8 @@
 
 const AsObject = require('../models').Object;
 const utils = require('../utils');
+const range = utils.range;
+const xsd = require('vocabs-xsd');
 const social = require('vocabs-social');
 
 class Population extends AsObject {
@@ -10,7 +12,7 @@ class Population extends AsObject {
   }
 
   get distance() {
-    let ret = Math.max(0,this.get(social.distance));
+    let ret = range(0, Infinity, this.get(social.distance));
     return isNaN(ret) ? undefined : ret;
   }
 }
@@ -22,7 +24,11 @@ class PopulationBuilder extends AsObject.Builder {
   }
 
   distance(val) {
-    utils.set_non_negative_int.call(this, social.distance, val);
+    this.set(
+      social.distance,
+      range(0, Infinity, val),
+      {type: xsd.nonNegativeInteger}
+    );
     return this;
   }
 }

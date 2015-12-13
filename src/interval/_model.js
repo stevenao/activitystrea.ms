@@ -1,24 +1,29 @@
 'use strict';
 
 const interval = require('vocabs-interval');
-const xsd      = require('vocabs-xsd');
+const xsd = require('vocabs-xsd');
 const AsObject = require('../models').Object;
-const utils    = require('../utils');
+const utils = require('../utils');
+const is_string = utils.is_string;
+const is_primitive = utils.is_primitive;
+const is_integer = utils.is_integer;
+const is_date = utils.is_date;
+const is_boolean = utils.is_boolean;
 
 function _set(target, key, val) {
   let options = {};
-  if (utils.is_primitive(val)) {
-    if (utils.is_string(val))
+  if (is_primitive(val)) {
+    if (is_string(val))
       options.type = xsd.string;
     else if (!isNaN(val)) {
-      if (utils.is_integer(val))
+      if (is_integer(val))
         options.type = xsd.integer;
       else
         options.type = xsd.decimal;
-    } else if (utils.is_boolean(val)) {
+    } else if (is_boolean(val)) {
       options.type = xsd.boolean;
     }
-  } else if (utils.is_date(val)) {
+  } else if (is_date(val)) {
     options.type = xsd.dateTime;
   }
   target.set(key, val, options);
