@@ -55,8 +55,9 @@ function convert(item) {
 }
 
 class ValueIterator {
-  constructor(items) {
+  constructor(items, environment) {
     this[_items] = items;
+    this[Environment.environment] = environment;
   }
   *[Symbol.iterator] () {
     for (let item of this[_items]) {
@@ -66,10 +67,10 @@ class ValueIterator {
         for (let litem of item['@list']) {
           yield is_literal(litem) ?
             convert(litem) :
-            models.wrap_object(litem);
+            models.wrap_object(litem, this[Environment.environment]);
         }
       } else {
-        yield models.wrap_object(item);
+        yield models.wrap_object(item, this[Environment.environment]);
       }
     }
   }
@@ -173,7 +174,7 @@ class Base {
         });
         ret = lvb.get();
       } else {
-        res = new ValueIterator(res);
+        res = new ValueIterator(res, this[Environment.environment]);
         ret = nodekey.is(owl.FunctionalProperty) ?
           res.first : res;
       }
