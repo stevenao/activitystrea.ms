@@ -5,8 +5,8 @@ const utils = require('../utils');
 const social = require('vocabs-social');
 
 class Population extends AsObject {
-  constructor(expanded, builder) {
-    super(expanded, builder || Population.Builder);
+  constructor(expanded, builder, environment) {
+    super(expanded, builder || Population.Builder, environment);
   }
 
   get distance() {
@@ -16,9 +16,9 @@ class Population extends AsObject {
 }
 
 class PopulationBuilder extends AsObject.Builder {
-  constructor(types, base) {
+  constructor(types, base, environment) {
     types = (types || []).concat([social.Population]);
-    super(types,base || new Population({}));
+    super(types,base || new Population({}, undefined, environment));
   }
 
   distance(val) {

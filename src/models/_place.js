@@ -6,8 +6,8 @@ const as = require('vocabs-as');
 const xsd = require('vocabs-xsd');
 
 class Place extends AsObject {
-  constructor(expanded, builder) {
-    super(expanded, builder || Place.Builder);
+  constructor(expanded, builder, environment) {
+    super(expanded, builder || Place.Builder, environment);
   }
 
   get accuracy() {
@@ -42,9 +42,9 @@ class Place extends AsObject {
 }
 
 class PlaceBuilder extends AsObject.Builder {
-  constructor(types, base) {
+  constructor(types, base, environment) {
     types = (types || []).concat([as.Place]);
-    super(types, base || new Place({}));
+    super(types, base || new Place({}, undefined, environment));
   }
 
   accuracy(val) {

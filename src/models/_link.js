@@ -6,8 +6,8 @@ const Base = require('./_base');
 const moment = require('moment');
 
 class Link extends Base {
-  constructor(expanded, builder) {
-    super(expanded, builder || Link.Builder);
+  constructor(expanded, builder, environment) {
+    super(expanded, builder || Link.Builder, environment);
   }
 
   get href() {
@@ -44,9 +44,9 @@ class Link extends Base {
 }
 
 class LinkBuilder extends Base.Builder {
-  constructor(types, base) {
+  constructor(types, base, environment) {
     types = (types || []).concat([as.Link]);
-    super(types, base || new Link({}));
+    super(types, base || new Link({}, undefined, environment));
   }
 
   href(val) {

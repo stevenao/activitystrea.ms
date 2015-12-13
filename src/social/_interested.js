@@ -5,8 +5,8 @@ const utils = require('../utils');
 const social = require('vocabs-social');
 
 class Interested extends Population {
-  constructor(expanded, builder) {
-    super(expanded, builder || Interested.Builder);
+  constructor(expanded, builder, environment) {
+    super(expanded, builder || Interested.Builder, environment);
   }
 
   get confidence() {
@@ -16,9 +16,9 @@ class Interested extends Population {
 }
 
 class InterestedBuilder extends Population.Builder {
-  constructor(types, base) {
+  constructor(types, base, environment) {
     types = (types || []).concat([social.Interested]);
-    super(types, base || new Interested({}));
+    super(types, base || new Interested({}, undefined, environment));
   }
 
   confidence(val) {

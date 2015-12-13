@@ -4,8 +4,8 @@ const as = require('vocabs-as');
 const AsObject = require('./_object');
 
 class Relationship extends AsObject {
-  constructor(expanded, builder) {
-    super(expanded, builder || Relationship.Builder);
+  constructor(expanded, builder, environment) {
+    super(expanded, builder || Relationship.Builder, environment);
   }
 
   get subject() {
@@ -23,9 +23,9 @@ class Relationship extends AsObject {
 }
 
 class RelationshipBuilder extends AsObject.Builder {
-  constructor(types, base) {
+  constructor(types, base, environment) {
     types = (types || []).concat([as.Relationship]);
-    super(types, base || new Relationship({}));
+    super(types, base || new Relationship({}, undefined, environment));
   }
 
   subject(val) {

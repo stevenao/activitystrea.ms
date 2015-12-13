@@ -62,7 +62,7 @@ module.exports = exports = {
     return require('./_question');
   },
 
-  wrap_object(expanded) {
+  wrap_object(expanded, environment) {
     let types = reasoner.reduce(expanded['@type'] || []);
     let Thing;
     // this isn't that great yet because it uses the
@@ -74,7 +74,7 @@ module.exports = exports = {
       if (Thing !== undefined) break; // jump out early if we get a hit
     }
     Thing = Thing || exports.Object;
-    return new Thing(expanded);
+    return new Thing(expanded, undefined, environment);
   },
 
   use(recognizer) {

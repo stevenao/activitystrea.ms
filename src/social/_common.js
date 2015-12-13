@@ -5,8 +5,8 @@ const utils = require('../utils');
 const Population = require('./_population');
 
 class Common extends Population {
-  constructor(expanded, builder) {
-    super(expanded, builder || Common.Builder);
+  constructor(expanded, builder, environment) {
+    super(expanded, builder || Common.Builder, environment);
   }
 
   get havingDimension() {
@@ -20,9 +20,9 @@ class Common extends Population {
 }
 
 class CommonBuilder extends Population.Builder {
-  constructor(types, base) {
+  constructor(types, base, environment) {
     types = (types || []).concat([social.Common]);
-    super(types, base || new Common({}));
+    super(types, base || new Common({}, undefined, environment));
   }
 
   havingDimension(val) {

@@ -14,6 +14,7 @@ const asx = require('vocabs-asx');
 const xsd = require('vocabs-xsd');
 const owl = require('vocabs-owl');
 const throwif = utils.throwif;
+const Environment = require('../environment');
 
 const _expanded = Symbol('expanded');
 const _cache = Symbol('cache');
@@ -117,7 +118,8 @@ class BaseReader extends Readable {
 }
 
 class Base {
-  constructor(expanded, builder) {
+  constructor(expanded, builder, environment) {
+    this[Environment.environment] = environment || new Environment({});
     this[_expanded] = expanded || {};
     this[_cache] = LRU({
       max: 20,
@@ -189,6 +191,10 @@ class Base {
       options = {};
     }
     options = options || {};
+    if (options.useOriginalContext) {
+      options.origContext =
+        this[Environment.environment].origContext;
+    }
     let handler = options.handler || jsonld.compact;
     handler(
       this[_expanded],
@@ -313,8 +319,8 @@ class Base {
 }
 
 class BaseBuilder {
-  constructor(types, base) {
-    this[_base] = base || new Base();
+  constructor(types, base, environment) {
+    this[_base] = base || new Base(undefined, undefined, environment);
     this.type(types);
   }
 

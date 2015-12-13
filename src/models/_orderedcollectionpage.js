@@ -5,8 +5,8 @@ const utils = require('../utils');
 const CollectionPage = require('./_collectionpage');
 
 class OrderedCollectionPage extends CollectionPage {
-  constructor(expanded, builder) {
-    super(expanded, builder || OrderedCollectionPage.Builder);
+  constructor(expanded, builder, environment) {
+    super(expanded, builder || OrderedCollectionPage.Builder, environment);
   }
 
   get startIndex() {
@@ -16,9 +16,9 @@ class OrderedCollectionPage extends CollectionPage {
 }
 
 class OrderedCollectionPageBuilder extends CollectionPage.Builder {
-  constructor(types, base) {
+  constructor(types, base, environment) {
     types = (types || []).concat([as.OrderedCollectionPage]);
-    super(types, base || new OrderedCollectionPage({}));
+    super(types, base || new OrderedCollectionPage({}, undefined, environment));
   }
 
   startIndex(val) {

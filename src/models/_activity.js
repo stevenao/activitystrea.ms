@@ -6,8 +6,8 @@ const as = require('vocabs-as');
 const xsd = require('vocabs-xsd');
 
 class Activity extends AsObject {
-  constructor(expanded, builder) {
-    super(expanded, builder || Activity.Builder);
+  constructor(expanded, builder, environment) {
+    super(expanded, builder || Activity.Builder, environment);
   }
 
   get actor() {
@@ -37,9 +37,9 @@ class Activity extends AsObject {
 }
 
 class ActivityBuilder extends AsObject.Builder {
-  constructor(types, base) {
+  constructor(types, base, environment) {
     types = (types || []).concat([as.Activity]);
-    super(types, base || new Activity({}));
+    super(types, base || new Activity({}, undefined, environment));
   }
 
   actor(val) {

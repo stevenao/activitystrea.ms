@@ -6,6 +6,13 @@ const xsd = require('vocabs-xsd');
 const _toString = {}.toString;
 
 module.exports = exports = {
+
+  checkCallback(callback) {
+    exports.throwif(
+      typeof callback !== 'function',
+      'A callback function must be provided');
+  },
+
   throwif(condition, message) {
     if (condition) throw Error(message);
   },

@@ -15,8 +15,8 @@ function isIterable(i) {
 }
 
 class Collection extends AsObject {
-  constructor(expanded, builder) {
-    super(expanded, builder || Collection.Builder);
+  constructor(expanded, builder, environment) {
+    super(expanded, builder || Collection.Builder, environment);
   }
 
   get totalItems() {
@@ -45,9 +45,9 @@ class Collection extends AsObject {
 }
 
 class CollectionBuilder extends AsObject.Builder {
-  constructor(types, base) {
+  constructor(types, base, environment) {
     types = (types || []).concat([as.Collection]);
-    super(types, base || new Collection({}));
+    super(types, base || new Collection({}, undefined, environment));
     this[_ordered] = 0;
   }
 

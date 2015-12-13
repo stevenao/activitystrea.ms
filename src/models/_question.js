@@ -6,8 +6,8 @@ const Activity = require('./_activity');
 const moment = require('moment');
 
 class Question extends Activity {
-  constructor(expanded, builder) {
-    super(expanded, builder || Question.Builder);
+  constructor(expanded, builder, environment) {
+    super(expanded, builder || Question.Builder, environment);
   }
 
   get anyOf() {
@@ -21,9 +21,9 @@ class Question extends Activity {
 }
 
 class QuestionBuilder extends Activity.Builder {
-  constructor(types, base) {
+  constructor(types, base, environment) {
     types = (types || []).concat([as.Question]);
-    super(types, base || new Question({}));
+    super(types, base || new Question({}, undefined, environment));
   }
 
   anyOf(val) {

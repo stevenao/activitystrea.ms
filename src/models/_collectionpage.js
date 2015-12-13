@@ -5,8 +5,8 @@ const utils = require('../utils');
 const Collection = require('./_collection');
 
 class CollectionPage extends Collection {
-  constructor(expanded, builder) {
-    super(expanded, builder || CollectionPage.Builder);
+  constructor(expanded, builder, environment) {
+    super(expanded, builder || CollectionPage.Builder, environment);
   }
 
   get partOf() {
@@ -23,9 +23,9 @@ class CollectionPage extends Collection {
 }
 
 class CollectionPageBuilder extends Collection.Builder {
-  constructor(types, base) {
+  constructor(types, base, environment) {
     types = (types || []).concat([as.CollectionPage]);
-    super(types, base || new CollectionPage({}));
+    super(types, base || new CollectionPage({}, undefined, environment));
   }
 
   partOf(val) {

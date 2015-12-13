@@ -29,47 +29,53 @@ function gettypes(types, type) {
   return (types || []).concat([type]);
 }
 
-exports.population = function(types) {
-  return new exports.model.Population.Builder(types);
-};
-exports.everyone = function(types) {
-  return new exports.model.Everyone.Builder(types);
-};
-exports.public = function(types) {
-  return new exports.model.Population.Builder(gettypes(types, social.Public));
-};
-exports.private = function(types) {
+exports.population = function(types, environment) {
   return new exports.model.Population.Builder(
-    gettypes(types, social.Private));
+    types, undefined, environment);
 };
-exports.direct = function(types) {
+exports.everyone = function(types, environment) {
+  return new exports.model.Everyone.Builder(
+    types, undefined, environment);
+};
+exports.public = function(types, environment) {
   return new exports.model.Population.Builder(
-    gettypes(types, social.Direct));
+    gettypes(types, social.Public), undefined, environment);
 };
-exports.common = function(types) {
-  return new exports.model.Common.Builder(types);
-};
-exports.interested = function(types) {
-  return new exports.model.Interested.Builder(types);
-};
-exports.self = function(types) {
+exports.private = function(types, environment) {
   return new exports.model.Population.Builder(
-    gettypes(types, social.Self));
+    gettypes(types, social.Private), undefined, environment);
 };
-exports.all = function(types) {
+exports.direct = function(types, environment) {
+  return new exports.model.Population.Builder(
+    gettypes(types, social.Direct), undefined, environment);
+};
+exports.common = function(types, environment) {
+  return new exports.model.Common.Builder(
+    types, undefined, environment);
+};
+exports.interested = function(types, environment) {
+  return new exports.model.Interested.Builder(
+    types, undefined, environment);
+};
+exports.self = function(types, environment) {
+  return new exports.model.Population.Builder(
+    gettypes(types, social.Self), undefined, environment);
+};
+exports.all = function(types, environment) {
   return new exports.model.CompoundPopulation.Builder(
-    gettypes(types, social.All));
+    gettypes(types, social.All), undefined, environment);
 };
-exports.any = function(types) {
+exports.any = function(types, environment) {
   return new exports.model.CompoundPopulation.Builder(
-    gettypes(types, social.Any));
+    gettypes(types, social.Any), undefined, environment);
 };
-exports.none = function(types) {
+exports.none = function(types, environment) {
   return new exports.model.CompoundPopulation.Builder(
-    gettypes(types, social.None));
+    gettypes(types, social.None), undefined, environment);
 };
-exports.compoundPopulation = function(types) {
-  return new exports.model.CompoundPopulation.Builder(types);
+exports.compoundPopulation = function(types, environment) {
+  return new exports.model.CompoundPopulation.Builder(
+    types, undefined, environment);
 };
 
 function social_recognizer(type) {

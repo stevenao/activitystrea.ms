@@ -6,8 +6,8 @@ const Base = require('./_base');
 const moment = require('moment');
 
 class AsObject extends Base {
-  constructor(expanded, builder) {
-    super(expanded, builder || AsObject.Builder);
+  constructor(expanded, builder, environment) {
+    super(expanded, builder || AsObject.Builder, environment);
   }
   
   get mediaType() {
@@ -118,9 +118,9 @@ class AsObject extends Base {
 }
 
 class AsObjectBuilder extends Base.Builder {
-  constructor(types, base) {
+  constructor(types, base, environment) {
     types = (types || []).concat([as.Object]);
-    super(types, base || new AsObject({}));
+    super(types, base || new AsObject({}, undefined, environment));
   }
 
   mediaType(val) {

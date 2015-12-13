@@ -25,8 +25,8 @@ function _set(target, key, val) {
 }
 
 class Interval extends AsObject {
-  constructor(expanded, builder) {
-    super(expanded, builder || Interval.Builder);
+  constructor(expanded, builder, environment) {
+    super(expanded, builder || Interval.Builder, environment);
   }
 
   get upper() {
@@ -43,9 +43,9 @@ class Interval extends AsObject {
 }
 
 class IntervalBuilder extends AsObject.Builder {
-  constructor(types, base) {
+  constructor(types, base, environment) {
     types = (types || []).concat([interval.Interval]);
-    super(types, base || new Interval());
+    super(types, base || new Interval({}, undefined, environment));
   }
 
   upper(val) {

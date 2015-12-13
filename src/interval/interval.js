@@ -21,29 +21,37 @@ function gettypes(types, type) {
   return (types || []).concat([type]);
 }
 
-exports.open = function(types) {
-  return new Interval.Builder(gettypes(types,interval.OpenInterval));
+exports.open = function(types, environment) {
+  return new Interval.Builder(
+    gettypes(types,interval.OpenInterval), undefined, environment);
 };
-exports.closed = function(types) {
-  return new Interval.Builder(gettypes(types,interval.ClosedInterval));
+exports.closed = function(types, environment) {
+  return new Interval.Builder(
+    gettypes(types,interval.ClosedInterval), undefined, environment);
 };
-exports.openClosed = function(types) {
-  return new Interval.Builder(gettypes(types,interval.OpenClosedInterval));
+exports.openClosed = function(types, environment) {
+  return new Interval.Builder(
+    gettypes(types,interval.OpenClosedInterval), undefined, environment);
 };
-exports.closedOpen = function(types) {
-  return new Interval.Builder(gettypes(types,interval.ClosedOpenInterval));
+exports.closedOpen = function(types, environment) {
+  return new Interval.Builder(
+    gettypes(types,interval.ClosedOpenInterval), undefined, environment);
 };
-exports.leftOpen = function(types) {
-  return new Interval.Builder(gettypes(types,interval.LeftOpenInterval));
+exports.leftOpen = function(types, environment) {
+  return new Interval.Builder(
+    gettypes(types,interval.LeftOpenInterval), undefined, environment);
 };
-exports.rightOpen = function(types) {
-  return new Interval.Builder(gettypes(types,interval.RightOpenInterval));
+exports.rightOpen = function(types, environment) {
+  return new Interval.Builder(
+    gettypes(types,interval.RightOpenInterval), undefined, environment);
 };
-exports.leftClosed = function(types) {
-  return new Interval.Builder(gettypes(types,interval.LeftClosedInterval));
+exports.leftClosed = function(types, environment) {
+  return new Interval.Builder(
+    gettypes(types,interval.LeftClosedInterval), undefined, environment);
 };
-exports.rightClosed = function(types) {
-  return new Interval.Builder(gettypes(types,interval.RightClosedInterval));
+exports.rightClosed = function(types, environment) {
+  return new Interval.Builder(
+    gettypes(types,interval.RightClosedInterval), undefined, environment);
 };
 
 function interval_recognizer(type) {

@@ -4,15 +4,15 @@ const as = require('vocabs-as');
 const AsObject = require('./_object');
 
 class Actor extends AsObject {
-  constructor(expanded, builder) {
-    super(expanded, builder || Actor.Builder);
+  constructor(expanded, builder, environment) {
+    super(expanded, builder || Actor.Builder, environment);
   }
 }
 
 class ActorBuilder extends AsObject.Builder {
-  constructor(types, base) {
+  constructor(types, base, environment) {
     types = (types || []).concat([as.Actor]);
-    super(types, base || new Actor({}));
+    super(types, base || new Actor({}, undefined, environment));
   }
 }
 Actor.Builder = ActorBuilder;

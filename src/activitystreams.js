@@ -17,10 +17,10 @@ function _types(types, additional) {
   return types;
 }
 
-module.exports = {
+module.exports = exports = {
   use(extension) {
     if (extension && typeof extension.init === 'function')
-      extension.init(module.exports.models, reasoner, ext_context);
+      extension.init(exports.models, reasoner, ext_context);
   },
 
   get verify() {
@@ -40,219 +40,272 @@ module.exports = {
   },
 
   langmap() {
-    return new module.exports.models.LanguageValue.Builder();
+    return new exports.models.LanguageValue.Builder();
   },
 
-  object(types) {
-    return new module.exports.models.Object.Builder(_types(types));
+  object(types, environment) {
+    return new exports.models.Object.Builder(
+      _types(types), undefined, environment);
   },
 
-  actor(types) {
-    return new module.exports.models.Actor.Builder(_types(types));
+  actor(types, environment) {
+    return new exports.models.Actor.Builder(
+      _types(types), undefined, environment);
   },
 
-  activity(types) {
-    return new module.exports.models.Activity.Builder(_types(types));
+  activity(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types), undefined, environment);
   },
 
-  collection(types) {
-    return new module.exports.models.Collection.Builder(_types(types));
+  collection(types, environment) {
+    return new exports.models.Collection.Builder(
+      _types(types), undefined, environment);
   },
 
-  orderedCollection(types) {
-    return new module.exports.models.OrderedCollection.Builder(_types(types));
+  orderedCollection(types, environment) {
+    return new exports.models.OrderedCollection.Builder(
+      _types(types), undefined, environment);
   },
 
-  collectionPage(types) {
-    return new module.exports.models.CollectionPage.Builder(_types(types));
+  collectionPage(types, environment) {
+    return new exports.models.CollectionPage.Builder(
+      _types(types), undefined, environment);
   },
 
-  orderedCollectionPage(types) {
-    return new module.exports.models.OrderedCollectionPage.Builder(_types(types));
+  orderedCollectionPage(types, environment) {
+    return new exports.models.OrderedCollectionPage.Builder(
+      _types(types), undefined, environment);
   },
 
-  link(types) {
-    return new module.exports.models.Link.Builder(_types(types));
+  link(types, environment) {
+    return new exports.models.Link.Builder(
+      _types(types), undefined, environment);
   },
 
-  accept(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Accept));
+  accept(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Accept), undefined, environment);
   },
 
-  tentativeAccept(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.TentativeAccept));
+  tentativeAccept(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.TentativeAccept), undefined, environment);
   },
 
-  add(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Add));
+  add(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Add), undefined, environment);
   },
 
-  arrive(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Arrive));
+  arrive(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Arrive), undefined, environment);
   },
 
-  create(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Create));
+  create(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Create), undefined, environment);
   },
 
-  delete(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Delete));
+  delete(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Delete), undefined, environment);
   },
 
-  follow(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Follow));
+  follow(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Follow), undefined, environment);
   },
 
-  ignore(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Ignore));
+  ignore(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Ignore), undefined, environment);
   },
 
-  join(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Join));
+  join(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Join), undefined, environment);
   },
 
-  leave(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Leave));
+  leave(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Leave), undefined, environment);
   },
 
-  like(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Like));
+  like(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Like), undefined, environment);
   },
 
-  offer(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Offer));
+  offer(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Offer), undefined, environment);
   },
 
-  invite(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Invite));
+  invite(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Invite), undefined, environment);
   },
 
-  reject(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Reject));
+  reject(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Reject), undefined, environment);
   },
 
-  tentativeReject(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.TentativeReject));
+  tentativeReject(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.TentativeReject), undefined, environment);
   },
 
-  remove(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Remove));
+  remove(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Remove), undefined, environment);
   },
 
-  undo(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Undo));
+  undo(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Undo), undefined, environment);
   },
 
-  update(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Update));
+  update(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Update), undefined, environment);
   },
 
-  view(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.View));
+  view(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.View), undefined, environment);
   },
 
-  listen(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Listen));
+  listen(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Listen), undefined, environment);
   },
 
-  read(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Read));
+  read(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Read), undefined, environment);
   },
 
-  move(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Move));
+  move(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Move), undefined, environment);
   },
 
-  travel(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Travel));
+  travel(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Travel), undefined, environment);
   },
 
-  announce(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Announce));
+  announce(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Announce), undefined, environment);
   },
 
-  block(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Block));
+  block(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Block), undefined, environment);
   },
 
-  flag(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Flag));
+  flag(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Flag), undefined, environment);
   },
 
-  dislike(types) {
-    return new module.exports.models.Activity.Builder(_types(types,as.Dislike));
+  dislike(types, environment) {
+    return new exports.models.Activity.Builder(
+      _types(types,as.Dislike), undefined, environment);
   },
 
-  application(types) {
-    return new module.exports.models.Actor.Builder(_types(types,as.Application));
+  application(types, environment) {
+    return new exports.models.Actor.Builder(
+      _types(types,as.Application), undefined, environment);
   },
 
-  group(types) {
-    return new module.exports.models.Actor.Builder(_types(types,as.Group));
+  group(types, environment) {
+    return new exports.models.Actor.Builder(
+      _types(types,as.Group), undefined, environment);
   },
 
-  person(types) {
-    return new module.exports.models.Actor.Builder(_types(types,as.Person));
+  person(types, environment) {
+    return new exports.models.Actor.Builder(
+      _types(types,as.Person), undefined, environment);
   },
 
-  service(types) {
-    return new module.exports.models.Actor.Builder(_types(types,as.Service));
+  service(types, environment) {
+    return new exports.models.Actor.Builder(
+      _types(types,as.Service), undefined, environment);
   },
 
-  organization(types) {
-    return new module.exports.models.Actor.Builder(_types(types,as.Organization));
+  organization(types, environment) {
+    return new exports.models.Actor.Builder(
+      _types(types,as.Organization), undefined, environment);
   },
 
-  article(types) {
-    return new module.exports.models.Object.Builder(_types(types,as.Article));
+  article(types, environment) {
+    return new exports.models.Object.Builder(
+      _types(types,as.Article), undefined, environment);
   },
 
-  document(types) {
-    return new module.exports.models.Object.Builder(_types(types,as.Document));
+  document(types, environment) {
+    return new exports.models.Object.Builder(
+      _types(types,as.Document), undefined, environment);
   },
 
-  audio(types) {
-    return new module.exports.models.Object.Builder(_types(types,as.Audio));
+  audio(types, environment) {
+    return new exports.models.Object.Builder(
+      _types(types,as.Audio), undefined, environment);
   },
 
-  image(types) {
-    return new module.exports.models.Object.Builder(_types(types,as.Image));
+  image(types, environment) {
+    return new exports.models.Object.Builder(
+      _types(types,as.Image), undefined, environment);
   },
 
-  video(types) {
-    return new module.exports.models.Object.Builder(_types(types,as.Video));
+  video(types, environment) {
+    return new exports.models.Object.Builder(
+      _types(types,as.Video), undefined, environment);
   },
 
-  note(types) {
-    return new module.exports.models.Object.Builder(_types(types,as.Note));
+  note(types, environment) {
+    return new exports.models.Object.Builder(
+      _types(types,as.Note), undefined, environment);
   },
 
-  page(types) {
-    return new module.exports.models.Object.Builder(_types(types,as.Page));
+  page(types, environment) {
+    return new exports.models.Object.Builder(
+      _types(types,as.Page), undefined, environment);
   },
 
-  question(types) {
-    return new module.exports.models.Question.Builder(_types(types));
+  question(types, environment) {
+    return new exports.models.Question.Builder(
+      _types(types), undefined, environment);
   },
 
-  event(types) {
-    return new module.exports.models.Object.Builder(_types(types,as.Event));
+  event(types, environment) {
+    return new exports.models.Object.Builder(
+      _types(types,as.Event), undefined, environment);
   },
 
-  relationship(types) {
-    return new module.exports.models.Relationship.Builder(_types(types));
+  relationship(types, environment) {
+    return new exports.models.Relationship.Builder(
+      _types(types), undefined, environment);
   },
 
-  profile(types) {
-    return new module.exports.models.Profile.Builder(_types(types));
+  profile(types, environment) {
+    return new exports.models.Profile.Builder(
+      _types(types), undefined, environment);
   },
 
-  place(types) {
-    return new module.exports.models.Place.Builder(_types(types));
+  place(types, environment) {
+    return new exports.models.Place.Builder(
+      _types(types), undefined, environment);
   },
 
-  mention(types) {
-    return new module.exports.models.Link.Builder(_types(types,as.Mention));
+  mention(types, environment) {
+    return new exports.models.Link.Builder(
+      _types(types,as.Mention), undefined, environment);
   },
 
   get interval() {

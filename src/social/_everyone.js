@@ -4,8 +4,8 @@ const Population = require('./_population');
 const social = require('vocabs-social');
 
 class Everyone extends Population {
-  constructor(expanded, builder) {
-    super(expanded, builder || Everyone.Builder);
+  constructor(expanded, builder, environment) {
+    super(expanded, builder || Everyone.Builder, environment);
   }
 
   get havingRelationship() {
@@ -18,9 +18,9 @@ class Everyone extends Population {
 }
 
 class EveryoneBuilder extends Population.Builder {
-  constructor(types, base) {
+  constructor(types, base, environment) {
     types = (types || []).concat([social.Everyone]);
-    super(types, base || new Everyone({}));
+    super(types, base || new Everyone({}, undefined, environment));
   }
 
   havingRelationship(val) {

@@ -4,8 +4,8 @@ const Population = require('./_population');
 const social = require('vocabs-social');
 
 class CompoundPopulation extends Population {
-  constructor(expanded, builder) {
-    super(expanded, builder || CompoundPopulation.Builder);
+  constructor(expanded, builder, environment) {
+    super(expanded, builder || CompoundPopulation.Builder, environment);
   }
 
   get member() {
@@ -14,9 +14,9 @@ class CompoundPopulation extends Population {
 }
 
 class CompoundPopulationBuilder extends Population.Builder {
-  constructor(types, base) {
+  constructor(types, base, environment) {
     types = (types || []).concat([social.CompoundPopulation]);
-    super(types, base || new CompoundPopulation({}));
+    super(types, base || new CompoundPopulation({}, undefined, environment));
   }
 
   member(val) {
