@@ -10,6 +10,10 @@ module.exports = exports = {
     if (condition) throw Error(message);
   },
 
+  range(min, max, val) {
+    return Math.min(max, Math.max(min, val));
+  },
+
   define(target, key, accessor, writable) {
     let def = {
       configurable: false,
@@ -67,34 +71,34 @@ module.exports = exports = {
   },
 
   set_date_val(key, val) {
-    exports.throwif(!exports.is_date(val), key+' must be a date');
+    exports.throwif(!exports.is_date(val), `${key} must be a date`);
     let fmt = moment.isMoment(val) ? val.format() : val.toISOString();
     this.set(key, fmt,{type:xsd.dateTime});
   },
 
   set_ranged_val(key, val, min, max, type) {
-    exports.throwif(isNaN(val), key + ' must be a number');
+    exports.throwif(isNaN(val), `${key} must be a number`);
     if (!isFinite(val)) return;
-    val = Math.min(max, Math.max(min, val));
-    this.set(key, val, {type: type});
+    this.set(key, exports.range(min, max, val), {type: type});
   },
 
   set_non_negative_int(key, val) {
-    exports.throwif(isNaN(val), key + ' must be a number');
+    exports.throwif(isNaN(val), `${key} must be a number`);
     if (!isFinite(val)) return;
-    val = Math.max(0, Math.floor(val));
-    this.set(key, val, {type: xsd.nonNegativeInteger});
+    this.set(key,
+      exports.range(0, Infinity, Math.floor(val)),
+      {type: xsd.nonNegativeInteger});
   },
 
   set_duration_val(key, val) {
     exports.throwif(
-      isNaN(val) && !exports.is_string(val) && typeof val.humanize === 'undefined',
-      key + ' must be a number or a string');
-    if (!isNaN(val)) {
-      val = moment.duration(val * 1000).toString();
-    } else {
-      val = val.toString();
-    }
+      isNaN(val) &&
+      !exports.is_string(val) &&
+      typeof val.humanize === 'undefined',
+      `${key} must be a number or a string`);
+    val = !isNaN(val) ?
+      moment.duration(val * 1000).toString() :
+      val.toString();
     this.set(key, val, {type: xsd.duration});
   }
 };

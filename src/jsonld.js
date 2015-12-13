@@ -1,13 +1,13 @@
 'use strict';
 
-const jsonld        = require('jsonld')();
+const jsonld = require('jsonld')();
 const jsig = require('jsonld-signatures')({inject:{jsonld:jsonld}});
-const throwif       = require('./utils').throwif;
-const as_context    = require('activitystreams-context');
+const throwif = require('./utils').throwif;
+const as_context = require('activitystreams-context');
 const securityContext = require('./jsig');
-const ext_context   = require('./extcontext');
-const models        = require('./models');
-const as            = require('vocabs-as');
+const ext_context = require('./extcontext');
+const models = require('./models');
+const as = require('vocabs-as');
 
 const default_doc_loader = jsonld.documentLoaders.node();
 
@@ -122,8 +122,7 @@ module.exports = {
       (err,expanded)=> {
         if (err) return callback(err);
         if (expanded && expanded.length > 0) {
-          let base = models.wrap_object(expanded[0]);
-          callback(null,base);
+          callback(null,models.wrap_object(expanded[0]));
         } else {
           callback(null,null);
         }
