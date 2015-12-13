@@ -1,8 +1,6 @@
 'use strict';
 
 const LanguageTag = require('rfc5646');
-const utils = require('../utils');
-
 const _map = Symbol('map');
 
 class LanguageValue {

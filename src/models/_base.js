@@ -6,14 +6,14 @@ const request = require('request');
 const reasoner = require('../reasoner');
 const LanguageValue = require('./_languagevalue');
 const models = require('../models');
-const utils = require('../utils');
 const jsonld = require('../jsonld');
 const moment = require('moment');
 const as = require('vocabs-as');
 const asx = require('vocabs-asx');
 const xsd = require('vocabs-xsd');
 const owl = require('vocabs-owl');
-const throwif = utils.throwif;
+const throwif = require('../utils').throwif;
+const is_string = require('../utils').is_string;
 const Environment = require('../environment');
 
 const _expanded = Symbol('expanded');
@@ -305,7 +305,7 @@ class Base {
          value = [].concat(value);
        tmpl[key] = value;
      }
-     return function() {
+     return ()=> {
        let bld = new Builder(type);
        bld[_expanded] = bld[_base][_expanded] = Object.create(tmpl);
        return bld;
@@ -352,7 +352,7 @@ class BaseBuilder {
              key == '@list') {
            if (value instanceof Base) {
              expanded[key].push(value[_expanded]);
-           } else if (utils.is_string(value)) {
+           } else if (is_string(value)) {
              expanded[key].push({'@id': value});
            } else if (typeof value === 'object') {
              let base = new Base();

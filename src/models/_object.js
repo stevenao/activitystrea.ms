@@ -1,6 +1,7 @@
 'use strict';
 
-const utils = require('../utils');
+const set_date_val = require('../utils').set_date_val;
+const set_duration_val = require('../utils').set_duration_val;
 const as = require('vocabs-as');
 const Base = require('./_base');
 const moment = require('moment');
@@ -159,22 +160,22 @@ class AsObjectBuilder extends Base.Builder {
   }
 
   endTime(val) {
-    utils.set_date_val.call(this, as.endTime, val);
+    set_date_val.call(this, as.endTime, val);
     return this;
   }
 
   published(val) {
-    utils.set_date_val.call(this, as.published, val);
+    set_date_val.call(this, as.published, val);
     return this;
   }
 
   startTime(val) {
-    utils.set_date_val.call(this, as.startTime, val);
+    set_date_val.call(this, as.startTime, val);
     return this;
   }
 
   updated(val) {
-    utils.set_date_val.call(this, as.updated, val);
+    set_date_val.call(this, as.updated, val);
     return this;
   }
 
@@ -251,7 +252,7 @@ class AsObjectBuilder extends Base.Builder {
   }
   
   duration(val) {
-    utils.set_duration_val.call(this, as.duration, val);
+    set_duration_val.call(this, as.duration, val);
     return this;
   }
 }

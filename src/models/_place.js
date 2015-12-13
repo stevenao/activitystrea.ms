@@ -1,6 +1,7 @@
 'use strict';
 
-const utils = require('../utils');
+const range = require('../utils').range;
+const throwif = require('../utils').throwif;
 const AsObject = require('./_object');
 const as = require('vocabs-as');
 const xsd = require('vocabs-xsd');
@@ -11,7 +12,7 @@ class Place extends AsObject {
   }
 
   get accuracy() {
-    let ret = Math.min(100, Math.max(0, this.get(as.accuracy)));
+    let ret = range(0, 100, this.get(as.accuracy));
     return isNaN(ret) ? undefined : ret ;
   }
 
@@ -21,17 +22,17 @@ class Place extends AsObject {
   }
 
   get latitude() {
-    let ret = Math.min(90.0, Math.max(-90.0, this.get(as.latitude)));
+    let ret = range(-90.0, 90.0, this.get(as.latitude));
     return isNaN(ret) ? undefined : ret ;
   }
 
   get longitude() {
-    let ret = Math.min(180.0, Math.max(-180.0, this.get(as.longitude)));
+    let ret = range(-180.0, 180.0, this.get(as.longitude));
     return isNaN(ret) ? undefined : ret ;
   }
 
   get radius() {
-    let ret = Math.max(0, this.get(as.radius));
+    let ret = range(0, Infinity, this.get(as.radius));
     return isNaN(ret) ? undefined : ret ;
   }
 
@@ -48,32 +49,32 @@ class PlaceBuilder extends AsObject.Builder {
   }
 
   accuracy(val) {
-    utils.set_ranged_val.call(this, as.accuracy, val, 0.00, 100.0, xsd.float);
+    throwif(isNaN(val), 'accuracy must be a number');
+    this.set(as.accuracy, range(0.00, 100.0, val), {type: xsd.float});
     return this;
   }
 
   altitude(val) {
-    utils.throwif(isNaN(val), 'altitude must be a number');
+    throwif(isNaN(val), 'altitude must be a number');
     this.set(as.altitude, val, {type: xsd.float});
     return this;
   }
 
   latitude(val) {
-    utils.throwif(isNaN(val), 'latitude must be a number');
-    utils.set_ranged_val.call(this, as.latitude, val, -90.0, 90.0, xsd.float);
+    throwif(isNaN(val), 'latitude must be a number');
+    this.set(as.latitude, range(-90.0, 90.0, val), {type: xsd.float});
     return this;
   }
 
   longitude(val) {
-    utils.throwif(isNaN(val), 'longitude must be a number');
-    utils.set_ranged_val.call(
-      this, as.longitude, val, -180.0, 180.0, xsd.float);
+    throwif(isNaN(val), 'longitude must be a number');
+    this.set(as.longitude, range(-180.0, 180.0, val), {type: xsd.float});
     return this;
   }
 
   radius(val) {
-    utils.throwif(isNaN(val), 'radius must be a number');
-    utils.set_ranged_val.call(this, as.radius, val, 0.00, Infinity, xsd.float);
+    throwif(isNaN(val), 'radius must be a number');
+    this.set(as.radius, range(0.00, Infinity, val), {type: xsd.float});
     return this;
   }
 

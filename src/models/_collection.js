@@ -1,9 +1,11 @@
 'use strict';
 
-const utils = require('../utils');
+const range = require('../utils').range;
+const throwif = require('../utils').throwif;
 const AsObject = require('./_object');
 const Base = require('./_base');
 const as = require('vocabs-as');
+const xsd = require('vocabs-xsd');
 
 const _ordered = Symbol('ordered');
 const _items = Symbol('items');
@@ -20,7 +22,7 @@ class Collection extends AsObject {
   }
 
   get totalItems() {
-    let ret = Math.max(0,this.get(as.totalItems));
+    let ret = range(0, Infinity, this.get(as.totalItems));
     return isNaN(ret) ? 0 : ret ;
   }
 
@@ -52,7 +54,11 @@ class CollectionBuilder extends AsObject.Builder {
   }
 
   totalItems(val) {
-    utils.set_non_negative_int.call(this, as.totalItems, val);
+    this.set(
+      as.totalItems,
+      range(0, Infinity, val),
+      {type: xsd.nonNegativeInteger}
+    );
     return this;
   }
 
@@ -69,7 +75,7 @@ class CollectionBuilder extends AsObject.Builder {
   }
 
   items(val) {
-    utils.throwif(this[_ordered] > 0,
+    throwif(this[_ordered] > 0,
       'Unordered items cannot be added when the collection already ' +
       'contains ordered items');
     this[_ordered] = -1;
@@ -81,7 +87,7 @@ class CollectionBuilder extends AsObject.Builder {
   }
 
   orderedItems(val) {
-    utils.throwif(this[_ordered] < 0,
+    throwif(this[_ordered] < 0,
       'Ordered items cannot be added when the collection already ' +
       'contains unordered items');
     this[_ordered] = 1;

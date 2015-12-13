@@ -1,7 +1,8 @@
 'use strict';
 
 const as = require('vocabs-as');
-const utils = require('../utils');
+const xsd = require('vocabs-xsd');
+const range = require('../utils').range;
 const CollectionPage = require('./_collectionpage');
 
 class OrderedCollectionPage extends CollectionPage {
@@ -22,7 +23,10 @@ class OrderedCollectionPageBuilder extends CollectionPage.Builder {
   }
 
   startIndex(val) {
-    utils.set_non_negative_int.call(this, as.startIndex, val);
+    this.set(
+      as.startIndex,
+      range(0, Infinity, val),
+      {type: xsd.nonNegativeInteger});
     return this;
   }
 

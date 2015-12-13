@@ -1,9 +1,7 @@
 'use strict';
 
-const utils = require('../utils');
 const as = require('vocabs-as');
 const Activity = require('./_activity');
-const moment = require('moment');
 
 class Question extends Activity {
   constructor(expanded, builder, environment) {

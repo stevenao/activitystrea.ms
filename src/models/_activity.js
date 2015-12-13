@@ -1,9 +1,7 @@
 'use strict';
 
-const utils = require('../utils');
 const AsObject = require('./_object');
 const as = require('vocabs-as');
-const xsd = require('vocabs-xsd');
 
 class Activity extends AsObject {
   constructor(expanded, builder, environment) {

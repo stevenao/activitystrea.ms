@@ -1,7 +1,8 @@
 'use strict';
 
-const utils = require('../utils');
+const range = require('../utils').range;
 const as = require('vocabs-as');
+const xsd = require('vocabs-xsd');
 const Base = require('./_base');
 const moment = require('moment');
 
@@ -32,12 +33,12 @@ class Link extends Base {
   }
 
   get height() {
-    let ret = Math.max(0, this.get(as.height));
+    let ret = range(0, Infinity, this.get(as.height));
     return isNaN(ret) ? 0 : ret;
   }
 
   get width() {
-    let ret = Math.max(0, this.get(as.width));
+    let ret = range(0, Infinity, this.get(as.width));
     return isNaN(ret) ? 0 : ret;
   }
 
@@ -74,12 +75,19 @@ class LinkBuilder extends Base.Builder {
   }
 
   height(val) {
-    utils.set_non_negative_int.call(this, as.height, val);
+    this.set(
+      as.height,
+      range(0, Infinity, val),
+      {type: xsd.nonNegativeInteger});
     return this;
   }
 
   width(val) {
-    utils.set_non_negative_int.call(this, as.width, val);
+    this.set(
+      as.width,
+      range(0, Infinity, val),
+      {type: xsd.nonNegativeInteger}
+    );
     return this;
   }
 

@@ -1,7 +1,6 @@
 'use strict';
 
 const as = require('vocabs-as');
-const utils = require('../utils');
 const Collection = require('./_collection');
 
 class CollectionPage extends Collection {
