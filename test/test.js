@@ -8,11 +8,13 @@ const social = require('vocabs-social');
 const interval = require('vocabs-interval');
 
 const now = new Date();
+const nowiso = now.toISOString();
 
-describe('Basics...', function () {
-  it('should build a minimal object', function () {
+describe('Basics...', ()=> {
+  it('should build a minimal object', (done)=> {
     var object = as.object().get();
     assert.equal(object.type, asv.Object);
+    done();
   });
   
   function testFunctionalProperties(object) {
@@ -20,13 +22,13 @@ describe('Basics...', function () {
     assert.equal(object.content.get('fr'), 'foo');
     assert.equal(object.name.get('de'), 'baz');
     assert.equal(object.summary.get('es'), 'bar');
-    assert.equal(object.endTime.toISOString(), now.toISOString());
-    assert.equal(object.startTime.toISOString(), now.toISOString());
-    assert.equal(object.published.toISOString(), now.toISOString());
-    assert.equal(object.updated.toISOString(), now.toISOString());
+    assert.equal(object.endTime.toISOString(), nowiso);
+    assert.equal(object.startTime.toISOString(), nowiso);
+    assert.equal(object.published.toISOString(), nowiso);
+    assert.equal(object.updated.toISOString(), nowiso);
   }
   
-  it('should create an object and return all the correct values', function () {
+  it('should create an object and return all the correct values', (done)=> {
     var object = as.object()
       .content(
         as.langmap()
@@ -44,9 +46,10 @@ describe('Basics...', function () {
       .updated(now)
       .get();
     testFunctionalProperties(object);
+    done();
   });
   
-  it('should roundtrip correctly', function() {
+  it('should roundtrip correctly', (done)=> {
     var object = as.object()
       .content(
         as.langmap()
@@ -63,36 +66,42 @@ describe('Basics...', function () {
       .published(now)
       .updated(now)
       .get();
-    object.export(function(e,d) {
+    object.export((e,d)=> {
       assert.equal(e, null);
-      as.import(d, function(e,d) {
+      as.import(d, (e,d)=> {
         assert.equal(e,undefined);
         testFunctionalProperties(d);
+        done();
       });
     });
   });
   
-  it('should create a basic actor object', function() {
+  it('should create a basic actor object', (done)=> {
     assert(as.actor().get() instanceof models.Actor);
+    done();
   });
   
-  it('should create a basic activity object', function() {
+  it('should create a basic activity object', (done)=> {
     assert(as.activity().get() instanceof models.Activity);
+    done();
   });
   
-  it('should create a basic collection object', function() {
+  it('should create a basic collection object', (done)=> {
     assert(as.collection().get() instanceof models.Collection);
+    done();
   });
   
-  it('should create a basic ordered collection object', function() {
+  it('should create a basic ordered collection object', (done)=> {
     assert(as.orderedCollection().get() instanceof models.OrderedCollection);
+    done();
   });
   
-  it('should create a basic link object', function() {
+  it('should create a basic link object', (done)=> {
     assert(as.link().get() instanceof models.Link);
+    done();
   });
   
-  it('should create activities with an appropriate type', function() {
+  it('should create activities with an appropriate type', (done)=> {
     [['accept',asv.Accept],
      ['tentativeAccept',asv.TentativeAccept],
      ['add',asv.Add],
@@ -120,14 +129,15 @@ describe('Basics...', function () {
      ['block',asv.Block],
      ['flag',asv.Flag],
      ['dislike',asv.Dislike]
-    ].forEach(function(key) {
+   ].forEach((key)=> {
       var obj = as[key[0]]().get();
       assert(obj instanceof models.Activity);
       assert.equal(obj.type,key[1]);
     });
+    done();
   });
   
-  it('should create objects with an appropriate type', function() {
+  it('should create objects with an appropriate type', (done)=> {
     [
      ['application',asv.Application],
      ['group',asv.Group],
@@ -146,22 +156,24 @@ describe('Basics...', function () {
      ['question',asv.Question],
      ['event',asv.Event],
      ['place',asv.Place]
-   ].forEach(function(key) {
+   ].forEach((key)=> {
       var obj = as[key[0]]().get();
       assert(obj instanceof models.Object);
       assert.equal(obj.type,key[1]);
     });
+    done();
   });
   
-  it('should create link objects with an appropriate type', function() {
-    [['mention',asv.Mention]].forEach(function(key) {
+  it('should create link objects with an appropriate type', (done)=> {
+    [['mention',asv.Mention]].forEach((key)=> {
       var obj = as[key[0]]().get();
       assert(obj instanceof models.Link);
       assert.equal(obj.type,key[1]);
     });
+    done();
   });
   
-  it('should create a complex object', function() {
+  it('should create a complex object', (done)=> {
     // Test complex creation
     var obj =
       as.create()
@@ -178,32 +190,35 @@ describe('Basics...', function () {
     var note = obj.object.first;
     assert.equal(asv.Note, note.type);
     assert.equal(note.content.get(), 'this is a note');
+    done();
   });
   
-  it('should import from JSON without errors', function() {
+  it('should import from JSON without errors', (done)=> {
     as.import({
-      '@type': 'Like',
+      'type': 'Like',
       nameMap: {
         en: 'foo'
       },
       actor: {
-        '@type': 'Person',
+        'type': 'Person',
         name: 'Joe'
       },
       object: {
-        '@type': 'http://example.org/Table',
+        'type': 'http://example.org/Table',
         name: 'Table'
       }
-    }, function(err, doc) {
+    }, (err, doc)=> {
       assert.equal(null, err);
       assert.equal(asv.Like, doc.type);
       assert.equal(doc.name, 'foo');
-      assert.equal(asv.Person, doc.actor[0].type);
-      assert.equal(doc.actor[0].name, 'Joe');
+      let actor = doc.actor.first;
+      assert.equal(asv.Person, actor.type);
+      assert.equal(actor.name, 'Joe');
+      done();
     });
   });
 
-  it('should handle languages properly', function() {
+  it('should handle languages properly', (done)=> {
     var LanguageValue = require('../src/models/_languagevalue');
     var B = new LanguageValue.Builder();
     B.set('en-US', 'bar');
@@ -217,14 +232,15 @@ describe('Basics...', function () {
     assert.equal(lv.get('en-Us-Scrp'), 'bar');
     assert.equal(lv.get('fr'), 'boo');
     assert.equal(lv.get('FR-US'), 'baz');
+    done();
   });
 
-  it('should roundtrip the RDF properly', function(done) {
+  it('should roundtrip the RDF properly', (done)=> {
     var obj = as.object().name('test').get();
-    obj.toRDF(function(err,doc) {
+    obj.toRDF((err,doc)=> {
       assert.equal(err, undefined);
       assert(doc);
-      as.importFromRDF(doc, function(err,doc) {
+      as.importFromRDF(doc, (err,doc)=> {
         assert.equal(err, undefined);
         assert.equal(doc.name.get(), 'test');
         done();
@@ -232,9 +248,9 @@ describe('Basics...', function () {
     });
   });
 
-  it('should import an object with just an @id', function(done) {
-    var test = {'@id': 'http://example.org'};
-    as.import(test, function(err,doc) {
+  it('should import an object with just an id', (done)=> {
+    var test = {'id': 'http://example.org'};
+    as.import(test, (err,doc)=> {
       assert.equal(err,undefined);
       assert.equal(doc.id, 'http://example.org');
       done();
@@ -242,7 +258,7 @@ describe('Basics...', function () {
   });
 
   it('should have appropriate values for every orderedcollection property',
-    function(done) {
+    (done)=> {
 
     var doc = as.orderedCollection()
       .id('http://example.org')
@@ -260,18 +276,18 @@ describe('Basics...', function () {
     assert.equal(doc.last.id, 'http://example.org/last');
     assert.equal(doc.items.length, 2);
     const iter = doc.items[Symbol.iterator]();
-    assert.equal(iter.next().value.id, 'http://example.org/item/1');//TODO:this fails
-    assert.equal(iter.next().value.id, 'http://example.org/item/2');//TODO:this fails
+    assert.equal(iter.next().value.id, 'http://example.org/item/1');
+    assert.equal(iter.next().value.id, 'http://example.org/item/2');
     done();
   });
 
   it('should have appropriate values for every orderedcollection property',
-    function(done) {
+    (done)=> {
 
     var test = {
       '@context': 'http://www.w3.org/ns/activitystreams#',
-      '@id': 'http://example.org',
-      '@type': 'OrderedCollection',
+      'id': 'http://example.org',
+      'type': 'OrderedCollection',
       totalItems: 1,
       current: 'http://example.org/current',
       first: 'http://example.org/first',
@@ -282,7 +298,7 @@ describe('Basics...', function () {
       ]
     };
 
-    as.import(test, function(err, doc) {
+    as.import(test, (err, doc)=> {
       assert.equal(err, undefined);
       assert(doc instanceof as.models.OrderedCollection);
       assert.equal(doc.totalItems, 1);
@@ -300,7 +316,7 @@ describe('Basics...', function () {
   });
 
   it('should have appropriate values for every collection property',
-    function(done) {
+    (done)=> {
 
     var doc = as.collection()
       .id('http://example.org')
@@ -326,12 +342,12 @@ describe('Basics...', function () {
   });
 
   it('should have appropriate values for every collection property',
-    function(done) {
+    (done)=> {
 
     var test = {
       '@context': 'http://www.w3.org/ns/activitystreams#',
-      '@id': 'http://example.org',
-      '@type': 'Collection',
+      'id': 'http://example.org',
+      'type': 'Collection',
       totalItems: 1,
       current: 'http://example.org/current',
       first: 'http://example.org/first',
@@ -342,7 +358,7 @@ describe('Basics...', function () {
       ]
     };
 
-    as.import(test, function(err, doc) {
+    as.import(test, (err, doc)=> {
       assert.equal(err, undefined);
       assert(doc instanceof as.models.Collection);
       assert.equal(doc.totalItems, 1);
@@ -359,7 +375,7 @@ describe('Basics...', function () {
   });
 
   it('should have appropriate values for every activity property',
-    function(done) {
+    (done)=> {
 
     var doc = as.activity()
       .id('http://example.org')
@@ -397,12 +413,12 @@ describe('Basics...', function () {
   });
 
   it('should have appropriate values for every activity property',
-    function(done) {
+    (done)=> {
 
     var test = {
       '@context': 'http://www.w3.org/ns/activitystreams#',
-      '@id': 'http://example.org',
-      '@type': 'Activity',
+      'id': 'http://example.org',
+      'type': 'Activity',
       actor: 'http://example.org/actor',
       object: 'http://example.org/object',
       target: 'http://example.org/target',
@@ -411,7 +427,7 @@ describe('Basics...', function () {
       instrument: 'http://example.org/instrument'
     };
 
-    as.import(test, function(err,doc) {
+    as.import(test, (err,doc)=> {
       assert.equal(err, undefined);
       assert(doc instanceof as.models.Activity);
       assert.equal(doc.id, 'http://example.org');
@@ -440,11 +456,11 @@ describe('Basics...', function () {
   });
 
   it('should have appropriate values for every link property',
-    function(done) {
+    (done)=> {
     var test = {
       '@context': 'http://www.w3.org/ns/activitystreams#',
-      '@id': 'http://example.org',
-      '@type': 'Link',
+      'id': 'http://example.org',
+      'type': 'Link',
       href: 'http://example.org',
       rel: ['a','b'],
       mediaType: 'application/text',
@@ -453,7 +469,7 @@ describe('Basics...', function () {
       height: 10,
       width: 10,
     };
-    as.import(test, function(err, doc) {
+    as.import(test, (err, doc)=> {
       assert.equal(err, undefined);
       assert(doc instanceof as.models.Link);
       assert.equal(doc.id, 'http://example.org');
@@ -471,7 +487,7 @@ describe('Basics...', function () {
   });
 
   it('should have appropriate values for every link property',
-    function(done) {
+    (done)=> {
     var doc = as.link()
       .id('http://example.org')
       .href('http://example.org')
@@ -500,11 +516,11 @@ describe('Basics...', function () {
   });
 
   it('should have appropriate values for every object property',
-     function(done) {
+     (done)=> {
     var test = {
       '@context': 'http://www.w3.org/ns/activitystreams#',
-      '@id': 'http://example.org',
-      '@type': 'Object',
+      'id': 'http://example.org',
+      'type': 'Object',
       attachment: 'http://example.org/attachment',
       attributedTo: 'http://sally.example.org',
       content: 'the content',
@@ -529,7 +545,7 @@ describe('Basics...', function () {
       cc: 'http://mark.example.org',
       bcc: 'http://jane.example.org'
     };
-    as.import(test, function(err, doc) {
+    as.import(test, (err, doc)=> {
       assert.equal(err, undefined);
       assert.equal(doc.id, 'http://example.org');
       assert.equal(doc.type, asv.Object);
@@ -599,7 +615,7 @@ describe('Basics...', function () {
   });
 
   it('should have appropriate values for every object property',
-     function(done) {
+     (done)=> {
     var doc = as.object()
       .id('http://example.org')
       .attachment('http://example.org/attachment')
@@ -694,17 +710,17 @@ describe('Basics...', function () {
   });
 
   it('should have appropriate values for the relationship object',
-    function(done) {
+    (done)=> {
 
       var test = {
         '@context': 'http://www.w3.org/ns/activitystreams#',
-        '@type': 'Relationship',
+        'type': 'Relationship',
         subject: 'http://sally.example.org',
         relationship: 'http://example.org',
         object: 'http://joe.example.org'
       };
 
-      as.import(test, function(err,doc) {
+      as.import(test, (err,doc)=> {
         assert.equal(err, undefined);
         assert(doc instanceof as.models.Relationship);
         assert(doc.subject.id, 'http://sally.example.org');
@@ -720,7 +736,7 @@ describe('Basics...', function () {
   });
 
   it('should have appropriate values for the relationship object',
-    function(done) {
+    (done)=> {
 
       var doc = as.relationship()
         .subject('http://sally.example.org')
@@ -741,16 +757,16 @@ describe('Basics...', function () {
   });
 
   it('should have appropriate values for the question object',
-    function(done) {
+    (done)=> {
 
     var test = {
       '@context': 'http://www.w3.org/ns/activitystreams#',
-      '@type': 'Question',
+      'type': 'Question',
       name: 'the question',
-      anyOf: [{'@id':'urn:answer1'},{'@id':'urn:answer2'}]
+      anyOf: [{'id':'urn:answer1'},{'id':'urn:answer2'}]
     };
 
-    as.import(test, function(err, doc) {
+    as.import(test, (err, doc)=> {
       assert.equal(err, undefined);
       assert(doc instanceof as.models.Question);
       assert.equal(doc.name.get(), 'the question');
@@ -764,7 +780,7 @@ describe('Basics...', function () {
   });
 
   it('should have appropriate values for the question object',
-    function(done) {
+    (done)=> {
 
     var doc = as.question()
       .name('the question')
@@ -783,11 +799,11 @@ describe('Basics...', function () {
 
   });
 
-  it('should have appropriate values for the place object', function(done) {
+  it('should have appropriate values for the place object', (done)=> {
 
     var test = {
       '@context': 'http://www.w3.org/ns/activitystreams#',
-      '@type': 'Place',
+      'type': 'Place',
       accuracy: 10,
       altitude: 10,
       latitude: 10,
@@ -796,7 +812,7 @@ describe('Basics...', function () {
       units: 'm'
     };
 
-    as.import(test, function(err, doc) {
+    as.import(test, (err, doc)=> {
       assert.equal(err, undefined);
       assert(doc instanceof as.models.Place);
       assert.equal(doc.accuracy, 10);
@@ -810,7 +826,7 @@ describe('Basics...', function () {
 
   });
 
-  it('should have appropriate values for the place object', function(done) {
+  it('should have appropriate values for the place object', (done)=> {
 
     var doc = as.place()
       .accuracy(10)
@@ -832,15 +848,15 @@ describe('Basics...', function () {
 
   });
 
-  it('should have appropriate values for the profile object', function(done) {
+  it('should have appropriate values for the profile object', (done)=> {
 
     var test = {
       '@context': 'http://www.w3.org/ns/activitystreams#',
-      '@type': 'Profile',
+      'type': 'Profile',
       describes: 'http://example.org'
     };
 
-    as.import(test, function(err, doc) {
+    as.import(test, (err, doc)=> {
       assert.equal(err, undefined);
       assert(doc instanceof as.models.Profile);
       assert.equal(doc.describes.id, 'http://example.org');
@@ -849,7 +865,7 @@ describe('Basics...', function () {
 
   });
 
-  it('should have appropriate values for the profile object', function(done) {
+  it('should have appropriate values for the profile object', (done)=> {
 
     var doc = as.profile()
       .describes('http://example.org')
@@ -861,20 +877,26 @@ describe('Basics...', function () {
 
   });
 
-  it('should use the default context', function(done) {
-    var test = {'@id':'urn:test', name: 'test'};
-    as.import(test, function(err,doc) {
+  it('should use the default context', (done)=> {
+    var test = {'id':'urn:test', name: 'test'};
+    as.import(test, (err,doc)=> {
       assert.equal(err, undefined);
       assert.equal(doc.id, 'urn:test');
       assert.equal(doc.name.get(), 'test');
       done();
     });
   });
+  
+  it('Nothing in as vocab should be undefined', (done)=> {
+    let keys = Object.keys(asv).filter((item)=>{return !(asv[item]);});
+    assert.equal(0, keys.length);
+    done();
+  });
 });
 
-describe('Streaming...', function() {
+describe('Streaming...', ()=> {
 
-  it('Should read and parse from the stream', function(done) {
+  it('Should read and parse from the stream', (done)=> {
     var fs = require('fs');
     var AS2Stream = as.Stream;
     var path = require('path');
@@ -882,7 +904,7 @@ describe('Streaming...', function() {
 
     fs.createReadStream(path.resolve(__dirname,'test.json'))
       .pipe(new AS2Stream())
-      .pipe(through.obj(function(chunk,encoding,callback) {
+      .pipe(through.obj((chunk,encoding,callback)=> {
         assert(chunk);
         assert(chunk.type);
         assert.equal(chunk.type, asv.Person);
@@ -891,13 +913,13 @@ describe('Streaming...', function() {
       }));
   });
 
-  it('Should write to the stream', function(done) {
+  it('Should write to the stream', (done)=> {
     var AS2Stream = as.Stream;
     var through = require('through2');
     var obj = as.object().name('test').get();
     obj.stream({objectMode:true})
       .pipe(new AS2Stream())
-      .pipe(through.obj(function(chunk,encoding,callback) {
+      .pipe(through.obj((chunk,encoding,callback)=> {
         assert(chunk);
         assert(chunk.type);
         assert.equal(chunk.name.valueOf(), 'testing');
@@ -906,8 +928,8 @@ describe('Streaming...', function() {
   });
 });
 
-describe('Templates...', function() {
-  it('Should use one object as a template for another', function(done) {
+describe('Templates...', ()=> {
+  it('Should use one object as a template for another', (done)=> {
     var tmpl = as.like().actor(as.person().name('Joe')).template();
     var like = tmpl().object('http://example.org/foo').get();
     assert(like.actor);
@@ -919,15 +941,16 @@ describe('Templates...', function() {
   });
 });
 
-describe('Extensions...', function() {
-  it('should initialize the Interval and Social Extensions', function() {
+describe('Extensions...', ()=> {
+  it('should initialize the Interval and Social Extensions', (done)=> {
     as.use(as.interval);
     as.use(as.social);
     assert.equal(require('../src/extcontext.js').get().length, 2);
+    done();
   });
 
   it('should create interval objects with appropriate type and values',
-  function() {
+  (done)=> {
     [
       ['open', interval.OpenInterval],
       ['closed', interval.ClosedInterval],
@@ -937,7 +960,7 @@ describe('Extensions...', function() {
       ['rightOpen', interval.RightOpenInterval],
       ['leftClosed', interval.LeftClosedInterval],
       ['rightClosed', interval.RightClosedInterval],
-    ].forEach(function(key){
+    ].forEach((key)=>{
       var obj = as.interval[key[0]]().
         upper(1).
         lower(0).
@@ -949,9 +972,10 @@ describe('Extensions...', function() {
       assert.equal(obj.lower, 0);
       assert.equal(obj.step, 1);
     });
+    done();
   });
 
-  it('should create population objects with appropriate type', function() {
+  it('should create population objects with appropriate type', (done)=> {
     [
       ['population', social.Population],
       ['everyone', social.Everyone],
@@ -965,14 +989,15 @@ describe('Extensions...', function() {
       ['any', social.Any],
       ['none', social.None],
       ['compoundPopulation', social.CompoundPopulation]
-    ].forEach(function(key) {
+    ].forEach((key)=> {
       var obj = as.social[key[0]]().get();
       assert(obj instanceof as.social.model.Population);
       assert.equal(obj.type, key[1]);
     });
+    done();
   });
 
-  it('should created a signed entry and verify it', function(done) {
+  it('should create a signed entry and verify it', (done)=> {
 
     var testPublicKeyUrl = 'https://example.com/i/alice/keys/1';
     var testPublicKeyPem =
@@ -1019,12 +1044,12 @@ describe('Extensions...', function() {
       }
     };
 
-    obj.prettyWrite(options, function(err,doc) {
+    obj.prettyWrite(options, (err,doc)=> {
       assert.equal(err, undefined);
       as.verify(doc, {
         publicKey: testPublicKey,
         publicKeyOwner: testPublicKeyOwner,
-      }, function(err,verified) {
+      }, (err,verified)=> {
         assert.equal(err, undefined);
         assert(verified);
         done();
