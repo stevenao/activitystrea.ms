@@ -1,13 +1,12 @@
 'use strict';
 
 const Reasoner = require('reasoner');
-const vocabs = require('linkeddata-vocabs');
 const Graph = Reasoner.Graph;
-const as = vocabs.as;
-const owl = vocabs.owl;
-const rdf = vocabs.rdf;
-const rdfs = vocabs.rdfs;
-const asx = vocabs.asx;
+const as = require('vocabs-as');
+const owl = require('vocabs-owl');
+const rdf = require('vocabs-rdf');
+const rdfs = require('vocabs-rdfs');
+const asx = require('vocabs-asx');
 
 const functionalObject = [owl.ObjectProperty, owl.FunctionalProperty],
   functionalDatatype = [owl.DatatypeProperty, owl.FunctionalProperty],

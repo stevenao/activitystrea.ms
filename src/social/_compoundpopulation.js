@@ -1,7 +1,7 @@
 'use strict';
 
 const Population = require('./_population');
-const social = require('linkeddata-vocabs').social;
+const social = require('vocabs-social');
 
 class CompoundPopulation extends Population {
   constructor(expanded, builder) {

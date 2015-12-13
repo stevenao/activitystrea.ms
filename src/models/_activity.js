@@ -1,10 +1,9 @@
 'use strict';
 
-const vocabs   = require('linkeddata-vocabs');
-const utils    = require('../utils');
+const utils = require('../utils');
 const AsObject = require('./_object');
-const as = vocabs.as;
-const xsd = vocabs.xsd;
+const as = require('vocabs-as');
+const xsd = require('vocabs-xsd');
 
 class Activity extends AsObject {
   constructor(expanded, builder) {

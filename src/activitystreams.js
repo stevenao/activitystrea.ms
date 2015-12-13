@@ -1,10 +1,9 @@
 'use strict';
 
-const vocabs = require('linkeddata-vocabs');
 const reasoner = require('./reasoner');
 const jsonld = require('./jsonld');
 const ext_context = require('./extcontext');
-const as = vocabs.as;
+const as = require('vocabs-as');
 
 function _types(types, additional) {
   types = types || [];
@@ -30,10 +29,6 @@ module.exports = {
 
   get models() {
     return require('./models');
-  },
-
-  get vocabs() {
-    return vocabs;
   },
 
   get import() {

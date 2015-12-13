@@ -2,7 +2,7 @@
 
 const Population = require('./_population');
 const utils = require('../utils');
-const social = require('linkeddata-vocabs').social;
+const social = require('vocabs-social');
 
 class Interested extends Population {
   constructor(expanded, builder) {

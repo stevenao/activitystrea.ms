@@ -1,14 +1,13 @@
 'use strict';
 
-const  vocabs   = require('linkeddata-vocabs');
-const  utils    = require('../utils');
-const  AsObject = require('./_object');
-const  Base     = require('./_base');
-const  as = vocabs.as;
+const utils = require('../utils');
+const AsObject = require('./_object');
+const Base = require('./_base');
+const as = require('vocabs-as');
 
-const  _ordered = Symbol('ordered');
-const  _items = Symbol('items');
-const  slice = Array.prototype.slice;
+const _ordered = Symbol('ordered');
+const _items = Symbol('items');
+const slice = Array.prototype.slice;
 
 function isIterable(i) {
   return i && (typeof i.next === 'function' ||

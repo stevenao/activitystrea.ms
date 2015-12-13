@@ -2,26 +2,15 @@
   "name": "activitystrea.ms",
   "version": "0.12.1",
   "description": "Activity Streams 2.0 JavaScript Implementation",
-  "author": {
-    "name": "James M Snell",
-    "email": "jasnell@us.ibm.com"
-  },
+  "author": "James M Snell <jasnell@us.ibm.com>",
   "keywords": [
     "activitystreams"
-  ],
-  "maintainers": [
-    "James M Snell <jasnell@us.ibm.com> (http://jasnell.me)"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/jasnell/activitystreams.js"
   },
-  "licenses": [
-    {
-      "type": "Apache-2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-    }
-  ],
+  "license": "Apache-2.0",
   "scripts": {
     "test": "mocha test/test.js"
   },
@@ -29,12 +18,19 @@
     "activitystreams-context": "^0.10.0",
     "jsonld": "^0.4.2",
     "jsonld-signatures": "^1.1.3",
-    "linkeddata-vocabs": "^0.10.0",
+    "vocabs-as": "^0.11.1",
+    "vocabs-asx": "^0.11.1",
+    "vocabs-owl": "^0.11.1",
+    "vocabs-xsd": "^0.11.1",
+    "vocabs-rdf": "^0.11.1",
+    "vocabs-rdfs": "^0.11.1",
+    "vocabs-interval": "^0.11.1",
+    "vocabs-social": "^0.11.1",
     "lru-cache": "^3.2.0",
     "moment": "^2.10.6",
     "node-uuid": "^1.4.7",
     "readable-stream": "^2.0.4",
-    "reasoner": "0.2.2",
+    "reasoner": "0.2.3",
     "request": "^2.67.0",
     "rfc5646": "^2.0.0"
   },

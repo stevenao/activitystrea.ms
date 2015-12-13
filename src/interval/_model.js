@@ -1,7 +1,7 @@
 'use strict';
 
-const interval = require('linkeddata-vocabs').interval;
-const xsd      = require('linkeddata-vocabs').xsd;
+const interval = require('vocabs-interval');
+const xsd      = require('vocabs-xsd');
 const AsObject = require('../models').Object;
 const utils    = require('../utils');
 

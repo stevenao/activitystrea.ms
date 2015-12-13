@@ -1,12 +1,11 @@
 'use strict';
 
-const vocabs      = require('linkeddata-vocabs');
 const reasoner    = require('../reasoner');
-const social = vocabs.social;
-const owl = vocabs.owl;
-const rdf = vocabs.rdf;
-const as = vocabs.as;
-const rdfs = vocabs.rdfs;
+const social = require('vocabs-social');
+const owl = require('vocabs-owl');
+const rdf = require('vocabs-rdf');
+const as = require('vocabs-as');
+const rdfs = require('vocabs-rdfs');
 
 exports.model = {
   get Population() {

@@ -1,7 +1,7 @@
 'use strict';
 
 const Collection = require('./_collection');
-const as = require('linkeddata-vocabs').as;
+const as = require('vocabs-as');
 const slice = Array.prototype.slice;
 
 class OrderedCollection extends Collection {

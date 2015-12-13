@@ -1,8 +1,8 @@
 'use strict';
 
 const url = require('url');
-const vocabs = require('linkeddata-vocabs');
 const moment = require('moment');
+const xsd = require('vocabs-xsd');
 const _toString = {}.toString;
 
 module.exports = exports = {
@@ -69,7 +69,7 @@ module.exports = exports = {
   set_date_val(key, val) {
     exports.throwif(!exports.is_date(val), key+' must be a date');
     let fmt = moment.isMoment(val) ? val.format() : val.toISOString();
-    this.set(key, fmt,{type:vocabs.xsd.dateTime});
+    this.set(key, fmt,{type:xsd.dateTime});
   },
 
   set_ranged_val(key, val, min, max, type) {
@@ -83,7 +83,7 @@ module.exports = exports = {
     exports.throwif(isNaN(val), key + ' must be a number');
     if (!isFinite(val)) return;
     val = Math.max(0, Math.floor(val));
-    this.set(key, val, {type: vocabs.xsd.nonNegativeInteger});
+    this.set(key, val, {type: xsd.nonNegativeInteger});
   },
 
   set_duration_val(key, val) {
@@ -95,6 +95,6 @@ module.exports = exports = {
     } else {
       val = val.toString();
     }
-    this.set(key, val, {type: vocabs.xsd.duration});
+    this.set(key, val, {type: xsd.duration});
   }
 };

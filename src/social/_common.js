@@ -1,6 +1,6 @@
 'use strict';
 
-const social = require('linkeddata-vocabs').social;
+const social = require('vocabs-social');
 const utils = require('../utils');
 const Population = require('./_population');
 

@@ -1,8 +1,8 @@
 'use strict';
 
-const  as = require('linkeddata-vocabs').as;
-const  utils = require('../utils');
-const  CollectionPage = require('./_collectionpage');
+const as = require('vocabs-as');
+const utils = require('../utils');
+const CollectionPage = require('./_collectionpage');
 
 class OrderedCollectionPage extends CollectionPage {
   constructor(expanded, builder) {

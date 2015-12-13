@@ -1,6 +1,6 @@
 'use strict';
 
-const as       = require('linkeddata-vocabs').as;
+const as = require('vocabs-as');
 const AsObject = require('./_object');
 
 class Actor extends AsObject {

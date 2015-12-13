@@ -1,10 +1,9 @@
 'use strict';
 
 const utils = require('../utils');
-const vocabs = require('linkeddata-vocabs');
 const AsObject = require('./_object');
-const as = vocabs.as;
-const xsd = vocabs.xsd;
+const as = require('vocabs-as');
+const xsd = require('vocabs-xsd');
 
 class Place extends AsObject {
   constructor(expanded, builder) {

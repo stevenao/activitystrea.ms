@@ -1,6 +1,6 @@
 'use strict';
 
-const as = require('linkeddata-vocabs').as;
+const as = require('vocabs-as');
 const reasoner = require('../reasoner');
 const utils = require('../utils');
 

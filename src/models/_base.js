@@ -1,7 +1,6 @@
 'use strict';
 
 const Readable = require('readable-stream').Readable;
-const vocabs = require('linkeddata-vocabs');
 const LRU = require('lru-cache');
 const request = require('request');
 const reasoner = require('../reasoner');
@@ -10,10 +9,10 @@ const models = require('../models');
 const utils = require('../utils');
 const jsonld = require('../jsonld');
 const moment = require('moment');
-const as = vocabs.as;
-const asx = vocabs.asx;
-const xsd = vocabs.xsd;
-const owl = vocabs.owl;
+const as = require('vocabs-as');
+const asx = require('vocabs-asx');
+const xsd = require('vocabs-xsd');
+const owl = require('vocabs-owl');
 const throwif = utils.throwif;
 
 const _expanded = Symbol('expanded');
@@ -148,7 +147,7 @@ class Base {
    * Returns true if the given key exists in the object
    **/
   has(key) {
-    key = vocabs.as[key] || key;
+    key = as[key] || key;
     let ret = this[_expanded][key];
     return ret && (ret.length > 0 || typeof ret === 'boolean');
   }
@@ -157,7 +156,7 @@ class Base {
    * Return the value of the given key
    **/
   get(key) {
-    key = vocabs.as[key] || key;
+    key = as[key] || key;
     let ret = this[_cache].get(key);
     if (!ret) {
       let nodekey = reasoner.node(key);
@@ -328,7 +327,7 @@ class BaseBuilder {
      if (val instanceof BaseBuilder || val instanceof LanguageValue.Builder)
        val = val.get();
      let n, l;
-     key = vocabs.as[key] || key;
+     key = as[key] || key;
      let nodekey = reasoner.node(key);
      if (val === null || val === undefined) {
        delete expanded[key];

@@ -3,11 +3,11 @@
 const jsonld        = require('jsonld')();
 const jsig = require('jsonld-signatures')({inject:{jsonld:jsonld}});
 const throwif       = require('./utils').throwif;
-const vocabs        = require('linkeddata-vocabs');
 const as_context    = require('activitystreams-context');
 const securityContext = require('./jsig');
 const ext_context   = require('./extcontext');
 const models        = require('./models');
+const as            = require('vocabs-as');
 
 const default_doc_loader = jsonld.documentLoaders.node();
 
@@ -31,7 +31,7 @@ function custom_doc_loader(url, callback) {
   checkCallback(callback);
   let u = url;
   if (u[u.length-1] !== '#') u += '#';
-  if (u === vocabs.as.ns) {
+  if (u === as.ns) {
     return callback(null, {
       contextUrl: null,
       document: as_context,
@@ -57,7 +57,7 @@ function getContext(options) {
     ctx.push(jsig.SECURITY_CONTEXT_URL);
   if (options && options.additional_context)
     ctx.push(options.additional_context);
-  ctx.push(vocabs.as.ns);
+  ctx.push(as.ns);
   return {'@context': ctx.length > 1 ? ctx : ctx[0]};
 }
 
@@ -112,7 +112,7 @@ module.exports = {
   import(input, callback) {
     checkCallback(callback);
     if (input['@context'] === undefined)
-      input['@context'] = vocabs.as.ns;
+      input['@context'] = as.ns;
     jsonld.expand(
       input, {
         expandContext: as_context,

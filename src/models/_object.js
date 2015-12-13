@@ -1,7 +1,7 @@
 'use strict';
 
 const utils = require('../utils');
-const as = require('linkeddata-vocabs').as;
+const as = require('vocabs-as');
 const Base = require('./_base');
 const moment = require('moment');
 

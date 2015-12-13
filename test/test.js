@@ -2,15 +2,17 @@
 
 const assert = require('assert');
 const as = require('..');
-const vocabs = require('linkeddata-vocabs');
 const models = require('../src/models');
+const asv = require('vocabs-as');
+const social = require('vocabs-social');
+const interval = require('vocabs-interval');
 
 const now = new Date();
 
 describe('Basics...', function () {
   it('should build a minimal object', function () {
     var object = as.object().get();
-    assert.equal(object.type, vocabs.as.Object);
+    assert.equal(object.type, asv.Object);
   });
   
   function testFunctionalProperties(object) {
@@ -91,33 +93,33 @@ describe('Basics...', function () {
   });
   
   it('should create activities with an appropriate type', function() {
-    [['accept',vocabs.as.Accept],
-     ['tentativeAccept',vocabs.as.TentativeAccept],
-     ['add',vocabs.as.Add],
-     ['arrive',vocabs.as.Arrive],
-     ['create',vocabs.as.Create],
-     ['delete',vocabs.as.Delete],
-     ['follow',vocabs.as.Follow],
-     ['ignore',vocabs.as.Ignore],
-     ['join',vocabs.as.Join],
-     ['leave',vocabs.as.Leave],
-     ['like',vocabs.as.Like],
-     ['offer',vocabs.as.Offer],
-     ['invite',vocabs.as.Invite],
-     ['reject',vocabs.as.Reject],
-     ['tentativeReject',vocabs.as.TentativeReject],
-     ['remove',vocabs.as.Remove],
-     ['undo',vocabs.as.Undo],
-     ['update',vocabs.as.Update],
-     ['view',vocabs.as.View],
-     ['listen',vocabs.as.Listen],
-     ['read',vocabs.as.Read],
-     ['move',vocabs.as.Move],
-     ['travel',vocabs.as.Travel],
-     ['announce',vocabs.as.Announce],
-     ['block',vocabs.as.Block],
-     ['flag',vocabs.as.Flag],
-     ['dislike',vocabs.as.Dislike]
+    [['accept',asv.Accept],
+     ['tentativeAccept',asv.TentativeAccept],
+     ['add',asv.Add],
+     ['arrive',asv.Arrive],
+     ['create',asv.Create],
+     ['delete',asv.Delete],
+     ['follow',asv.Follow],
+     ['ignore',asv.Ignore],
+     ['join',asv.Join],
+     ['leave',asv.Leave],
+     ['like',asv.Like],
+     ['offer',asv.Offer],
+     ['invite',asv.Invite],
+     ['reject',asv.Reject],
+     ['tentativeReject',asv.TentativeReject],
+     ['remove',asv.Remove],
+     ['undo',asv.Undo],
+     ['update',asv.Update],
+     ['view',asv.View],
+     ['listen',asv.Listen],
+     ['read',asv.Read],
+     ['move',asv.Move],
+     ['travel',asv.Travel],
+     ['announce',asv.Announce],
+     ['block',asv.Block],
+     ['flag',asv.Flag],
+     ['dislike',asv.Dislike]
     ].forEach(function(key) {
       var obj = as[key[0]]().get();
       assert(obj instanceof models.Activity);
@@ -127,23 +129,23 @@ describe('Basics...', function () {
   
   it('should create objects with an appropriate type', function() {
     [
-     ['application',vocabs.as.Application],
-     ['group',vocabs.as.Group],
-     ['person',vocabs.as.Person],
-     ['organization',vocabs.as.Organization],
-     ['service',vocabs.as.Service],
-     ['article',vocabs.as.Article],
-     ['document',vocabs.as.Document],
-     ['relationship',vocabs.as.Relationship],
-     ['profile',vocabs.as.Profile],
-     ['audio',vocabs.as.Audio],
-     ['image',vocabs.as.Image],
-     ['video',vocabs.as.Video],
-     ['note',vocabs.as.Note],
-     ['page',vocabs.as.Page],
-     ['question',vocabs.as.Question],
-     ['event',vocabs.as.Event],
-     ['place',vocabs.as.Place]
+     ['application',asv.Application],
+     ['group',asv.Group],
+     ['person',asv.Person],
+     ['organization',asv.Organization],
+     ['service',asv.Service],
+     ['article',asv.Article],
+     ['document',asv.Document],
+     ['relationship',asv.Relationship],
+     ['profile',asv.Profile],
+     ['audio',asv.Audio],
+     ['image',asv.Image],
+     ['video',asv.Video],
+     ['note',asv.Note],
+     ['page',asv.Page],
+     ['question',asv.Question],
+     ['event',asv.Event],
+     ['place',asv.Place]
    ].forEach(function(key) {
       var obj = as[key[0]]().get();
       assert(obj instanceof models.Object);
@@ -152,7 +154,7 @@ describe('Basics...', function () {
   });
   
   it('should create link objects with an appropriate type', function() {
-    [['mention',vocabs.as.Mention]].forEach(function(key) {
+    [['mention',asv.Mention]].forEach(function(key) {
       var obj = as[key[0]]().get();
       assert(obj instanceof models.Link);
       assert.equal(obj.type,key[1]);
@@ -174,7 +176,7 @@ describe('Basics...', function () {
   
     assert.equal(1, obj.object.length);
     var note = obj.object.first;
-    assert.equal(vocabs.as.Note, note.type);
+    assert.equal(asv.Note, note.type);
     assert.equal(note.content.get(), 'this is a note');
   });
   
@@ -194,9 +196,9 @@ describe('Basics...', function () {
       }
     }, function(err, doc) {
       assert.equal(null, err);
-      assert.equal(vocabs.as.Like, doc.type);
+      assert.equal(asv.Like, doc.type);
       assert.equal(doc.name, 'foo');
-      assert.equal(vocabs.as.Person, doc.actor[0].type);
+      assert.equal(asv.Person, doc.actor[0].type);
       assert.equal(doc.actor[0].name, 'Joe');
     });
   });
@@ -530,7 +532,7 @@ describe('Basics...', function () {
     as.import(test, function(err, doc) {
       assert.equal(err, undefined);
       assert.equal(doc.id, 'http://example.org');
-      assert.equal(doc.type, vocabs.as.Object);
+      assert.equal(doc.type, asv.Object);
       assert(doc.attachment);
       assert.equal(doc.attachment.length,1);
       assert.equal(doc.attachment.first.id, 'http://example.org/attachment');
@@ -625,7 +627,7 @@ describe('Basics...', function () {
       .bcc('http://jane.example.org')
       .get();
       assert.equal(doc.id, 'http://example.org');
-      assert.equal(doc.type, vocabs.as.Object);
+      assert.equal(doc.type, asv.Object);
       assert(doc.attachment);
       assert.equal(doc.attachment.length,1);
       assert.equal(doc.attachment.first.id, 'http://example.org/attachment');
@@ -883,7 +885,7 @@ describe('Streaming...', function() {
       .pipe(through.obj(function(chunk,encoding,callback) {
         assert(chunk);
         assert(chunk.type);
-        assert.equal(chunk.type, vocabs.as.Person);
+        assert.equal(chunk.type, asv.Person);
         assert.equal(chunk.name.get(), 'Sally');
         done();
       }));
@@ -927,14 +929,14 @@ describe('Extensions...', function() {
   it('should create interval objects with appropriate type and values',
   function() {
     [
-      ['open', vocabs.interval.OpenInterval],
-      ['closed', vocabs.interval.ClosedInterval],
-      ['openClosed', vocabs.interval.OpenClosedInterval],
-      ['closedOpen', vocabs.interval.ClosedOpenInterval],
-      ['leftOpen', vocabs.interval.LeftOpenInterval],
-      ['rightOpen', vocabs.interval.RightOpenInterval],
-      ['leftClosed', vocabs.interval.LeftClosedInterval],
-      ['rightClosed', vocabs.interval.RightClosedInterval],
+      ['open', interval.OpenInterval],
+      ['closed', interval.ClosedInterval],
+      ['openClosed', interval.OpenClosedInterval],
+      ['closedOpen', interval.ClosedOpenInterval],
+      ['leftOpen', interval.LeftOpenInterval],
+      ['rightOpen', interval.RightOpenInterval],
+      ['leftClosed', interval.LeftClosedInterval],
+      ['rightClosed', interval.RightClosedInterval],
     ].forEach(function(key){
       var obj = as.interval[key[0]]().
         upper(1).
@@ -951,18 +953,18 @@ describe('Extensions...', function() {
 
   it('should create population objects with appropriate type', function() {
     [
-      ['population', vocabs.social.Population],
-      ['everyone', vocabs.social.Everyone],
-      ['public', vocabs.social.Public],
-      ['private', vocabs.social.Private],
-      ['direct', vocabs.social.Direct],
-      ['common', vocabs.social.Common],
-      ['interested', vocabs.social.Interested],
-      ['self', vocabs.social.Self],
-      ['all', vocabs.social.All],
-      ['any', vocabs.social.Any],
-      ['none', vocabs.social.None],
-      ['compoundPopulation', vocabs.social.CompoundPopulation]
+      ['population', social.Population],
+      ['everyone', social.Everyone],
+      ['public', social.Public],
+      ['private', social.Private],
+      ['direct', social.Direct],
+      ['common', social.Common],
+      ['interested', social.Interested],
+      ['self', social.Self],
+      ['all', social.All],
+      ['any', social.Any],
+      ['none', social.None],
+      ['compoundPopulation', social.CompoundPopulation]
     ].forEach(function(key) {
       var obj = as.social[key[0]]().get();
       assert(obj instanceof as.social.model.Population);

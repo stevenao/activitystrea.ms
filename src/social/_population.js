@@ -1,8 +1,8 @@
 'use strict';
 
 const AsObject = require('../models').Object;
-const utils    = require('../utils');
-const social   = require('linkeddata-vocabs').social;
+const utils = require('../utils');
+const social = require('vocabs-social');
 
 class Population extends AsObject {
   constructor(expanded, builder) {
