@@ -2,23 +2,17 @@
 
 const Collection = require('./_collection');
 const as = require('vocabs-as');
+const Base = require('./_base');
+const composedType = Base.composedType;
 
-class OrderedCollection extends Collection {
-  constructor(expanded, builder, environment) {
-    super(expanded, builder || OrderedCollection.Builder, environment);
-  }
-}
+const OrderedCollection = composedType(Collection, {});
 
-class OrderedCollectionBuilder extends Collection.Builder {
-  constructor(types, base, environment) {
-    types = (types || []).concat([as.OrderedCollection]);
-    super(types, base || new OrderedCollection({}, undefined, environment));
+const OrderedCollectionBuilder = composedType(Collection.Builder, {
+  items() {
+    return this.orderedItems.apply(this, arguments);
   }
+});
 
-  get items() {
-    return this.orderedItems;
-  }
-}
 OrderedCollection.Builder = OrderedCollectionBuilder;
 
 module.exports = OrderedCollection;

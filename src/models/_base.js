@@ -23,6 +23,7 @@ const _builder = Symbol('builder');
 const _options = Symbol('options');
 const _done = Symbol('done');
 const _items = Symbol('items');
+const _includes = Symbol('includes');
 
 function is_literal(item) {
   return item && item.hasOwnProperty('@value');
@@ -118,6 +119,31 @@ class BaseReader extends Readable {
   }
 }
 
+function _compose(thing, types, base) {
+  // todo: implement caching so we're not redefining properties
+  if (!types) return;
+  if (!Array.isArray(types)) types = [types];
+  thing[_includes] = thing[_includes] || new Map();
+  for (let type of types) {
+    if (type) {
+      if (thing[_includes].get(type)) continue;
+      if (type[_includes]) {
+        for (let include of type[_includes]) {
+          if (!(include instanceof base))
+            _compose(thing, include, base);
+        }
+      }
+      let props = {};
+      for (let name of Object.getOwnPropertyNames(type)) {
+        if (name !== 'Builder')
+          props[name] = Object.getOwnPropertyDescriptor(type, name);
+      }
+      Object.defineProperties(thing, props);
+      thing[_includes].set(type, true);
+    }
+  }
+}
+
 class Base {
   constructor(expanded, builder, environment) {
     this[Environment.environment] = environment || new Environment({});
@@ -127,6 +153,7 @@ class Base {
       maxAge: 1000 * 60 * 60
     });
     this[_builder] = builder || Base.Builder;
+    models.compose_base(this, this.type);
   }
 
   /**
@@ -308,6 +335,8 @@ class Base {
      return ()=> {
        let bld = new Builder(type);
        bld[_expanded] = bld[_base][_expanded] = Object.create(tmpl);
+       models.compose_builder(bld, type);
+       models.compose_base(bld[_base], type);
        return bld;
      };
    }
@@ -317,12 +346,39 @@ class Base {
            yield key;
        }
    }
+
+   [models.compose](types) {
+     if (!types) return;
+     if (!Array.isArray(types)) {
+       if (arguments.length > 1) {
+         types = Array.prototype.slice.call(arguments);
+       } else types = [types];
+     }
+     _compose(this, types, Base);
+   }
+}
+
+function setTypes(builder, types) {
+  let exp = builder[_base][_expanded];
+  if (!types || (types && types.length === 0)) {
+    delete exp['@type'];
+  } else {
+    let ret = [];
+    if (!Array.isArray(types)) types = [types];
+    types = reasoner.reduce(types);
+    for (let type of types) {
+      ret.push(type.valueOf());
+    }
+    exp['@type'] = ret;
+  }
 }
 
 class BaseBuilder {
   constructor(types, base, environment) {
     this[_base] = base || new Base(undefined, undefined, environment);
-    this.type(types);
+    setTypes(this,types);
+    models.compose_base(this[_base], types);
+    models.compose_builder(this, types);
   }
 
   /**
@@ -395,28 +451,6 @@ class BaseBuilder {
      return this;
    }
 
-   /**
-    * Set the @type(s) of this object.
-    **/
-   type(types) {
-     let exp = this[_base][_expanded];
-     if (!types || (types && types.length === 0)) {
-       delete exp['@type'];
-     } else {
-       let ret = [];
-       if (!Array.isArray(types)) types = [types];
-       types = reasoner.reduce(types);
-       for (let type of types) {
-         ret.push(type.valueOf());
-       }
-       exp['@type'] = ret;
-     }
-     return this;
-   }
-
-   /**
-    * Get the built object
-    **/
    get() {
      return this[_base];
    }
@@ -456,7 +490,28 @@ class BaseBuilder {
    template() {
      return this.get().template();
    }
+   
+   [models.compose](types) {
+     if (!types) return;
+     if (!Array.isArray(types)) {
+       if (arguments.length > 1) {
+         types = Array.prototype.slice.call(arguments);
+       } else types = [types];
+     }
+     _compose(this, types, Base.Builder);
+   }
 }
 Base.Builder = BaseBuilder;
+
+Base.composedType = function(includes, def) {
+  if (!Array.isArray(includes))
+    includes = [includes];
+  Object.setPrototypeOf(def, {
+    get [_includes]() {
+      return includes;
+    }
+  });
+  return def;
+};
 
 module.exports = Base;

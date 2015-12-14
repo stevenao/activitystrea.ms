@@ -2,36 +2,26 @@
 
 const as = require('vocabs-as');
 const Activity = require('./_activity');
+const Base = require('./_base');
+const composedType = Base.composedType;
 
-class Question extends Activity {
-  constructor(expanded, builder, environment) {
-    super(expanded, builder || Question.Builder, environment);
-  }
-
+const Question = composedType(Activity, {
   get anyOf() {
     return this.get(as.anyOf);
-  }
-
+  },
   get oneOf() {
     return this.get(as.oneOf);
   }
+});
 
-}
-
-class QuestionBuilder extends Activity.Builder {
-  constructor(types, base, environment) {
-    types = (types || []).concat([as.Question]);
-    super(types, base || new Question({}, undefined, environment));
-  }
-
+const QuestionBuilder = composedType(Activity.Builder, {
   anyOf(val) {
     return this.set(as.anyOf, val);
-  }
-
+  },
   oneOf(val) {
     return this.set(as.oneOf, val);
   }
-}
+});
 Question.Builder = QuestionBuilder;
 
 module.exports = Question;

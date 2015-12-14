@@ -2,28 +2,21 @@
 
 const as = require('vocabs-as');
 const AsObject = require('./_object');
+const Base = require('./_base');
+const composedType = Base.composedType;
 
-class Profile extends AsObject {
-  constructor(expanded, builder, environment) {
-    super(expanded, builder || Profile.Builder, environment);
-  }
-
+const Profile = composedType(undefined, {
   get describes() {
     return this.get(as.describes);
   }
+});
 
-}
-
-class ProfileBuilder extends AsObject.Builder {
-  constructor(types, base, environment) {
-    types = (types || []).concat([as.Profile]);
-    super(types, base || new Profile({}, undefined, environment));
-  }
-
+const ProfileBuilder = composedType(undefined, {
   describes(val) {
     return this.set(as.describes, val);
   }
-}
+});
+
 Profile.Builder = ProfileBuilder;
 
 module.exports = Profile;

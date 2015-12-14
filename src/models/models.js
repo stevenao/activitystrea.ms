@@ -3,6 +3,50 @@
 const as = require('vocabs-as');
 const reasoner = require('../reasoner');
 const utils = require('../utils');
+const LRU = require('lru-cache');
+
+const _compose = Symbol('compose');
+const cache = new LRU(100);
+
+function core_recognizer(type) {
+  let thing;
+  let node = reasoner.node(type);
+  if (node.is(as.OrderedCollectionPage)) {
+    thing = exports.OrderedCollectionPage;
+  } else if (node.is(as.CollectionPage)) {
+    thing = exports.CollectionPage;
+  } else if (node.is(as.OrderedCollection)) {
+    thing = exports.OrderedCollection;
+  } else if (node.is(as.Collection)) {
+    thing = exports.Collection;
+  } else if (node.is(as.Question)) {
+    thing = exports.Question;
+  } else if (node.is(as.Activity)) {
+    thing = exports.Activity;
+  } else if (node.is(as.Profile)) {
+    thing = exports.Profile;
+  } else if (node.is(as.Place)) {
+    thing = exports.Place;
+  } else if (node.is(as.Relationship)) {
+    thing = exports.Relationship;
+  }
+  return thing;
+}
+
+var recognizers = [core_recognizer];
+
+function recognize(type) {
+  let thing = cache.get(type);
+  if (thing) return thing;
+  for (let recognizer of recognizers) {
+    thing = recognizer(type);
+    if (thing) {
+      cache.set(type, thing);
+      return thing;
+    }
+  }
+  return undefined;
+}
 
 module.exports = exports = {
 
@@ -20,10 +64,6 @@ module.exports = exports = {
 
   get Activity() {
     return require('./_activity');
-  },
-
-  get Actor() {
-    return require('./_actor');
   },
 
   get Collection() {
@@ -61,19 +101,42 @@ module.exports = exports = {
   get Question() {
     return require('./_question');
   },
+  
+  get compose() {
+    return _compose;
+  },
+
+  compose_builder(builder, types) {
+    types = reasoner.reduce(types || []);
+    for (let type of types) {
+      let Thing = recognize(type);
+      if (Thing)
+        builder[_compose](Thing.Builder);
+    }
+  },
+  
+  compose_base(base, types) {
+    types = reasoner.reduce(types || []);
+    for (let type of types) {
+      let Thing = recognize(type);
+      if (Thing)
+        base[_compose](Thing);
+    }
+  },
 
   wrap_object(expanded, environment) {
     let types = reasoner.reduce(expanded['@type'] || []);
-    let Thing;
-    // this isn't that great yet because it uses the
-    // first recognized type and does not verify if
-    // the full set of declared types make sense
-    // together. Will need to add that in later
+    var is_link = false;
     for (let type of types) {
-      Thing = recognize(type);
-      if (Thing !== undefined) break; // jump out early if we get a hit
+      let nodetype = reasoner.node(type);
+      if (nodetype.is(as.Link)) {
+        is_link = true;
+        break;
+      }
     }
-    Thing = Thing || exports.Object;
+    let Thing = is_link ?
+      exports.Link :
+      exports.Object ;
     return new Thing(expanded, undefined, environment);
   },
 
@@ -81,45 +144,6 @@ module.exports = exports = {
     if (typeof recognizer !== 'function')
       throw new Error('Recognizer must be a function');
     recognizers = [recognizer].concat(recognizers);
+    cache.reset();
   }
 };
-
-
-function core_recognizer(type) {
-  let thing;
-  let node = reasoner.node(type);
-  if (node.is(as.Link)) {
-    thing = exports.Link;
-  } else if (node.is(as.OrderedCollectionPage)) {
-    thing = exports.OrderedCollectionPage;
-  } else if (node.is(as.CollectionPage)) {
-    thing = exports.CollectionPage;
-  } else if (node.is(as.OrderedCollection)) {
-    thing = exports.OrderedCollection;
-  } else if (node.is(as.Collection)) {
-    thing = exports.Collection;
-  } else if (node.is(as.Actor)) {
-    thing = exports.Actor;
-  } else if (node.is(as.Question)) {
-    thing = exports.Question;
-  } else if (node.is(as.Activity)) {
-    thing = exports.Activity;
-  } else if (node.is(as.Profile)) {
-    thing = exports.Profile;
-  } else if (node.is(as.Place)) {
-    thing = exports.Place;
-  } else if (node.is(as.Relationship)) {
-    thing = exports.Relationship;
-  }
-  return thing;
-}
-
-var recognizers = [core_recognizer];
-
-function recognize(type) {
-  for (let recognizer of recognizers) {
-    let thing = recognizer(type);
-    if (thing) return thing;
-  }
-  return undefined;
-}

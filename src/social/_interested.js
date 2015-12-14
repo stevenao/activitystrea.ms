@@ -1,5 +1,7 @@
 'use strict';
 
+const Base = require('../models').Base;
+const composedType = Base.composedType;
 const Population = require('./_population');
 const utils = require('../utils');
 const throwif = utils.throwif;
@@ -7,23 +9,14 @@ const is_integer = utils.is_integer;
 const range = utils.range;
 const social = require('vocabs-social');
 
-class Interested extends Population {
-  constructor(expanded, builder, environment) {
-    super(expanded, builder || Interested.Builder, environment);
-  }
-
+const Interested = composedType(Population, {
   get confidence() {
     let ret = range(0,100,this.get(social.confidence));
     return isNaN(ret) ? undefined : ret;
   }
-}
+});
 
-class InterestedBuilder extends Population.Builder {
-  constructor(types, base, environment) {
-    types = (types || []).concat([social.Interested]);
-    super(types, base || new Interested({}, undefined, environment));
-  }
-
+const InterestedBuilder = composedType(Population.Builder, {
   confidence(val) {
     throwif(
       !is_integer(val),
@@ -32,7 +25,7 @@ class InterestedBuilder extends Population.Builder {
     this.set(social.confidence, range(0,100,val));
     return this;
   }
-}
+});
 Interested.Builder = InterestedBuilder;
 
 module.exports = Interested;

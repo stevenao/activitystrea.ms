@@ -1,6 +1,7 @@
 'use strict';
 
-const reasoner    = require('../reasoner');
+const a = require('../activitystreams');
+const reasoner = require('../reasoner');
 const social = require('vocabs-social');
 const owl = require('vocabs-owl');
 const rdf = require('vocabs-rdf');
@@ -30,71 +31,59 @@ function gettypes(types, type) {
 }
 
 exports.population = function(types, environment) {
-  return new exports.model.Population.Builder(
-    types, undefined, environment);
+  return a.object(gettypes(types,social.Population), environment);
 };
 exports.everyone = function(types, environment) {
-  return new exports.model.Everyone.Builder(
-    types, undefined, environment);
+  return a.object(gettypes(types,social.Everyone), environment);
 };
 exports.public = function(types, environment) {
-  return new exports.model.Population.Builder(
-    gettypes(types, social.Public), undefined, environment);
+  return a.object(gettypes(types,social.Public), environment);
 };
 exports.private = function(types, environment) {
-  return new exports.model.Population.Builder(
-    gettypes(types, social.Private), undefined, environment);
+  return a.object(gettypes(types,social.Private), environment);
 };
 exports.direct = function(types, environment) {
-  return new exports.model.Population.Builder(
-    gettypes(types, social.Direct), undefined, environment);
+  return a.object(gettypes(types,social.Direct), environment);
 };
 exports.common = function(types, environment) {
-  return new exports.model.Common.Builder(
-    types, undefined, environment);
+  return a.object(gettypes(types,social.Common), environment);
 };
 exports.interested = function(types, environment) {
-  return new exports.model.Interested.Builder(
-    types, undefined, environment);
+  return a.object(gettypes(types,social.Interested), environment);
 };
 exports.self = function(types, environment) {
-  return new exports.model.Population.Builder(
-    gettypes(types, social.Self), undefined, environment);
+  return a.object(gettypes(types,social.Self), environment);
 };
 exports.all = function(types, environment) {
-  return new exports.model.CompoundPopulation.Builder(
-    gettypes(types, social.All), undefined, environment);
+  return a.object(gettypes(types,social.All), environment);
 };
 exports.any = function(types, environment) {
-  return new exports.model.CompoundPopulation.Builder(
-    gettypes(types, social.Any), undefined, environment);
+  return a.object(gettypes(types,social.Any), environment);
 };
 exports.none = function(types, environment) {
-  return new exports.model.CompoundPopulation.Builder(
-    gettypes(types, social.None), undefined, environment);
+  return a.object(gettypes(types,social.None), environment);
 };
 exports.compoundPopulation = function(types, environment) {
-  return new exports.model.CompoundPopulation.Builder(
-    types, undefined, environment);
+  return a.object(gettypes(types,social.CompoundPopulation), environment);
 };
 
 function social_recognizer(type) {
-  let thing;
+  let Thing;
   if (type) {
     let node = reasoner.node(type);
     if (node.is(social.Common)) {
-      thing = exports.Common;
+      Thing = exports.model.Common;
     } else if (node.is(social.Interested)) {
-      thing = exports.Interested;
+      Thing = exports.model.Interested;
     } else if (node.is(social.CompoundPopulation)) {
-      thing = exports.CompoundPopulation;
+      Thing = exports.model.CompoundPopulation;
     } else if (node.is(social.Everyone)) {
-      thing = exports.Everyone;
+      Thing = exports.model.Everyone;
     } else if (node.is(social.Population)) {
-      thing = exports.Population;
+      Thing = exports.model.Population;
     }
   }
-  return thing;
+  return Thing;
 }
 
 exports.init = function(models, reasoner, context) {
@@ -114,12 +103,10 @@ exports.init = function(models, reasoner, context) {
       '@type': '@id'
     },
     distance: {
-      '@id': 'soc:distance',
-      '@type': 'xsd:nonNegativeInteger'
+      '@id': 'soc:distance'
     },
     confidence: {
-      '@id': 'soc:confidence',
-      '@type': 'xsd:nonNegativeInteger'
+      '@id': 'soc:confidence'
     }
   });
 

@@ -1,37 +1,29 @@
 'use strict';
 
+const Base = require('../models').Base;
+const composedType = Base.composedType;
 const AsObject = require('../models').Object;
 const utils = require('../utils');
 const range = utils.range;
 const xsd = require('vocabs-xsd');
 const social = require('vocabs-social');
 
-class Population extends AsObject {
-  constructor(expanded, builder, environment) {
-    super(expanded, builder || Population.Builder, environment);
-  }
-
+const Population = composedType(undefined, {
   get distance() {
     let ret = range(0, Infinity, this.get(social.distance));
     return isNaN(ret) ? undefined : ret;
   }
-}
+});
 
-class PopulationBuilder extends AsObject.Builder {
-  constructor(types, base, environment) {
-    types = (types || []).concat([social.Population]);
-    super(types,base || new Population({}, undefined, environment));
-  }
-
+const PopulationBuilder = composedType(undefined, {
   distance(val) {
     this.set(
       social.distance,
-      range(0, Infinity, val),
-      {type: xsd.nonNegativeInteger}
+      range(0, Infinity, val)
     );
     return this;
   }
-}
+});
 Population.Builder = PopulationBuilder;
 
 module.exports = Population;

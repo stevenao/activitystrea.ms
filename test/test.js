@@ -77,22 +77,30 @@ describe('Basics...', ()=> {
   });
   
   it('should create a basic actor object', (done)=> {
-    assert(as.actor().get() instanceof models.Actor);
+    assert(as.actor().get() instanceof models.Object);
     done();
   });
   
   it('should create a basic activity object', (done)=> {
-    assert(as.activity().get() instanceof models.Activity);
+    let activity = as.activity().actor('http://example').get();
+    assert(activity instanceof models.Object);
+    assert(activity.actor);
+    assert(activity.actor.first);
+    assert(activity.actor.first.id, 'http://example');
     done();
   });
   
   it('should create a basic collection object', (done)=> {
-    assert(as.collection().get() instanceof models.Collection);
+    let collection = as.collection().totalItems(1).get();
+    assert(collection instanceof models.Object);
+    assert(collection.totalItems, 1);
     done();
   });
   
   it('should create a basic ordered collection object', (done)=> {
-    assert(as.orderedCollection().get() instanceof models.OrderedCollection);
+    let collection = as.orderedCollection().totalItems(1).get();
+    assert(collection instanceof models.Object);
+    assert(collection.totalItems, 1);
     done();
   });
   
@@ -131,7 +139,7 @@ describe('Basics...', ()=> {
      ['dislike',asv.Dislike]
    ].forEach((key)=> {
       var obj = as[key[0]]().get();
-      assert(obj instanceof models.Activity);
+      assert(obj instanceof models.Object);
       assert.equal(obj.type,key[1]);
     });
     done();
@@ -269,7 +277,7 @@ describe('Basics...', ()=> {
       .items('http://example.org/item/1')
       .items('http://example.org/item/2')
       .get();
-    assert(doc instanceof as.models.OrderedCollection);
+    assert(doc instanceof as.models.Object);
     assert.equal(doc.totalItems, 1);
     assert.equal(doc.current.id, 'http://example.org/current');
     assert.equal(doc.first.id, 'http://example.org/first');
@@ -300,7 +308,7 @@ describe('Basics...', ()=> {
 
     as.import(test, (err, doc)=> {
       assert.equal(err, undefined);
-      assert(doc instanceof as.models.OrderedCollection);
+      assert(doc instanceof as.models.Object);
       assert.equal(doc.totalItems, 1);
       assert.equal(doc.current.id, 'http://example.org/current');
       assert.equal(doc.first.id, 'http://example.org/first');
@@ -328,7 +336,7 @@ describe('Basics...', ()=> {
       .items('http://example.org/item/2')
       .get();
 
-    assert(doc instanceof as.models.Collection);
+    assert(doc instanceof as.models.Object);
     assert.equal(doc.totalItems, 1);
     assert.equal(doc.current.id, 'http://example.org/current');
     assert.equal(doc.first.id, 'http://example.org/first');
@@ -360,7 +368,7 @@ describe('Basics...', ()=> {
 
     as.import(test, (err, doc)=> {
       assert.equal(err, undefined);
-      assert(doc instanceof as.models.Collection);
+      assert(doc instanceof as.models.Object);
       assert.equal(doc.totalItems, 1);
       assert.equal(doc.current.id, 'http://example.org/current');
       assert.equal(doc.first.id, 'http://example.org/first');
@@ -387,7 +395,7 @@ describe('Basics...', ()=> {
       .instrument('http://example.org/instrument')
       .get();
 
-    assert(doc instanceof as.models.Activity);
+    assert(doc instanceof as.models.Object);
     assert.equal(doc.id, 'http://example.org');
 
     assert(doc.actor);
@@ -429,7 +437,7 @@ describe('Basics...', ()=> {
 
     as.import(test, (err,doc)=> {
       assert.equal(err, undefined);
-      assert(doc instanceof as.models.Activity);
+      assert(doc instanceof as.models.Object);
       assert.equal(doc.id, 'http://example.org');
 
       assert(doc.actor);
@@ -722,7 +730,7 @@ describe('Basics...', ()=> {
 
       as.import(test, (err,doc)=> {
         assert.equal(err, undefined);
-        assert(doc instanceof as.models.Relationship);
+        assert(doc instanceof as.models.Object);
         assert(doc.subject.id, 'http://sally.example.org');
         assert(doc.relationship);
         assert.equal(doc.relationship.length, 1);
@@ -744,7 +752,7 @@ describe('Basics...', ()=> {
         .object('http://joe.example.org')
         .get();
 
-      assert(doc instanceof as.models.Relationship);
+      assert(doc instanceof as.models.Object);
       assert(doc.subject.id, 'http://sally.example.org');
       assert(doc.relationship);
       assert.equal(doc.relationship.length, 1);
@@ -768,7 +776,7 @@ describe('Basics...', ()=> {
 
     as.import(test, (err, doc)=> {
       assert.equal(err, undefined);
-      assert(doc instanceof as.models.Question);
+      assert(doc instanceof as.models.Object);
       assert.equal(doc.name.get(), 'the question');
       assert(doc.anyOf);
       assert.equal(doc.anyOf.length,2);
@@ -788,7 +796,7 @@ describe('Basics...', ()=> {
       .anyOf('urn:answer2')
       .get();
 
-    assert(doc instanceof as.models.Question);
+    assert(doc instanceof as.models.Object);
     assert.equal(doc.name.get(), 'the question');
     assert(doc.anyOf);
     assert.equal(doc.anyOf.length,2);
@@ -814,7 +822,7 @@ describe('Basics...', ()=> {
 
     as.import(test, (err, doc)=> {
       assert.equal(err, undefined);
-      assert(doc instanceof as.models.Place);
+      assert(doc instanceof as.models.Object);
       assert.equal(doc.accuracy, 10);
       assert.equal(doc.altitude, 10);
       assert.equal(doc.latitude, 10);
@@ -837,7 +845,7 @@ describe('Basics...', ()=> {
       .units('m')
       .get();
 
-    assert(doc instanceof as.models.Place);
+    assert(doc instanceof as.models.Object);
     assert.equal(doc.accuracy, 10);
     assert.equal(doc.altitude, 10);
     assert.equal(doc.latitude, 10);
@@ -858,7 +866,7 @@ describe('Basics...', ()=> {
 
     as.import(test, (err, doc)=> {
       assert.equal(err, undefined);
-      assert(doc instanceof as.models.Profile);
+      assert(doc instanceof as.models.Object);
       assert.equal(doc.describes.id, 'http://example.org');
       done();
     });
@@ -871,7 +879,7 @@ describe('Basics...', ()=> {
       .describes('http://example.org')
       .get();
 
-    assert(doc instanceof as.models.Profile);
+    assert(doc instanceof as.models.Object);
     assert.equal(doc.describes.id, 'http://example.org');
     done();
 
@@ -966,7 +974,7 @@ describe('Extensions...', ()=> {
         lower(0).
         step(1).
         get();
-      assert(obj instanceof as.interval.model.Interval);
+      assert(obj instanceof as.models.Object);
       assert.equal(obj.type,key[1]);
       assert.equal(obj.upper, 1);
       assert.equal(obj.lower, 0);
@@ -991,7 +999,7 @@ describe('Extensions...', ()=> {
       ['compoundPopulation', social.CompoundPopulation]
     ].forEach((key)=> {
       var obj = as.social[key[0]]().get();
-      assert(obj instanceof as.social.model.Population);
+      assert(obj instanceof as.models.Object);
       assert.equal(obj.type, key[1]);
     });
     done();

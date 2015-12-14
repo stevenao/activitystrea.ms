@@ -1,5 +1,6 @@
 'use strict';
 
+const a = require('../activitystreams');
 const reasoner = require('../reasoner');
 const Interval = require('./_model');
 const interval = require('vocabs-interval');
@@ -21,36 +22,28 @@ function gettypes(types, type) {
 }
 
 exports.open = function(types, environment) {
-  return new Interval.Builder(
-    gettypes(types,interval.OpenInterval), undefined, environment);
+  return a.object(gettypes(types, interval.OpenInterval), environment);
 };
 exports.closed = function(types, environment) {
-  return new Interval.Builder(
-    gettypes(types,interval.ClosedInterval), undefined, environment);
+  return a.object(gettypes(types, interval.ClosedInterval), environment);
 };
 exports.openClosed = function(types, environment) {
-  return new Interval.Builder(
-    gettypes(types,interval.OpenClosedInterval), undefined, environment);
+  return a.object(gettypes(types, interval.OpenClosedInterval), environment);
 };
 exports.closedOpen = function(types, environment) {
-  return new Interval.Builder(
-    gettypes(types,interval.ClosedOpenInterval), undefined, environment);
+  return a.object(gettypes(types, interval.ClosedOpenInterval), environment);
 };
 exports.leftOpen = function(types, environment) {
-  return new Interval.Builder(
-    gettypes(types,interval.LeftOpenInterval), undefined, environment);
+  return a.object(gettypes(types, interval.LeftOpenInterval), environment);
 };
 exports.rightOpen = function(types, environment) {
-  return new Interval.Builder(
-    gettypes(types,interval.RightOpenInterval), undefined, environment);
+  return a.object(gettypes(types, interval.RightOpenInterval), environment);
 };
 exports.leftClosed = function(types, environment) {
-  return new Interval.Builder(
-    gettypes(types,interval.LeftClosedInterval), undefined, environment);
+  return a.object(gettypes(types, interval.LeftClosedInterval), environment);
 };
 exports.rightClosed = function(types, environment) {
-  return new Interval.Builder(
-    gettypes(types,interval.RightClosedInterval), undefined, environment);
+  return a.object(gettypes(types, interval.RightClosedInterval), environment);
 };
 
 function interval_recognizer(type) {

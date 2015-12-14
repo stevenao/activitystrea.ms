@@ -1,5 +1,7 @@
 'use strict';
 
+const Base = require('../models/_base');
+const composedType = Base.composedType;
 const interval = require('vocabs-interval');
 const xsd = require('vocabs-xsd');
 const AsObject = require('../models').Object;
@@ -29,45 +31,32 @@ function _set(target, key, val) {
   target.set(key, val, options);
 }
 
-class Interval extends AsObject {
-  constructor(expanded, builder, environment) {
-    super(expanded, builder || Interval.Builder, environment);
-  }
-
+const Interval = composedType(undefined, {
   get upper() {
     return this.get(interval.upper);
-  }
-
+  },
   get lower() {
     return this.get(interval.lower);
-  }
-
+  },
   get step() {
     return this.get(interval.step);
   }
-}
+});
 
-class IntervalBuilder extends AsObject.Builder {
-  constructor(types, base, environment) {
-    types = (types || []).concat([interval.Interval]);
-    super(types, base || new Interval({}, undefined, environment));
-  }
-
+const IntervalBuilder = composedType(undefined, {
   upper(val) {
     _set(this, interval.upper, val);
     return this;
-  }
-
+  },
   lower(val) {
     _set(this, interval.lower, val);
     return this;
-  }
-
+  },
   step(val) {
     _set(this, interval.step, val);
     return this;
   }
-}
+});
 Interval.Builder = IntervalBuilder;
 
 module.exports = Interval;
