@@ -1,6 +1,6 @@
 {
   "name": "activitystrea.ms",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "Activity Streams 2.0 JavaScript Implementation",
   "author": "James M Snell <jasnell@us.ibm.com>",
   "keywords": [
@@ -26,11 +26,11 @@
     "vocabs-rdfs": "^0.11.1",
     "vocabs-interval": "^0.11.1",
     "vocabs-social": "^0.11.1",
-    "lru-cache": "^3.2.0",
-    "moment": "^2.10.6",
+    "lru-cache": "^4.0.0",
+    "moment": "^2.11.0",
     "node-uuid": "^1.4.7",
-    "readable-stream": "^2.0.4",
-    "reasoner": "0.2.3",
+    "readable-stream": "^2.0.5",
+    "reasoner": "0.2.4",
     "request": "^2.67.0",
     "rfc5646": "^2.0.0"
   },

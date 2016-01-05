@@ -45,11 +45,6 @@ graph.add({
   object: as.Activity
 });
 graph.add({
-  subject: as.Actor,
-  predicate: rdfs.subClassOf,
-  object: as.Object
-});
-graph.add({
   subject: as.Add,
   predicate: rdfs.subClassOf,
   object: as.Activity
@@ -62,7 +57,7 @@ graph.add({
 graph.add({
   subject: as.Application,
   predicate: rdfs.subClassOf,
-  object: as.Actor
+  object: as.Object
 });
 graph.add({
   subject: as.Arrive,
@@ -142,7 +137,7 @@ graph.add({
 graph.add({
   subject: as.Group,
   predicate: rdfs.subClassOf,
-  object: as.Actor
+  object: as.Object
 });
 graph.add({
   subject: as.Ignore,
@@ -237,12 +232,12 @@ graph.add({
 graph.add({
   subject: as.Person,
   predicate: rdfs.subClassOf,
-  object: as.Actor
+  object: as.Object
 });
 graph.add({
   subject: as.Organization,
   predicate: rdfs.subClassOf,
-  object: as.Actor
+  object: as.Object
 });
 graph.add({
   subject: as.Place,
@@ -267,7 +262,7 @@ graph.add({
 graph.add({
   subject: as.Service,
   predicate: rdfs.subClassOf,
-  object: as.Actor
+  object: as.Object
 });
 graph.add({
   subject: as.TentativeAccept,

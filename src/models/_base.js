@@ -290,13 +290,6 @@ class Base {
      return this.stream(options).pipe(dest);
    }
 
-   /**
-    * Return a Dust context object for this object
-    **/
-   dust() {
-     return require('../dust')(this);
-   }
-
    send(options, callback) {
      if (typeof options === 'string') {
        options = {url:options};
@@ -477,10 +470,6 @@ class BaseBuilder {
 
    pipe(dest, options) {
      return this.get().pipe(dest, options);
-   }
-
-   dust() {
-     return this.get().dust();
    }
 
    send(options, callback) {

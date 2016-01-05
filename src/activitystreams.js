@@ -49,10 +49,6 @@ module.exports = exports = {
       _types(types), undefined, environment);
   },
 
-  actor(types, environment) {
-    return exports.object(_types(types, as.Actor), environment);
-  },
-
   activity(types, environment) {
     return exports.object(_types(types, as.Activity), environment);
   },
@@ -272,10 +268,6 @@ module.exports = exports = {
 
   get Middleware() {
     return require('./middle');
-  },
-
-  get Dust() {
-    return require('./dust');
   },
 
   get mediaType() {

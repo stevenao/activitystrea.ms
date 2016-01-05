@@ -76,11 +76,6 @@ describe('Basics...', ()=> {
     });
   });
   
-  it('should create a basic actor object', (done)=> {
-    assert(as.actor().get() instanceof models.Object);
-    done();
-  });
-  
   it('should create a basic activity object', (done)=> {
     let activity = as.activity().actor('http://example').get();
     assert(activity instanceof models.Object);

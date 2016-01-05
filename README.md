@@ -21,7 +21,7 @@ Starting with version `v0.8.0`, a minimum of Node v4.0.0 / ES6 is required.
 ### Usage
 
 ```javascript
-var as = require('activitystrea.ms');
+const as = require('activitystrea.ms');
 
 // Create a simple object
 as.object().
@@ -87,7 +87,7 @@ fs.createReadStream(path.resolve(__dirname,'test.json'))
 ```
 And writing:
 ```javascript
-var as = require('activitystrea.ms');
+const as = require('activitystrea.ms');
 var through = require('through2');
 as.object()
   .name('test')
@@ -104,13 +104,11 @@ builder specific to the kind of object being generated. Once the object has
 been built, call the `get` method to return the generated object.
 
 * `as.object([types])`
-* `as.actor([types])`
 * `as.activity([types])`
 * `as.collection([types])`
 * `as.orderedCollection([types])`
 * `as.collectionPage([types])`
 * `as.orderedCollectionPage([types])`
-* `as.content([types])`
 * `as.link([types])`
 * `as.accept([types])`
 * `as.tentativeAccept([types])`
@@ -185,7 +183,7 @@ export the built object as an ordinary Javascript object using the `export`
 method. This will generate a JSON-LD compliant Javascript object.
 
 ```javascript
-var as = require('activitystrea.ms');
+const as = require('activitystrea.ms');
 
 var note = as.note().
    name('foo').
@@ -198,7 +196,7 @@ console.log(note.type);
 ```
 
 ```javascript
-var as = require('activitystrea.ms');
+const as = require('activitystrea.ms');
 
 as.note().
    name('foo').
@@ -216,7 +214,7 @@ To serialize the Activity Streams object out as JSON, use the `write`,
 `prettyWrite`, or `pipe` methods
 
 ```javascript
-var as = require('activitystrea.ms');
+const as = require('activitystrea.ms');
 
 as.note().
    name('foo').
@@ -228,7 +226,7 @@ as.note().
 ```
 
 ```javascript
-var as = require('activitystrea.ms');
+const as = require('activitystrea.ms');
 
 as.note().
    name('foo').
@@ -240,7 +238,7 @@ as.note().
 ```
 
 ```javascript
-var as = require('activitystrea.ms');
+const as = require('activitystrea.ms');
 var through = require('through2');
 as.object()
   .name('test')
@@ -254,17 +252,13 @@ processing that's happening under the covers.
 
 ## API
 
-### `var as = require('activitystrea.ms')`
+### `const as = require('activitystrea.ms')`
 
 The base module.
 
 #### `<as.models.Object.Builder> as.object([types])`
 
 Returns a new `as.models.Object.Builder` instance.
-
-#### `<as.models.Actor.Builder> as.actor([types])`
-
-Returns a new `as.models.Actor.Builder` instance.
 
 #### `<as.models.Activity.Builder> as.activity([types])`
 
@@ -285,10 +279,6 @@ Returns a new `as.models.CollectionPage.Builder` instance.
 #### `<as.models.OrderedCollectionPage.Builder> as.orderedCollectionPage([types])`
 
 Returns a new `as.models.OrderedCollectionPage.Builder` instance.
-
-#### `<as.models.Content.Builder> as.content([types])`
-
-Returns a new `as.models.Content.Builder` instance.
 
 #### `<as.models.Link.Builder> as.link([types])`
 
@@ -402,53 +392,53 @@ Returns a new `as.models.Activity.Builder` instance generating an `http://www.w3
 
 Returns a new `as.models.Activity.Builder` instance generating an `http://www.w3.org/ns/activity#Dislike` activity.
 
-#### `<as.models.Actor.Builder> as.application([types])`
+#### `<as.models.Object.Builder> as.application([types])`
 
-Returns a new `as.models.Actor.Builder` instance generating an `http://www.w3.org/ns/activity#Application` object.
+Returns a new `as.models.Object.Builder` instance generating an `http://www.w3.org/ns/activity#Application` object.
 
-#### `<as.models.Actor.Builder> as.group([types])`
+#### `<as.models.Object.Builder> as.group([types])`
 
-Returns a new `as.models.Actor.Builder` instance generating an `http://www.w3.org/ns/activity#Group` object.
+Returns a new `as.models.Object.Builder` instance generating an `http://www.w3.org/ns/activity#Group` object.
 
-#### `<as.models.Actor.Builder> as.person([types])`
+#### `<as.models.Object.Builder> as.person([types])`
 
-Returns a new `as.models.Actor.Builder` instance generating an `http://www.w3.org/ns/activity#Person` object.
+Returns a new `as.models.Object.Builder` instance generating an `http://www.w3.org/ns/activity#Person` object.
 
-#### `<as.models.Actor.Builder> as.service([types])`
+#### `<as.models.Object.Builder> as.service([types])`
 
-Returns a new `as.models.Actor.Builder` instance generating an `http://www.w3.org/ns/activity#Service` object.
+Returns a new `as.models.Object.Builder` instance generating an `http://www.w3.org/ns/activity#Service` object.
 
-#### `<as.models.Actor.Builder> as.organization([types])`
+#### `<as.models.Object.Builder> as.organization([types])`
 
-Returns a new `as.models.Actor.Builder` instance generating an `http://www.w3.org/ns/activity#Organization` object.
+Returns a new `as.models.Object.Builder` instance generating an `http://www.w3.org/ns/activity#Organization` object.
 
-#### `<as.models.Content.Builder> as.article([types])`
+#### `<as.models.Object.Builder> as.article([types])`
 
-Returns a new `as.models.Content.Builder` instance generating an `http://www.w3.org/ns/activity#Article` object.
+Returns a new `as.models.Object.Builder` instance generating an `http://www.w3.org/ns/activity#Article` object.
 
-#### `<as.models.Content.Builder> as.document([types])`
+#### `<as.models.Object.Builder> as.document([types])`
 
-Returns a new `as.models.Content.Builder` instance generating an `http://www.w3.org/ns/activity#Document` object.
+Returns a new `as.models.Object.Builder` instance generating an `http://www.w3.org/ns/activity#Document` object.
 
-#### `<as.models.Content.Builder> as.audio([types])`
+#### `<as.models.Object.Builder> as.audio([types])`
 
-Returns a new `as.models.Content.Builder` instance generating an `http://www.w3.org/ns/activity#Audio` object.
+Returns a new `as.models.Object.Builder` instance generating an `http://www.w3.org/ns/activity#Audio` object.
 
-#### `<as.models.Content.Builder> as.image([types])`
+#### `<as.models.Object.Builder> as.image([types])`
 
-Returns a new `as.models.Content.Builder` instance generating an `http://www.w3.org/ns/activity#Image` object.
+Returns a new `as.models.Object.Builder` instance generating an `http://www.w3.org/ns/activity#Image` object.
 
-#### `<as.models.Content.Builder> as.video([types])`
+#### `<as.models.Object.Builder> as.video([types])`
 
-Returns a new `as.models.Content.Builder` instance generating an `http://www.w3.org/ns/activity#Video` object.
+Returns a new `as.models.Object.Builder` instance generating an `http://www.w3.org/ns/activity#Video` object.
 
-#### `<as.models.Content.Builder> as.note([types])`
+#### `<as.models.Object.Builder> as.note([types])`
 
-Returns a new `as.models.Content.Builder` instance generating an `http://www.w3.org/ns/activity#Note` object.
+Returns a new `as.models.Object.Builder` instance generating an `http://www.w3.org/ns/activity#Note` object.
 
-#### `<as.models.Content.Builder> as.page([types])`
+#### `<as.models.Object.Builder> as.page([types])`
 
-Returns a new `as.models.Content.Builder` instance generating an `http://www.w3.org/ns/activity#Page` object.
+Returns a new `as.models.Object.Builder` instance generating an `http://www.w3.org/ns/activity#Page` object.
 
 #### `<as.models.Question.Builder> as.question([types])`
 
@@ -519,16 +509,6 @@ app.post('/', as.Middleware, function(req,res) {
   res.set({'Content-Type': as.mediaType});
   req.body.pipe(res);
 });
-```
-
-#### `as.Dust`
-
-Returns a function that creates a Dust Context Helper wrapper for a
-`as.models.Object` instance.
-
-```javascript`
-var obj = as.object().name('test').get();
-var wrp = as.Dust(obj);
 ```
 
 #### `as.mediaType`
@@ -621,10 +601,6 @@ Pipes this objects JSON-LD to the specified writable
 var obj = as.person().name('Sally').get();
 obj.pipe(process.stdout);
 ```
-
-#### Method: `<as.Dust> as.models.Base.prototype.dust()`
-
-Returns this object wrapped in an `as.Dust` Context Helper
 
 #### Method: `<function> as.models.Base.prototype.template()`
 
@@ -988,14 +964,6 @@ Adds a value to the `http://www.w3.org/ns/activitystreams#origin` property.
 
 Adds a value to the `http://www.w3.org/ns/activitystreams#instrument` property.
 
-### Class: `as.models.Actor > as.models.Object`
-
-The base class for all Activity Streams 2.0 Actor instances. Inherits from `as.models.Object`
-
-### Class: `as.models.Actor.Builder > as.models.Object.Builder`
-
-The base class for all `as.models.Actor` builder instances. Inherits from `as.models.Object.Builder`
-
 ### Class: `as.models.Collection > as.models.Object`
 
 The base class for all Activity Streams 2.0 Collection objects. Inherits from `as.models.Object`
@@ -1091,42 +1059,6 @@ The base class for all `as.models.OrderedCollectionPage` builders. Inherits from
 #### Method: `as.models.OrderedCollectionPage.Builder.prototype.startIndex(val)`
 
 Sets the value of the `http://www.w3.org/ns/activitystreams#startIndex` property. The value must be a numeric integer greater than or equal to zero.
-
-### Class: `as.models.Content > as.models.Object`
-
-The base class for all Activity Streams 2.0 Content objects. Inherits from `as.models.Object`;
-
-#### Property: `as.models.Content.prototype.height`
-
-Returns the value of the `http://www.w3.org/ns/activitystreams#height` property.The value will either be `undefined` or a numeric integer greater than or equal to zero.
-
-#### Property: `as.models.Content.prototype.width`
-
-Returns the value of the `http://www.w3.org/ns/activitystreams#width` property.The value will either be `undefined` or a numeric integer greater than or equal to zero.
-
-#### Property: `as.models.Content.prototype.duration`
-
-Returns the value of the `http://www.w3.org/ns/activitystreams#duration` property. The value will either be `undefined, a numeric integer, or an ISO 8601 duration string.
-
-### Class: `as.models.Content.Builder > as.models.Object.Builder`
-
-The base class for all `as.models.Content` builders. Inherits from `as.models.Object.Builder`
-
-#### Method: `<Builder> as.models.Content.Builder.prototype.height(val)`
-
-Sets the value of the `http://www.w3.org/ns/activitystreams#height` property.
-The value is a numeric integer greater than or equal to zero.
-
-#### Method: `<Builder> as.models.Content.Builder.prototype.width(val)`
-
-Sets the value of the `http://www.w3.org/ns/activitystreams#width` property.
-The value is a numeric integer greater than or equal to zero.
-
-#### Method: `<Builder> as.models.Content.Builder.prototype.duration(val)`
-
-Sets the value of the `http://www.w3.org/ns/activitystreams#duration` property.
-The value is either a numeric integer indicate a number of seconds, or an
-ISO 8601 Duration.
 
 ### Class: `as.models.Link > as.models.Base`
 
@@ -1280,36 +1212,40 @@ Sets the value of the `http://www.w3.org/ns/activitystreams#radius` property. Th
 Sets the value of the `http://www.w3.org/ns/activitystreams#units` property.
 The value must be one of: `cm`, `feet`, `inches`, `km`, `m`, `miles`, or any absolute URI.
 
-### Class: `as.models.Profile > as.models.Content`
+### Class: `as.models.Profile > as.models.Object`
 
-The base class for all Activity Streams 2.0 Profile objects. Inherits from `as.models.Content`
+The base class for all Activity Streams 2.0 Profile objects. Inherits from `as.models.Object`
 
 #### Property: `as.models.Profile.prototype.describes`
 
-### Class: `as.models.Profile.Builder > as.models.Content.Builder`
+### Class: `as.models.Profile.Builder > as.models.Object.Builder`
 
-The base class for all `as.models.Profile` builders. Inherits from `as.models.Content.Builder`
+The base class for all `as.models.Profile` builders. Inherits from
+`as.models.Object.Builder`
 
 #### Method: `as.models.Profile.Builder.prototype.describes(val)`
 
 Sets the value of the `http://www.w3.org/ns/activitystreams#describes` property.
 
-### Class: `as.models.Queston > as.models.Content, as.models.Activity`
+### Class: `as.models.Question > as.models.Activity`
 
 The base class for all Activity Streams 2.0 Question objects. Inherits from
-both `as.models.Content` and `as.models.Activity`;
+`as.models.Activity`;
 
 #### Property: `as.models.Question.prototype.anyOf`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#anyOf` property. The value will either be `undefined` or an Iterable  of `as.models.Base` objects.
+Returns the value of the `http://www.w3.org/ns/activitystreams#anyOf` property.
+The value will either be `undefined` or an Iterable of `as.models.Base` objects.
 
 #### Property: `as.models.Question.prototype.oneOf`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#oneOf` property. The value will either be `undefined` or an Iterable  of `as.models.Base` objects.
+Returns the value of the `http://www.w3.org/ns/activitystreams#oneOf` property.
+The value will either be `undefined` or an Iterable of `as.models.Base` objects.
 
-### Class: `as.models.Question.Builder > as.models.Content.Builder, as.models.Activity.Builder`
+### Class: `as.models.Question.Builder > as.models.Activity.Builder`
 
-The base class for all `as.models.Question` builders. Inherits from `as.models.Content.Builder` and `as.models.Activity.Builder`;
+The base class for all `as.models.Question` builders. Inherits from
+`as.models.Activity.Builder`;
 
 #### Method: `as.models.Question.Builder.anyOf(val)`
 
@@ -1321,7 +1257,8 @@ Adds a value to the `http://www.w3.org/ns/activitystreams#oneOf` property.
 
 ### Class: `as.models.Relationship > as.models.Object`
 
-The base class for all Activity Streams 2.0 Relationship objects. Inherits from `as.models.Object`.
+The base class for all Activity Streams 2.0 Relationship objects. Inherits
+from `as.models.Object`.
 
 #### Property: `as.models.Relationship.prototype.subject`
 
