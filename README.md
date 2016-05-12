@@ -156,6 +156,7 @@ been built, call the `get` method to return the generated object.
 * `as.place([types])`
 * `as.connection([types])`
 * `as.mention([types])`
+* `as.tombstone([types])`
 * `as.interval([types])`
 * `as.interval.open([types])`
 * `as.interval.closed([types])`
@@ -464,6 +465,11 @@ Returns a new `as.models.Place.Builder` instance generating an `http://www.w3.or
 
 Returns a new `as.models.Link.Builder` instance generating an `http://www.w3.org/ns/activity#Mention` link.
 
+#### `<as.models.Tombstone.Builder> as.tombstone([types])`
+
+Returns a new `as.models.Tombstone.Builder` instance generating an
+`http://www.w3.org/ns/activity#Tombstone` object.
+
 #### `<void> as.import(obj, callback)`
 
 Imports the specified JavaScript object `obj`, performing JSON-LD expansion as necessary. When the import is complete, the `callback` function will be invoked with the imported `as.model.Object` as the second argument. If an error occurs, the error will be passed as the first argument to the `callback`.
@@ -710,9 +716,9 @@ Returns the value of the `http://www.w3.org/ns/activitystreams#preview` property
 
 Returns the value of the `http://www.w3.org/ns/activitystreams#replies` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
-#### Property: `as.models.Object.prototype.scope`
+#### Property: `as.models.Object.prototype.audience`
 
-Returns the value of the `http://www.w3.org/ns/activitystreams#scope` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
+Returns the value of the `http://www.w3.org/ns/activitystreams#audience` property. Will be either `undefined` or an Iterable  of `as.model.Base` instances.
 
 #### Property: `as.models.Object.prototype.tag`
 
@@ -880,9 +886,9 @@ Adds a value to the `http://www.w3.org/ns/activitystreams#preview` property.
 
 Adds a value to the `http://www.w3.org/ns/activitystreams#replies` property.
 
-#### Method: `<Builder> as.models.Object.Builder.prototype.scope(val)`
+#### Method: `<Builder> as.models.Object.Builder.prototype.audience(val)`
 
-Adds a value to the `http://www.w3.org/ns/activitystreams#scope` property.
+Adds a value to the `http://www.w3.org/ns/activitystreams#audience` property.
 
 #### Method: `<Builder> as.models.Object.Builder.prototype.tag(val)`
 
@@ -1278,7 +1284,7 @@ The base class for all `as.models.Relationship` builders. Inherits from `as.mode
 
 #### Method: `as.models.Relationship.Builder.prototype.subject(val)`
 
-Sets the valu eof the `http://ww.w3.org/ns/activitystreams#subject` property.
+Sets the value of the `http://ww.w3.org/ns/activitystreams#subject` property.
 
 #### Method: `as.models.Relationship.Builder.prototype.relationship(val)`
 
@@ -1287,6 +1293,26 @@ Adds a value to the `http://www.w3.org/ns/activitystreams#relationship` property
 #### Method: `as.models.Relationship.Builder.prototype.object(val)`
 
 Adds a value to the `http://www.w3.org/ns/activitystreams#object` property.
+
+### Class: `as.models.Tombstone > as.models.Object`
+
+#### Property: `as.models.Tombstone.prototype.deleted`
+
+Returns the date and time the object was deleted.
+
+#### Property: `as.models.Tombstone.prototype.formerType`
+
+Returns the former type of the object that was deleted.
+
+### Class: `as.models.Tombstone.Builder > as.models.Object.Builder`
+
+#### Method: `as.models.Tombstone.Builder.prototype.deleted(val)`
+
+Sets the date and time the represented object was deleted.
+
+#### Method: `as.models.Tombstone.Builder.prototype.formerType(val)`
+
+Specifies the former type of the object that was deleted.
 
 ### Class: `LanguageValue`
 

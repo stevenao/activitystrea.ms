@@ -35,6 +35,11 @@ graph.add({
   object: as.Object
 });
 graph.add({
+  subject: as.Tombstone,
+  predicate: rdfs.subClassOf,
+  object: as.Object
+});
+graph.add({
   subject: as.Block,
   predicate: rdfs.subClassOf,
   object: as.Ignore
@@ -441,12 +446,17 @@ graph.add({
   object: owl.ObjectProperty
 });
 graph.add({
+  subject: as.formerType,
+  predicate: rdf.type,
+  object: owl.ObjectProperty
+});
+graph.add({
   subject: as.result,
   predicate: rdf.type,
   object: owl.ObjectProperty
 });
 graph.add({
-  subject: as.scope,
+  subject: as.audience,
   predicate: rdf.type,
   object: owl.ObjectProperty
 });
@@ -537,6 +547,16 @@ graph.add({
 });
 graph.add({
   subject: as.published,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.closed,
+  predicate: rdf.type,
+  object: functionalDatatype
+});
+graph.add({
+  subject: as.deleted,
   predicate: rdf.type,
   object: functionalDatatype
 });

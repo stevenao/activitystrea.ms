@@ -234,6 +234,10 @@ module.exports = exports = {
     return exports.object(_types(types, as.Question), environment);
   },
 
+  tombstone(types, environment) {
+    return exports.object(_types(types, as.Tombstone), environment);
+  },
+
   event(types, environment) {
     return exports.object(_types(types, as.Event), environment);
   },

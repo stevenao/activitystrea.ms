@@ -540,7 +540,7 @@ describe('Basics...', ()=> {
       updated: '2015-12-12T12:12:12Z',
       published: '2015-12-12T12:12:12Z',
       replies: 'http://example.org/replies',
-      scope: 'http://example.org/scope',
+      audience: 'http://example.org/scope',
       startTime: '2015-12-12T12:12:12Z',
       url: 'http://example.org',
       to: 'http://joe.example.org',
@@ -593,9 +593,9 @@ describe('Basics...', ()=> {
       assert(doc.replies);
       assert.equal(doc.replies.length,1);
       assert.equal(doc.replies.first.id, 'http://example.org/replies');
-      assert(doc.scope);
-      assert.equal(doc.scope.length,1);
-      assert.equal(doc.scope.first.id, 'http://example.org/scope');
+      assert(doc.audience);
+      assert.equal(doc.audience.length,1);
+      assert.equal(doc.audience.first.id, 'http://example.org/scope');
       assert(doc.url);
       assert.equal(doc.url.length,1);
       assert.equal(doc.url.first.id, 'http://example.org');
@@ -637,7 +637,7 @@ describe('Basics...', ()=> {
       .updated(new Date('2015-12-12T12:12:12Z'))
       .published(new Date('2015-12-12T12:12:12Z'))
       .replies('http://example.org/replies')
-      .scope('http://example.org/scope')
+      .audience('http://example.org/scope')
       .startTime(new Date('2015-12-12T12:12:12Z'))
       .url('http://example.org')
       .to('http://joe.example.org')
@@ -688,9 +688,9 @@ describe('Basics...', ()=> {
       assert(doc.replies);
       assert.equal(doc.replies.length,1);
       assert.equal(doc.replies.first.id, 'http://example.org/replies');
-      assert(doc.scope);
-      assert.equal(doc.scope.length,1);
-      assert.equal(doc.scope.first.id, 'http://example.org/scope');
+      assert(doc.audience);
+      assert.equal(doc.audience.length,1);
+      assert.equal(doc.audience.first.id, 'http://example.org/scope');
       assert(doc.url);
       assert.equal(doc.url.length,1);
       assert.equal(doc.url.first.id, 'http://example.org');

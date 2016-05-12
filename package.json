@@ -1,6 +1,6 @@
 {
   "name": "activitystrea.ms",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "description": "Activity Streams 2.0 JavaScript Implementation",
   "author": "James M Snell <jasnell@us.ibm.com>",
   "keywords": [
@@ -15,10 +15,10 @@
     "test": "mocha test/test.js"
   },
   "dependencies": {
-    "activitystreams-context": "^0.10.0",
-    "jsonld": "^0.4.2",
+    "activitystreams-context": "^0.11.0",
+    "jsonld": "^0.4.11",
     "jsonld-signatures": "^1.1.3",
-    "vocabs-as": "^0.11.1",
+    "vocabs-as": "^0.12.0",
     "vocabs-asx": "^0.11.1",
     "vocabs-owl": "^0.11.1",
     "vocabs-xsd": "^0.11.1",
@@ -26,17 +26,17 @@
     "vocabs-rdfs": "^0.11.1",
     "vocabs-interval": "^0.11.1",
     "vocabs-social": "^0.11.1",
-    "lru-cache": "^4.0.0",
-    "moment": "^2.11.0",
+    "lru-cache": "^4.0.1",
+    "moment": "^2.13.0",
     "node-uuid": "^1.4.7",
-    "readable-stream": "^2.0.5",
-    "reasoner": "0.2.4",
-    "request": "^2.67.0",
+    "readable-stream": "^2.1.2",
+    "reasoner": "0.3.0",
+    "request": "^2.72.0",
     "rfc5646": "^2.0.0"
   },
   "devDependencies": {
-    "mocha": "^2.3.4",
-    "through2": "^2.0.0"
+    "mocha": "^2.3.5",
+    "through2": "^2.0.1"
   },
   "main": "./src/activitystreams.js",
   "engines": {

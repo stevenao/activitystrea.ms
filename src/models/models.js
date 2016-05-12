@@ -29,6 +29,8 @@ function core_recognizer(type) {
     thing = exports.Place;
   } else if (node.is(as.Relationship)) {
     thing = exports.Relationship;
+  } else if (node.is(as.Tombstone)) {
+    thing = exports.Tombstone;
   }
   return thing;
 }
@@ -100,6 +102,10 @@ module.exports = exports = {
 
   get Question() {
     return require('./_question');
+  },
+  
+  get Tombstone() {
+    return require('./_tombstone');
   },
   
   get compose() {

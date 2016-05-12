@@ -83,8 +83,8 @@ class AsObject extends Base {
     return this.get(as.replies);
   }
 
-  get scope() {
-    return this.get(as.scope);
+  get audience() {
+    return this.get(as.audience);
   }
 
   get tag() {
@@ -223,8 +223,8 @@ class AsObjectBuilder extends Base.Builder {
     return this.set(as.replies, val);
   }
 
-  scope(val) {
-    return this.set(as.scope, val);
+  audience(val) {
+    return this.set(as.audience, val);
   }
 
   tag(val) {
