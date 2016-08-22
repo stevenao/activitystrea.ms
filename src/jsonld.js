@@ -15,7 +15,9 @@ const Loader = require('./contextloader');
 var warned = false;
 function warn() {
   if (!warned) {
-    console.warn(
+    const warnfn = typeof process.emitWarning === 'function' ?
+        process.emitWarning : console.warn;
+    warnfn(
       'Warning: JSON-LD Signatures are still experimental. ' +
       'Use in production environments is not recommended');
     warned = true;
