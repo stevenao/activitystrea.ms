@@ -31,7 +31,8 @@ as.object().
       .set('en', 'bar')
       .set('fr', 'foo'))
   publishedNow().
-  prettyWrite(function(err,doc) {
+  prettyWrite((err,doc) => {
+    if (err) throw err;
     console.log(doc);
   });
 ```
@@ -56,7 +57,8 @@ Which produces the output:
 as.create().
   actor('acct:sally@example.org').
   object('http://www.example.org/post').
-  prettyWrite(function(err,doc) {
+  prettyWrite((err,doc) => {
+    if (err) throw err;
     console.log(doc);
   });
 ```
@@ -73,14 +75,14 @@ Which produces the output:
 
 You can also use the Node.js stream model for parsing:
 ```javascript
-var fs = require('fs');
-var AS2Stream = as.Stream;
-var path = require('path');
-var through = require('through2');
+const fs = require('fs');
+const AS2Stream = as.Stream;
+const path = require('path');
+const through = require('through2');
 
 fs.createReadStream(path.resolve(__dirname,'test.json'))
   .pipe(new AS2Stream())
-  .pipe(through.obj(function(obj,encoding,callback) {
+  .pipe(through.obj((obj,encoding,callback) => {
     console.log(obj.type);
     console.log(obj.name);
   }));
@@ -88,7 +90,7 @@ fs.createReadStream(path.resolve(__dirname,'test.json'))
 And writing:
 ```javascript
 const as = require('activitystrea.ms');
-var through = require('through2');
+const through = require('through2');
 as.object()
   .name('test')
   .get()
@@ -178,18 +180,18 @@ been built, call the `get` method to return the generated object.
 * `as.social.none([types])`
 
 
-The object returned by `get` is a read-only view of the Activity Stream object.
-It will have property methods that are specific to the object's type. You can
-export the built object as an ordinary Javascript object using the `export`
-method. This will generate a JSON-LD compliant Javascript object.
+The object returned by `get()` is a read-only view of the Activity Stream
+object. It will have property methods that are specific to the object's type.
+You can export the built object as an ordinary Javascript object using the
+`export` method. This will generate a JSON-LD compliant Javascript object.
 
 ```javascript
 const as = require('activitystrea.ms');
 
-var note = as.note().
-   name('foo').
-   content('this is a simple note').
-   get();
+const note = as.note().
+               name('foo').
+               content('this is a simple note').
+               get();
 
 console.log(note.name.valueOf());
 console.log(note.content.valueOf());
@@ -203,7 +205,8 @@ as.note().
    name('foo').
    content('this is a simple note').
    get().
-   export(function (err, obj) {
+   export((err, obj) => {
+     if (err) throw err;
      // obj is an ordinary javascript object
      console.log(obj['@type']);
      console.log(obj['name']);
@@ -220,7 +223,8 @@ const as = require('activitystrea.ms');
 as.note().
    name('foo').
    content('this is a simple note').
-   write(function (err, doc) {
+   write((err, doc) => {
+     if (err) throw err;
      // doc is a string
      console.log(doc);
    });
@@ -232,7 +236,8 @@ const as = require('activitystrea.ms');
 as.note().
    name('foo').
    content('this is a simple note').
-   prettyWrite(function (err, doc) {
+   prettyWrite((err, doc) => {
+     if (err) throw err;
      // doc is a string
      console.log(doc);
    });
@@ -240,7 +245,7 @@ as.note().
 
 ```javascript
 const as = require('activitystrea.ms');
-var through = require('through2');
+const through = require('through2');
 as.object()
   .name('test')
   .get()
@@ -480,11 +485,8 @@ var obj = {
   '@type': 'Person',
   name: 'Joe'
 };
-as.import(obj, function(err, imp) {
-  if (err) {
-    console.error(err);
-    return;
-  }
+as.import(obj, (err, imp) => {
+  if (err) throw err;
   console.log(imp.type);
 });
 ```
@@ -494,11 +496,11 @@ as.import(obj, function(err, imp) {
 Returns a new Node.js Transform Stream that parses JSON input into an appropriate `as.models.Object` instance.
 
 ```javascript
-var through = require('through2');
-var fs = require('fs');
-var fsstr = fs.createReadStream('data.json');
+const through = require('through2');
+const fs = require('fs');
+const fsstr = fs.createReadStream('data.json');
 fsstr.pipe(new as.Stream())
-     .pipe(through.obj(function(chunk,encoding,callback) {
+     .pipe(through.obj((chunk,encoding,callback) => {
         console.log(chunk.name);
         callback();
      }));
@@ -509,8 +511,8 @@ fsstr.pipe(new as.Stream())
 Express/Connect middleware that parses the request payload as AS2
 
 ```javascript
-var app = require('express')();
-app.post('/', as.Middleware, function(req,res) {
+const app = require('express')();
+app.post('/', as.Middleware, (req,res) => {
   res.status(200);
   res.set({'Content-Type': as.mediaType});
   req.body.pipe(res);
@@ -549,12 +551,9 @@ Returns the value for the specified `key`. The return value will vary based on t
 Exports the object by performing a JSON-LD compaction. If export fails, the callback will be called with the error as the first argument. If the export succeeds, the exported JavaScript object will be passed as the second argument of the callback.
 
 ```javascript
-var obj = as.object().name('Joe').get();
-obj.export(function(err,exp) {
-  if (err) {
-    console.error(err);
-    return;
-  }
+const obj = as.object().name('Joe').get();
+obj.export((err,exp) => {
+  if (err) throw err;
   console.log(exp.name);
   console.log(exp['@type']);
 });
@@ -565,12 +564,9 @@ obj.export(function(err,exp) {
 Write the object out to a JSON-LD string. If writing fails, the callback will will be called with the error as the first argument. If the write succeeds, the JSON-LD string will be passed as the second argument of the callback.
 
 ```javascript
-var obj = as.object().name('Joe').get();
-obj.write(function(err,string) {
-  if (err) {
-    console.error(err);
-    return;
-  }
+const obj = as.object().name('Joe').get();
+obj.write((err,string) => {
+  if (err) throw err;
   console.log(string);
 });
 ```
@@ -580,12 +576,9 @@ obj.write(function(err,string) {
 Write the object out to a JSON-LD string. If writing fails, the callback will will be called with the error as the first argument. If the write succeeds, the JSON-LD string will be passed as the second argument of the callback.
 
 ```javascript
-var obj = as.object().name('Joe').get();
-obj.prettyWrite(function(err,string) {
-  if (err) {
-    console.error(err);
-    return;
-  }
+const obj = as.object().name('Joe').get();
+obj.prettyWrite((err,string) => {
+  if (err) throw err;
   console.log(string);
 });
 ```
@@ -604,7 +597,7 @@ Returns a Readable Stream instance that can be used to read this object as a str
 Pipes this objects JSON-LD to the specified writable
 
 ```javascript
-var obj = as.person().name('Sally').get();
+const obj = as.person().name('Sally').get();
 obj.pipe(process.stdout);
 ```
 
@@ -613,7 +606,7 @@ obj.pipe(process.stdout);
 Returns a funtion that can be used to create new `as.models.Base.Builder` instances using this object as a template. The new Builder will be pre-filled with the properties already specified on this object.
 
 ```javascript
-var templ = as.like().actor('http://example.org/sally').get().template();
+const templ = as.like().actor('http://example.org/sally').get().template();
 templ().object('http://example.org/1').pipe(process.stdout);
 templ().object('http://example.org/2').pipe(process.stdout);
 ```
@@ -636,7 +629,7 @@ Add a value to the `@type` property. Calling this repeatedly will add new values
 Set a value for the specified key.
 
 ```javascript
-var object = as.object();
+const object = as.object();
 object.set('foo', 'bar');
 ```
 
@@ -1320,28 +1313,28 @@ Used to encapsulate language tagged properties within an Activity Streams docume
 
 ```javascript
 // assuming the default system locale is  `en-US`:
-var obj = as.object()
+const obj = as.object()
   .name(
     as.langmap()
       .set('default display name')
       .set('es', 'other display name')
   )
   .get();
-var languagevalue = obj.name;
+const languagevalue = obj.name;
 console.log(languagevalue.get()); // 'default display name'
 console.log(languagevalue.get('es')); // 'other display name'
 ```
 
 ```javascript
 // assuming the default system locale is  `sp`:
-var obj = as.object()
+const obj = as.object()
   .name(
     as.langmap()
       .set('default display name')
       .set('es', 'other display name')
   )
   .get();
-var languagevalue = obj.name;
+const languagevalue = obj.name;
 console.log(languagevalue.get()); // 'other display name'
 console.log(languagevalue.get('en-US')); // 'default display name'
 ```
