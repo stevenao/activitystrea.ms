@@ -120,7 +120,7 @@ class AsObject extends Base {
 
 class AsObjectBuilder extends Base.Builder {
   constructor(types, base, environment) {
-    types = (types || []).concat([as.Object]);
+    types = types || [as.Object];
     super(types, base || new AsObject({}, undefined, environment));
   }
 
